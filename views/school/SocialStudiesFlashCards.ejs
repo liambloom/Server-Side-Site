@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Social Studies Flash Cards</title>
+	<style>
+		dl {
+			background-color: #eeeeee;
+			border-color: #000000;
+			border-radius: 10px;
+			padding: 20px;
+		}
+		span.edit {
+			color: red;
+		}
+	</style>
+</head>
+<body>
+	<dl>
+	<dt class="quiz" id="word"></dt><br>
+	<dd class="quiz" id="deffinition"></dd>
+	<input id="reveal" type="button" value="Reveal Answer">
+	<input id="reload" type="button" value="Reload">
+	</dl>
+	<script>
+		var show;
+		var flashcards = {
+			Lord: "powerful owner of an area of land who <s>acts as</s> a <span class='edit'>provides</span> knight<span class='edit'>s</span> in times of war",
+			Vassel: "someone who recieves land from a person of a higher social class in exchange for something",
+			Feudalism: "an economic and political system that existed durring the middle ages<span class='edit'>. Came into existance after Charlamagne's death</span>",
+			Charlemagne: "also Charles the Great, he converted the Franks to christianity.<span class='edit'> He took over europe.</span> He is also one of the founding fathers of fudalism",
+			Feudal_Pyramid: "a diagram showing the power and population of people sorted by social classe in the fudal system<span class='edit'><ul><li>King</li><li>Lord</li><li>Knight</li><li>Peasant</li><ul></span>",
+			Age_of_Faith: "another name for the Middle Ages because of peoples' devotion to religion",
+			Pilgrimage: "a religious journey made to a holy site to show devotion to God",
+			Manor: "a large plot of land ruled and owned by a lord<span class='edit'>Usually soruounded by a wall, resided in by peasants, <b><i>had a church in the center</i></b></span>",
+			Power_of_the_Church: "<ul><li>The curch was in the lives of everyone</li>\
+				<li>People went to church at least six times a day</li>\
+				<li>Community events were held at the church</li>\
+				<li>People looked to God for explanations and advice for everything</li></ul>",
+			Reasons_for_the_Decline_of_Fudalism: "<ul><li>Crusades</li><li>People moving to Towns</li>\
+				<li>The Plauge</li>\
+				<li>English Political Developments<ul>\
+					<li>Henry II took power from the church</li>\
+					<span class='edit'><li>Habeas Corpus</li></span>\
+					<li>King John created the Magna Carta</li>\
+					<li>King Edward I created Model Parlament</li></ul></li>\
+				<li>The hundred years war</li>\
+				<span class='edit'><li>Peasant's Pebelion</li></span></ul>",
+			Black_Death: "aka the Bubonic Plague, this terible disease originated in Asia and spread to Europe",
+			Model_Parlament: "created by King Edward I, it was composed of citizens, giving them a little control over their country",
+			Habeas_Corpus: "the concept that you need to be charged to be imprisoned for an extended period of time<span class='edit'> Jurry</span>",
+			Peasants_Rebelion: "a rising up of peasants against their lords",
+			_100_Years_War: "a war between the English and the French over land that created a stronger sense of national pride in both countries",
+			Justinians_Accomplishments: "<ul><li>When his people rebelled, rather than run, he fought back</li>\
+				<li>He rebuilt the city much better than before</li>\
+				<li>He built the Hagia Sophia</li><span class='edit'>\
+				<li>He attempted to rebuild Rome</li>\
+				<li>Set up an organdized legal code</li></span></ul>",
+			Constantinople: "now Istambul, this city sits between Asia, Africa, and Europe",
+			Muhammad: "the founder of Islam; Musilims believe he was a prophet of God, similar to Jesus",//In that people believe that he was a prophet, I think they were just moral guys
+			Gabriel: "the angel who suposedly brought messages to Muhammad",
+			People_of_the_Book: "people who believe in God",
+			Achievements_of_the_Islamic_Empire: "<ul>\
+				<li>They united the Arabian Peninsula</li>\
+				<li>Invented algebra, and other things</li>\
+				<li>Their empire spread and got lots of money</li>\
+				<li>They built beautiful cities</li>\
+				<li>Astrolabe</li></ul>"
+		};
+		/*Object.defineProperties(flashcards, {
+			word: {
+				value: function(bool, num){
+					if (typeof num !== "number") {num = Math.round(Math.random() * (Object.keys(flashcards).length - 1));}
+					document.getElementById("word").innerHTML = Object.keys(flashcards)[num].replace(/_/g, " ");
+					if (typeof bool !== "boolean") {bool = true;}
+					if (bool) {
+						document.getElementById("reveal").onclick = function(){flashcards.deffinition(false, num);}
+					}
+					else {
+						document.getElementById("button").onclick = function(){
+							var quiz = document.getElementsByClassName("quiz");
+							//flashcards.num.reset()
+							for (var i = 0; i < quiz.length; i++) {
+								quiz[i].innerHTML = "";
+							}
+							if (Math.random() < 0.5) {
+								flashcards.word();
+							}
+							else {
+								flashcards.deffinition();
+							}
+						}
+					}
+					/*else {
+						show = true;
+					}*//*
+				}
+			},
+			deffinition: {
+				value: function(bool, num){
+					if (typeof num !== "number") {num = Math.round(Math.random() * (Object.keys(flashcards).length - 1));}
+					document.getElementById("deffinition").innerHTML = flashcards[Object.keys(flashcards)[num]];
+					if (typeof bool !== "boolean") {bool = true;}
+					if (bool) {
+						document.getElementById("button").onclick = function(){flashcards.word(false, num);}
+					}
+					else {
+						document.getElementById("button").onclick = function(){
+							var quiz = document.getElementsByClassName("quiz");
+							//flashcards.num.reset()
+							for (var i = 0; i < quiz.length; i++) {
+								quiz[i].innerHTML = "";
+							}
+							if (Math.random() < 0.5) {
+								flashcards.word();
+							}
+							else {
+								flashcards.deffinition();
+							}
+						}
+					}
+					/*else {
+						show = true;
+					}*//*
+				}
+			}
+		})
+		document.getElementById("button").onclick = function() {
+			var quiz = document.getElementsByClassName("quiz");
+			//flashcards.num.reset()
+			for (var i = 0; i < quiz.length; i++) {
+				quiz[i].innerHTML = "";
+			}
+			if (Math.random() < 0.5) {
+				flashcards.word();
+			}
+			else {
+				flashcards.deffinition();
+			}
+			//show = false;
+		}
+		document.addEventListener("keyup", function(event){
+			//console.log("this ran")
+			/*if (event.keyCode == 13) {
+				if (show) {
+					document.getElementById("reload").onclick();
+				}
+				else {
+					document.getElementById("reveal").onclick();
+				}
+			}*//*
+			if (event.keyCode == 13) {//Enter
+				document.getElementById("button").onclick();
+
+			}/*
+			else if (event.keyCode == 16) {//Shift
+				document.getElementById("button").onclick();
+			}*/
+		//})
+		Object.defineProperties(flashcards, {
+			word: {
+				value: function(bool, num){
+					if (typeof num !== "number") {num = Math.round(Math.random() * (Object.keys(flashcards).length - 1));}
+					document.getElementById("word").innerHTML = Object.keys(flashcards)[num].replace(/_/g, " ");
+					if (typeof bool !== "boolean") {bool = true;}
+					if (bool) {
+						document.getElementById("reveal").onclick = function(){flashcards.deffinition(false, num);}
+					}
+					else {
+						show = true;
+					}
+				}
+			},
+			deffinition: {
+				value: function(bool, num){
+					if (typeof num !== "number") {num = Math.round(Math.random() * (Object.keys(flashcards).length - 1));}
+					document.getElementById("deffinition").innerHTML = flashcards[Object.keys(flashcards)[num]];
+					if (typeof bool !== "boolean") {bool = true;}
+					if (bool) {
+						document.getElementById("reveal").onclick = function(){flashcards.word(false, num);}
+					}
+					else {
+						show = true;
+					}
+				}
+			}
+		})
+		document.getElementById("reload").onclick = function() {
+			var quiz = document.getElementsByClassName("quiz");
+			//flashcards.num.reset()
+			for (var i = 0; i < quiz.length; i++) {
+				quiz[i].innerHTML = "";
+			}
+			if (Math.random() < 0.5) {
+				flashcards.word();
+			}
+			else {
+				flashcards.deffinition();
+			}
+			show = false;
+		}
+	</script>
+</body>
+</html>

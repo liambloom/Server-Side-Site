@@ -1,0 +1,27 @@
+{
+  "name": "liambloom.github.io",
+  "version": "1.0.0",
+  "description": "This is my github.io site served up by a very simple Node.js server",
+  "main": "index.html",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node servers/serverV2.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liambloom/liambloom.github.io.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/liambloom/liambloom.github.io/issues"
+  },
+  "homepage": "https://github.com/liambloom/liambloom.github.io",
+  "dependencies": {
+    "chalk": "^2.4.2"
+  }
+}

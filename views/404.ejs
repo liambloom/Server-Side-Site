@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!--<base target="_blank">-->
+	<link rel="icon" href="/favicon/beta/favicon_beta.ico">
+	<link rel="icon" href="/favicon/beta/favicon_beta_32.png">
+	<link rel="icon" href="/favicon/beta/favicon_beta_48.png">
+	<link rel="icon" href="/favicon/beta/favicon_beta_96.png">
+	<link rel="icon" href="/favicon/beta/favicon_beta_144.png">
+	<link rel="icon" href="/favicon/beta/favicon_beta_vector.svg">
+	<!--<link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">-->
+	<link href="/css/blueScreenOfDeath.css" rel="stylesheet">
+	<!--<script src="/lib/Lupin/Lupin.js"></script>-->
+	<script src="/js/strToBool.js"></script>
+	<script src="/js/inputHandler.js"></script>
+	<!--<script src="/404/js/slash.js"></script>
+	<script src="/404/js/hash.js"></script>
+	<script src="/404/js/TBGame.js"></script>-->
+
+</head>
+<body>
+<p id="pageText">
+> Welcome<br>
+> I am a 404 page<br>
+> You tried to go to <span id="urlhrefspan"></span><br>
+> That page doesn't exist, so you shouldn't try to go to it<br>
+> Instead, you should try going to some pages that do exist<br>
+> They are much more interesting<br>
+> You can find links to all those in the <a href="/">home page</a><br>
+</p>
+<input type="text" id="textbox" value="" autofocus>
+	<script>
+
+		//information about everything
+		var stateinfo = {
+			textboxDefault: "",
+			bullet: "> ",
+			state: null,
+			cheatsEnabled: false,
+			set stateChange(stateset) {
+				this.state = stateset
+				if (stateset !== null) {
+					this.textboxDefault = "#" + stateset +":"
+				}
+			}
+		}
+
+		//Puts url in text
+		document.getElementById("urlhrefspan").innerHTML = window.location.href
+
+		//runs inputHanlder() when enter key pressed
+		document.getElementById("textbox").addEventListener("keyup",  function(event){
+			if (event.keyCode === 13) {
+				inputHandler()
+			}
+		})
+	</script>
+</body>
+<html>

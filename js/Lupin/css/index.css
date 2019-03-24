@@ -1,0 +1,46 @@
+body {
+	margin: 13.355%;
+	color: #42362d;
+	background-color: #ffe7d6;
+}
+header h2 ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+	overflow: hidden;
+	border-color: transparent;
+}
+header h2 ul li {
+	float: left;
+}
+header h2 ul li.space {
+	margin-right: 50px;
+}
+header h2 ul li a {
+	display: block;
+	padding: 0px;
+	margin: 0px;
+}
+h1 {
+	font-size: 120px;
+	text-align: center;
+	align-self: center;
+	align-items: center;
+}
+h2 {
+	font-size: 70px;
+	margin: 0px;
+}
+p, #version {
+	font-size: 15px;
+	margin: 0px;
+}
+header h2 a {
+	color: #42362d;
+	text-decoration: none;
+}
+header h2 img {
+	height: 80px;
+	width: 80px;
+	vertical-align: bottom;
+}

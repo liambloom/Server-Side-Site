@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Roman Numeral Translator</title>
+	<meta charset="utf-8">
+	<link rel="icon" href="/favicon/main/favicon.ico">
+	<link rel="icon" href="/favicon/main/favicon_32.png">
+	<link rel="icon" href="/favicon/main/favicon_48.png">
+	<link rel="icon" href="/favicon/main/favicon_96.png">
+	<link rel="icon" href="/favicon/main/favicon_144.png">
+	<link rel="icon" href="/favicon/main/favicon_vector.svg">
+	<style>
+		body {
+			text-align: center;
+			background-color: #d6ac44;
+		}
+		span.x1000 {
+			text-decoration: overline;
+		}
+		span.err {
+			color: #aa0000;
+		}
+	</style>
+</head>
+<body>
+	<h1>Enter a Number</h1>
+	<input type="text" id="num" value="####">
+	<p id="numOut"></p>
+	<h1>Enter a Roman Numeral</h1>
+	<input type="text" id="rom" value="MCXI">
+	<p id="romOut"></p>
+	<script>
+		var num = document.getElementById("num");
+		var rom = document.getElementById("rom");
+		num.addEventListener("keyup", function(event) {
+			if (event.keyCode === 13) {
+				if (/^\d+$/.test(num.value.replace(/\s/g, ""))) {
+					var c = 0;
+					for (var i in num.value.replace(/\s/g, "").split("").reverse()) {
+						c++
+
+					}
+				}
+				else if (/^\d+\.$/.test(num.value)){
+					document.getElementById("numOut").innerHTML = "<span class='err'>Error: Romans didn't have decimals"
+				}
+				else {
+					document.getElementById("numOut").innerHTML = "<span class='err'>Error: " + num.value + " is not a number";
+				}
+			}
+		})
+		rom.addEventListener("keyup", function(event) {
+			if (event.keyCode === 13) {
+				var keep = []
+				if (/^[IVXLCDM]+$/i.test(rom.value.replace(/\s/g, ""))) {
+					for (var i in rom.value.replace(/\s/g, "").split("")) {
+						
+						switch (i.match(/^[ivxlcdm]$/i)[0]) {
+							case "i": keep.push(1);
+							case "v": keep.push(5);
+							case "x": keep.push(10);
+							case "l": keep.push(50);
+							case "c": keep.push(100);
+							case "d": keep.push(500);
+							case "m": keep.push(1000);
+							//case null: console.log(i);
+						}
+					}
+					console.log(keep)
+					document.getElementById("romOut").innerHTML = keep.join("")
+				}
+			}
+		})
+	</script>
+</html>

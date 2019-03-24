@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>lupin.js test</title>
+	<script src="./lupinbeta.js"></script>
+	<link rel="icon" href="../favicon/beta/favicon_beta.ico">
+	<link rel="icon" href="../favicon/beta/favicon_beta_32.png">
+	<link rel="icon" href="../favicon/beta/favicon_beta_48.png">
+	<link rel="icon" href="../favicon/beta/favicon_beta_96.png">
+	<link rel="icon" href="../favicon/beta/favicon_beta_144.png">
+	<link rel="icon" href="../favicon/beta/favicon_beta_vector.svg">
+</head>
+<body>
+	<div id="version">Lupin </div><br>
+	<div id="browser"></div><br>
+	<div id="engine"></div><br>
+	<div id="userAgent"></div>
+	<script>
+		$.dom.id("version").innerHTML += $.v
+		$.dom.id("browser").innerHTML = $.browser.which
+		$.dom.id("engine").innerHTML = $.browser.engine
+		$.dom.id("userAgent").innerHTML = window.navigator.userAgent
+	</script>
+</body>
+</html>

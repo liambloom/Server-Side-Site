@@ -1,0 +1,67 @@
+<!doctype html>
+		<html>
+			<head>
+				<meta charset="utf-8">
+				<link rel="icon" href="/favicon/main/favicon.ico">
+				<link rel="icon" href="/favicon/main/favicon_32.png">
+				<link rel="icon" href="/favicon/main/favicon_48.png">
+				<link rel="icon" href="/favicon/main/favicon_96.png">
+				<link rel="icon" href="/favicon/main/favicon_144.png">
+				<link rel="icon" href="/favicon/main/favicon_vector.svg">
+				<style type="text/css">
+					body { background-color: #9400bb; }
+					body {text-align: center}
+					body {font-family: Papyrus, fantasy;}
+					h1 {font-size: 50;
+					    font-weight: bold;}
+					h3 {font-size: 25;
+					    font-weight: bold;}
+					p {font-size: 15;
+					   font-weight: bold;}
+				</style>	
+				<title>Magic 8 Ball</title>
+					<script>
+function decisionMaker() {
+var Magic8Ball = [
+"It is certain",
+"It is decidedly so",
+"Without a doubt",
+"Yes, definitely",
+"You may rely on it",
+"As I see it, yes",
+"Most likely",
+"Outlook good",
+"Yes",
+"Signs point to yes",
+"Reply hazy, try again",
+"Ask again later",
+"Better not tell you now",
+"Cannot predict now",
+"Concentrate and ask again",
+"Don't count on it",
+"My reply is no",
+"My sources say no",
+"Outlook not so good",
+"Very doubtful"]
+document.getElementsByName("Answer")[0].innerHTML="<b>" + (Magic8Ball [Math.floor(Math.random() * 20)])  +"</b>";
+document.getElementsByName("question")[0].value = '';
+}
+					</script>
+			</head>
+			<body>
+				<h1>Magic <img src="/img/Eight_ball.png" style="width:40px;height:40px;"> Ball</h1>
+				<br>
+				<h3>
+					Enter a yes or no question, and your answer will magically appear.
+				</h3>
+				<br>
+				<p>
+				Question:<br><input type = 'text' name="question" ></input>
+				<br>
+				<input type = 'submit' onClick="decisionMaker()"></input>
+				<br>
+				<br>
+				Answer: <div name = "Answer"></div>
+				</p>
+			</body>
+		</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<body>
+<header id="topMenu">
+	<link rel="icon" href="/favicon/main/favicon.ico">
+	<link rel="icon" href="/favicon/main/favicon_32.png">
+	<link rel="icon" href="/favicon/main/favicon_48.png">
+	<link rel="icon" href="/favicon/main/favicon_96.png">
+	<link rel="icon" href="/favicon/main/favicon_144.png">
+	<link rel="icon" href="/favicon/main/favicon_vector.svg">
+	<script src="/js/findDay.js"></script>
+	<script src="/js/findYear.js"></script>
+	<script src="/js/findLast.js"></script>
+	<script src="/js/links.js"></script>
+	<script src="/js/destroy.js"></script>
+	<style>
+		header {
+			margin-bottom: 10px;
+			padding: 0px;
+			position: fixed;
+			left: 0px;
+			right: 0px;
+			top: 0px;
+		}
+
+		header ul {
+			list-style-type: none;
+			margin: 0;
+			padding: 0;
+			overflow: hidden;
+			background-color: rgba(51, 51, 51, 0.5);
+		}
+
+		/*header ul.main{
+			top: 0px;
+		}*/
+
+		header li.v {
+			float: left;
+		}
+
+		header li a {
+			display: block;
+			color: white;
+			padding: 14px 16px;
+			text-decoration: none;
+		}
+
+		header li a.main {
+			text-align: center;
+		}
+
+		header li a:hover {
+			background-color: rgba(17, 17, 17, 0.5);
+		}
+
+		header ul.dropdown {
+			display: none;
+		}
+
+		header li a:hover + ul.dropdown {
+			display: initial;
+		}
+
+		header ul.dropdown:hover {
+			display: initial;
+		}
+
+		header span.super{
+			vertical-align: super;
+			font-style: italic;
+			color: #e79622;
+		}
+	</style>
+	<ul class="main">
+		<li class="v">
+			<a href="/index.html">Home<span class="super"></span></a>
+			<ul class="dropdown">
+				<li><a href="/MagicEight.html">Magic Eight Ball</a></li>
+				<li><a href="/RandomColor.html">Random Color</a></li>
+				<li><a href="/GradientColor.html">Gradient Color</a></li>
+			</ul>
+		</li>
+		<li class="v">
+			<a href="/Countdown/index.html">Countdown<span class="super"></span></a>
+			<ul class="dropdown">
+				<li><a onclick="window.location.assign(linksMaker(0, '/Countdown/index.html'))">New Years Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(1, '/Countdown/index.html'))">Martin Luther King Jr. Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(2, '/Countdown/index.html'))">George Washington's Birthday</a></li>
+				<li><a onclick="window.location.assign(linksMaker(3, '/Countdown/index.html'))">Memorial Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(4, '/Countdown/index.html'))">Independence Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(5, '/Countdown/index.html'))">Labor Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(6, '/Countdown/index.html'))">Columbus Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(7, '/Countdown/index.html'))">Veterans Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(8, '/Countdown/index.html'))">Thanksgiving Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(9, '/Countdown/index.html'))">Christmas Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(10, '/Countdown/index.html'))">Test</a></li>
+			</ul>
+		</li>
+		<li class="v">
+			<a href="/Countdown/beta.html">Countdown<span class="super">beta</span></a>
+			<ul class="dropdown">
+				<li><a onclick="window.location.assign(linksMaker(0, '/Countdown/beta.html'))">New Years Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(1, '/Countdown/beta.html'))">Martin Luther King Jr. Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(2, '/Countdown/beta.html'))">George Washington's Birthday</a></li>
+				<li><a onclick="window.location.assign(linksMaker(3, '/Countdown/beta.html'))">Memorial Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(4, '/Countdown/beta.html'))">Independence Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(5, '/Countdown/beta.html'))">Labor Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(6, '/Countdown/beta.html'))">Columbus Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(7, '/Countdown/beta.html'))">Veterans Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(8, '/Countdown/beta.html'))">Thanksgiving Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(9, '/Countdown/beta.html'))">Christmas Day</a></li>
+				<li><a onclick="window.location.assign(linksMaker(10, '/Countdown/beta.html'))">Test</a></li>
+			</ul>
+		</li>
+		<li class="v">
+			<a href="/school/index.html">School<span class="super"></span></a>
+			<ul class="dropdown">
+				<li><a href="/school/SocialStudiesProject.html">Ancient Egyptian Social Class Project</a></li>
+				<li><a href="/school/ScienceVocab.html">Science Vocab</a></li>
+				<li><a href="/school/ELAgreekMythologyScript.html">Greek Mythology Play Script</a></li>
+				<li><a href="/school/ScratchPrometheus.html">Promethius Cartoon<span class="super">beta</span></a></li> 
+			</ul>
+		</li>
+		<li class="v" style="float: right">
+			<a onclick="destroy('topMenu')">Hide Menu<span class="super"></span></a>
+		</li>
+	</ul>
+</header>
+</body>
+</html>

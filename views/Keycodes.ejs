@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Keycodes</title>
+	<link rel="icon" href="/favicon/main/favicon.ico">
+	<link rel="icon" href="/favicon/main/favicon_32.png">
+	<link rel="icon" href="/favicon/main/favicon_48.png">
+	<link rel="icon" href="/favicon/main/favicon_96.png">
+	<link rel="icon" href="/favicon/main/favicon_144.png">
+	<link rel="icon" href="/favicon/main/favicon_vector.svg">
+	<script src="/js/Lupin/Lupin.js"></script>
+	<!--<link rel="stylesheet" href="./lib/Lupin/css/index.css"> Does not fit with formating of this page. I will fix this-->
+	<style type="text/css">
+		body {
+			/*margin: 100px;*/
+			margin: 13.355%;
+			color: #222222;
+			background-color: #eeeeee;
+		}
+		table, tr, td.hidden {
+			padding: 0px;
+			margin: 0px;
+			border-color: transparent;
+
+		}
+		td {
+			border: 1px solid #222222;
+			border-radius: 10px;
+			margin: 20px;
+			padding: 5px;
+		}
+		h1 {
+			font-size: 120px;
+			text-align: center;
+			align-self: center;
+			align-items: center;
+		}
+		h2 {
+			font-size: 70px;
+			margin: 0px;
+		}
+		p, #version {
+			font-size: 15px;
+			margin: 0px;
+		}
+		a{
+			color: #111111;
+		}
+		img {
+			height: 100px;
+			width: 100px;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<table><tr>
+			<td class="hidden">
+				<img src="/favicon/main/favicon_vector.svg">
+			</td>
+			<td class="hidden">
+				<h2>Lupin.js<span id="version"></span></h2>
+				<p>This project was created for the sole porpose of showing off lupin.js. See lupin <a href="/js/lupin/lupin.js">here</a></p>
+			</td>
+		</tr></table>
+	</header>
+	<br><br><br><br>
+	<h1 id="msg">Press any key</h1>
+	<div id="code" style="text-align: center;"></div>
+	<script>
+		lupin.dom.id("version").innerHTML = lupin.version
+		document.addEventListener("keyup", function(event) {
+			lupin.dom.id("code").innerHTML = "<table align='center'><tr><td><h2>" + event.keyCode + "</h2></td><td><h2>" + lupin.key.code(lupin.key.list[event.keyCode]) +"</h2></td><td><h2>" + event.key + "</h2></td><td><h2>" + lupin.key.list[event.keyCode].toString().split("/")[1] + "</h2></td><td><h2>" + event.code + "</h2></td></tr><tr><td><p>event.keyCode</p></td><td><p>keycode</p></td><td><p>event.key</p></td><td><p>key</p></td><td><p>event.code</p></td></tr></table>"
+			lupin.dom.destroy("msg")//Breaks code after first time, must go at end
+		})
+	</script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{
+	"red": {
+		"headTextColor": "#ff2244",
+		"gradientLight": "#bb0000",
+		"gradientDark": "#3c0000",
+		"bodyBgColor": "#ffdde5"
+	},
+	"orange": {
+		"headTextColor": "#ce6000",
+		"gradientLight": "#aa7700",
+		"gradientDark": "#2b2400",
+		"bodyBgColor": "#ffeedd"
+	},
+	"yellow": {
+		"headTextColor": "#cece00",
+		"gradientLight": "#aaaa00",
+		"gradientDark": "#2b2b00",
+		"bodyBgColor": "#ffffdd"
+	},
+	"lime": {
+		"headTextColor": "#60ce00",
+		"gradientLight": "#77aa00",
+		"gradientDark": "#242b00",
+		"bodyBgColor": "#eeffdd"
+	},
+	"green": {
+		"headTextColor": "#44ff22",
+		"gradientLight": "#00bb00",
+		"gradientDark": "#003c00",
+		"bodyBgColor": "#e5ffdd"
+	},
+	"aqua": {
+		"headTextColor": "#00ce60",
+		"gradientLight": "#00aa77",
+		"gradientDark": "#002b24",
+		"bodyBgColor": "#ddffee"
+	},
+	"cyan": {
+		"headTextColor": "#00cece",
+		"gradientLight": "#00aaaa",
+		"gradientDark": "#002b2b",
+		"bodyBgColor": "#ddffff"
+	},
+	"teal": {
+		"headTextColor": "#0060ce",
+		"gradientLight": "#0077aa",
+		"gradientDark": "#00242b",
+		"bodyBgColor": "#ddeeff"
+	},
+	"blue": {
+		"headTextColor": "#2244ff",
+		"gradientLight": "#0000bb",
+		"gradientDark": "#00003c",
+		"bodyBgColor": "#dde5ff"
+	},
+	"purple": {
+		"headTextColor": "#b000ce",
+		"gradientLight": "#7700aa",
+		"gradientDark": "#24002b",
+		"bodyBgColor": "#eeddff"
+	},
+	"magenta": {
+		"headTextColor": "#ce00ce",
+		"gradientLight": "#aa00aa",
+		"gradientDark": "#2b002b",
+		"bodyBgColor": "ffddff"
+			},
+	"pink": {
+		"headTextColor": "#ce00b0",
+		"gradientLight": "#aa0077",
+		"gradientDark": "#2b0024",
+		"bodyBgColor": "#ffddee"
+	}
+}

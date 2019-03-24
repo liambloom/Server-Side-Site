@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Home Page</title>
+	<meta charset="utf-8">
+	<script src="./js/ColorChange.js"></script>
+	<style type="text/css">
+		body {
+			text-align: center;
+		}
+		a{
+			color: #111111;
+		}
+		a:visited{
+			color: #444444;
+		}
+	</style>
+</head>
+<body>
+	<h1>Liam's Files:</h1>
+	<p>
+		<a href='./MagicEight.html'>Magic Eight Ball</a>
+		<br><br>
+		<a href='./Countdown/'>Countdowns</a>
+		<br><br>
+		<a href='./RandomColor.html'>Random Color</a>
+		<br><br>
+		<a href='./GradientColor.html'>Gradiently Changing Color</a>
+		<br><br>
+		<a href='./school/index.html'>School Stuff</a>
+	</p>
+	<script>
+		//variables
+		var red = 255
+		var green = 0
+		var blue = 0
+		var hexred = "ff"
+		var hexgreen = 0
+		var hexblue = 0
+		var hr = "ff"
+		var hg = 0
+		var hb = 0
+		var hexdec = 0
+		var changing = ["g", "increase"]
+		setInterval(function(){
+			document.body.style.backgroundColor = change()
+		}, 20)
+	</script>
+</body>
+</html>

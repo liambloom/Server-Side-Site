@@ -1,0 +1,122 @@
+:root {
+	/*font-size: 16px;*/
+	--size: -111.2px;
+	--angle: 130deg;
+	--light: #0077aa;
+	--dark: #00242b;
+	--headTxt: #0060ce;
+}
+body {
+	margin: 0px;
+	font-family: "Times New Roman", Times, serif;
+	line-height: 1.15em;
+	font-size: 16px;
+	color: var(--dark);
+	/*font-size: 16px;*/
+}
+#fixed {
+	display: grid;
+	position: sticky;
+	grid-template-rows: max-content max-content;
+	grid-template-columns: 100%;
+	grid-template-areas: 
+		"header"
+		"main";
+	top: var(--size);
+}
+header {
+	display: grid;
+	grid-template-rows: max-content max-content;
+	grid-template-columns: 117px calc(100% - 117px);
+	grid-template-areas:
+		"logo title"
+		"nav nav";
+	grid-area: header;
+	color: var(--headTxt);
+	background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
+}
+#logo {
+	grid-area: logo;
+	background-image: url(/favicon/beta/favicon_beta_vector.svg);
+	background-size: 85px;
+	background-repeat: no-repeat;
+	background-position: 16px 16px;
+}
+h1 {
+	grid-area: title;
+	font-size: 90px;
+	padding-left: 2px;
+	margin: 0px;
+	margin-bottom: 5px;
+	line-height: 113.2px;
+}
+/*#headBG {
+	background-color: #21242b;
+	grid-row: 1;
+	grid-column: 1;
+	background-image: linear-gradient(var(--angle), #21242b, 70%, #7700aa)
+}*/
+nav#navigationBar {
+	/*margin-bottom: 10px;*/
+	grid-area: nav;
+	width: 100%;
+	padding: 0px;
+	/*position: sticky;
+	position: -webkit-sticky;
+	left: 0px;
+	right: 0px;
+	top: 0px;*/
+}
+nav#navigationBar ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+	/*padding-left: 2px; This makes the menu also apear to the left, which is ugly*/
+}
+nav#navigationBar ul li {
+		float: left
+}
+nav#navigationBar ul li.right {
+		float: right
+}
+nav#navigationBar ul li a {
+	display: block;
+	color: var(--color);
+	padding: 14px 16px;
+	text-decoration: none;
+}
+nav#navigationBar ul li a.main {
+	text-align: center;
+}
+nav#navigationBar ul li a:hover {
+	background-color: #0000007f;
+}
+nav#navigationBar ul li ul {
+	background-color: var(--dark);
+	display: none;
+	position: absolute;
+}
+nav#navigationBar ul li ul li {
+	float: none
+}
+nav#navigationBar ul li a:hover + ul {
+	display: initial;
+}
+nav#navigationBar ul li ul:hover {
+	display: initial;
+}
+nav#navigationBar ul li details {
+	position: absolute;
+	display: block;
+	padding: 14px 16px;
+}
+nav#navigationBar ul li details[open] {
+	background-color: var(--dark);
+}
+.topFixed {
+	grid-area: main;
+}
+/*@supports (some atribute) {
+	css only applied if that atriute is supported 
+}*/

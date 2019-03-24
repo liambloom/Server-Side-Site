@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>New Year Countdown</title>
+	<link rel="icon" href="/favicon/main/favicon.ico">
+	<link rel="icon" href="/favicon/main/favicon_32.png">
+	<link rel="icon" href="/favicon/main/favicon_48.png">
+	<link rel="icon" href="/favicon/main/favicon_96.png">
+	<link rel="icon" href="/favicon/main/favicon_144.png">
+	<link rel="icon" href="/favicon/main/favicon_vector.svg">
+	<style type="text/css">
+		body {text-align: center}
+		body {font-family: font-family: TimesNewRoman, "Times New Roman", Times, Baskerville, Georgia, serif;}
+		body {color: #B6E565;}
+		p {font-size: 110px;}
+		p {margin: 1in 1in 1in 1in;}
+	</style>
+</head>
+<body>
+	<p id="Title"></p>
+	<script>
+		//I got some of this code form htps://w3schools.com/
+		var today = new Date();
+		var year = today.getFullYear();
+		var nextYear = year + 1;
+		var countDownDate = new Date("Jan 1, " + nextYear + " 00:00:00").getTime();
+		var x = setInterval(function() {
+		var now = new Date().getTime();
+		var distance = countDownDate - now;
+		var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+		var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+		var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+		var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+		if (days == 1) {
+			var daysLabel = " day, "
+		}else{
+			var daysLabel = " days, "
+		}
+		if (hours == 1) {
+			var hoursLabel = " hour, "
+		}else{
+			var hoursLabel = " hours, "
+		}
+		if (minutes == 1) {
+			var minutesLabel = " minute"
+		}else{
+			var minutesLabel = " minutes"
+		}
+		if (seconds == 1) {
+			var secondsLabel = " second "
+		}else{
+			var secondsLabel = " seconds "
+		}
+
+		if (days > 364 || seconds <= 0) {
+			document.getElementById("Title").innerHTML = "Happy New Year"; //I got this gif from https://giphy.com/gifs/fireworks-IjmMzurYulKEw/download
+			document.body.style.backgroundImage ="url('img/fireworks.gif')";
+		}else if (days > 0){
+			document.getElementById("Title").innerHTML = "There's " + days + daysLabel + hours + hoursLabel + minutes + minutesLabel + ", and " + seconds + secondsLabel + "left until " + nextYear;
+			document.body.style.backgroundImage ="url('img/GreenGearsBackground.jpeg')";
+		}else if (hours > 0){
+			document.getElementById("Title").innerHTML = "There's " + hours + hoursLabel + minutes + minutesLabel + ", and " + seconds + secondsLabel + "left until " + nextYear;
+			document.body.style.backgroundImage ="url('img/GreenGearsBackground.jpeg')";
+		}else if (minutes > 0){
+			document.getElementById("Title").innerHTML = "There's " + minutes + minutesLabel + " and " + seconds + secondsLabel + "left until " + nextYear;
+			document.body.style.backgroundImage ="url('img/GreenGearsBackground.jpeg')";
+		}else if (seconds > 0){
+			document.getElementById("Title").innerHTML = "There's " + seconds + secondsLabel + "left until " + nextYear;
+			document.body.style.backgroundImage ="url('img/GreenGearsBackground.jpeg')";
+		}else{
+			document.getElementById("Title").innerHTML = "Happy New Year"; //I got this gif from https://giphy.com/gifs/fireworks-IjmMzurYulKEw/download
+			document.body.style.backgroundImage ="url('img/fireworks.gif')";
+		}
+		}, 1000);
+	</script>	
+</body>
+</html>
