@@ -52,7 +52,7 @@ const serve = (req, res, page, loop = 0, status = 200) => {
 						else {
 							res.writeHead(500, { "Content-Type": "text/html" });
 							res.write(`The page ${path(req).href} could not be found`);
-							res.end()
+							res.end();
 						}
 					});
 					//Do I need this?
