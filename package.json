@@ -1,8 +1,8 @@
 {
   "name": "liambloom.github.io",
   "version": "1.0.0",
-  "description": "This is my github.io site served up by a very simple Node.js server",
-  "main": "index.html",
+  "description": "Now my site does things that it can't do without the server",
+  "main": "index.ejs",
   "directories": {
     "lib": "lib"
   },
