@@ -23,38 +23,21 @@
 <p id="pageText">
 > Welcome<br>
 > I am a 404 page<br>
-> You tried to go to <span id="urlhrefspan"></span><br>
+> You tried to go to <%=target %><br>
 > That page doesn't exist, so you shouldn't try to go to it<br>
 > Instead, you should try going to some pages that do exist<br>
 > They are much more interesting<br>
 > You can find links to all those in the <a href="/">home page</a><br>
 </p>
-<input type="text" id="textbox" value="" autofocus>
+<input type="text" id="textbox" value="" autofocus >
 	<script>
-
-		//information about everything
-		var stateinfo = {
-			textboxDefault: "",
-			bullet: "> ",
-			state: null,
-			cheatsEnabled: false,
-			set stateChange(stateset) {
-				this.state = stateset
-				if (stateset !== null) {
-					this.textboxDefault = "#" + stateset +":"
-				}
-			}
-		}
-
-		//Puts url in text
-		document.getElementById("urlhrefspan").innerHTML = window.location.href
-
 		//runs inputHanlder() when enter key pressed
-		document.getElementById("textbox").addEventListener("keyup",  function(event){
+		document.getElementById("textbox").addEventListener("keyup",  (event) => {
 			if (event.keyCode === 13) {
-				inputHandler()
+				document.getElementById("pageText").innerHTML += `> ${document.getElementById("textbox").value}<br>`;
+				document.getElementById("textbox").value = "";
 			}
-		})
+		});
 	</script>
 </body>
 <html>
