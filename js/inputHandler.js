@@ -1,4 +1,4 @@
-function inputHandler() {
+/*function inputHandler() {
 	function addToPageText(whatToAdd, bullet) {
 		if (bullet == undefined) {bullet = ">"}
 		document.getElementById("pageText").innerHTML += bullet + " " + whatToAdd + "<br>";
@@ -23,6 +23,7 @@ function inputHandler() {
 	}*/
 
 	//this code stays at the end
+	/*
 	document.getElementById("textbox").value = stateinfo.textboxDefault
 	addToPageText(input)
 	if (output != undefined){
@@ -30,4 +31,4 @@ function inputHandler() {
 			output += "</span>"
 		addToPageText(output, "<")
 	}
-}
+}*/
