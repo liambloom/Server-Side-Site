@@ -24,6 +24,39 @@ body {
 		"main";
 	top: var(--size);
 }
+#content {
+	margin: 50px;	
+}
+#settings {
+	position: fixed;
+	top: 8px;
+	right: 18px;
+	height: calc(1.15em + 12px);
+	width: calc(1.15em + 12px);
+	z-index: 2;
+}
+#settings.spin {	
+	animation: spin 400ms linear 1;
+}
+/*#menuContainer {
+	position: fixed;
+	width: fit-content;
+	height: fit-content;
+}*/
+#menu {
+	position: fixed;
+	z-index: 1;
+	top: calc(1.15em + 25px);
+	right: 10px;
+	width: 300px;
+	height: 90vh;
+}
+#menu.grow {
+	animation: grow 400ms linear 1;
+}
+#menu.shrink {
+	animation: shrink 400ms linear 1;
+}
 header {
 	display: grid;
 	grid-template-rows: max-content max-content;
@@ -42,7 +75,7 @@ header {
 	background-repeat: no-repeat;
 	background-position: 16px 16px;
 }
-h1 {
+header h1 {
 	grid-area: title;
 	font-size: 90px;
 	padding-left: 2px;
@@ -117,6 +150,28 @@ nav#navigationBar ul li details[open] {
 .topFixed {
 	grid-area: main;
 }
-/*@supports (some atribute) {
-	css only applied if that atriute is supported 
-}*/
+/*from https://codepen.io/teerapuch/pen/vLJXeR*/
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(240deg);
+    }
+}
+@keyframes grow {
+	from {
+		height: 0px;
+	}
+	to {
+		height: 90vh;
+	}
+}
+@keyframes shrink {
+	from {
+		height: 90vh;
+	}
+	to {
+		height: 0px;
+	}
+}

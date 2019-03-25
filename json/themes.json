@@ -6,33 +6,33 @@
 		"bodyBgColor": "#ffdde5"
 	},
 	"orange": {
-		"headTextColor": "#ce6000",
-		"gradientLight": "#aa7700",
-		"gradientDark": "#2b2400",
+		"headTextColor": "#bf5b00",
+		"gradientLight": "#a96500",
+		"gradientDark": "#3c1000",
 		"bodyBgColor": "#ffeedd"
 	},
 	"yellow": {
-		"headTextColor": "#cece00",
+		"headTextColor": "#b0b000",
 		"gradientLight": "#aaaa00",
 		"gradientDark": "#2b2b00",
 		"bodyBgColor": "#ffffdd"
 	},
 	"lime": {
-		"headTextColor": "#60ce00",
-		"gradientLight": "#77aa00",
-		"gradientDark": "#242b00",
+		"headTextColor": "#53ae00",
+		"gradientLight": "#609f00",
+		"gradientDark": "#122b00",
 		"bodyBgColor": "#eeffdd"
 	},
 	"green": {
-		"headTextColor": "#44ff22",
+		"headTextColor": "#1ec600",
 		"gradientLight": "#00bb00",
 		"gradientDark": "#003c00",
 		"bodyBgColor": "#e5ffdd"
 	},
 	"aqua": {
-		"headTextColor": "#00ce60",
-		"gradientLight": "#00aa77",
-		"gradientDark": "#002b24",
+		"headTextColor": "#00b769",
+		"gradientLight": "#00a959",
+		"gradientDark": "#002b12",
 		"bodyBgColor": "#ddffee"
 	},
 	"cyan": {
@@ -42,7 +42,7 @@
 		"bodyBgColor": "#ddffff"
 	},
 	"teal": {
-		"headTextColor": "#0060ce",
+		"headTextColor": "#0093d9",
 		"gradientLight": "#0077aa",
 		"gradientDark": "#00242b",
 		"bodyBgColor": "#ddeeff"

@@ -48,7 +48,14 @@ window.onload = () => {
 			throw "Unable to retrieve themes.json";
 		}
 	};
-	
+	document.getElementById("settings").onclick = () => {
+		document.getElementById("settings").className = "spin";
+		document.getElementById("menu").className = "grow";
+		setTimeout(() => {
+			document.getElementById("settings").className = "";
+			document.getElementById("menu").className = "shrink";
+		}, 400);
+	};
 };
 window.themeChange = theme => {
 	theme = theme.toLowerCase();
