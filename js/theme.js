@@ -48,13 +48,38 @@ window.onload = () => {
 			throw "Unable to retrieve themes.json";
 		}
 	};
+	path = `
+		M20,10 
+		h250 
+		l7,-10 
+		l7,10 
+		h5 
+		a10,10 0 0 1 10,10 
+		v${Math.floor(window.innerHeight * 0.9) - 31} 
+		a10,10 0 0 1 -10,10 
+		h-278 
+		a10,10 0 0 1 -10,-10 
+		v-${Math.floor(window.innerHeight * 0.9) - 31} 
+		a10,10 0 0 1 10,-10 
+		z`;
+	document.getElementById("menuBox").setAttribute("d", path);
+	root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
 	document.getElementById("settings").onclick = () => {
-		document.getElementById("settings").className = "spin";
-		document.getElementById("menu").className = "grow";
-		setTimeout(() => {
-			document.getElementById("settings").className = "";
-			document.getElementById("menu").className = "shrink";
-		}, 400);
+		if (document.getElementById("settings").className === "") {
+			document.getElementById("settings").className = "spin";
+			document.getElementById("menu").className.baseVal = "grow";
+			document.getElementById("menuBox").setAttribute("style", "display: initial;")
+			document.getElementById("menuBox").setAttribute("class", "grow");
+			//console.log(document.getElementById("menuBox").className.baseVal);
+		}
+		else {
+			document.getElementById("menu").className.baseVal = "shrink";
+			document.getElementById("menuBox").setAttribute("class", "shrink");
+			setTimeout(() => {
+				document.getElementById("menuBox").setAttribute("style", "display: none;");
+				document.getElementById("settings").className = "";
+			}, 100);
+		}
 	};
 };
 window.themeChange = theme => {
@@ -64,6 +89,7 @@ window.themeChange = theme => {
 		root.style.setProperty("--dark", themes[theme].gradientDark);
 		root.style.setProperty("--headTxt", themes[theme].headTextColor);
 		document.body.style.backgroundColor = themes[theme].bodyBgColor;
+		document.getElementById("menuBox").setAttribute("fill", themes[theme].bodyBgColor);
 	}
 	else {
 		throw theme + "is not an avalable theme";
