@@ -68,13 +68,15 @@ window.onload = () => {
 		if (document.getElementById("settings").className === "") {
 			document.getElementById("settings").className = "spin";
 			document.getElementById("menu").className.baseVal = "grow";
-			document.getElementById("menuBox").setAttribute("style", "display: initial;")
+			document.getElementById("menuBox").setAttribute("style", "display: initial;");
 			document.getElementById("menuBox").setAttribute("class", "grow");
+			document.getElementById("choose").className = "grow";
 			//console.log(document.getElementById("menuBox").className.baseVal);
 		}
 		else {
 			document.getElementById("menu").className.baseVal = "shrink";
 			document.getElementById("menuBox").setAttribute("class", "shrink");
+			document.getElementById("choose").className = "shrink";
 			setTimeout(() => {
 				document.getElementById("menuBox").setAttribute("style", "display: none;");
 				document.getElementById("settings").className = "";

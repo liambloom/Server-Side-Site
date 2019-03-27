@@ -1,5 +1,4 @@
 :root {
-	/*font-size: 16px;*/
 	--size: -111.2px;
 	--angle: 130deg;
 	--light: #0077aa;
@@ -14,7 +13,6 @@ body {
 	line-height: 1.15em;
 	font-size: 16px;
 	color: var(--dark);
-	/*font-size: 16px;*/
 }
 #fixed {
 	display: grid;
@@ -40,32 +38,32 @@ body {
 #settings.spin {	
 	animation: spin 600ms linear infinite;
 }
-/*#menuContainer {
-	position: fixed;
-	width: fit-content;
-	height: fit-content;
-}*/
 #menu {
 	position: fixed;
 	z-index: 1;
 	top: calc(1.15em + 25px);
 	right: 10px;
 	width: 300px;
-	/*height: 90vh;*/
 }
-/*svg {
-	display: none;
+#choose {
+	z-index: 3;
+	height: 0px;/*calc(90vh - 31px);*/
+	width: 288px;
+	position: fixed;
+	top: calc(1.15em + 45px);
+	right: 12px;
+	border-radius: 10px;
+	/*background-color: black; This was only for testing*/
+	overflow: scroll;
+	overflow-x: hidden;
 }
-svg.grow {
-	animation: reveal 1000ms linear 1;
-	display: initial;
+#choose.grow {
+	animation: biggen 100ms linear 1;
+	height: calc(90vh - 31px);
 }
-path.grow {
-	animation: svgGrow 1000ms linear 1;
-}*/
-/*.shrink {
-	animation: shrink 400ms linear 1;
-}*/
+#choose.shrink {
+	animation: smallen 100ms linear 1;
+}
 header {
 	display: grid;
 	grid-template-rows: max-content max-content;
@@ -92,29 +90,16 @@ header h1 {
 	margin-bottom: 5px;
 	line-height: 113.2px;
 }
-/*#headBG {
-	background-color: #21242b;
-	grid-row: 1;
-	grid-column: 1;
-	background-image: linear-gradient(var(--angle), #21242b, 70%, #7700aa)
-}*/
 nav#navigationBar {
-	/*margin-bottom: 10px;*/
 	grid-area: nav;
 	width: 100%;
 	padding: 0px;
-	/*position: sticky;
-	position: -webkit-sticky;
-	left: 0px;
-	right: 0px;
-	top: 0px;*/
 }
 nav#navigationBar ul {
 	list-style-type: none;
 	margin: 0px;
 	padding: 0px;
 	overflow: hidden;
-	/*padding-left: 2px; This makes the menu also apear to the left, which is ugly*/
 }
 nav#navigationBar ul li {
 		float: left
@@ -159,7 +144,6 @@ nav#navigationBar ul li details[open] {
 .topFixed {
 	grid-area: main;
 }
-/*spin animation from https://codepen.io/teerapuch/pen/vLJXeR*/
 @keyframes spin {
     from {
         transform: rotate(0deg);
@@ -203,6 +187,22 @@ nav#navigationBar ul li details[open] {
 		/*display: none;*/
 	}
 }
+@keyframes biggen {
+	from {
+		height: 0px;
+	}
+	to {
+		height: calc(90vh - 31px);
+	}
+}
+@keyframes smallen {
+	from {
+		height: calc(90vh - 31px);
+	}
+	to {
+		height: 0px;
+	}
+}
 @supports not (d: path("M0,0 l5,5")) {
 	@keyframes reveal {
 		from {
@@ -217,7 +217,7 @@ nav#navigationBar ul li details[open] {
 			height: 90vh;
 		}
 		to {
-			heigt: 0px;
+			height: 0px;
 		}
 	}
 	#menu {
