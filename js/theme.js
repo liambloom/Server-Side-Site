@@ -28,11 +28,12 @@ window.onload = () => {
 				colorMenu.appendChild(optionElement);
 			}
 			//menuShell.appendChild(colorMenu);
-			document.getElementById("picker").appendChild(colorMenu);
+			//document.getElementById("picker").appendChild(colorMenu);
+			//This will be hard, but doable
 			rootstyle = getComputedStyle(root);
 			//console.log(rootstyle.getPropertyValue("--light"));
 			window.coustomThemeDefaults = () => {
-				document.getElementById("light").value = rootstyle.getPropertyValue("--light");
+				/*document.getElementById("light").value = rootstyle.getPropertyValue("--light");
 				document.getElementById("dark").value = rootstyle.getPropertyValue("--dark");
 				document.getElementById("text").value = rootstyle.getPropertyValue("--headTxt");
 				let bgcolorArray = document.body.style.backgroundColor.match(/\d+/g);
@@ -40,7 +41,7 @@ window.onload = () => {
 				for (let i = 0; i < 3; i++) {
 					bgcolorString += parseInt(bgcolorArray[i]).toString(16);
 				}
-				document.getElementById("bgcolor").value = bgcolorString;
+				document.getElementById("bgcolor").value = bgcolorString;*/
 			};
 			coustomThemeDefaults();
 		}
@@ -48,6 +49,7 @@ window.onload = () => {
 			throw "Unable to retrieve themes.json";
 		}
 	};
+
 	path = `
 		M20,10 
 		h250 
@@ -74,14 +76,11 @@ window.onload = () => {
 			//console.log(document.getElementById("menuBox").className.baseVal);
 		}
 		else {
-			document.getElementById("menu").className.baseVal = "shrink";
-			document.getElementById("menuBox").setAttribute("class", "shrink");
-			document.getElementById("choose").className = "shrink";
-			setTimeout(() => {
-				document.getElementById("menuBox").setAttribute("style", "display: none;");
-				document.getElementById("settings").className = "";
-			}, 100);
+			closeMenu();
 		}
+	};
+	document.onclick = event => {
+		if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
 	};
 };
 window.themeChange = theme => {
@@ -91,9 +90,20 @@ window.themeChange = theme => {
 		root.style.setProperty("--dark", themes[theme].gradientDark);
 		root.style.setProperty("--headTxt", themes[theme].headTextColor);
 		document.body.style.backgroundColor = themes[theme].bodyBgColor;
-		document.getElementById("menuBox").setAttribute("fill", themes[theme].bodyBgColor);
+		document.getElementById("menuBox").setAttribute("fill", themes[theme].gradientDark);
+		document.getElementById("stop4538").style = `stop-color:${themes[theme].headTextColor};stop-opacity:1`;//Left
+		document.getElementById("stop4540").style = `stop-color:${themes[theme].gradientLight};stop-opacity:1`;//Right
 	}
 	else {
 		throw theme + "is not an avalable theme";
 	}
+};
+var closeMenu = () => {
+	document.getElementById("menu").className.baseVal = "shrink";
+	document.getElementById("menuBox").setAttribute("class", "shrink");
+	document.getElementById("choose").className = "shrink";
+	setTimeout(() => {
+		document.getElementById("menuBox").setAttribute("style", "display: none;");
+		document.getElementById("settings").className = "";
+	}, 100);
 };

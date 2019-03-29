@@ -29,7 +29,7 @@
 		"gradientDark": "#003c00",
 		"bodyBgColor": "#e5ffdd"
 	},
-	"aqua": {
+	"mint": {
 		"headTextColor": "#00b769",
 		"gradientLight": "#00a959",
 		"gradientDark": "#002b12",
@@ -63,7 +63,7 @@
 		"headTextColor": "#ce00ce",
 		"gradientLight": "#aa00aa",
 		"gradientDark": "#2b002b",
-		"bodyBgColor": "ffddff"
+		"bodyBgColor": "#ffddff"
 			},
 	"pink": {
 		"headTextColor": "#ce00b0",
