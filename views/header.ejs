@@ -1,0 +1,78 @@
+<!--Settings Icon shape from https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44 -->
+<img src="/img/Settings-icon.svg" id="settings">
+<svg id="menu">
+	<path id="menuBox" d="
+		M20,10 
+		h250 
+		l7,-10 
+		l7,10 
+		h5 
+		a10,10 0 0 1 10,10 
+		v200 
+		a10,10 0 0 1 -10,10 
+		h-278
+		a10,10 0 0 1 -10,-10
+		v-200
+		a10,10 0 0 1 10,-10
+		z" stroke="black" stroke-width="2px" class="none" />
+</svg>
+<div id="choose">
+	<img src="/img/themes/Red.png" onclick="window.themeChange('red');window.coustomThemeDefaults();">
+	<img src="/img/themes/Orange.png" onclick="window.themeChange('orange');window.coustomThemeDefaults();">
+	<img src="/img/themes/Yellow.png" onclick="window.themeChange('yellow');window.coustomThemeDefaults();">
+	<img src="/img/themes/Lime.png" onclick="window.themeChange('lime');window.coustomThemeDefaults();">
+	<img src="/img/themes/Green.png" onclick="window.themeChange('green');window.coustomThemeDefaults();">
+	<img src="/img/themes/Mint.png" onclick="window.themeChange('mint');window.coustomThemeDefaults();">
+	<img src="/img/themes/Cyan.png" onclick="window.themeChange('cyan');window.coustomThemeDefaults();">
+	<img src="/img/themes/Teal.png" onclick="window.themeChange('teal');window.coustomThemeDefaults();">
+	<img src="/img/themes/Blue.png" onclick="window.themeChange('blue');window.coustomThemeDefaults();">
+	<img src="/img/themes/Purple.png" onclick="window.themeChange('purple');window.coustomThemeDefaults();">
+	<img src="/img/themes/Magenta.png" onclick="window.themeChange('magenta');window.coustomThemeDefaults();">
+	<img src="/img/themes/Pink.png" onclick="window.themeChange('pink');window.coustomThemeDefaults();">
+</div>
+<div id="fixed">
+	<header>
+	<a id="logo" href="/">
+		<%- include("../img/favicon/main/favicon_vector.svg") %>
+	</a>
+	<h1><%= title %></h1>
+	<nav id="navigationBar">
+		<ul class="horizontal main">
+			<li>
+				<a href="/">Home</a>
+				<ul class="vertical">
+					<li><a href="/MagicEight.html">Magic Eight	Ball</a></li>
+					<li><a href="/RandomColor.html">Random	Color</a></li>
+					<li><a href="/GradientColor.html">Gradient	Color</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/Countdown/index.html">Countdown</a>
+				<ul class="vertical">
+					<li><a href="/index.html#NewYearsDay">New Years	Day</a></li>
+					<li><a href="/index.html#MartinLutherKingJrDay">Martin Luther King Jr. Day</a></li>
+					<li><a href="/index.html#GeorgeWashingtonsBirthday">George Washington's Birthday</a></li>
+					<li><a href="/index.html#MemorialDay">Memorial Day</a></li>
+					<li><a href="/index.html#IndependenceDay">Independence Day</a></li>
+					<li><a href="/index.html#LaborDay">Labor Day</a></li>
+					<li><a href="/index.html#ColumbusDay">Columbus Day</a></li>
+					<li><a href="/index.html#VeteransDay">Veterans Day</a></li>
+					<li><a href="/index.html#ThanksgivingDay">Thanksgiving Day</a></li>
+					<li><a href="/index.html#ChristmasDay">Christmas Day</a></li>
+					<li><a href="/index.html#Test">Test</a></li>
+				</ul>
+			</li>
+			<li>
+				<a href="/school/index.html">School</a>
+				<ul class="vertical">
+					<li><a href="/SocialStudiesProject.html">Ancient Egyptian Social Class Project</a></li>
+					<li><a href="/ScienceVocab.html">Science Vocab</a></li>
+					<li><a href="/ELAgreekMythologyScript.html">Greek Mythology Play Script</a></li>
+					<li><a href="https://scratch.mit.edu/projects/221553121/">Prometheus Cartoon</a></li>
+					<li><a href="/SocialStudiesFlashCards.html">Social Studies Flash Cards</a></li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	</header>
+</div>
