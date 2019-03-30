@@ -82,6 +82,11 @@ window.onload = () => {
 	document.onclick = event => {
 		if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
 	};
+	const textInputs = document.querySelectorAll("input[type = 'text'], input[type = 'username'], input[type = 'password'], input[type = 'email']");
+	for (let i of textInputs) {
+		console.log("set");
+		i.addEventListener("focus", () => {i.classList.add("load");});
+	}
 };
 window.themeChange = theme => {
 	theme = theme.toLowerCase();
@@ -89,7 +94,7 @@ window.themeChange = theme => {
 		root.style.setProperty("--light", themes[theme].gradientLight);
 		root.style.setProperty("--dark", themes[theme].gradientDark);
 		root.style.setProperty("--headTxt", themes[theme].headTextColor);
-		document.body.style.backgroundColor = themes[theme].bodyBgColor;
+		root.style.setProperty("--bg", themes[theme].bodyBgColor);
 		document.getElementById("menuBox").setAttribute("fill", themes[theme].gradientDark);
 		document.getElementById("stop4538").style = `stop-color:${themes[theme].headTextColor};stop-opacity:1`;//Left
 		document.getElementById("stop4540").style = `stop-color:${themes[theme].gradientLight};stop-opacity:1`;//Right
@@ -105,5 +110,5 @@ var closeMenu = () => {
 	setTimeout(() => {
 		document.getElementById("menuBox").setAttribute("style", "display: none;");
 		document.getElementById("settings").className = "";
-	}, 100);
+	}, 200);
 };

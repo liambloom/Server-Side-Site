@@ -13,14 +13,12 @@
 		Enter a yes or no question, and your answer will magically appear.
 	</h2>
 	<p>
-		Question:
+		<input type="text" id="question" placeholder="Question">
 		<br>
-		<input type="text" id="question">
-		<br>
-		<input type="button" onclick="if (/[^\s]/.test(document.getElementById('question').value)) decisionMaker()" value="Submit">
+		<input type="button" onclick="decisionMaker()" value="Submit">
 		<br>
 		<br>
-		Answer: <div id = "Answer"></div>
+		<div id="Answer"></div>
 	</p>
 	</div>
 </body>

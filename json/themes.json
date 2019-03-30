@@ -3,72 +3,84 @@
 		"headTextColor": "#ff2244",
 		"gradientLight": "#bb0000",
 		"gradientDark": "#3c0000",
-		"bodyBgColor": "#ffdde5"
+		"offWhite": "#ffdde5",
+		"bodyBgColor": "#1e0000"
 	},
 	"orange": {
 		"headTextColor": "#bf5b00",
 		"gradientLight": "#a96500",
 		"gradientDark": "#3c1000",
-		"bodyBgColor": "#ffeedd"
+		"offWhite": "#ffeedd",
+		"bodyBgColor": "#1e0800"
 	},
 	"yellow": {
 		"headTextColor": "#b0b000",
 		"gradientLight": "#aaaa00",
 		"gradientDark": "#2b2b00",
-		"bodyBgColor": "#ffffdd"
+		"offWhite": "#ffffdd",
+		"bodyBgColor": "#151500"
 	},
 	"lime": {
 		"headTextColor": "#53ae00",
 		"gradientLight": "#609f00",
 		"gradientDark": "#122b00",
-		"bodyBgColor": "#eeffdd"
+		"offWhite": "#eeffdd",
+		"bodyBgColor": "#091500"
 	},
 	"green": {
 		"headTextColor": "#1ec600",
 		"gradientLight": "#00bb00",
 		"gradientDark": "#003c00",
-		"bodyBgColor": "#e5ffdd"
+		"offWhite": "#e5ffdd",
+		"bodyBgColor": "#001e00"
 	},
 	"mint": {
 		"headTextColor": "#00b769",
 		"gradientLight": "#00a959",
 		"gradientDark": "#002b12",
-		"bodyBgColor": "#ddffee"
+		"offWhite": "#ddffee",
+		"bodyBgColor": "#001509"
 	},
 	"cyan": {
 		"headTextColor": "#00cece",
 		"gradientLight": "#00aaaa",
 		"gradientDark": "#002b2b",
-		"bodyBgColor": "#ddffff"
+		"offWhite": "#ddffff",
+		"bodyBgColor": "#001515"
 	},
 	"teal": {
 		"headTextColor": "#0093d9",
 		"gradientLight": "#0077aa",
 		"gradientDark": "#00242b",
-		"bodyBgColor": "#ddeeff"
+		"offWhite": "#ddeeff",
+		"bodyBgColor": "#001215"
 	},
 	"blue": {
 		"headTextColor": "#2244ff",
 		"gradientLight": "#0000bb",
 		"gradientDark": "#00003c",
-		"bodyBgColor": "#dde5ff"
+		"offWhite": "#dde5ff",
+		"bodyBgColor": "#00001e"
 	},
 	"purple": {
 		"headTextColor": "#b000ce",
 		"gradientLight": "#7700aa",
 		"gradientDark": "#24002b",
-		"bodyBgColor": "#eeddff"
+		"offWhite": "#eeddff",
+		"bodyBgColor": "#120015"
 	},
 	"magenta": {
 		"headTextColor": "#ce00ce",
 		"gradientLight": "#aa00aa",
 		"gradientDark": "#2b002b",
-		"bodyBgColor": "#ffddff"
+		"offWhite": "#ffddff",
+		"bodyBgColor": "#150015"
 			},
 	"pink": {
 		"headTextColor": "#ce00b0",
 		"gradientLight": "#aa0077",
 		"gradientDark": "#2b0024",
-		"bodyBgColor": "#ffddee"
+		"offWhite": "#ffddee",
+		"bodyBgColor": "#150012"
 	}
 }

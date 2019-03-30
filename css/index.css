@@ -4,6 +4,7 @@
 	--light: #0077aa;
 	--dark: #00242b;
 	--headTxt: #0060ce;
+	--bg: #001215;
 	--path: path("");
 	--hidePath: path("M20,10 h250 l7,-10 l7,10 h5 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
 }
@@ -12,7 +13,8 @@ body {
 	font-family: "Times New Roman", Times, serif;
 	line-height: 1.15em;
 	font-size: 16px;
-	color: var(--dark);
+	color: var(--headTxt);
+	background-color: var(--bg);
 }
 #choose img {
 	width: 250px;
@@ -67,11 +69,11 @@ body {
 	overflow-x: hidden;
 }
 #choose.grow {
-	animation: biggen 100ms linear 1;
+	animation: biggen 200ms ease 1;
 	height: calc(90vh - 31px);
 }
 #choose.shrink {
-	animation: smallen 100ms linear 1;
+	animation: smallen 200ms ease 1;
 }
 header {
 	display: grid;
@@ -158,30 +160,46 @@ header nav ul li details[open] {
 .topFixed {
 	grid-area: main;
 }
+input {
+	border-radius: calc(1.15em + 2px);
+	background-color: var(--bg);
+	color: var(--light);
+	font-family: Tahoma, Geneva, sans-serif;
+	border: 1px solid var(--light);
+	margin: 3px;
+	padding: 5px calc((1.15em + 2px) / 2 + 10px);
+}
+input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"] {
+	text-align: center;
+	width: 70px;
+}
+input.load[type = "text"], input.load[type = "username"], input.load[type = "password"], input.load[type = "email"] {
+	animation: contract 500ms ease 1;
+}
+input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+	width: 150px;
+	animation: expand 500ms ease 1;
+}
+input[type = "button"]:hover, input[type = "submit"]:hover {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+}
 @keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
 }
 @supports (d: path("M0,0 l5,5")) {
 	@keyframes grow {
-		from {
-			d: var(--hidePath);
-		}
-		to {
-			d: var(--path);
-		}
+		from {d: var(--hidePath);}
+		to {d: var(--path);}
 	}
 	@keyframes shrink {
-		from {
-			d: var(--path);
-		}
-		to {
-			d: var(--hidePath);
-		}
+		from {d: var(--path);}
+		to {d: var(--hidePath);}
 	}
 	#menu {
 		height: 90vh;
@@ -193,56 +211,48 @@ header nav ul li details[open] {
 	#menuBox.grow {
 		display: initial;
 		d: var(--path);
-		animation: grow 100ms linear 1;
+		animation: grow 200ms ease 1;
 	}
 	#menuBox.shrink {
-		animation: shrink 100ms linear 1;
+		animation: shrink 200ms ease 1;
 		d: var(--hidePath);
 		/*display: none;*/
 	}
 }
 @keyframes biggen {
-	from {
-		height: 0px;
-	}
-	to {
-		height: calc(90vh - 31px);
-	}
+	from {height: 0px;}
+	to {height: calc(90vh - 31px);}
 }
 @keyframes smallen {
-	from {
-		height: calc(90vh - 31px);
-	}
-	to {
-		height: 0px;
-	}
+	from {height: calc(90vh - 31px);}
+	to {height: 0px;}
+}
+@keyframes expand {
+	from {width: 70px;}
+	to {width: 150px;}
+}
+@keyframes contract {
+	from {width: 150px;}
+	to {width: 70px;}
 }
 @supports not (d: path("M0,0 l5,5")) {
 	@keyframes reveal {
-		from {
-			height: 0px;
-		}
-		to {
-			height: 90vh;
-		}
+		from {height: 0px;}
+		to {height: 90vh;}
 	}
 	@keyframes conceal {
-		from {
-			height: 90vh;
-		}
-		to {
-			height: 0px;
-		}
+		from {height: 90vh;}
+		to {height: 0px;}
 	}
 	#menu {
 		height: 0px;
 	}
 	#menu.grow {
-		animation: reveal 100ms linear 1;
+		animation: reveal 200ms ease 1;
 		height: 90vh;
 	}
 	#menu.shrink{
-		animation: conceal 100ms linear 1;
+		animation: conceal 200ms ease 1;
 		height: 0
 	}
 }
