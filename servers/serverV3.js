@@ -18,7 +18,7 @@ const serve = (req, res, page, loop = 0, status = 200) => {
 		if (err && filetype(page) !== null) {
 			//if this is the first try, server 404
 			if (loop <= 0) {
-				console.log(err);
+				//console.log(err);
 				serve(req, res, "./404", loop + 1, 404);
 			}
 			//else, serve 500
@@ -47,7 +47,7 @@ const serve = (req, res, page, loop = 0, status = 200) => {
 			res.render(page, { target: path(req).href }, (error, html) => {
 				//if ejs file not found and this is first try, serve 404
 				if (error && loop <= 0) {
-					console.log(error);
+					//console.log(error);
 					serve(req, res, "./404", loop + 1, 404);
 				}
 				//else if ejs file found, serve it
