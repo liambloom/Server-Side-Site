@@ -49,38 +49,47 @@ window.onload = () => {
 			throw "Unable to retrieve themes.json";
 		}
 	};
-
-	path = `
-		M20,10 
-		h250 
-		l7,-10 
-		l7,10 
-		h5 
-		a10,10 0 0 1 10,10 
-		v${Math.floor(window.innerHeight * 0.9) - 31} 
-		a10,10 0 0 1 -10,10 
-		h-278 
-		a10,10 0 0 1 -10,-10 
-		v-${Math.floor(window.innerHeight * 0.9) - 31} 
-		a10,10 0 0 1 10,-10 
-		z`;
-	document.getElementById("menuBox").setAttribute("d", path);
-	root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
-	document.getElementById("settings").onclick = () => {
-		if (document.getElementById("settings").className === "") {
-			document.getElementById("settings").className = "spin";
-			document.getElementById("menu").className.baseVal = "grow";
-			document.getElementById("menuBox").setAttribute("style", "display: initial;");
-			document.getElementById("menuBox").setAttribute("class", "grow");
-			document.getElementById("choose").className = "grow";
-			//console.log(document.getElementById("menuBox").className.baseVal);
-		}
-		else {
-			closeMenu();
-		}
-	};
+	try {
+		path = `
+			M20,10 
+			h250 
+			l7,-10 
+			l7,10 
+			h5 
+			a10,10 0 0 1 10,10 
+			v${Math.floor(window.innerHeight * 0.9) - 31} 
+			a10,10 0 0 1 -10,10 
+			h-278 
+			a10,10 0 0 1 -10,-10 
+			v-${Math.floor(window.innerHeight * 0.9) - 31} 
+			a10,10 0 0 1 10,-10 
+			z`;
+		document.getElementById("menuBox").setAttribute("d", path);
+		root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
+		document.getElementById("settings").onclick = () => {
+			if (document.getElementById("settings").className === "") {
+				document.getElementById("settings").className = "spin";
+				document.getElementById("menu").className.baseVal = "grow";
+				document.getElementById("menuBox").setAttribute("style", "display: initial;");
+				document.getElementById("menuBox").setAttribute("class", "grow");
+				document.getElementById("choose").className = "grow";
+				//console.log(document.getElementById("menuBox").className.baseVal);
+			}
+			else {
+				closeMenu();
+			}
+		};
+	}
+	catch (err) {
+		console.error(err);
+	}
 	document.onclick = event => {
-		if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+		try {
+			if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+		}
+		catch (err) {
+			console.error(err);
+		}
 	};
 	const textInputs = document.querySelectorAll("input[type = 'text'], input[type = 'username'], input[type = 'password'], input[type = 'email']");
 	for (let i of textInputs) {
@@ -95,9 +104,14 @@ window.themeChange = theme => {
 		root.style.setProperty("--dark", themes[theme].gradientDark);
 		root.style.setProperty("--headTxt", themes[theme].headTextColor);
 		root.style.setProperty("--bg", themes[theme].bodyBgColor);
-		document.getElementById("menuBox").setAttribute("fill", themes[theme].gradientDark);
 		document.getElementById("stop4538").style = `stop-color:${themes[theme].headTextColor};stop-opacity:1`;//Left
 		document.getElementById("stop4540").style = `stop-color:${themes[theme].gradientLight};stop-opacity:1`;//Right
+		try {
+			document.getElementById("menuBox").setAttribute("fill", themes[theme].gradientDark);
+		}
+		catch (err) {
+			console.error(err);
+		}
 	}
 	else {
 		throw theme + "is not an avalable theme";
