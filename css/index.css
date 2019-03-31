@@ -6,7 +6,7 @@
 	--headTxt: #0060ce;
 	--bg: #001215;
 	--path: path("");
-	--hidePath: path("M20,10 h250 l7,-10 l7,10 h5 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
+	--hidePath: path("M20,10 h225 l7,-10 l7,10 h30 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
 }
 body {
 	margin: 0px;
@@ -38,13 +38,30 @@ body {
 #content.center {
 	text-align: center;
 }
-#settings {
+#topRight {
 	position: fixed;
+	z-index: 2;
 	top: 8px;
-	right: 18px;
+	right: 8px;
+	height: max-content;
+	width: max-content
+}
+#visibility {
+	height: calc(1.15em + 6px);
+	width: calc(1.15em + 6px);
+	margin: 3px;
+	transform: rotate(-90deg);
+}
+#visibility.down {
+	/*animation: down 1s ease 1;*/
+	transform: rotate(90deg);
+}
+/*#visibility.up {
+	animation: up 1s ease 1;
+}*/
+#settings {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
-	z-index: 2;
 }
 #settings.spin {	
 	animation: spin 600ms linear infinite;
@@ -64,7 +81,6 @@ body {
 	top: calc(1.15em + 45px);
 	right: 12px;
 	border-radius: 10px;
-	/*background-color: black; This was only for testing*/
 	overflow: scroll;
 	overflow-x: hidden;
 }
@@ -86,13 +102,15 @@ header {
 	color: var(--headTxt);
 	background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
 }
+header.hidden {
+	animation: contact 1s ease 1;
+}
+header.showing {
+	animation: expand 1s ease 1;
+}
 #logo {
 	grid-area: logo;
 	margin: 16px;
-	/*background-image: url(/favicon/beta/favicon_beta_vector.svg);
-	background-size: 85px;
-	background-repeat: no-repeat;
-	background-position: 16px 16px;*/
 }
 #logo svg {
 	width: 85px;
@@ -192,6 +210,38 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}
 }
+@keyframes biggen {
+	from {height: 0px;}
+	to {height: calc(90vh - 31px);}
+}
+@keyframes smallen {
+	from {height: calc(90vh - 31px);}
+	to {height: 0px;}
+}
+@keyframes expand {
+	from {width: 70px;}
+	to {width: 150px;}
+}
+@keyframes contract {
+	from {width: 150px;}
+	to {width: 70px;}
+}
+/*@keyframes up {
+	from {transform: rotate(90deg);}
+	to {transform: rotate(-90deg);}
+}
+@keyframes down {
+	from {transform: rotate(-90deg);}
+	to {transform: rotate(90deg);}
+}
+@keyframes contract {
+	from {height: max-content}
+	to {height: 0px}
+}
+@keyframes expand {
+	from {height: 0px;}
+	to {height: max-content}
+}*/
 @supports (d: path("M0,0 l5,5")) {
 	@keyframes grow {
 		from {d: var(--hidePath);}
@@ -218,22 +268,6 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
 		d: var(--hidePath);
 		/*display: none;*/
 	}
-}
-@keyframes biggen {
-	from {height: 0px;}
-	to {height: calc(90vh - 31px);}
-}
-@keyframes smallen {
-	from {height: calc(90vh - 31px);}
-	to {height: 0px;}
-}
-@keyframes expand {
-	from {width: 70px;}
-	to {width: 150px;}
-}
-@keyframes contract {
-	from {width: 150px;}
-	to {width: 70px;}
 }
 @supports not (d: path("M0,0 l5,5")) {
 	@keyframes reveal {

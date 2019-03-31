@@ -52,10 +52,10 @@ window.onload = () => {
 	try {
 		path = `
 			M20,10 
-			h250 
+			h225 
 			l7,-10 
 			l7,10 
-			h5 
+			h30 
 			a10,10 0 0 1 10,10 
 			v${Math.floor(window.innerHeight * 0.9) - 31} 
 			a10,10 0 0 1 -10,10 
@@ -73,7 +73,6 @@ window.onload = () => {
 				document.getElementById("menuBox").setAttribute("style", "display: initial;");
 				document.getElementById("menuBox").setAttribute("class", "grow");
 				document.getElementById("choose").className = "grow";
-				//console.log(document.getElementById("menuBox").className.baseVal);
 			}
 			else {
 				closeMenu();
@@ -91,6 +90,22 @@ window.onload = () => {
 			console.error(err);
 		}
 	};
+
+	document.getElementById("visibility").onclick = () => {
+		if (document.getElementById("visibility").className === "down") {
+			document.getElementById("visibility").className = "up";
+			document.getElementById("visibility").title = "Collapse Menu";
+			document.getElementsByTagName("header")[0].style.setProperty("display", "grid");
+		}
+		else {
+			document.getElementById("visibility").className = "down";
+			document.getElementById("visibility").title = "Expand Menu";
+			document.getElementsByTagName("header")[0].style.setProperty("display", "none");
+		}
+	};
+
+	document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
+
 	const textInputs = document.querySelectorAll("input[type = 'text'], input[type = 'username'], input[type = 'password'], input[type = 'email']");
 	for (let i of textInputs) {
 		console.log("set");
