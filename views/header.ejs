@@ -1,43 +1,51 @@
-<!--Settings Icon shape from https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44 -->
-<% if (choice) { %>
-<img src="/img/Settings-icon.svg" id="settings">
-<svg id="menu">
-	<path id="menuBox" d="
-		M20,10 
-		h250 
-		l7,-10 
-		l7,10 
-		h5 
-		a10,10 0 0 1 10,10 
-		v200 
-		a10,10 0 0 1 -10,10 
-		h-278
-		a10,10 0 0 1 -10,-10
-		v-200
-		a10,10 0 0 1 10,-10
-		z" stroke="black" stroke-width="2px" class="none" />
-</svg>
-<div id="choose">
-	<img src="/img/themes/Red.png" onclick="window.themeChange('red');window.coustomThemeDefaults();">
-	<img src="/img/themes/Orange.png" onclick="window.themeChange('orange');window.coustomThemeDefaults();">
-	<img src="/img/themes/Yellow.png" onclick="window.themeChange('yellow');window.coustomThemeDefaults();">
-	<img src="/img/themes/Lime.png" onclick="window.themeChange('lime');window.coustomThemeDefaults();">
-	<img src="/img/themes/Green.png" onclick="window.themeChange('green');window.coustomThemeDefaults();">
-	<img src="/img/themes/Mint.png" onclick="window.themeChange('mint');window.coustomThemeDefaults();">
-	<img src="/img/themes/Cyan.png" onclick="window.themeChange('cyan');window.coustomThemeDefaults();">
-	<img src="/img/themes/Teal.png" onclick="window.themeChange('teal');window.coustomThemeDefaults();">
-	<img src="/img/themes/Blue.png" onclick="window.themeChange('blue');window.coustomThemeDefaults();">
-	<img src="/img/themes/Purple.png" onclick="window.themeChange('purple');window.coustomThemeDefaults();">
-	<img src="/img/themes/Magenta.png" onclick="window.themeChange('magenta');window.coustomThemeDefaults();">
-	<img src="/img/themes/Pink.png" onclick="window.themeChange('pink');window.coustomThemeDefaults();">
+<!-- Settings Icon from icons8 @ https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44 -->
+<!-- Arrow Icon from Freepik @ https://www.flaticon.com/free-icon/arrow-point-to-right_32213 -->
+<!-- Switch Icon from Pixel Buddah @ https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92 -->
+<div id="topRight">
+	<span title="Light Mode" id="switchSpan"><%- include("../img/switch3.svg") %></span>
+	<% if (choice) { %>
+		<span title="Change Theme" id="settings"><%- include("../img/Settings-icon.svg") %></span>
+	<% } %>
+	<span title="Collapse Menu" id="visibility"><%- include("../img/arrow.svg") %></span>
 </div>
+<% if (choice) { %>
+	<svg id="menu">
+		<path id="menuBox" d="
+			M20,10 
+			h225 
+			l7,-10 
+			l7,10 
+			h30 
+			a10,10 0 0 1 10,10 
+			v200 
+			a10,10 0 0 1 -10,10 
+			h-278
+			a10,10 0 0 1 -10,-10
+			v-200
+			a10,10 0 0 1 10,-10
+			z" stroke="black" stroke-width="2px" class="none" />
+	</svg>
+	<div id="choose">
+		<img src="/img/themes/Red.png" onclick="window.window.theme.color = 'red';window.coustomThemeDefaults();">
+		<img src="/img/themes/Orange.png" onclick="window.window.theme.color = 'orange';window.coustomThemeDefaults();">
+		<img src="/img/themes/Yellow.png" onclick="window.window.theme.color = 'yellow';window.coustomThemeDefaults();">
+		<img src="/img/themes/Lime.png" onclick="window.window.theme.color = 'lime';window.coustomThemeDefaults();">
+		<img src="/img/themes/Green.png" onclick="window.window.theme.color = 'green';window.coustomThemeDefaults();">
+		<img src="/img/themes/Mint.png" onclick="window.window.theme.color = 'mint';window.coustomThemeDefaults();">
+		<img src="/img/themes/Cyan.png" onclick="window.window.theme.color = 'cyan';window.coustomThemeDefaults();">
+		<img src="/img/themes/Teal.png" onclick="window.window.theme.color = 'teal';window.coustomThemeDefaults();">
+		<img src="/img/themes/Blue.png" onclick="window.window.theme.color = 'blue';window.coustomThemeDefaults();">
+		<img src="/img/themes/Purple.png" onclick="window.window.theme.color = 'purple';window.coustomThemeDefaults();">
+		<img src="/img/themes/Magenta.png" onclick="window.window.theme.color = 'magenta';window.coustomThemeDefaults();">
+		<img src="/img/themes/Pink.png" onclick="window.window.theme.color = 'pink';window.coustomThemeDefaults();">
+	</div>
 <% } %>
 <div id="fixed">
 	<header>
 	<a id="logo" href="/">
 		<%- include("../img/favicon/main/favicon_vector.svg") %>
 	</a>
-	<h1><%= title %></h1>
+	<h1>Header Test Page</h1>
 	<nav id="navigationBar">
 		<ul class="horizontal main">
 			<li>

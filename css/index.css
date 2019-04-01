@@ -6,6 +6,7 @@
 	--headTxt: #0060ce;
 	--bg: #001215;
 	--path: path("");
+	--txt: ;
 	--hidePath: path("M20,10 h225 l7,-10 l7,10 h30 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
 }
 body {
@@ -13,7 +14,7 @@ body {
 	font-family: "Times New Roman", Times, serif;
 	line-height: 1.15em;
 	font-size: 16px;
-	color: var(--headTxt);
+	color: var(--txt);
 	background-color: var(--bg);
 }
 #choose img {
@@ -49,7 +50,7 @@ body {
 #visibility #Capa_1 {
 	height: calc(1.15em + 6px);
 	width: calc(1.15em + 6px);
-	margin: 3px;
+	margin: 1.5px;
 	transform: rotate(-90deg);
 }
 #visibility.down #Capa_1 {
@@ -62,9 +63,26 @@ body {
 #settings #svg6 {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
+	margin: 1.5px;
 }
 #settings.spin #svg6 {	
 	animation: spin 600ms linear infinite;
+}
+#Layer_1 {
+	height: calc(1.15em + 12px);
+	width: calc((1.15em + 12px) / 1.6);
+	margin: 1.5px;
+}
+#path4 {
+	transform: translate(0px, 0px);
+}
+#switchSpan.up #path4 {
+	animation: flipUp 500ms ease 1;
+	transform: translate(0px, 0px);
+}
+#switchSpan.down #path4 {
+	animation: flipDown 500ms ease 1;
+	transform: translate(0px, 100px);
 }
 #menu {
 	position: fixed;
@@ -225,6 +243,14 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
 @keyframes contract {
 	from {width: 150px;}
 	to {width: 70px;}
+}
+@keyframes flipUp {
+	from {transform: translate(0px, 100px);}
+	to {transform: translate(0px, 0px);}
+}
+@keyframes flipDown {
+	from {transform: translate(0px, 0px);}
+	to {transform: translate(0px, 100px);}
 }
 /*@keyframes up {
 	from {transform: rotate(90deg);}
