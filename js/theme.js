@@ -1,5 +1,19 @@
 //jshint esversion:6
-const defaultTheme = "teal";
+String.prototype.titleCase = function () {//arrow functions have a different use of "this" property
+	return this.charAt(0).toUpperCase() + this.slice(1);
+	/*let res = this.toString();
+	console.log(res.match(/(?:(?=\s).)[a-z]/g));
+	for (let i of res.match(/(?:(?=\s).)[a-z]/g)) {//Must learn to understand this
+		res = res.replace(i, i.toUpperCase);
+	}
+	return res;*/
+};
+String.prototype.change = function () {
+	if (this === theme.mode) {
+		if (theme.mode === "dark") theme.mode = "light";
+		else theme.mode = "dark";
+	}
+};
 window.root = document.documentElement;//imposible to not get this first
 window.onresize = () => {
 	//console.log(-document.getElementsByTagName("h1")[0].clientHeight);
@@ -16,10 +30,10 @@ window.onload = () => {
 	req.onload = () => {
 		if (req.status === 200) {
 			window.themes = JSON.parse(req.response);//so cool how easy it is to define a var in the window
-			themeChange(defaultTheme);
+			theme(defaultTheme);
 			//const menuShell = document.createElement("li");
 			const colorMenu = document.createElement("select");
-			colorMenu.setAttribute("onclick", "window.themeChange(this.value);window.coustomThemeDefaults()");
+			colorMenu.setAttribute("onclick", "window.theme(this.value);window.coustomThemeDefaults()");
 			for (let i in themes) {
 				//let optionValue = themes[i];
 				let optionElement = document.createElement("option");
@@ -112,24 +126,61 @@ window.onload = () => {
 		i.addEventListener("focus", () => {i.classList.add("load");});
 	}
 };
-window.themeChange = theme => {
-	theme = theme.toLowerCase();
-	if (typeof themes[theme] === "object") {
-		root.style.setProperty("--light", themes[theme].gradientLight);
-		root.style.setProperty("--dark", themes[theme].gradientDark);
-		root.style.setProperty("--headTxt", themes[theme].headTextColor);
-		root.style.setProperty("--bg", themes[theme].bodyBgColor);
-		document.getElementById("stop4538").style = `stop-color:${themes[theme].headTextColor};stop-opacity:1`;//Left
-		document.getElementById("stop4540").style = `stop-color:${themes[theme].gradientLight};stop-opacity:1`;//Right
-		try {
-			document.getElementById("menuBox").setAttribute("fill", themes[theme].gradientDark);
+window.theme = {
+	get color() {
+		return this.default.color;
+	},
+	set color(name) {
+		name = name.toLowerCase();
+		if (typeof themes[name] === "object") {
+			root.style.setProperty("--light", themes[name].gradientLight);
+			root.style.setProperty("--dark", themes[name].gradientDark);
+			root.style.setProperty("--headTxt", themes[name].headTextColor);
+			root.style.setProperty("--bg", themes[name].bodyBgColor);
+			document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
+			document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
+			try {
+				document.getElementById("menuBox").setAttribute("fill", themes[name].gradientDark);
+			}
+			catch (err) {
+				console.error(err);
+			}
+			Object.defineProperty(this, "color", {
+				get: function() {
+					return name;
+				}
+			});
 		}
-		catch (err) {
-			console.error(err);
+		else {
+			throw titlecase(name) +  " is not an avalable theme";
 		}
-	}
-	else {
-		throw theme + "is not an avalable theme";
+	},
+	get mode() {
+		return this.default.mode;
+	},
+	set mode(name) {
+		name = name.toLowerCase();
+		//change the body bgcolor, setings fill color, and arrow fill color
+		if (/dark|light/.test(name)) {
+			if (name === "light") {
+
+			}
+			else {
+
+			}
+			Object.defineProperty(this, "mode", {
+				get: function () {
+					return name;
+				}
+			});
+		}
+		else {
+			throw titlecase(name) + " is not an avalable theme";
+		}
+	},
+	default: {
+		color: "teal",
+		mode: "dark"
 	}
 };
 var closeMenu = () => {
