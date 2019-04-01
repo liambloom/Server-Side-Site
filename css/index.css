@@ -46,24 +46,24 @@ body {
 	height: max-content;
 	width: max-content
 }
-#visibility {
+#visibility #Capa_1 {
 	height: calc(1.15em + 6px);
 	width: calc(1.15em + 6px);
 	margin: 3px;
 	transform: rotate(-90deg);
 }
-#visibility.down {
+#visibility.down #Capa_1 {
 	/*animation: down 1s ease 1;*/
 	transform: rotate(90deg);
 }
 /*#visibility.up {
 	animation: up 1s ease 1;
 }*/
-#settings {
+#settings #svg6 {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
 }
-#settings.spin {	
+#settings.spin #svg6 {	
 	animation: spin 600ms linear infinite;
 }
 #menu {
