@@ -30,22 +30,22 @@ function change() {
 	root.style.setProperty("--buttonFocus", inverted);
 	switch([r, g, b].sort((a, b) => b - a).toString()) {//Only tertiary colors. Other colors are super unlikely and much harder to code for.
 		case `${r},${g},${b}`: 
-			window.themeChange("orange"); 
+			theme.color = "orange"; 
 			break;
 		case `${g},${r},${b}`: 
-			window.themeChange("lime"); 
+			theme.color = "lime"; 
 			break;
 		case `${g},${b},${r}`:
-			window.themeChange("mint");
+			theme.color = "mint";
 			break;
 		case `${b},${g},${r}`:
-			window.themeChange("teal");
+			theme.color = "teal";
 			break;
 		case `${b},${r},${g}`:
-			window.themeChange("purple");
+			theme.color = "purple";
 			break;
 		case `${r},${b},${g}`:
-			window.themeChange("pink");
+			theme.color = "pink";
 			break;
 		default: 
 			console.error("Something Broke!");
