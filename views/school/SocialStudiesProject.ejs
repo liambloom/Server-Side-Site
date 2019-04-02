@@ -2,14 +2,9 @@
 <html>
 <!--Find way to redirect someone to password page if they didn't get to this page from password page-->
 <head>
+	<%- include("../head", {beta: false})%>
 	<title>Ancient Egyptian Social Class Project</title>
-	<link rel="icon" href="/favicon/main/favicon.ico">
-	<link rel="icon" href="/favicon/main/favicon_32.png">
-	<link rel="icon" href="/favicon/main/favicon_48.png">
-	<link rel="icon" href="/favicon/main/favicon_96.png">
-	<link rel="icon" href="/favicon/main/favicon_144.png">
-	<link rel="icon" href="/favicon/main/favicon_vector.svg">
-	<style type="text/css">
+	<!--<style type="text/css">
 		body {
 			text-align: justify;
 			font-size: 18px;
@@ -43,9 +38,11 @@
 		.lb-md {
 			color:#69596b;
 		}
-</style>
+</style>-->
 </head>
 <body>
+	<%- include("../header", {title: "Magic 8 Ball", choice: true}) %>
+	<div id="content">
 	<h1>Script</h1>
 	<div class=a><i>[Priests are standing around a small bed that the mummy will lie on. One visitor is carrying the other onto the stage]</i></div>
 	<div class=ns><b>Natsha:</b> Em hotep nefer. How terrible that our governor, _________, has passed. Now, we must mummify him/her to prepare him/her for the afterlife.</div>
@@ -71,9 +68,10 @@
 	<div class=lb><b>Liam:</b> We have waited 35 days, enough time for the natron to dry out the body and organs.</div>
 	<div class=ns><b>Natasha:</b> We will now remove the natron and anoint the body with frankincense and myrrh oils.</div>
 	<div class=tn><b>Tina:</b> (removes natron packets)</div>
-	<div class=lb-md><b><font color="9b3cba">Michelle</font> &#038; <!--This is an "&" sign--> <font color="38761d">Liam</font>:</b> (anoints body)</div>
+	<div class=lb-md><b>Michelle &#038; <!--This is an "&" sign-->Liam:</b> (anoints body)</div>
 	<div class=tn><b>Tina:</b> We are now going to wrap the body with linen covered in magic spells. Then we'll place the body in a sarcophagus, which is a large stone coffin.</div>
 	<div class=a>(Everyone works together to wrap body with linen and then slowly place body into the sarcophagus)</div>
 	<div class=v><b>Visitor:</b> Thank you, that was incredibly interesting to watch. Well, I'd better get going. (walks offstage with coffin)</div>
+	</div>
 </body>
 </html>
