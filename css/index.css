@@ -36,8 +36,14 @@ body {
 #content {
 	margin: 50px;	
 }
-#content.center {
+.center {
 	text-align: center;
+}
+.right {
+	text-align: right;
+}
+a {
+	color: var(--txt)
 }
 #topRight {
 	position: fixed;
