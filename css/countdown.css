@@ -127,7 +127,11 @@ img {
 	position: relative;
 	top: 17px;*/
 	border: 2px solid var(--light);
-}/*
+}
+#content a {
+	line-height: 1.15em;
+}
+/*
 button.warning {
 	border-radius: 4px;
 }

@@ -34,7 +34,8 @@ body {
 	top: var(--size);
 }
 #content {
-	margin: 50px;	
+	margin: 50px;
+	line-height: 1.35em;
 }
 .center {
 	text-align: center;
