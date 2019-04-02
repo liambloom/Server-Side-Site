@@ -2,7 +2,7 @@
   "name": "Server-Side-Site",
   "version": "1.0.0",
   "description": "Now my site does things that it can't do without the server",
-  "main": "index.ejs",
+  "main": "servers/serverV3.js",
   "directories": {
     "lib": "lib"
   },

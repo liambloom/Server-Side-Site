@@ -1,0 +1,14 @@
+:root {
+	--buttonFade: ;
+	--buttonFocus: ;
+	--buttonBg: ;
+}
+input, button {
+	background-color: var(--buttonBg);
+	color: var(--buttonFade);
+	border-color: var(--buttonFade);
+}
+input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
+	color: var(--buttonFocus);
+	border-color: var(--buttonFocus);
+}

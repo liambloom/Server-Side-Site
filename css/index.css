@@ -4,15 +4,18 @@
 	--light: #0077aa;
 	--dark: #00242b;
 	--headTxt: #0060ce;
+	--bg: #001215;
 	--path: path("");
-	--hidePath: path("M20,10 h250 l7,-10 l7,10 h5 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
+	--txt: ;
+	--hidePath: path("M20,10 h225 l7,-10 l7,10 h30 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
 }
 body {
 	margin: 0px;
 	font-family: "Times New Roman", Times, serif;
 	line-height: 1.15em;
 	font-size: 16px;
-	color: var(--dark);
+	color: var(--txt);
+	background-color: var(--bg);
 }
 #choose img {
 	width: 250px;
@@ -31,21 +34,62 @@ body {
 	top: var(--size);
 }
 #content {
-	margin: 50px;	
+	margin: 50px;
+	line-height: 1.35em;
 }
-#content.center {
+.center {
 	text-align: center;
 }
-#settings {
+.right {
+	text-align: right;
+}
+a {
+	color: var(--txt)
+}
+#topRight {
 	position: fixed;
+	z-index: 2;
 	top: 8px;
-	right: 18px;
+	right: 8px;
+	height: max-content;
+	width: max-content
+}
+#visibility #Capa_1 {
+	height: calc(1.15em + 6px);
+	width: calc(1.15em + 6px);
+	margin: 1.5px;
+	transform: rotate(-90deg);
+}
+#visibility.down #Capa_1 {
+	/*animation: down 1s ease 1;*/
+	transform: rotate(90deg);
+}
+/*#visibility.up {
+	animation: up 1s ease 1;
+}*/
+#settings #svg6 {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
-	z-index: 2;
+	margin: 1.5px;
 }
-#settings.spin {	
+#settings.spin #svg6 {	
 	animation: spin 600ms linear infinite;
+}
+#Layer_1 {
+	height: calc(1.15em + 12px);
+	width: calc((1.15em + 12px) / 1.6);
+	margin: 1.5px;
+}
+#path4 {
+	transform: translate(0px, 0px);
+}
+#switchSpan.up #path4 {
+	animation: flipUp 500ms ease 1;
+	transform: translate(0px, 0px);
+}
+#switchSpan.down #path4 {
+	animation: flipDown 500ms ease 1;
+	transform: translate(0px, 100px);
 }
 #menu {
 	position: fixed;
@@ -62,16 +106,15 @@ body {
 	top: calc(1.15em + 45px);
 	right: 12px;
 	border-radius: 10px;
-	/*background-color: black; This was only for testing*/
 	overflow: scroll;
 	overflow-x: hidden;
 }
 #choose.grow {
-	animation: biggen 100ms linear 1;
+	animation: biggen 200ms ease 1;
 	height: calc(90vh - 31px);
 }
 #choose.shrink {
-	animation: smallen 100ms linear 1;
+	animation: smallen 200ms ease 1;
 }
 header {
 	display: grid;
@@ -84,13 +127,15 @@ header {
 	color: var(--headTxt);
 	background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
 }
+header.hidden {
+	animation: contact 1s ease 1;
+}
+header.showing {
+	animation: expand 1s ease 1;
+}
 #logo {
 	grid-area: logo;
 	margin: 16px;
-	/*background-image: url(/favicon/beta/favicon_beta_vector.svg);
-	background-size: 85px;
-	background-repeat: no-repeat;
-	background-position: 16px 16px;*/
 }
 #logo svg {
 	width: 85px;
@@ -158,30 +203,103 @@ header nav ul li details[open] {
 .topFixed {
 	grid-area: main;
 }
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+input, button, select {
+	text-align: center;
+	border-radius: calc(1.15em + 2px);
+	background-color: var(--bg);
+	color: var(--light);
+	font-family: Tahoma, Geneva, sans-serif;
+	border: 1px solid var(--light);
+	margin: 3px;
+	padding: 5px calc((1.15em + 2px) / 2 + 10px);
 }
+input:focus, select:focus {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+}
+input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"] {
+	text-align: center;
+	width: 70px;
+}
+input.load[type = "text"], input.load[type = "username"], input.load[type = "password"], input.load[type = "email"] {
+	animation: contract 500ms ease 1;
+}
+input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus {
+	width: 150px;
+	animation: expand 500ms ease 1;
+}
+input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+}
+textarea {
+	background-color: var(--bg);
+	color: var(--light);
+	border: 1px solid var(--light);
+	border-radius: 10px;
+	padding: 10px;
+}
+textarea:focus {
+	color: var(--txt);
+	border-color: var(--txt);
+}
+.wide {
+	width: 90vw;
+}
+@keyframes spin {
+	from {transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+@keyframes biggen {
+	from {height: 0px;}
+	to {height: calc(90vh - 31px);}
+}
+@keyframes smallen {
+	from {height: calc(90vh - 31px);}
+	to {height: 0px;}
+}
+@keyframes expand {
+	from {width: 70px;}
+	to {width: 150px;}
+}
+@keyframes contract {
+	from {width: 150px;}
+	to {width: 70px;}
+}
+@keyframes flipUp {
+	from {transform: translate(0px, 100px);}
+	to {transform: translate(0px, 0px);}
+}
+@keyframes flipDown {
+	from {transform: translate(0px, 0px);}
+	to {transform: translate(0px, 100px);}
+}
+/*@keyframes up {
+	from {transform: rotate(90deg);}
+	to {transform: rotate(-90deg);}
+}
+@keyframes down {
+	from {transform: rotate(-90deg);}
+	to {transform: rotate(90deg);}
+}
+@keyframes contract {
+	from {height: max-content}
+	to {height: 0px}
+}
+@keyframes expand {
+	from {height: 0px;}
+	to {height: max-content}
+}*/
 @supports (d: path("M0,0 l5,5")) {
 	@keyframes grow {
-		from {
-			d: var(--hidePath);
-		}
-		to {
-			d: var(--path);
-		}
+		from {d: var(--hidePath);}
+		to {d: var(--path);}
 	}
 	@keyframes shrink {
-		from {
-			d: var(--path);
-		}
-		to {
-			d: var(--hidePath);
-		}
+		from {d: var(--path);}
+		to {d: var(--hidePath);}
 	}
 	#menu {
 		height: 90vh;
@@ -193,56 +311,32 @@ header nav ul li details[open] {
 	#menuBox.grow {
 		display: initial;
 		d: var(--path);
-		animation: grow 100ms linear 1;
+		animation: grow 200ms ease 1;
 	}
 	#menuBox.shrink {
-		animation: shrink 100ms linear 1;
+		animation: shrink 200ms ease 1;
 		d: var(--hidePath);
 		/*display: none;*/
 	}
 }
-@keyframes biggen {
-	from {
-		height: 0px;
-	}
-	to {
-		height: calc(90vh - 31px);
-	}
-}
-@keyframes smallen {
-	from {
-		height: calc(90vh - 31px);
-	}
-	to {
-		height: 0px;
-	}
-}
 @supports not (d: path("M0,0 l5,5")) {
 	@keyframes reveal {
-		from {
-			height: 0px;
-		}
-		to {
-			height: 90vh;
-		}
+		from {height: 0px;}
+		to {height: 90vh;}
 	}
 	@keyframes conceal {
-		from {
-			height: 90vh;
-		}
-		to {
-			height: 0px;
-		}
+		from {height: 90vh;}
+		to {height: 0px;}
 	}
 	#menu {
 		height: 0px;
 	}
 	#menu.grow {
-		animation: reveal 100ms linear 1;
+		animation: reveal 200ms ease 1;
 		height: 90vh;
 	}
 	#menu.shrink{
-		animation: conceal 100ms linear 1;
+		animation: conceal 200ms ease 1;
 		height: 0
 	}
 }

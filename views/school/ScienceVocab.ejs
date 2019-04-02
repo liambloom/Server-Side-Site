@@ -1,19 +1,12 @@
 <!doctype html>
 	<html>
 	<head>
-	<meta charset="utf-8">
-	<link rel="icon" href="/favicon/main/favicon.ico">
-	<link rel="icon" href="/favicon/main/favicon_32.png">
-	<link rel="icon" href="/favicon/main/favicon_48.png">
-	<link rel="icon" href="/favicon/main/favicon_96.png">
-	<link rel="icon" href="/favicon/main/favicon_144.png">
-	<link rel="icon" href="/favicon/main/favicon_vector.svg">
-	</head>
+	<%- include("../head", {beta: false})%>
 	<title>Cell Vocab</title>
-	<body bgcolor="#08700e">
-		<h1>
-			Cell Vocab
-		</h1>
+	</head>
+	<body>
+	<%- include("../header", {title: "Cell Vocab", choice: true}) %>
+	<div id="content">
 	<br>
 		<h2>
 			All Cells
@@ -138,5 +131,6 @@
 			The <b>centriole</b> is a minute cylindrical organelle near the nucleus in animal cells, occurring in pairs and involved in the development of spindle fibers in cell division, wich makes a new cell, similar to how copy and paste on computers duplicates things.
 		</p>
 	<br>
+	</div>
 	</body>
 	</html>
