@@ -202,7 +202,8 @@ header nav ul li details[open] {
 .topFixed {
 	grid-area: main;
 }
-input, button {
+input, button, select {
+	text-align: center;
 	border-radius: calc(1.15em + 2px);
 	background-color: var(--bg);
 	color: var(--light);
@@ -210,6 +211,11 @@ input, button {
 	border: 1px solid var(--light);
 	margin: 3px;
 	padding: 5px calc((1.15em + 2px) / 2 + 10px);
+}
+input:focus, select:focus {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
 }
 input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"] {
 	text-align: center;
@@ -219,9 +225,6 @@ input.load[type = "text"], input.load[type = "username"], input.load[type = "pas
 	animation: contract 500ms ease 1;
 }
 input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus {
-	border: 2px solid var(--headTxt);
-	margin: 2px;
-	color: var(--headTxt);
 	width: 150px;
 	animation: expand 500ms ease 1;
 }

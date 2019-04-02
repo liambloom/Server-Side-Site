@@ -1,5 +1,5 @@
 //jshint esversion:6
-const end = (message = "Something Happened", background = 'url("./img/fireworks.gif")') => {
+const end = (message = "Something Happened", background = 'url("/img/fireworks.gif")') => {
 	document.body.style.backgroundImage = background;
 	//console.log(background);
 	document.getElementById("t").innerHTML = message;

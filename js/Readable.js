@@ -40,7 +40,7 @@ function readable(bg = document.body.style.backgroundImage) {
 			return true;
 		default:
 			cssVarChange('#EE2277', '#a7145d', '#0d1532');
-			document.body.style.backgroundImage = 'url("/img/Hourglass.gif")';
+			//document.body.style.backgroundImage = 'url("/img/Hourglass.gif")';
 			return false;
 	}
 }

@@ -157,7 +157,7 @@ window.onload = () => {
 
 	const textInputs = document.querySelectorAll("input[type = 'text'], input[type = 'username'], input[type = 'password'], input[type = 'email']");
 	for (let i of textInputs) {
-		console.log("set");
+		//console.log("set");
 		i.addEventListener("focus", () => {i.classList.add("load");});
 	}
 };
