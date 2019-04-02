@@ -224,6 +224,20 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
 	margin: 2px;
 	color: var(--headTxt);
 }
+textarea {
+	background-color: var(--bg);
+	color: var(--light);
+	border: 1px solid var(--light);
+	border-radius: 10px;
+	padding: 10px;
+}
+textarea:focus {
+	color: var(--txt);
+	border-color: var(--txt);
+}
+.wide {
+	width: 90vw;
+}
 @keyframes spin {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}

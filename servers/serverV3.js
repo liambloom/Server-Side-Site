@@ -82,4 +82,12 @@ app.get(/\/[^]+\.[^]+$/, (req, res) => {
 	serve(req, res, `.${path(req).pathname}`);
 });
 
+app.post("/sugestions/:type", (req, res) => {
+	fs.appendFile("./sugestions/" + req.params.type, req.body, (err) => {
+		console.log(req.body);
+		if (err) res.status(404).end();
+		else res.status(200).end();
+	});
+});
+
 app.listen(port);
