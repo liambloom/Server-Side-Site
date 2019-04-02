@@ -1,33 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<%- include("../head", {beta: false}) %>
 	<title>School Homepage</title>
-	<link rel="icon" href="../favicon/main/favicon.ico">
-	<link rel="icon" href="../favicon/main/favicon_32.png">
-	<link rel="icon" href="../favicon/main/favicon_48.png">
-	<link rel="icon" href="../favicon/main/favicon_96.png">
-	<link rel="icon" href="../favicon/main/favicon_144.png">
-	<link rel="icon" href="../favicon/main/favicon_vector.svg">
-	<style type="text/css">
-		body {
-				text-align: center;
-				margin: 1in 1in 1in 1in
-			}
-	</style>
 </head>
 <body>
-	<h1>
-		School
-	</h1>
-	<p>
-		<a href='./SocialStudiesProject.html'>Ancient Egyptian Social Class Project</a>
-		<br><br>
-		<a href='./ScienceVocab.html'>Science Vocab</a>
-		<br><br>
-		<a href='./ELAgreekMythologyScript.html'>Greek Mythology Play Script</a>
-		<br><br>
-		<a href='./ScratchPrometheus.html'>Prometheus Cartoon</a>
-		<br><br>
-		<img src="img/SchoolLogo.jpeg">
+	<%- include("../header", {title: "School", choice: true}) %>
+	<div id="content" class="center">
+		<p>
+			<a href='./SocialStudiesProject'>Ancient Egyptian Social Class Project</a>
+			<br><br>
+			<a href='./ScienceVocab'>Science Vocab</a>
+			<br><br>
+			<a href='./ELAgreekMythologyScript'>Greek Mythology Play Script</a>
+			<br><br>
+			<a href='https://scratch.mit.edu/projects/221553121/'>Prometheus Cartoon</a>
+			<br><br>
+		</p>
+	</div>
 </body>
 </html>
