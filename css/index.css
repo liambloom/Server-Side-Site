@@ -17,6 +17,11 @@ body {
 	color: var(--txt);
 	background-color: var(--bg);
 }
+.credit {
+	font-size: 10px;
+	color: #ffffff7f;
+	line-height: 12px;
+}
 #choose img {
 	width: 250px;
 	height: 80px;
