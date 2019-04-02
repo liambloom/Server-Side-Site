@@ -1,4 +1,7 @@
-:root {
+#content {
+	font-size: 20px;
+}
+/*:root {
 	--primary: #EE2277;
 	--secondary: #a7145d;
 	--tertiary: #0d1532;
@@ -20,9 +23,6 @@ h1 {
 p {
 	font-size: 30px;
 }
-/*#HourglassMenu {
-
-}*/
 .popup {
 	border: 2px solid var(--primary);
 	background: var(--tertiary);
@@ -45,7 +45,6 @@ p {
 .warning {
 	text-shadow: 0px 0px 0px transparent;
 	border: 2px solid #000000;
-	/*background: var(--tertiary);*/
 	background: #eeee00;
 	color: #000000;
 	font-size: 15px;
@@ -120,12 +119,19 @@ select {
 select:focus {
 	border: 3px solid var(--primary);
 	color: var(--primary);
-}
+}*/
 img {
 	margin-top: 2px;
 	margin-bottom: -17px;
-	border: 2px solid var(--primary);
+	/*margin: 2px;
+	position: relative;
+	top: 17px;*/
+	border: 2px solid var(--light);
 }
+#content a {
+	line-height: 1.15em;
+}
+/*
 button.warning {
 	border-radius: 4px;
 }
@@ -139,4 +145,4 @@ button.warning:hover a {
 .submit:hover {
 	color: var(--tertiary);
 	background-color: var(--secondary);
-}
+}*/

@@ -1,43 +1,15 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta charset="utf-8">
 	<title>Random Color</title>
-	<link rel="icon" href="/favicon/main/favicon.ico">
-	<link rel="icon" href="/favicon/main/favicon_32.png">
-	<link rel="icon" href="/favicon/main/favicon_48.png">
-	<link rel="icon" href="/favicon/main/favicon_96.png">
-	<link rel="icon" href="/favicon/main/favicon_144.png">
-	<link rel="icon" href="/favicon/main/favicon_vector.svg">
-	<style>
-		body{text-align: center;
-			margin-top: 2in;}
-	</style>
+	<%- include("head", {beta: false})%>
+	<link rel="stylesheet" href="/css/buttonAlt.css">
+	<script src="/js/randomColor.js"></script>
 </head>
 <body>
-
-	<button onclick="myFunction()" name="ReloadButton">Change Background Color</button>
-	<script>
-		myFunction()
-		function myFunction() {
-		var color = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "a", "b", "c", "d", "e", "f"]
-		var colorArray = []
-		var i
-		var colorFull
-		var colorp
-		for (i = 0; i < 6; i++) {
-			colorp = undefined
-			do{
-				colorp = color[Math.round(Math.random() * 16)]
-			}
-			while (colorp == undefined)
-			colorArray.push(colorp)
-		}
-		var colorFull = "#" + colorArray[0] + colorArray[1] + colorArray[2] + colorArray[3] + colorArray[4] + colorArray[5]
-		document.body.style.backgroundColor = colorFull
-		document.getElementsByName("ReloadButton")[0].innerHTML=colorFull;
-		document.getElementsByName("ReloadButton")[0].style.background=colorFull;
-	}
-	</script>
-	</body>
-	</html>
+	<%- include("header", {title: "Random Color", choice: false}) %>
+	<div id="content" class="center">
+		<button onclick="change()" name="ReloadButton">Click Me!</button>
+	</div>
+</body>
+</html>

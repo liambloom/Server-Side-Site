@@ -9,12 +9,12 @@ const init = () => {
 		if (check("datetime-local")) {
 			destroy("dateTimeSeperate");
 			destroy("dateTimeDropdown");
-			destroy("betaWarning");
+			//destroy("betaWarning");
 		}
 		else if (check("date") && check("time")) {
 			destroy("dateTimeTogether");
 			destroy("dateTimeDropdown");
-			destroy("betaWarning");
+			//destroy("betaWarning");
 		}
 		else {
 			destroy("dateTimeSeperate");
@@ -26,7 +26,24 @@ const init = () => {
 		}
 	}
 	else {
-		destroy("menu");
+		destroy("pre");
+		document.getElementById("Capa_1").onclick();
+		document.getElementById("Layer_1").style.display = "none";
+		const style = document.createElement('style');
+		style.type = 'text/css';
+		style.innerHTML = `
+		body {
+			background-image: url("/img/TimeVortex.gif");
+			background-position: center;
+			/*background-repeat: no-repeat;*/
+			background-size: cover;
+		}
+		#content {
+			font-size: 100px;
+			line-height: 1em;
+		}
+		`;
+		document.head.appendChild(style);
 		const entries = new URLSearchParams(location.search).entries();
 		//info = infoDefault;
 		for (let pair of entries) {
@@ -35,7 +52,7 @@ const init = () => {
 			}
 		}
 		try {
-			info.endbg = `url("./img/${info.endbg}.gif")`;
+			info.endbg = `url("/img/${info.endbg}.gif")`;
 		}
 		catch (err) {}
 		document.getElementById("sl").innerHTML = "seconds";
@@ -74,7 +91,7 @@ const init = () => {
 		//window.onload = readable();
 		if (info.hgbg != undefined && info.hgbg != "") {
 			destroy("hourglassMenu");
-			document.body.style.backgroundImage = `url("./img/${info.hgbg}.gif")`;
+			//document.body.style.backgroundImage = `url("./img/${info.hgbg}.gif")`;
 		}
 		/*else {
 			document.body.style.backgroundImage = `url("./img/Hourglass.gif")`;
