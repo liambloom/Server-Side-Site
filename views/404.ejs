@@ -35,6 +35,12 @@
 		document.getElementById("textbox").addEventListener("keyup",  (event) => {
 			if (event.keyCode === 13) {
 				document.getElementById("pageText").innerHTML += `> ${document.getElementById("textbox").value}<br>`;
+				/*try {
+					document.getElementById("pageText").innerHTML += `< ${eval(document.getElementById("textbox").value.toString())}<br>`
+				}
+				catch (err) {
+					document.getElementById("pageText").innerHTML += `< ${err}<br>`
+				}*/
 				document.getElementById("textbox").value = "";
 			}
 		});
