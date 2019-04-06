@@ -83,8 +83,8 @@ app.get(/\/[^]+\.[^]+$/, (req, res) => {
 });
 
 app.post("/sugestions/:type", (req, res) => {
-	fs.appendFile("./sugestions/" + req.params.type, req.body, (err) => {
-		console.log(req.body);
+	fs.appendFile("./sugestions/" + req.params.type, req.read().toString(), (err) => {
+		console.log(req.read().toString());
 		if (err) res.status(404).end();
 		else res.status(200).end();
 	});
