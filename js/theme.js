@@ -1,18 +1,9 @@
 //jshint esversion:6
 String.prototype.titleCase = function () {//arrow functions have a different use of "this" property
 	return this.charAt(0).toUpperCase() + this.slice(1);
-	/*let res = this.toString();
-	console.log(res.match(/(?:(?=\s).)[a-z]/g));
-	for (let i of res.match(/(?:(?=\s).)[a-z]/g)) {//Must learn to understand this
-		res = res.replace(i, i.toUpperCase);
-	}
-	return res;*/
 };
 String.prototype.change = function () {
-	//console.log("checking");
-	//console.log(typeof this + " " + typeof theme.mode);
 	if (this.toString() === theme.mode) {
-		//console.log("changeing");
 		if (theme.mode === "dark") theme.mode = "light";
 		else theme.mode = "dark";
 	}
@@ -25,30 +16,17 @@ window.onresize = () => {
 };
 window.onload = () => {
 	window.onresize();
-
+	if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
+	if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
+	
 	const req = new XMLHttpRequest();
 	req.open("GET", "/json/themes.json");
 	req.send();
 
 	req.onload = () => {
 		if (req.status === 200) {
-			window.themes = JSON.parse(req.response);//so cool how easy it is to define a var in the window
-			//theme(theme.default.color);
-			//const menuShell = document.createElement("li");
-			/*const colorMenu = document.createElement("select");
-			colorMenu.setAttribute("onclick", "window.theme(this.value);window.coustomThemeDefaults()");
-			for (let i in themes) {
-				//let optionValue = themes[i];
-				let optionElement = document.createElement("option");
-				optionElement.innerHTML = i.charAt(0).toUpperCase() + i.slice(1);
-				if (i === theme.default.color) optionElement.setAttribute("selected", "selected");
-				colorMenu.appendChild(optionElement);
-			}*/
-			//menuShell.appendChild(colorMenu);
-			//document.getElementById("picker").appendChild(colorMenu);
-			//This will be hard, but doable
-			rootstyle = getComputedStyle(root);
-			//console.log(rootstyle.getPropertyValue("--light"));
+			window.themes = JSON.parse(req.response);
+			//rootstyle = getComputedStyle(root);
 			window.coustomThemeDefaults = () => {
 				/*document.getElementById("light").value = rootstyle.getPropertyValue("--light");
 				document.getElementById("dark").value = rootstyle.getPropertyValue("--dark");
@@ -60,8 +38,9 @@ window.onload = () => {
 				}
 				document.getElementById("bgcolor").value = bgcolorString;*/
 			};
-			coustomThemeDefaults();
+			//coustomThemeDefaults();
 			theme.color = theme.default.color;
+			theme.mode = theme.default.mode;
 		}
 		else {
 			throw "Unable to retrieve themes.json";
@@ -188,6 +167,7 @@ window.theme = {
 			catch (err) {
 				//console.error(err);
 			}
+			localStorage.setItem("color", name);
 			Object.defineProperty(this, "color", {
 				get: function() {
 					return name;
@@ -224,12 +204,14 @@ window.theme = {
 					document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
 					document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
 					try {
-						document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");					}
+						document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
+					}
 					catch (err) {
 						//console.error(err);
 					}
 				}
 			}
+			localStorage.setItem("mode", name);
 			Object.defineProperty(this, "mode", {
 				get: function () {
 					return name;
