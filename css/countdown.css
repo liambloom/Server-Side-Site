@@ -120,7 +120,7 @@ select:focus {
 	border: 3px solid var(--primary);
 	color: var(--primary);
 }*/
-img {
+#content img {
 	margin-top: 2px;
 	margin-bottom: -17px;
 	/*margin: 2px;

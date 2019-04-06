@@ -51,6 +51,9 @@ body {
 a {
 	color: var(--txt)
 }
+#choose a {
+	color: var(--headTxt);
+}
 #topRight {
 	position: fixed;
 	z-index: 2;
