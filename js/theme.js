@@ -19,7 +19,7 @@ window.onload = () => {
 	if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
 	if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
 	
-	const req = new XMLHttpRequest();
+	/*const req = new XMLHttpRequest();
 	req.open("GET", "/json/themes.json");
 	req.send();
 
@@ -36,7 +36,7 @@ window.onload = () => {
 				for (let i = 0; i < 3; i++) {
 					bgcolorString += parseInt(bgcolorArray[i]).toString(16);
 				}
-				document.getElementById("bgcolor").value = bgcolorString;*/
+				document.getElementById("bgcolor").value = bgcolorString;*//*
 			};
 			//coustomThemeDefaults();
 			theme.color = theme.default.color;
@@ -45,7 +45,24 @@ window.onload = () => {
 		else {
 			throw "Unable to retrieve themes.json";
 		}
-	};
+  };*/
+  
+  fetch("/json/themes.json")
+    .then(res => {
+      if (res.ok) return res.json();
+      else throw "Unable to retrieve themes.json";
+    })
+    .then(res => window.themes = res)
+    .then(() => {
+      theme.color = theme.default.color;
+      theme.mode=theme.default.mode;
+      //return res;
+    });
+    //.catch(err => console.error(err));
+
+  window.coustomThemeDefaults = () => {};//because it's called places but doesn't do anything anymore
+  //I would get rid of it completely but it may do things again in the future
+
 	try {
 		path = `
 			M20,10 
