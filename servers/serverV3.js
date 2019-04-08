@@ -3,7 +3,7 @@ const express = require("express");
 const url = require("url");
 const fs = require("fs");
 const mime = require("mime-types");
-const bodyParser = require("body-parser");
+//const bodyParser = require("body-parser");
 
 const app = express();
 const port = process.env.PORT || 8080;
