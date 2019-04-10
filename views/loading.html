@@ -1,0 +1,58 @@
+<style>
+  .loading {
+    height: 1em;
+    width: 1em;
+    border-radius: 0.5em;
+    background-color: #0000007f;
+    display: inline-block;
+    position: relative;
+    margin: 20px 0px;
+  }
+  .loading.hidden {
+    display: none;
+  }
+  .active {
+    animation: bounce 1s ease-in-out 1
+  }
+  @keyframes bounce {
+    0% {bottom: 0px;}
+    50% {bottom: 25px;}
+    100% {bottom: 0px;}
+  }
+</style>
+<span id="loading1" class="loading hidden"></span>
+<span id="loading2" class="loading hidden"></span>
+<span id="loading3" class="loading hidden"></span>
+<span id="loading4" class="loading hidden"></span>
+<span id="loading5" class="loading hidden"></span>
+<script>
+  var loadingAnimation = () => {
+      document.getElementById("loading1").classList.add("active")
+      setTimeout(() => {
+        document.getElementById("loading2").classList.add("active")
+      }, 100);
+      setTimeout(() => {
+        document.getElementById("loading3").classList.add("active")
+      }, 200);
+      setTimeout(() => {
+        document.getElementById("loading4").classList.add("active")
+      }, 300);
+      setTimeout(() => {
+        document.getElementById("loading5").classList.add("active")
+      }, 400);
+      setTimeout(() => {
+        for (let e of document.getElementsByClassName("loading")) {
+          e.classList.remove("active");
+        }
+      }, 1400)
+    }
+  window.activateLoading = () => {
+    loadingAnimation();
+    return setInterval(loadingAnimation, 1500);
+  }
+  window.forLoadingIcons = func => {
+    for (let e of document.getElementsByClassName("loading")) {
+      func(e);
+    }
+  }
+</script>

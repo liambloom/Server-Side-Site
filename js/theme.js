@@ -206,7 +206,10 @@ window.theme = {
 				root.style.setProperty("--bg", themes[theme.color].offWhite);
 				root.style.setProperty("--txt", themes[theme.color].offBlack);
 				document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-				document.getElementById("path2switch").style.setProperty("fill", "#000000");
+        document.getElementById("path2switch").style.setProperty("fill", "#000000");
+        if (typeof window.forLoadingIcons === "function") {
+          window.forLoadingIcons(e => { e.style.setProperty("background-color", "#0000007f"); });
+        }
 				try {
 					document.getElementById("path2Settings").style.setProperty("fill", "#000000");
 				}
@@ -216,7 +219,10 @@ window.theme = {
 			}
 			else {
 				root.style.setProperty("--bg", themes[theme.color].offBlack);
-				root.style.setProperty("--txt", themes[theme.color].headTextColor);
+        root.style.setProperty("--txt", themes[theme.color].headTextColor);
+        if (typeof window.forLoadingIcons === "function") {
+          window.forLoadingIcons(e => { e.style.setProperty("background-color", "#ffffff7f"); });
+        }
 				if (document.getElementById("visibility").className === "down") {
 					document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
 					document.getElementById("path2switch").style.setProperty("fill", "#ffffff");

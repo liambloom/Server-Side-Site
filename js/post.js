@@ -15,10 +15,14 @@ const post = (elem, page) => {
     };
     
     req.send(msg);*/
+    let msg = document.querySelector(elem).value.toString();
+    document.getElementById("main").innerHTML = "";
+    window.forLoadingIcons(e => { e.classList.remove("hidden"); });
+    window.activateLoading();
     fetch("/post/" + page, {
       method: "POST",
       body: JSON.stringify({
-        data: document.querySelector(elem).value.toString(),
+        data: msg,
         timestamp: new Date(),
         theme: window.themes[window.theme.color],
         color: window.theme.color

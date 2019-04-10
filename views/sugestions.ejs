@@ -7,8 +7,11 @@
 </head>
 	<%- include("header", {title: "Suggestions", choice: true}) %>
 	<div id="content" class="center">
-		<textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
-		<br>
-		<input type="button" value="Submit" onclick="post('#sugestion', 'sugestion')">
+    <div id="main">
+      <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
+      <br>
+      <input type="button" value="Submit" onclick="post('#sugestion', 'sugestion')">
+    </div>
+    <%- include("loading.html") %>
 	</div>
 </html>
