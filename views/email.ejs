@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false}) %>
+  <style>
+    body {
+      margin: 0px;
+      background-color: <%= offWhite %>;
+    }
+    #content {
+      margin: 20px;
+      padding: 20px;
+      color: <%= txt %>;
+      background-color: <%= offBlack %>
+    }
+    img {
+      height: 1em;
+      width: 1em;
+      position: fixed
+    }
+    #stop4538 {
+      stop-color:<%= light %>;
+      stop-opacity:1;
+    }
+    #stop4540 {
+      stop-color:<%= txt %>;
+      stop-opacity:1;
+    }
+    h1 {
+      margin: 0px;
+      color: <%= txt %>
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <h1><img src="https://liambloom.herokuapp.com/img/favicon/main/favicon_144.png"> Here's a suggestion!</h1>
+    <!--Make a switch satement here to include the correct color image. Also, turn all the colors into pngs-->
+    <%- data %>
+  </div>
+</body>
+</html>
