@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <%- include("head", {beta: false}) %>
+  <%- include("head", {beta: false, modal: false}) %>
   <style>
     body {
       margin: 0px;
@@ -30,13 +30,22 @@
       margin: 0px;
       color: <%= txt %>
     }
+    .notPurple {
+      color: <%= txt %>
+    }
+    .noBorder {
+      margin: 0px;
+      padding: 0px;
+    }
   </style>
 </head>
 <body>
   <div id="content">
     <h1><img src="https://liambloom.herokuapp.com/img/favicon/main/favicon_144.png"> Here's a suggestion!</h1>
     <!--Make a switch satement here to include the correct color image. Also, turn all the colors into pngs-->
-    <%- data %>
+    <div class="notPurple noBorder">
+     <%- data %>
+    </div>
   </div>
 </body>
 </html>

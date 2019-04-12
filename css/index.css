@@ -17,6 +17,9 @@ body {
 	color: var(--txt);
 	background-color: var(--bg);
 }
+:not(header).hidden {
+  display: none !important;
+}
 .credit {
 	font-size: 10px;
 	color: #ffffff7f;
@@ -69,12 +72,8 @@ a {
 	transform: rotate(-90deg);
 }
 #visibility.down #Capa_1 {
-	/*animation: down 1s ease 1;*/
 	transform: rotate(90deg);
 }
-/*#visibility.up {
-	animation: up 1s ease 1;
-}*/
 #settings #svg6 {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
@@ -91,12 +90,13 @@ a {
 #path4 {
 	transform: translate(0px, 0px);
 }
+#switchSpan #path4 {
+	transition: transform 500ms ease;
+}
 #switchSpan.up #path4 {
-	animation: flipUp 500ms ease 1;
 	transform: translate(0px, 0px);
 }
 #switchSpan.down #path4 {
-	animation: flipDown 500ms ease 1;
 	transform: translate(0px, 100px);
 }
 #menu {
@@ -108,7 +108,7 @@ a {
 }
 #choose {
 	z-index: 3;
-	height: 0px;/*calc(90vh - 31px);*/
+	height: 0px;
 	width: 288px;
 	position: fixed;
 	top: calc(1.15em + 45px);
@@ -117,12 +117,14 @@ a {
 	overflow: scroll;
 	overflow-x: hidden;
 }
+#choose {
+  transition: height 200ms ease;
+}
 #choose.grow {
-	animation: biggen 200ms ease 1;
 	height: calc(90vh - 31px);
 }
 #choose.shrink {
-	animation: smallen 200ms ease 1;
+	height: 0px;
 }
 header {
 	display: grid;
@@ -134,12 +136,6 @@ header {
 	grid-area: header;
 	color: var(--headTxt);
 	background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
-}
-header.hidden {
-	animation: contact 1s ease 1;
-}
-header.showing {
-	animation: expand 1s ease 1;
 }
 #logo {
 	grid-area: logo;
@@ -155,7 +151,8 @@ header h1 {
 	padding-left: 2px;
 	margin: 0px;
 	margin-bottom: 5px;
-	line-height: 113.2px;
+  line-height: 113.2px;
+  width: max-content;
 }
 header nav {
 	grid-area: nav;
@@ -183,7 +180,7 @@ header nav ul li a {
 header nav ul li a.main {
 	text-align: center;
 }
-header nav ul li a:hover {
+header nav ul li a:hover, header nav ul li a:focus {
 	background-color: #0000007f;
 }
 header nav ul li ul {
@@ -194,10 +191,10 @@ header nav ul li ul {
 header nav ul li ul li {
 	float: none
 }
-header nav ul li a:hover + ul {
+header nav ul li a:hover + ul, header nav ul li a:focus + ul {
 	display: initial;
 }
-header nav ul li ul:hover {
+header nav ul li ul:hover, header nav ul li ul:focus {
 	display: initial;
 }
 header nav ul li details {
@@ -227,15 +224,12 @@ input:focus, select:focus {
 	color: var(--headTxt);
 }
 input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"] {
-	text-align: center;
-	width: 70px;
-}
-input.load[type = "text"], input.load[type = "username"], input.load[type = "password"], input.load[type = "email"] {
-	animation: contract 500ms ease 1;
+  text-align: center;
+  width: 70px;
+  transition: width 500ms ease;
 }
 input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus {
 	width: 150px;
-	animation: expand 500ms ease 1;
 }
 input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
 	border: 2px solid var(--headTxt);
@@ -260,14 +254,6 @@ textarea:focus {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}
 }
-@keyframes biggen {
-	from {height: 0px;}
-	to {height: calc(90vh - 31px);}
-}
-@keyframes smallen {
-	from {height: calc(90vh - 31px);}
-	to {height: 0px;}
-}
 @keyframes expand {
 	from {width: 70px;}
 	to {width: 150px;}
@@ -276,30 +262,6 @@ textarea:focus {
 	from {width: 150px;}
 	to {width: 70px;}
 }
-@keyframes flipUp {
-	from {transform: translate(0px, 100px);}
-	to {transform: translate(0px, 0px);}
-}
-@keyframes flipDown {
-	from {transform: translate(0px, 0px);}
-	to {transform: translate(0px, 100px);}
-}
-/*@keyframes up {
-	from {transform: rotate(90deg);}
-	to {transform: rotate(-90deg);}
-}
-@keyframes down {
-	from {transform: rotate(-90deg);}
-	to {transform: rotate(90deg);}
-}
-@keyframes contract {
-	from {height: max-content}
-	to {height: 0px}
-}
-@keyframes expand {
-	from {height: 0px;}
-	to {height: max-content}
-}*/
 @supports (d: path("M0,0 l5,5")) {
 	@keyframes grow {
 		from {d: var(--hidePath);}
@@ -324,27 +286,17 @@ textarea:focus {
 	#menuBox.shrink {
 		animation: shrink 200ms ease 1;
 		d: var(--hidePath);
-		/*display: none;*/
 	}
 }
 @supports not (d: path("M0,0 l5,5")) {
-	@keyframes reveal {
-		from {height: 0px;}
-		to {height: 90vh;}
-	}
-	@keyframes conceal {
-		from {height: 90vh;}
-		to {height: 0px;}
-	}
 	#menu {
-		height: 0px;
+    height: 0px;
+    transition: height 200ms ease;
 	}
 	#menu.grow {
-		animation: reveal 200ms ease 1;
 		height: 90vh;
 	}
 	#menu.shrink{
-		animation: conceal 200ms ease 1;
 		height: 0
 	}
 }

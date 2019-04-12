@@ -13,39 +13,19 @@ window.onresize = () => {
 	//console.log(-document.getElementsByTagName("h1")[0].clientHeight);
 	root.style.setProperty("--size", -document.getElementsByTagName("h1")[0].clientHeight - 5 + "px");
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
+  if (window.innerWidth <= document.querySelector("#fixed header h1").clientWidth + 117) {
+    document.getElementById("fixed").style.setProperty("grid-template-columns", "max-content");
+    document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px max-content");
+  }
+  else {
+    document.getElementById("fixed").style.setProperty("grid-template-columns", "100%");
+    document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
+  }
 };
 window.onload = () => {
 	window.onresize();
 	if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
 	if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
-	
-	/*const req = new XMLHttpRequest();
-	req.open("GET", "/json/themes.json");
-	req.send();
-
-	req.onload = () => {
-		if (req.status === 200) {
-			window.themes = JSON.parse(req.response);
-			//rootstyle = getComputedStyle(root);
-			window.coustomThemeDefaults = () => {
-				/*document.getElementById("light").value = rootstyle.getPropertyValue("--light");
-				document.getElementById("dark").value = rootstyle.getPropertyValue("--dark");
-				document.getElementById("text").value = rootstyle.getPropertyValue("--headTxt");
-				let bgcolorArray = document.body.style.backgroundColor.match(/\d+/g);
-				let bgcolorString = "#";
-				for (let i = 0; i < 3; i++) {
-					bgcolorString += parseInt(bgcolorArray[i]).toString(16);
-				}
-				document.getElementById("bgcolor").value = bgcolorString;*//*
-			};
-			//coustomThemeDefaults();
-			theme.color = theme.default.color;
-			theme.mode = theme.default.mode;
-		}
-		else {
-			throw "Unable to retrieve themes.json";
-		}
-  };*/
   
   fetch("/json/themes.json")
     .then(res => {
@@ -149,13 +129,7 @@ window.onload = () => {
 		}
 	};
 
-	document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
-
-	const textInputs = document.querySelectorAll("input[type = 'text'], input[type = 'username'], input[type = 'password'], input[type = 'email']");
-	for (let i of textInputs) {
-		//console.log("set");
-		i.addEventListener("focus", () => {i.classList.add("load");});
-	}
+  document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 };
 window.theme = {
 	get color() {

@@ -1,0 +1,107 @@
+.modal-box {
+  position: fixed;
+	z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	background-color: var(--txt);
+	text-align: center;
+  margin: 0px;
+  border-radius: 20px;
+  color: var(--bg);
+}
+@media (orientation: landscape) {
+  .modal-box.large {
+    height: 50vh;
+    width: 50vw;
+    min-height: 309px;
+    min-width: 500px;
+  }
+  .modal-box.small {
+    height: 12vw;
+    width: 20vw;
+    min-height: 185px;
+    min-width: 300px;
+  }
+}
+@media (orientation: portrait) and (max-width: 370px) {
+  .modal-box {
+    max-width: 90vw;
+    max-height: 90vh;
+    min-width: 90vw;
+    min-height: 56vw;
+  }
+}
+@media (orientation: portrait) and (min-width: 370px) {
+  .modal-box.large {
+    max-width: 90vw;
+    max-height: 90vh;
+    min-width: 90vw;
+    min-height: 56vw;
+  }
+  .modal-box.small {
+    max-width: 80vw;
+    max-height: 80vh;
+    min-width: 300px;
+    min-height: 185px;
+  }
+}
+.modal-container-outer {
+  overflow: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.modal-container-inner {
+  margin: 30px;
+  width: calc(100% - 60px);
+  height: max-content;
+  min-height: calc(100% - 60px);
+}
+.modal-content {
+  margin: 0px;
+  margin-top: 30px;
+  width: 100%;
+  height: max-content;
+}
+.modal-bottom {
+  position: absolute;
+  height: max-content;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  text-align: right;
+  background-color: #0000007f;
+  padding: 10px;
+}
+.modal-overlay {
+  position: fixed;
+  z-index: 4;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0000007f
+}
+.yes {
+  background-color: #00220b !important;
+  border-color: #00aa38 !important;
+  color: #00aa38 !important;
+}
+.yes:hover, .yes:focus {
+  background-color: #004416 !important;
+  border-color: #00cc44 !important;
+  color: #00cc44 !important;
+}
+.no {
+  background-color: #220000 !important;
+  border-color: #aa0000 !important;
+  color: #aa0000 !important;
+}
+.no:hover, .no:focus {
+  background-color: #440000 !important;
+  border-color: #cc0000 !important;
+  color: #cc0000 !important;
+}

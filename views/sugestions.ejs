@@ -1,17 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<%- include("head", {beta: true})%>
+	<%- include("head", {beta: false, modal: true})%>
 	<title>Sugestions</title>
 	<script src="/js/post.js"></script>
 </head>
 	<%- include("header", {title: "Suggestions", choice: true}) %>
-	<div id="content" class="center">
+	<div id="confirm" class="center hidden">
+    <div class="modal-box small">
+      <div class="modal-container-outer">
+        <div class="modal-container-inner">
+          <div class="modal-content">
+            Are you sure you want to submit this?
+          </div>
+          <div class="modal-bottom">
+            <input type="button" value="No!" class="no" onclick="window.closeModals();">
+            <input type="button" value="Yes!" class="yes" onclick="post('#sugestion', 'sugestion'); window.closeModals();">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-overlay"></div>
+  </div>
+  <div id="content" class="center">
     <div id="main">
       <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
       <br>
       <input type="button" value="Submit" onclick="post('#sugestion', 'sugestion')">
     </div>
-    <%- include("loading.html") %>
-	</div>
+    <div id="loadingContainer" style="display: none;">
+      <%- include("loading.html") %>
+    </div>
+  </div>
 </html>

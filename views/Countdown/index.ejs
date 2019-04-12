@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<%- include("../head", {beta: false}) %>
+	<%- include("../head", {beta: false, modal: false}) %>
 	<title>Countdown</title>
 	<link rel="stylesheet" href="/css/countdown.css" type="text/css">
 	<script src="/js/countdownInit.js"></script>
@@ -26,10 +26,10 @@
 	<script src="/js/countdown3.js"></script>
 </head>
 <body>
-	<%- include("../header", {title: "Countdown", choice: true}) %>
+	<%- include("../header", {title: "Coustom Countdown", choice: true}) %>
 	<div id="content" class="center">
 		<div id="pre">
-		<h1>Pick a countdown...</h1>
+		<!--<h1>Pick a countdown...</h1>
 		<p id="Labels">
 			<a id="NewYearsDay" href="#NewYearsDay">New Years Day</a><br>
 			<a id="MLKDay" href="#MLKDay">Martin Luther King Jr. Day</a><br>
@@ -43,7 +43,7 @@
 			<a id="ChristmasDay" href="#ChristmasDay">Christmas Day</a><br>
 			<a id="Test" href="#Test">Test</a><br>
 		</p>
-		<h1>...or make your own</h1>
+		<h1>...or make your own</h1>-->
 		<form>
 			<div id="dateTimeTogether">
 				Date & Time:

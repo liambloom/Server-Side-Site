@@ -1,0 +1,10 @@
+@media (hover: hover) {
+  body {
+    background-color: red;
+  }
+}
+@media (hover: none) {
+  body {
+    background-color: blue;
+  }
+}
