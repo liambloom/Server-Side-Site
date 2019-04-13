@@ -1,4 +1,4 @@
-//jshint esversion:6
+//jshint esversion:7
 String.prototype.titleCase = function () {//arrow functions have a different use of "this" property
 	return this.charAt(0).toUpperCase() + this.slice(1);
 };
@@ -9,6 +9,7 @@ String.prototype.change = function () {
 	}
 };
 window.eventToElement = (event, e) => [...event.target.parentNode.children].find(event => event.tagName === e.toString().toUpperCase());
+window.timeout = {};
 window.root = document.documentElement;//imposible to not get this first
 window.onresize = () => {
 	//console.log(-document.getElementsByTagName("h1")[0].clientHeight);
@@ -133,17 +134,30 @@ window.onload = () => {
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
-    setTimeout(() => {
-      console.log("display none");
-      //console.log()
-      //e.target.style.setProperty("height", "0px");
-      [...e.target.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
-    }, 400);
-  };
-  const elementShow = e => {
     //console.log(e);
-    console.log("display initial");
-    eventToElement(e, "UL").style.setProperty("height", "max-content");
+    e = e.target;
+    if (!e.id) {
+      do {
+        e.id = Math.floor(Math.random() * 100).toString();
+      }
+      while (document.getElementById(e.id).length > 1);
+    }
+    if (window.timeout[e.id] === undefined) window.timeout[e.id] = [];
+    window.timeout[e.id].push(setTimeout(() => {
+      [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
+    }, 400));
+    console.log(window.timeout[e.id]);
+  };
+  const elementShow = event => {
+    try {
+      console.log(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length]);
+      clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 1]);
+      clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 2]);
+    }
+    catch(err) {
+      console.warn(err);
+    }
+    eventToElement(event, "UL").style.setProperty("height", "max-content");
   };
   for (let e of document.querySelectorAll("header nav ul li ul, header nav ul li a:not([href])")) {
     e.parentNode.addEventListener("mouseleave", e => {elementHide(e);});
