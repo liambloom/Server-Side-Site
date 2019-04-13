@@ -9,12 +9,12 @@
     margin: 20px 0px;
   }
   .loading.active {
-    animation: bounce 1s ease-in-out infinite;
+    animation: bounce 1.5s ease-in-out infinite;
   }
   @keyframes bounce {
     0% {bottom: 0px;}
-    30% {bottom: 25px;}
-    60% {bottom: 0px;}
+    20% {bottom: 25px;}
+    40% {bottom: 0px;}
     100% {bottom: 0px;}
   }
 </style>
@@ -28,16 +28,16 @@
       document.getElementById("loading1").classList.add("active")
       setTimeout(() => {
         document.getElementById("loading2").classList.add("active")
-      }, 100);
+      }, 125);
       setTimeout(() => {
         document.getElementById("loading3").classList.add("active")
-      }, 200);
+      }, 250);
       setTimeout(() => {
         document.getElementById("loading4").classList.add("active")
-      }, 300);
+      }, 375);
       setTimeout(() => {
         document.getElementById("loading5").classList.add("active")
-      }, 400);
+      }, 500);
       /*setTimeout(() => {
         for (let e of document.getElementsByClassName("loading")) {
           e.classList.remove("active");
