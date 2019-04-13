@@ -145,6 +145,10 @@ header {
 	width: 85px;
 	height: 85px;
 }
+/*[opacity="0"] {
+  display: none;
+  height: 0px;
+}*/
 header h1 {
 	grid-area: title;
 	font-size: 90px;
@@ -184,18 +188,22 @@ header nav ul li a:hover, header nav ul li a:focus {
 	background-color: #0000007f;
 }
 header nav ul li ul {
-	background-color: var(--dark);
-	display: none;
-	position: absolute;
+  background-color: var(--dark);
+  transition: opacity 400ms ease-in;
+	opacity: 0;
+  position: absolute;
+  height: 0px;
+  /*display: none;*/
 }
 header nav ul li ul li {
 	float: none
 }
-header nav ul li a:hover + ul, header nav ul li a:focus + ul {
-	display: initial;
-}
-header nav ul li ul:hover, header nav ul li ul:focus {
-	display: initial;
+/*header nav ul li a:hover + ul, header nav ul li a:focus + ul {
+  display: initial;
+}*/
+header nav ul li a:hover + ul, header nav ul li a:focus + ul, header nav ul li ul:hover, header nav ul li ul:focus {
+  opacity: 1;
+  /*display: initial;*/
 }
 header nav ul li details {
 	position: absolute;
@@ -248,7 +256,10 @@ textarea:focus {
 	border-color: var(--txt);
 }
 .wide {
-	width: 90vw;
+	width: 100px;
+}
+textarea.wide {
+  width: calc(100% - 20px);
 }
 @keyframes spin {
 	from {transform: rotate(0deg);}

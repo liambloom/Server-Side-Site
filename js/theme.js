@@ -8,6 +8,7 @@ String.prototype.change = function () {
 		else theme.mode = "dark";
 	}
 };
+window.eventToElement = (event, e) => [...event.target.parentNode.children].find(event => event.tagName === e.toString().toUpperCase());
 window.root = document.documentElement;//imposible to not get this first
 window.onresize = () => {
 	//console.log(-document.getElementsByTagName("h1")[0].clientHeight);
@@ -130,6 +131,28 @@ window.onload = () => {
 	};
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
+
+  const elementHide = e => {
+    setTimeout(() => {
+      console.log("display none");
+      //console.log()
+      //e.target.style.setProperty("height", "0px");
+      [...e.target.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
+    }, 400);
+  };
+  const elementShow = e => {
+    //console.log(e);
+    console.log("display initial");
+    eventToElement(e, "UL").style.setProperty("height", "max-content");
+  };
+  for (let e of document.querySelectorAll("header nav ul li ul, header nav ul li a:not([href])")) {
+    e.parentNode.addEventListener("mouseleave", e => {elementHide(e);});
+    e.parentNode.addEventListener("blur", e => {elementHide(e);});
+  }
+  for (let e of document.querySelectorAll("header nav ul li a:not([href])")) {
+    e.addEventListener("mouseenter", e => {elementShow(e);});
+    e.addEventListener("focus", e => {elementShow(e);});
+  }
 };
 window.theme = {
 	get color() {
