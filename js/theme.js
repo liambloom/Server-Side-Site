@@ -136,26 +136,21 @@ window.onload = () => {
   const elementHide = e => {
     //console.log(e);
     e = e.target;
-    if (!e.id) {
-      do {
-        e.id = Math.floor(Math.random() * 100).toString();
-      }
-      while (document.getElementById(e.id).length > 1);
-    }
-    if (window.timeout[e.id] === undefined) window.timeout[e.id] = [];
+    //id(e);
+    if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
     window.timeout[e.id].push(setTimeout(() => {
       [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
     }, 400));
-    console.log(window.timeout[e.id]);
+    //console.log(window.timeout[e.id]);
   };
   const elementShow = event => {
     try {
-      console.log(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length]);
+      //console.log(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length]);
       clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 1]);
       clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 2]);
     }
     catch(err) {
-      console.warn(err);
+      //console.warn(err);
     }
     eventToElement(event, "UL").style.setProperty("height", "max-content");
   };

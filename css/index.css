@@ -52,7 +52,7 @@ body {
 	text-align: right;
 }
 a {
-	color: var(--txt)
+	color: var(--txt);
 }
 #choose a {
 	color: var(--headTxt);
@@ -63,7 +63,7 @@ a {
 	top: 8px;
 	right: 8px;
 	height: max-content;
-	width: max-content
+	width: max-content;
 }
 #visibility #Capa_1 {
 	height: calc(1.15em + 6px);
@@ -79,7 +79,7 @@ a {
 	width: calc(1.15em + 12px);
 	margin: 1.5px;
 }
-#settings.spin #svg6 {	
+#settings.spin #svg6 {
 	animation: spin 600ms linear infinite;
 }
 #Layer_1 {
@@ -170,10 +170,10 @@ header nav ul {
 	overflow: hidden;
 }
 header nav ul li {
-		float: left
+		float: left;
 }
 header nav ul li.right {
-		float: right
+		float: right;
 }
 header nav ul li a {
 	display: block;
@@ -196,7 +196,7 @@ header nav ul li ul {
   /*display: none;*/
 }
 header nav ul li ul li {
-	float: none
+	float: none;
 }
 /*header nav ul li a:hover + ul, header nav ul li a:focus + ul {
   display: initial;
@@ -308,6 +308,6 @@ textarea.wide {
 		height: 90vh;
 	}
 	#menu.shrink{
-		height: 0
+		height: 0;
 	}
 }

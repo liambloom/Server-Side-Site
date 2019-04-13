@@ -6,7 +6,7 @@
 	<script src="/js/post.js"></script>
 </head>
 	<%- include("header", {title: "Suggestions", choice: true}) %>
-	<div id="confirm" class="center hidden">
+	<div id="confirm" class="center hidden modal">
     <div class="modal-box small">
       <div class="modal-container-outer">
         <div class="modal-container-inner">
@@ -14,19 +14,19 @@
             Are you sure you want to submit this?
           </div>
           <div class="modal-bottom">
-            <input type="button" value="No!" class="no" onclick="window.closeModals();">
-            <input type="button" value="Yes!" class="yes" onclick="post('#sugestion', 'sugestion'); window.closeModals();">
+            <input type="button" value="No!" class="no" onclick="window.modal.close();">
+            <input type="button" value="Yes!" class="yes" onclick="window.modal.close(); post('#sugestion', 'sugestion');">
           </div>
         </div>
       </div>
     </div>
-    <div class="modal-overlay"></div>
+    <div class="modal-overlay" onclick="window.modal.close()"></div>
   </div>
   <div id="content" class="center">
     <div id="main">
       <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
       <br>
-      <input type="button" value="Submit" onclick="post('#sugestion', 'sugestion')">
+      <input type="button" value="Submit" onclick="window.modal.open('#confirm')">
     </div>
     <div id="loadingContainer" style="display: none;">
       <%- include("loading.html") %>
