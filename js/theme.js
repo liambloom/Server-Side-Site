@@ -39,8 +39,6 @@ window.onload = () => {
       theme.mode=theme.default.mode;
     });
 
-  window.coustomThemeDefaults = () => {};//because it's called places but doesn't do anything anymore
-
 	try {
 		path = `
 			M20,10 
