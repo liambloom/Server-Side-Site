@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false})%>
+  <title>Loading...</title>
+</head>
+<body>
+  <%- include("header", {title: "Loading...", choice: true}) %>
+  <div id="content" class="center">
+    <%- include("loading.html") %>
+  </div>
+  <script>
+    loadingAnimation();
+  </script>
+</body>
+</html>
