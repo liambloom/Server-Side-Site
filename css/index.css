@@ -182,11 +182,11 @@ header nav ul li a {
   text-decoration: none;
   height: 1.15em;
 }
-header nav ul li a.main {
-	text-align: center;
+header nav ul li a:not([href]) {
+  width: min-content;
 }
 header nav ul li ul li a:hover, header nav ul li ul li a:focus {
-	background-color: #0000007f;
+	background-color: #0000005d;
 }
 header nav ul li ul {
   background-color: var(--dark);
@@ -196,20 +196,32 @@ header nav ul li ul {
   height: 0px;
 }
 header nav ul li ul li {
-	float: none;
+  float: none;
 }
-header nav ul li a .underline {
-  transition: height 400ms ease-in-out;
+header nav ul li a:not([href])::after {
+  content: "\200B";
+  transition-property: height, top;
+  transition-duration: 400ms;
+  transition-timing-function: ease-in-out;
+  color: var(--light);
   background-color: var(--light);
+  display: inline-block;
   position: relative;
-  top: 9px;
+  top: 14px;
   right: 10px;
-  width: calc(100% + 20px);
+  width: calc(100% + 20px);;
   height: 0px;
 }
-header nav ul li a.active .underline {
+header nav ul li a.active::after {
   height: 5px;
+  top: 9px;
 }
+/*header nav ul li ul li a {
+  width: 100%;
+}
+header nav ul li ul li a::after {
+  content: none;
+}*/
 header nav ul li a:hover ~ ul, header nav ul li a:focus ~ ul, header nav ul li ul:hover, header nav ul li ul:focus {
   opacity: 1;
 }
