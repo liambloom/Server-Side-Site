@@ -134,7 +134,8 @@ window.onload = () => {
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
-    //console.log(e);
+    //console.log(e.children[0]);
+    [...event.target.children].find(event => event.tagName === "A").classList.remove("active");
     e = e.target;
     //id(e);
     if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
@@ -153,6 +154,7 @@ window.onload = () => {
       //console.warn(err);
     }
     eventToElement(event, "UL").style.setProperty("height", "max-content");
+    eventToElement(event, "A").classList.add("active");
   };
   for (let e of document.querySelectorAll("header nav ul li ul, header nav ul li a:not([href])")) {
     e.parentNode.addEventListener("mouseleave", e => {elementHide(e);});
