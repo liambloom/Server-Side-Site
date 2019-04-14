@@ -154,7 +154,7 @@ window.onload = () => {
       //console.warn(err);
     }
     eventToElement(event, "UL").style.setProperty("height", "max-content");
-    eventToElement(event, "A").classList.add("active");
+    eventToElement(event, "A").classList.add("active");//I HATE that I have to do this. I HATE it. >:(
   };
   for (let e of document.querySelectorAll("header nav ul li ul, header nav ul li a:not([href])")) {
     e.parentNode.addEventListener("mouseleave", e => {elementHide(e);});
