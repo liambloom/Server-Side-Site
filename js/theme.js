@@ -12,7 +12,6 @@ window.eventToElement = (event, e) => [...event.target.parentNode.children].find
 window.timeout = {};
 window.root = document.documentElement;//imposible to not get this first
 window.onresize = () => {
-	//console.log(-document.getElementsByTagName("h1")[0].clientHeight);
 	root.style.setProperty("--size", -document.getElementsByTagName("h1")[0].clientHeight - 5 + "px");
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
   if (window.innerWidth <= document.querySelector("#fixed header h1").clientWidth + 117) {
@@ -38,12 +37,9 @@ window.onload = () => {
     .then(() => {
       theme.color = theme.default.color;
       theme.mode=theme.default.mode;
-      //return res;
     });
-    //.catch(err => console.error(err));
 
   window.coustomThemeDefaults = () => {};//because it's called places but doesn't do anything anymore
-  //I would get rid of it completely but it may do things again in the future
 
 	try {
 		path = `
@@ -76,14 +72,12 @@ window.onload = () => {
 		};
 	}
 	catch (err) {
-		//console.error(err);
 	}
 	document.onclick = event => {
 		try {
 			if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
 		}
 		catch (err) {
-			//console.error(err);
 		}
 	};
 
@@ -98,7 +92,6 @@ window.onload = () => {
 				document.getElementById("path2Settings").style.setProperty("fill", "#000000");
 			}
 			catch (err) {
-				//console.error(err);
 			}
 		}
 		else {
@@ -112,14 +105,12 @@ window.onload = () => {
 					document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
 				}
 				catch (err) {
-					//console.error(err);
 				}
 			}
 		}
 	};
 
 	document.getElementById("Layer_1").onclick = () => {
-		//console.log("This Ran");
 		theme.mode.change();
 		if (document.getElementById("switchSpan").className === "down") {
 			document.getElementById("switchSpan").className = "up";
@@ -134,24 +125,19 @@ window.onload = () => {
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
-    //console.log(e.children[0]);
     [...event.target.children].find(event => event.tagName === "A").classList.remove("active");
     e = e.target;
-    //id(e);
     if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
     window.timeout[e.id].push(setTimeout(() => {
       [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
     }, 400));
-    //console.log(window.timeout[e.id]);
   };
   const elementShow = event => {
     try {
-      //console.log(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length]);
       clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 1]);
       clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 2]);
     }
     catch(err) {
-      //console.warn(err);
     }
     eventToElement(event, "UL").style.setProperty("height", "max-content");
     eventToElement(event, "A").classList.add("active");//I HATE that I have to do this. I HATE it. >:(
@@ -175,7 +161,6 @@ window.theme = {
 			root.style.setProperty("--light", themes[name].gradientLight);
 			root.style.setProperty("--dark", themes[name].gradientDark);
 			root.style.setProperty("--headTxt", themes[name].headTextColor);
-			//root.style.setProperty("--bg", themes[name].bodyBgColor);
 			document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
 			document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
 			if (this.mode === "dark") {
@@ -190,7 +175,6 @@ window.theme = {
 				document.getElementById("menuBox").setAttribute("fill", themes[name].gradientDark);
 			}
 			catch (err) {
-				//console.error(err);
 			}
 			localStorage.setItem("color", name);
 			Object.defineProperty(this, "color", {
@@ -208,7 +192,6 @@ window.theme = {
 	},
 	set mode(name) {
 		name = name.toLowerCase();
-		//change the body bgcolor, setings fill color, and arrow fill color
 		if (/dark|light/.test(name)) {
 			if (name === "light") {
 				root.style.setProperty("--bg", themes[theme.color].offWhite);
@@ -222,7 +205,6 @@ window.theme = {
 					document.getElementById("path2Settings").style.setProperty("fill", "#000000");
 				}
 				catch (err) {
-					//console.error(err);
 				}
 			}
 			else {
@@ -238,7 +220,6 @@ window.theme = {
 						document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
 					}
 					catch (err) {
-						//console.error(err);
 					}
 				}
 			}
