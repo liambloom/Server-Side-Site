@@ -3,7 +3,8 @@
 const init = () => {
 	//console.log("init ran");
 	hash();
-	window.onhashchange = hash;
+  window.onhashchange = hash;
+  document.addEventListener("themeReady", () => {theme.mode = "dark";});
 	if (location.search == "") {
 		destroy("main");
 		if (check("datetime-local")) {
