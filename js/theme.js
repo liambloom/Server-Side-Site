@@ -28,6 +28,7 @@ window.onload = () => {
 	if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
 	if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
+  const fetched = new Event("themeReady");
   fetch("/json/themes.json")
     .then(res => {
       if (res.ok) return res.json();
@@ -36,7 +37,10 @@ window.onload = () => {
     .then(res => window.themes = res)
     .then(() => {
       theme.color = theme.default.color;
-      theme.mode=theme.default.mode;
+      theme.mode = theme.default.mode;
+    })
+    .then(() => {
+      document.dispatchEvent(fetched);
     });
 
 	try {
@@ -60,7 +64,7 @@ window.onload = () => {
 			if (document.getElementById("settings").className === "") {
 				document.getElementById("settings").className = "spin";
 				document.getElementById("menu").className.baseVal = "grow";
-				document.getElementById("menuBox").setAttribute("style", "display: initial;");
+				document.getElementById("menuBox").style.display = "initial";
 				document.getElementById("menuBox").setAttribute("class", "grow");
 				document.getElementById("choose").className = "grow";
 			}
@@ -83,7 +87,7 @@ window.onload = () => {
 		if (document.getElementById("visibility").className === "down") {
 			document.getElementById("visibility").className = "up";
 			document.getElementById("visibility").title = "Collapse Menu";
-			document.getElementsByTagName("header")[0].style.setProperty("display", "grid");
+			document.getElementsByTagName("header")[0].style.display = "grid";
 			document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
 			document.getElementById("path2switch").style.setProperty("fill", "#000000");
 			try {
@@ -95,7 +99,7 @@ window.onload = () => {
 		else {
 			document.getElementById("visibility").className = "down";
 			document.getElementById("visibility").title = "Expand Menu";
-			document.getElementsByTagName("header")[0].style.setProperty("display", "none");
+			document.getElementsByTagName("header")[0].style.display = "none";
 			if (theme.mode === "dark") {
 				document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
 				document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
@@ -242,7 +246,7 @@ var closeMenu = () => {
 	document.getElementById("menuBox").setAttribute("class", "shrink");
 	document.getElementById("choose").className = "shrink";
 	setTimeout(() => {
-		document.getElementById("menuBox").setAttribute("style", "display: none;");
+		document.getElementById("menuBox").style.display = "none";
 		document.getElementById("settings").className = "";
 	}, 200);
 };
