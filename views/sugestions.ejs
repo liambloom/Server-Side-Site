@@ -6,22 +6,9 @@
 	<script src="/js/post.js"></script>
 </head>
 	<%- include("header", {title: "Suggestions", choice: true}) %>
-	<div id="confirm" class="center hidden modal">
-    <div class="modal-box small">
-      <div class="modal-container-outer">
-        <div class="modal-container-inner">
-          <div class="modal-content">
-            Are you sure you want to submit this?
-          </div>
-          <div class="modal-bottom">
-            <input type="button" value="No!" class="no" onclick="window.modal.close();">
-            <input type="button" value="Yes!" class="yes" onclick="window.modal.close(); post('#sugestion', 'sugestion');">
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal-overlay" onclick="window.modal.close()"></div>
-  </div>
+  <modal id="confirm" data-escape="yn" data-confirm="post('#sugestion', 'sugestion');">
+    Are you sure you want to submit this?
+  </modal>
   <div id="content" class="center">
     <div id="main">
       <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>

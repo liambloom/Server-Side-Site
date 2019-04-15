@@ -18,6 +18,34 @@ window.modal = {
     }
     clearInterval(this.blurKey);
   },
+  init: function () {
+    modals = document.getElementsByTagName("modal");
+    fetch("/views/modal/index.html")
+    .then(res => res.text())
+    .then(res => {
+      for (let e of modals) {
+        content = e.innerHTML;
+        type = e.getAttribute("data-escape");
+        confirm = e.getAttribute("data-confirm") || "";
+        let newEl = document.createElement("div");
+        newEl.id = e.id;
+        newEl.classList = "center hidden modal";
+        newEl.innerHTML = res;
+        e.parentNode.replaceChild(newEl, e);
+        e = document.getElementById(newEl.id);
+        document.querySelector(`#${id(e)} .modal-content`).innerHTML = content;
+        fetch(`/views/modal/${type}.html`)
+        .then(res => {
+          if (res.ok) return res.text();
+          else throw type + " is not a valid type";
+        })
+        .then(res => res.replace("confirmFunction", confirm))
+        .then(res => {
+          document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
+        });
+      }
+    });
+  },
   get list() {
     return id(document.getElementsByClassName("modal"));
   },
@@ -32,3 +60,5 @@ window.modal = {
   },
   blurKey: undefined
 };
+if (document.readyState === "complete") modal.init();
+else window.addEventListener("load", modal.init);
