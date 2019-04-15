@@ -58,15 +58,16 @@ window.onload = () => {
 			v-${Math.floor(window.innerHeight * 0.9) - 31} 
 			a10,10 0 0 1 10,-10 
 			z`;
-		document.getElementById("menuBox").setAttribute("d", path);
 		root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
 		document.getElementById("settings").onclick = () => {
 			if (document.getElementById("settings").className === "") {
 				document.getElementById("settings").className = "spin";
-				document.getElementById("menu").className.baseVal = "grow";
-				document.getElementById("menuBox").style.display = "initial";
-				document.getElementById("menuBox").setAttribute("class", "grow");
-				document.getElementById("choose").className = "grow";
+        document.getElementById("choose").classList.add("grow");
+        document.getElementById("choose").classList.remove("shrink");
+        document.getElementById("choose").classList.remove("gone");
+        setTimeout(() => {
+          document.querySelector("#choose .inner").style.display = "block";
+        }, 60);
 			}
 			else {
 				closeMenu();
@@ -77,7 +78,7 @@ window.onload = () => {
 	}
 	document.onclick = event => {
 		try {
-			if (!event.target.closest("#menu, #menuBox, #choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+			if (!event.target.closest("#choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
 		}
 		catch (err) {
 		}
@@ -173,11 +174,6 @@ window.theme = {
 				root.style.setProperty("--bg", themes[name].offWhite);
 				root.style.setProperty("--txt", themes[name].offBlack);
 			}
-			try {
-				document.getElementById("menuBox").setAttribute("fill", themes[name].gradientDark);
-			}
-			catch (err) {
-			}
 			localStorage.setItem("color", name);
 			Object.defineProperty(this, "color", {
 				get: function() {
@@ -242,11 +238,13 @@ window.theme = {
 	}
 };
 var closeMenu = () => {
-	document.getElementById("menu").className.baseVal = "shrink";
-	document.getElementById("menuBox").setAttribute("class", "shrink");
-	document.getElementById("choose").className = "shrink";
+  document.getElementById("choose").classList.add("shrink");
+  document.getElementById("choose").classList.remove("grow");
+  setTimeout(() => {
+    document.querySelector("#choose .inner").style.display = "none";
+  }, 240);
 	setTimeout(() => {
-		document.getElementById("menuBox").style.display = "none";
-		document.getElementById("settings").className = "";
-	}, 200);
+    document.getElementById("settings").className = "";
+    document.getElementById("choose").classList.add("gone");
+	}, 300);
 };

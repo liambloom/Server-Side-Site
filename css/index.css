@@ -23,16 +23,16 @@ body {
 .credit {
 	font-size: 10px;
 	color: #ffffff7f;
-	line-height: 12px;
+  line-height: 12px;
+  margin-bottom: 20px;
 }
 ::selection {
   color: var(--bg);
   background-color: var(--txt)
 }
 #choose img {
-	width: 250px;
-	height: 80px;
-	margin: 10px 31px 10px 7px;
+	width: calc(100% + 17px);
+	margin: 10px 0px;
 	border-radius: 10px;
 }
 #fixed {
@@ -103,6 +103,42 @@ a {
 #switchSpan.down #path4 {
 	transform: translate(0px, 100px);
 }
+.arrowBox {
+  position: relative;
+  width: max-content;
+  height: max-content;
+  border-radius: 10px;
+  background-color: #0000007f;
+  color: #ffffff;
+  padding: 10px;
+}
+.arrowBox::after {
+  content: "";
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  border: 10px solid transparent;
+}
+.arrowBox[data-direction = "up"]::after {
+  border-bottom: 10px solid #0000007f;
+  bottom: 100%;
+  left: calc(50% - 10px);
+}
+.arrowBox[data-direction = "down"]::after {
+  border-top: 10px solid #0000007f;
+  top: 100%;
+  left: calc(50% - 10px);
+}
+.arrowBox[data-direction = "left"]::after {
+  border-right: 10px solid #0000007f;
+  right: 100%;
+  top: calc(50% - 10px);
+}
+.arrowBox[data-direction = "right"]::after {
+  border-left: 10px solid #0000007f;
+  left: 100%;
+  top: calc(50% - 10px);
+}
 #menu {
 	position: fixed;
 	z-index: 1;
@@ -111,24 +147,39 @@ a {
 	width: 300px;
 }
 #choose {
-	z-index: 3;
-	height: 0px;
-	width: 288px;
+  z-index: 3;
+  padding: 0px;
+	width: 300px;
 	position: fixed;
-	top: calc(1.15em + 45px);
+  top: calc(1.15em + 38px);
+  bottom: calc(100vh - (1.15em + 38px));
 	right: 12px;
 	border-radius: 10px;
-	overflow: scroll;
-	overflow-x: hidden;
+  transition: bottom 300ms ease;
+  background-color: var(--dark);
 }
-#choose {
-  transition: height 200ms ease;
+#choose:not([class="gone"])::after {
+  left: 248px;
+  border-bottom-color: var(--dark);
+  z-index: 3;
+}
+#choose.gone::after {
+  display: none;
 }
 #choose.grow {
-	height: calc(90vh - 31px);
+  bottom: 13px;
 }
 #choose.shrink {
-	height: 0px;
+  bottom: calc(100vh - (1.15em + 38px));
+}
+#choose .inner {
+  padding: 20px;
+  padding-right: 37px;
+  overflow: scroll;
+  overflow-x: hidden;
+  height: calc(100% - 40px);
+  width: calc(100% - 57px);
+  display: none;
 }
 header {
 	display: grid;
@@ -296,42 +347,4 @@ textarea.wide {
 @keyframes contract {
 	from {width: 150px;}
 	to {width: 70px;}
-}
-@supports (d: path("M0,0 l5,5")) {
-	@keyframes grow {
-		from {d: var(--hidePath);}
-		to {d: var(--path);}
-	}
-	@keyframes shrink {
-		from {d: var(--path);}
-		to {d: var(--hidePath);}
-	}
-	#menu {
-		height: 90vh;
-	}
-	#menuBox.none {
-		d: var(--hidePath);
-		display: none;
-	}
-	#menuBox.grow {
-		display: initial;
-		d: var(--path);
-		animation: grow 200ms ease 1;
-	}
-	#menuBox.shrink {
-		animation: shrink 200ms ease 1;
-		d: var(--hidePath);
-	}
-}
-@supports not (d: path("M0,0 l5,5")) {
-	#menu {
-    height: 0px;
-    transition: height 200ms ease;
-	}
-	#menu.grow {
-		height: 90vh;
-	}
-	#menu.shrink{
-		height: 0;
-	}
 }
