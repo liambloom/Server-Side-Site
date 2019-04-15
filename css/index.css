@@ -216,6 +216,20 @@ header nav ul li a:not([href])::after {
   width: calc(100% + 20px);;
   height: 0px;
 }
+header nav ul li a[href]::after {
+  vertical-align: super;
+  font-style: italic;
+  font-size: 0.9em;
+  line-height: 0px;
+}
+header nav ul li a[href].alpha::after {
+  content: "alpha";
+  color: #f92472;
+}
+header nav ul li a[href].beta::after {
+  content: "beta";
+  color: #e79622;
+}
 header nav ul li a.active::after {
   height: 5px;
   top: 9px;
