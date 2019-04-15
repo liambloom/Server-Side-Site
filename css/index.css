@@ -47,10 +47,10 @@ body {
 }
 #content {
   line-height: 1.35em;
-  width: calc(100% - 100px);
+  margin: 50px;
 }
 .center {
-	text-align: center;
+  text-align: center;
 }
 .right {
 	text-align: right;
