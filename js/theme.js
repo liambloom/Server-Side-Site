@@ -87,7 +87,7 @@ window.onload = () => {
 	document.getElementById("Capa_1").onclick = () => {
 		if (document.getElementById("visibility").className === "down") {
 			document.getElementById("visibility").className = "up";
-			document.getElementById("visibility").title = "Collapse Menu";
+			document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
 			document.getElementsByTagName("header")[0].style.display = "grid";
 			document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
 			document.getElementById("path2switch").style.setProperty("fill", "#000000");
@@ -99,7 +99,7 @@ window.onload = () => {
 		}
 		else {
 			document.getElementById("visibility").className = "down";
-			document.getElementById("visibility").title = "Expand Menu";
+			document.querySelector("#visibility .arrowBox").innerHTML = "Expand Menu";
 			document.getElementsByTagName("header")[0].style.display = "none";
 			if (theme.mode === "dark") {
 				document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
@@ -117,13 +117,15 @@ window.onload = () => {
 		theme.mode.change();
 		if (document.getElementById("switchSpan").className === "down") {
 			document.getElementById("switchSpan").className = "up";
-			document.getElementById("switchSpan").title = "Light Mode";
 		}
 		else {
 			document.getElementById("switchSpan").className = "down";
-			document.getElementById("switchSpan").title = "Dark Mode";
-		}
+    }
+    if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
+    else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
 	};
+  if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
+  else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
@@ -152,6 +154,14 @@ window.onload = () => {
   for (let e of document.querySelectorAll("header nav ul li a:not([href])")) {
     e.addEventListener("mouseenter", e => {elementShow(e);});
     e.addEventListener("focus", e => {elementShow(e);});
+  }
+
+  for (let e of document.querySelectorAll(".arrowBox.up:not(#choose), arrowBox.down")) {
+    e.parentNode.style.setProperty("display", "inline-flex");
+    e.parentNode.style.setProperty("justify-content", "center");
+  }
+  for (let e of document.querySelectorAll(".arrowBox.arrowRight")) {
+    e.parentNode.style.setProperty("justify-content", "flex-end");
   }
 };
 window.theme = {

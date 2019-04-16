@@ -12,11 +12,20 @@
 	<!-- Arrow Icon from Freepik @ https://www.flaticon.com/free-icon/arrow-point-to-right_32213 -->
 	<!-- Switch Icon from Pixel Buddah @ https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92 -->
 	<div id="topRight">
-    <span title="Light Mode" id="switchSpan"><%- include("../img/switch3.svg") %></span>
-      <span title="Change Theme" id="settings"><%- include("../img/Settings-icon.svg") %></span>
-    <span title="Collapse Menu" id="visibility"><%- include("../img/arrow.svg") %></span>
+    <span id="switchSpan">
+      <%- include("../img/switch3.svg") %>
+      <div class="arrowBox up">Light Mode</div>
+    </span>
+    <span id="settings">
+      <%- include("../img/Settings-icon.svg") %>
+      <div class="arrowBox up">Change Theme</div>
+    </span>
+    <span id="visibility">
+      <%- include("../img/arrow.svg") %>
+      <div class="arrowBox up arrowRight">Collapse Menu</div>
+    </span>
   </div>
-    <div id="choose" class="arrowBox gone" data-direction="up">
+    <div id="choose" class="arrowBox up gone">
       <div class="inner">
         <img src="/img/themes/Red.png" onclick="window.theme.color = 'red';">
         <img src="/img/themes/Orange.png" onclick="window.theme.color = 'orange';">
