@@ -160,8 +160,20 @@ window.onload = () => {
     e.parentNode.style.setProperty("display", "inline-flex");
     e.parentNode.style.setProperty("justify-content", "center");
   }
-  for (let e of document.querySelectorAll(".arrowBox.arrowRight")) {
-    e.parentNode.style.setProperty("justify-content", "flex-end");
+  const align = event => {
+    let tooltip = eventToElement(event, "DIV");
+    if (tooltip.getBoundingClientRect().right > window.innerWidth) {
+      tooltip.classList.add("arrowRight");
+      /*eventToElement(event, "DIV")*/event.target.parentNode.style.setProperty("justify-content", "flex-end");
+    }
+    event.target.removeEventListener("mouseenter", align);
+  };
+  for (let e of document.querySelectorAll(".arrowBox")) {
+    try {
+      [...e.parentNode.children].filter(elem => elem.tagName === "svg")[0]
+      .addEventListener("mouseenter", event => {align(event);});
+    }
+    catch (err) {}
   }
 };
 window.theme = {
