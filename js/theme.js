@@ -88,9 +88,9 @@ window.onload = () => {
     // This didn't work
     // event.target = document.getElementById("Capa_1").onclick;// Otherwise it could be a child element, which breaks the eventToElement function
     if (CSS.supports("width: max-content")) {
-      var tooltip = eventToElement(event, "DIV");
+      var tooltip = [...document.getElementById("visibility").children].find(i => i.tagName === "DIV");
       var tooltipProps = tooltip.getBoundingClientRect();
-      var pointerX = parseFloat(window.getComputedStyle(tooltip, "::after"));
+      var pointerX = parseFloat(window.getComputedStyle(tooltip, "::after").left);
     }
     if (document.getElementById("visibility").className === "down") {
       document.getElementById("visibility").className = "up";
@@ -171,14 +171,14 @@ window.onload = () => {
       e.parentNode.style.setProperty("display", "inline-flex");
       e.parentNode.style.setProperty("justify-content", "center");
     }
-    let newStyle = document.createElement("style");
-    document.head.appendChild(newStyle);
-    window.tooltipArrowFix = newStyle.sheet;
     const align = event => {
+      let newStyle = document.createElement("style");
+      document.head.appendChild(newStyle);
+      window.arrowFix = newStyle.sheet;
       let tooltip = eventToElement(event, "DIV");
       let tooltipProps = tooltip.getBoundingClientRect();
       if (tooltipProps.right > window.innerWidth) {
-        let pointerX = (tooltipProps.width / 2) - 10;//(((tooltipProps.right + event.target.getBoundingClientRect().right) - (event.target.getBoundingClientRect().width / 2)) + tooltipProps.width) - 30;
+        let pointerX = (tooltipProps.width / 2) - 10;
         tooltip.classList.add("arrowRight");
         event.target.parentNode.style.setProperty("justify-content", "flex-end");
         arrowPosition(tooltip, tooltipProps, pointerX);
@@ -186,12 +186,11 @@ window.onload = () => {
       event.target.removeEventListener("mouseenter", align);
     };
     window.arrowPosition = (tooltip, tooltipProps, pointerX) => {
-      console.log(tooltipProps.left - tooltip.getBoundingClientRect().left);
-      window.tooltipArrowFix.insertRule(`
+      window.arrowFix.insertRule(`
         #${id(tooltip)}::after {
-          left: ${(pointerX + (Math.abs(tooltipProps.left - tooltip.getBoundingClientRect().left)))}px;
+          left: ${(pointerX + (tooltipProps.left - tooltip.getBoundingClientRect().left))}px;
         }
-      `, window.tooltipArrowFix.cssRules.length);
+      `, window.arrowFix.cssRules.length);
     };
     for (let e of document.querySelectorAll(".arrowBox")) {
       try {
@@ -200,6 +199,35 @@ window.onload = () => {
       }
       catch (err) {}
     }
+  }
+  else {
+    /*let changeTooltip = e => {e.parentNode.title = e.innerHTML;};
+    for (let e of document.querySelectorAll(".arrowBox:not(.required)")) {
+      console.log(changeTooltip);
+      console.log(e);
+      changeTooltip(e);
+      new MutationObserver((list, observer) => {
+        changeTooltip(e);
+      }).observe(e, { attributes: false, childList: false, subtree: true });
+    }*/
+    let ua = navigator.userAgent;
+    let browser;
+    if (/MSIE|Trident/i.test(ua)) {
+      browser = "Internet Explorer";// IE will throw hundreds of errors before it gets this far
+    }
+    else if (/Edge/i.test(ua)) {
+      browser = "Edge";
+    }
+    else if (/(?:iPhone|iPad)[^]+Safari/.test(ua)) {
+      browser = "Safari for iOS";
+    }
+    else if (/Firefox/im.test(ua)) {
+      browser = "old versions of Firefox";
+    }
+    else {
+      browser = "your browser";
+    }
+    alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
   }
 };
 window.theme = {
