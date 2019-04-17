@@ -85,32 +85,42 @@ window.onload = () => {
 	};
 
 	document.getElementById("Capa_1").onclick = () => {
-		if (document.getElementById("visibility").className === "down") {
-			document.getElementById("visibility").className = "up";
-			document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
-			document.getElementsByTagName("header")[0].style.display = "grid";
-			document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-			document.getElementById("path2switch").style.setProperty("fill", "#000000");
-			try {
-				document.getElementById("path2Settings").style.setProperty("fill", "#000000");
-			}
-			catch (err) {
-			}
-		}
-		else {
-			document.getElementById("visibility").className = "down";
-			document.querySelector("#visibility .arrowBox").innerHTML = "Expand Menu";
-			document.getElementsByTagName("header")[0].style.display = "none";
-			if (theme.mode === "dark") {
-				document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
-				document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
-				try {
-					document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
-				}
-				catch (err) {
-				}
-			}
-		}
+    // This didn't work
+    // event.target = document.getElementById("Capa_1").onclick;// Otherwise it could be a child element, which breaks the eventToElement function
+    if (CSS.supports("width: max-content")) {
+      var tooltip = eventToElement(event, "DIV");
+      var tooltipProps = tooltip.getBoundingClientRect();
+      var pointerX = parseFloat(window.getComputedStyle(tooltip, "::after"));
+    }
+    if (document.getElementById("visibility").className === "down") {
+      document.getElementById("visibility").className = "up";
+      document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
+      document.getElementsByTagName("header")[0].style.display = "grid";
+      document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
+      document.getElementById("path2switch").style.setProperty("fill", "#000000");
+      try {
+        document.getElementById("path2Settings").style.setProperty("fill", "#000000");
+      }
+      catch (err) {
+      }
+    }
+    else {
+      document.getElementById("visibility").className = "down";
+      document.querySelector("#visibility .arrowBox").innerHTML = "Expand Menu";
+      document.getElementsByTagName("header")[0].style.display = "none";
+      if (theme.mode === "dark") {
+        document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
+        document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
+        try {
+          document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
+        }
+        catch (err) {
+        }
+      }
+    }
+    if (CSS.supports("width: max-content")) {
+      arrowPosition(tooltip, tooltipProps, pointerX);
+    }
 	};
 
 	document.getElementById("Layer_1").onclick = () => {
@@ -156,24 +166,40 @@ window.onload = () => {
     e.addEventListener("focus", e => {elementShow(e);});
   }
 
-  for (let e of document.querySelectorAll(".arrowBox.up:not(#choose), arrowBox.down")) {
-    e.parentNode.style.setProperty("display", "inline-flex");
-    e.parentNode.style.setProperty("justify-content", "center");
-  }
-  const align = event => {
-    let tooltip = eventToElement(event, "DIV");
-    if (tooltip.getBoundingClientRect().right > window.innerWidth) {
-      tooltip.classList.add("arrowRight");
-      /*eventToElement(event, "DIV")*/event.target.parentNode.style.setProperty("justify-content", "flex-end");
+  if (CSS.supports("width: max-content")) {
+    for (let e of document.querySelectorAll(".arrowBox.up:not(#choose), arrowBox.down")) {
+      e.parentNode.style.setProperty("display", "inline-flex");
+      e.parentNode.style.setProperty("justify-content", "center");
     }
-    event.target.removeEventListener("mouseenter", align);
-  };
-  for (let e of document.querySelectorAll(".arrowBox")) {
-    try {
-      [...e.parentNode.children].filter(elem => elem.tagName === "svg")[0]
-      .addEventListener("mouseenter", event => {align(event);});
+    let newStyle = document.createElement("style");
+    document.head.appendChild(newStyle);
+    window.tooltipArrowFix = newStyle.sheet;
+    const align = event => {
+      let tooltip = eventToElement(event, "DIV");
+      let tooltipProps = tooltip.getBoundingClientRect();
+      if (tooltipProps.right > window.innerWidth) {
+        let pointerX = (tooltipProps.width / 2) - 10;//(((tooltipProps.right + event.target.getBoundingClientRect().right) - (event.target.getBoundingClientRect().width / 2)) + tooltipProps.width) - 30;
+        tooltip.classList.add("arrowRight");
+        event.target.parentNode.style.setProperty("justify-content", "flex-end");
+        arrowPosition(tooltip, tooltipProps, pointerX);
+      }
+      event.target.removeEventListener("mouseenter", align);
+    };
+    window.arrowPosition = (tooltip, tooltipProps, pointerX) => {
+      console.log(tooltipProps.left - tooltip.getBoundingClientRect().left);
+      window.tooltipArrowFix.insertRule(`
+        #${id(tooltip)}::after {
+          left: ${(pointerX + (Math.abs(tooltipProps.left - tooltip.getBoundingClientRect().left)))}px;
+        }
+      `, window.tooltipArrowFix.cssRules.length);
+    };
+    for (let e of document.querySelectorAll(".arrowBox")) {
+      try {
+        [...e.parentNode.children].filter(elem => elem.tagName === "svg")[0]
+        .addEventListener("mouseenter", event => {align(event);});
+      }
+      catch (err) {}
     }
-    catch (err) {}
   }
 };
 window.theme = {

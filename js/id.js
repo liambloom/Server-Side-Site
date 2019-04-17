@@ -14,7 +14,7 @@ var id = e => {
     catch (err) {
       res = undefined;
       if (!e.id) {
-        let max = document.querySelectorAll("*").length;
+        let max = document.querySelectorAll("*").length + 1;//In case I pass in an element that doesn't exist yet
         do {
           e.id = "e" + Math.floor(Math.random() * max).toString();
         }

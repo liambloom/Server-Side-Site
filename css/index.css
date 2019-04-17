@@ -110,16 +110,27 @@ a {
 :not(:hover) .arrowBox {
   display: none;
 }
+ #topRight :hover .arrowBox {
+  display: inline-block;
+}
+@supports (not (width: max-content)) {
+  .arrowBox:not(.required) {
+    display: none !important;
+  }
+}
 .arrowBox {
   display: inline-block;
   position: absolute;
-  width: max-content;
   height: max-content;
   border-radius: 10px;
   background-color: #1f1f1f;
   color: #ffffff;
   padding: 10px;
 }
+.arrowBox {
+  width: max-content;
+}
+
 .arrowBox::after {
   content: "";
   position: absolute;
@@ -154,12 +165,7 @@ a {
   top: calc(50% - 10px);
 }
 .arrowBox.arrowRight {
-  /*margin-right: 76px;*/
-  /*margin-right: -8px;*/
-  margin-right: calc(50% - 37px);/*This doesn't do quite what I want in firefox and doesn't do anything chrome*/
-}
-.arrowBox.arrowRight::after {
-  left: calc(100% - 30px);
+  right: 0px;
 }
 #choose {
   z-index: 3;
