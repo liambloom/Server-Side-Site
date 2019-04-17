@@ -3,9 +3,8 @@ const loadFun = () => {
   document.getElementById("Capa_1").onclick();
   document.getElementById("switchSpan").style.display = "none";
   document.getElementById("Capa_1").addEventListener("click", resizeFun);
-  document.addEventListener("themeReady", () => {
-    window.theme.mode = "light";
-  });
+  if (window.themeReady) window.theme.mode = "light";
+  else window.addEventListener("themeReady", () => {window.theme.mode = "light";});
   resizeFun();
 };
 const resizeFun = () => {

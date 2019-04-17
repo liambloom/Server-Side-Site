@@ -23,12 +23,16 @@ window.onresize = () => {
     document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
+//window. = () => {
+  let newStyle = document.createElement("style");
+  document.head.appendChild(newStyle);
+  window.arrowFix = newStyle.sheet;
+//};
 window.onload = () => {
-	window.onresize();
-	if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
-	if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
+  window.onresize();
+  if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
+  if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
-  const fetched = new Event("themeReady");
   fetch("/json/themes.json")
     .then(res => {
       if (res.ok) return res.json();
@@ -40,53 +44,52 @@ window.onload = () => {
       theme.mode = theme.default.mode;
     })
     .then(() => {
-      document.dispatchEvent(fetched);
+      window.dispatchEvent(new Event("themeReady"));
+      window.themeReady = true;
     });
 
-	try {
-		path = `
-			M20,10 
-			h225 
-			l7,-10 
-			l7,10 
-			h30 
-			a10,10 0 0 1 10,10 
-			v${Math.floor(window.innerHeight * 0.9) - 31} 
-			a10,10 0 0 1 -10,10 
-			h-278 
-			a10,10 0 0 1 -10,-10 
-			v-${Math.floor(window.innerHeight * 0.9) - 31} 
-			a10,10 0 0 1 10,-10 
-			z`;
-		root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
-		document.getElementById("settings").onclick = () => {
-			if (document.getElementById("settings").className === "") {
-				document.getElementById("settings").className = "spin";
+  try {
+    path = `
+      M20,10 
+      h225 
+      l7,-10 
+      l7,10 
+      h30 
+      a10,10 0 0 1 10,10 
+      v${Math.floor(window.innerHeight * 0.9) - 31} 
+      a10,10 0 0 1 -10,10 
+      h-278 
+      a10,10 0 0 1 -10,-10 
+      v-${Math.floor(window.innerHeight * 0.9) - 31} 
+      a10,10 0 0 1 10,-10 
+      z`;
+    root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
+    document.getElementById("settings").onclick = () => {
+      if (document.getElementById("settings").className === "") {
+        document.getElementById("settings").className = "spin";
         document.getElementById("choose").classList.add("grow");
         document.getElementById("choose").classList.remove("shrink");
         document.getElementById("choose").classList.remove("gone");
         setTimeout(() => {
           document.querySelector("#choose .inner").style.display = "block";
         }, 60);
-			}
-			else {
-				closeMenu();
-			}
-		};
-	}
-	catch (err) {
-	}
-	document.onclick = event => {
-		try {
-			if (!event.target.closest("#choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
-		}
-		catch (err) {
-		}
-	};
+      }
+      else {
+        closeMenu();
+      }
+    };
+  }
+  catch (err) {
+  }
+  document.onclick = event => {
+    try {
+      if (!event.target.closest("#choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+    }
+    catch (err) {
+    }
+  };
 
-	document.getElementById("Capa_1").onclick = () => {
-    // This didn't work
-    // event.target = document.getElementById("Capa_1").onclick;// Otherwise it could be a child element, which breaks the eventToElement function
+  document.getElementById("Capa_1").onclick = () => {
     if (CSS.supports("width: max-content")) {
       var tooltip = [...document.getElementById("visibility").children].find(i => i.tagName === "DIV");
       var tooltipProps = tooltip.getBoundingClientRect();
@@ -121,19 +124,19 @@ window.onload = () => {
     if (CSS.supports("width: max-content")) {
       arrowPosition(tooltip, tooltipProps, pointerX);
     }
-	};
+  };
 
-	document.getElementById("Layer_1").onclick = () => {
-		theme.mode.change();
-		if (document.getElementById("switchSpan").className === "down") {
-			document.getElementById("switchSpan").className = "up";
-		}
-		else {
-			document.getElementById("switchSpan").className = "down";
+  document.getElementById("Layer_1").onclick = () => {
+    theme.mode.change();
+    if (document.getElementById("switchSpan").className === "down") {
+      document.getElementById("switchSpan").className = "up";
+    }
+    else {
+      document.getElementById("switchSpan").className = "down";
     }
     if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
     else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
-	};
+  };
   if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
   else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
 
@@ -172,9 +175,6 @@ window.onload = () => {
       e.parentNode.style.setProperty("justify-content", "center");
     }
     const align = event => {
-      let newStyle = document.createElement("style");
-      document.head.appendChild(newStyle);
-      window.arrowFix = newStyle.sheet;
       let tooltip = eventToElement(event, "DIV");
       let tooltipProps = tooltip.getBoundingClientRect();
       if (tooltipProps.right > window.innerWidth) {
