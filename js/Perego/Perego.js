@@ -200,7 +200,7 @@ var perego = {
 	},
 	/*theme: {
 		get color() {
-			//Yes, I borrowed many of these colors from sublime text 3
+			//I borrowed many of these colors from monokai theme
 			return {
 				red: "#f92472",
 				orange: "#e79622",
