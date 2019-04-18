@@ -95,19 +95,20 @@ window.onload = () => {
       var tooltipProps = tooltip.getBoundingClientRect();
       var pointerX = parseFloat(window.getComputedStyle(tooltip, "::after").left);
     }
-    if (document.getElementById("visibility").className === "down") {
+    if (document.getElementById("visibility").className === "down") {// Expand Menu
       document.getElementById("visibility").className = "up";
       document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
       document.getElementsByTagName("header")[0].style.display = "grid";
       document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-      document.getElementById("path2switch").style.setProperty("fill", "#000000");
+      document.getElementById("path2switch").style.setProperty("fill", "#000000"); 
       try {
         document.getElementById("path2Settings").style.setProperty("fill", "#000000");
       }
       catch (err) {
       }
+      window.onscroll();
     }
-    else {
+    else {// Collapse Menu
       document.getElementById("visibility").className = "down";
       document.querySelector("#visibility .arrowBox").innerHTML = "Expand Menu";
       document.getElementsByTagName("header")[0].style.display = "none";
@@ -167,6 +168,10 @@ window.onload = () => {
   for (let e of document.querySelectorAll("header nav ul li a:not([href])")) {
     e.addEventListener("mouseenter", e => {elementShow(e);});
     e.addEventListener("focus", e => {elementShow(e);});
+  }
+  for (let e of document.querySelectorAll("header nav ul li ul")) {
+    e.addEventListener("mouseenter", e => { elementShow(e); });
+    e.addEventListener("focus", e => { elementShow(e); });
   }
 
   if (CSS.supports("width: max-content")) {
@@ -228,6 +233,14 @@ window.onload = () => {
       browser = "your browser";
     }
     alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
+  }
+};
+window.onscroll = () => {
+  if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
+    document.querySelector("header nav ul li.right").classList.remove("hide");
+  }
+  else {
+    document.querySelector("header nav ul li.right").classList.add("hide");
   }
 };
 window.theme = {
