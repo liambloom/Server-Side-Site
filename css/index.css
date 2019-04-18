@@ -253,11 +253,13 @@ header nav ul li {
 }
 header nav ul li.right {
   float: right;
+}
+header nav ul li.right a:not([href]) {
   transition: top 400ms ease-out;
   top: 0px;
-  position: relative; /* This makes the dropdown menu never apear */
+  position: relative;
 }
-header nav ul li.right.hide {
+header nav ul li.right.hide a:not([href]) {
   top: calc(1.15em + 28px);
 }
 header nav ul li a {
