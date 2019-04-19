@@ -38,7 +38,7 @@ body {
 #fixed {
 	display: grid;
 	position: sticky;
-	grid-template-rows: max-content max-content;
+	grid-template-rows: max-content 0px;
 	grid-template-columns: 100%;
 	grid-template-areas: 
 		"header"
