@@ -144,32 +144,40 @@ window.onload = () => {
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
-    [...event.target.children].find(event => event.tagName === "A").classList.remove("active");
+    //[...event.target.children].find(event => event.tagName === "A").classList.remove("active");
     e = e.target;
     if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
+    let opacity = parseFloat(window.getComputedStyle(document.querySelector(`#${e.id} ul`)).opacity);
+    let time;
+    if (opacity > 0.8) time = 400;// This is so the calculation isn't messed up by "ease-in"
+    else time = opacity * 400;
     window.timeout[e.id].push(setTimeout(() => {
       [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
-    }, 400));
+    }, time));
+    /*let observer = new MutationObserver((list, observer) => {
+      console.log("this ran");
+      if (window.getComputedStyle(e).opacity === "0") {
+        [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
+        observer.disconnect();
+      }
+    });
+    observer.observe(e, {attributes: true});*/
   };
   const elementShow = event => {
+    let e = event.target;
     try {
-      clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 1]);
-      clearTimeout(window.timeout[event.target.parentNode.id][window.timeout[event.target.parentNode.id].length - 2]);
+      clearTimeout(window.timeout[e.id][window.timeout[e.id].length - 1]);
+      clearTimeout(window.timeout[e.id][window.timeout[e.id].length - 2]);
     }
     catch(err) {
     }
-    eventToElement(event, "UL").style.setProperty("height", "max-content");
-    eventToElement(event, "A").classList.add("active");//I HATE that I have to do this. I HATE it. >:(
+    document.querySelector(`#${id(e)} ul`).style.setProperty("height", "max-content");
   };
-  for (let e of document.querySelectorAll("header nav ul li ul, header nav ul li a:not([href])")) {
-    e.parentNode.addEventListener("mouseleave", e => {elementHide(e);});
-    e.parentNode.addEventListener("blur", e => {elementHide(e);});
+  for (let e of document.querySelectorAll("header nav ul li.main")) {
+    e.addEventListener("mouseleave", e => {elementHide(e);});
+    e.addEventListener("blur", e => {elementHide(e);});
   }
-  for (let e of document.querySelectorAll("header nav ul li a:not([href])")) {
-    e.addEventListener("mouseenter", e => {elementShow(e);});
-    e.addEventListener("focus", e => {elementShow(e);});
-  }
-  for (let e of document.querySelectorAll("header nav ul li ul")) {
+  for (let e of document.querySelectorAll("header nav ul li.main")) {
     e.addEventListener("mouseenter", e => { elementShow(e); });
     e.addEventListener("focus", e => { elementShow(e); });
   }

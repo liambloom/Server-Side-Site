@@ -1,0 +1,91 @@
+header nav {
+	grid-area: nav;
+	width: 100%;
+	padding: 0px;
+}
+header nav ul {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
+	overflow: hidden;
+}
+header nav ul li {
+  float: left;
+  height: calc(1.15em + 28px);
+}
+header nav ul li.right {
+  float: right;
+}
+header nav ul li.right a:not([href]) {
+  transition: transform 400ms ease-out;
+  transform: translateY(0px);
+}
+header nav ul li.right.hide a:not([href]) {
+  transform: translateY(calc(1.15em + 28px));
+}
+header nav ul li a {
+	display: block;
+	color: var(--color);
+	padding: 14px 16px;
+  text-decoration: none;
+  height: 1.15em;
+}
+header nav ul li a:not([href]) {
+  width: min-content;
+}
+header nav ul li ul li a:hover, header nav ul li ul li a:focus {
+	background-color: #0000005d;
+}
+header nav ul li ul {
+  background-color: var(--dark);
+  transition: opacity 400ms ease-in;
+	opacity: 0;
+  position: absolute;
+  height: 0px;
+}
+header nav ul li:hover ul {
+  height: max-content;
+}
+header nav ul li.right ul {
+  right: 0px;
+}
+header nav ul li.right ul li a {
+  text-align: left;
+}
+header nav ul li ul li {
+  float: none;
+}
+header nav ul li.main::after {
+  content: "\200B";
+  transition-property: height, bottom;
+  transition-duration: 400ms;
+  transition-timing-function: ease-in-out;
+  color: var(--light);
+  background-color: var(--light);
+  display: inline-block;
+  position: relative;
+  bottom: 0px;
+  width: 100%;
+  height: 0px;
+}
+header nav ul li a[href]::after {
+  vertical-align: super;
+  font-style: italic;
+  font-size: 0.9em;
+  line-height: 0px;
+}
+header nav ul li a[href].alpha::after {
+  content: "alpha";
+  color: #f92472;
+}
+header nav ul li a[href].beta::after {
+  content: "beta";
+  color: #e79622;
+}
+header nav ul li.main:hover::after {
+  height: 5px;
+  bottom: 5px;
+}
+header nav ul li:hover ul, header nav ul li:focus ul {
+  opacity: 1;
+}

@@ -1,0 +1,59 @@
+:not(:hover) .arrowBox {
+  display: none;
+}
+ #topRight :hover .arrowBox {
+  display: inline-block;
+}
+@supports (not (width: max-content)) {
+  .arrowBox:not(.required) {
+    display: none !important;
+  }
+}
+.arrowBox {
+  display: inline-block;
+  position: absolute;
+  height: max-content;
+  border-radius: 10px;
+  background-color: #1f1f1f;
+  color: #ffffff;
+  padding: 10px;
+}
+.arrowBox {
+  width: max-content;
+}
+.arrowBox::after {
+  content: "";
+  position: absolute;
+  height: 0px;
+  width: 0px;
+  border: 10px solid transparent;
+}
+.arrowBox.up {
+  top: calc(100% + 20px);
+}
+.arrowBox.down {
+  bottom: calc(100% + 20px);
+}
+.arrowBox.up::after {
+  border-bottom: 10px solid #1f1f1f;
+  bottom: 100%;
+  left: calc(50% - 10px);
+}
+.arrowBox.down::after {
+  border-top: 10px solid #1f1f1f;
+  top: 100%;
+  left: calc(50% - 10px);
+}
+.arrowBox.left::after {
+  border-right: 10px solid #1f1f1f;
+  right: 100%;
+  top: calc(50% - 10px);
+}
+.arrowBox.right::after {
+  border-left: 10px solid #1f1f1f;
+  left: 100%;
+  top: calc(50% - 10px);
+}
+.arrowBox.arrowRight {
+  right: 0px;
+}

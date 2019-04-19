@@ -107,66 +107,6 @@ a {
 #switchSpan.down #path4 {
 	transform: translate(0px, 100px);
 }
-:not(:hover) .arrowBox {
-  display: none;
-}
- #topRight :hover .arrowBox {
-  display: inline-block;
-}
-@supports (not (width: max-content)) {
-  .arrowBox:not(.required) {
-    display: none !important;
-  }
-}
-.arrowBox {
-  display: inline-block;
-  position: absolute;
-  height: max-content;
-  border-radius: 10px;
-  background-color: #1f1f1f;
-  color: #ffffff;
-  padding: 10px;
-}
-.arrowBox {
-  width: max-content;
-}
-
-.arrowBox::after {
-  content: "";
-  position: absolute;
-  height: 0px;
-  width: 0px;
-  border: 10px solid transparent;
-}
-.arrowBox.up {
-  top: calc(100% + 20px);
-}
-.arrowBox.down {
-  bottom: calc(100% + 20px);
-}
-.arrowBox.up::after {
-  border-bottom: 10px solid #1f1f1f;
-  bottom: 100%;
-  left: calc(50% - 10px);
-}
-.arrowBox.down::after {
-  border-top: 10px solid #1f1f1f;
-  top: 100%;
-  left: calc(50% - 10px);
-}
-.arrowBox.left::after {
-  border-right: 10px solid #1f1f1f;
-  right: 100%;
-  top: calc(50% - 10px);
-}
-.arrowBox.right::after {
-  border-left: 10px solid #1f1f1f;
-  left: 100%;
-  top: calc(50% - 10px);
-}
-.arrowBox.arrowRight {
-  right: 0px;
-}
 #choose {
   z-index: 3;
   padding: 0px;
@@ -179,7 +119,7 @@ a {
   transition: bottom 300ms ease;
   background-color: var(--dark);
 }
-:not(:hover) #choose.arrowBox {
+:not(:hover) #choose {
   display: initial;
 }
 #choose:not(.gone)::after {
@@ -224,10 +164,6 @@ header {
 	width: 85px;
 	height: 85px;
 }
-/*[opacity="0"] {
-  display: none;
-  height: 0px;
-}*/
 header h1 {
 	grid-area: title;
 	font-size: 90px;
@@ -236,95 +172,6 @@ header h1 {
 	margin-bottom: 5px;
   line-height: 113.2px;
   width: max-content;
-}
-header nav {
-	grid-area: nav;
-	width: 100%;
-	padding: 0px;
-}
-header nav ul {
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
-	overflow: hidden;
-}
-header nav ul li {
-	float: left;
-}
-header nav ul li.right {
-  float: right;
-}
-header nav ul li.right a:not([href]) {
-  transition: top 400ms ease-out;
-  top: 0px;
-  position: relative;
-}
-header nav ul li.right.hide a:not([href]) {
-  top: calc(1.15em + 28px);
-}
-header nav ul li a {
-	display: block;
-	color: var(--color);
-	padding: 14px 16px;
-  text-decoration: none;
-  height: 1.15em;
-}
-header nav ul li a:not([href]) {
-  width: min-content;
-}
-header nav ul li ul li a:hover, header nav ul li ul li a:focus {
-	background-color: #0000005d;
-}
-header nav ul li ul {
-  background-color: var(--dark);
-  transition: opacity 400ms ease-in;
-	opacity: 0;
-  position: absolute;
-  height: 0px;
-}
-header nav ul li.right ul {
-  right: 0px;
-}
-header nav ul li.right ul li a {
-  text-align: left;
-}
-header nav ul li ul li {
-  float: none;
-}
-header nav ul li a:not([href])::after {
-  content: "\200B";
-  transition-property: height, top;
-  transition-duration: 400ms;
-  transition-timing-function: ease-in-out;
-  color: var(--light);
-  background-color: var(--light);
-  display: inline-block;
-  position: relative;
-  top: 14px;
-  right: 10px;
-  width: calc(100% + 20px);;
-  height: 0px;
-}
-header nav ul li a[href]::after {
-  vertical-align: super;
-  font-style: italic;
-  font-size: 0.9em;
-  line-height: 0px;
-}
-header nav ul li a[href].alpha::after {
-  content: "alpha";
-  color: #f92472;
-}
-header nav ul li a[href].beta::after {
-  content: "beta";
-  color: #e79622;
-}
-header nav ul li a.active::after {
-  height: 5px;
-  top: 9px;
-}
-header nav ul li a:hover ~ ul, header nav ul li a:focus ~ ul, header nav ul li ul:hover, header nav ul li ul:focus {
-  opacity: 1;
 }
 .topFixed {
 	grid-area: main;
