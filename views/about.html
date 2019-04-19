@@ -1,0 +1,93 @@
+<body>
+  <style>
+    #aboutMe { 
+      border: 1px solid #7f7f7f;
+      border-radius: 10px;
+      height: 100%;
+      width: 100%;
+      display: grid;
+      grid-template-rows: 1fr 1px 1fr;
+      grid-template-areas: 
+      "photo v-border story"
+      "h-border v-border story"
+      "bio v-border story";
+    }
+    #aboutMe img {
+      grid-area: photo;
+    }
+    #aboutMe img.emoji {
+      display: inline;
+      height: 1em;
+      width: 1em;
+      margin: 0px;
+    }
+    #v-border {
+      grid-area: v-border;
+      border-right: 1px solid #7f7f7f;
+      height: calc(100% - 20px);
+      transform: translateY(10px);
+    }
+    #h-border {
+      grid-area: h-border;
+      border-top: 1px solid #7f7f7f;
+      width: calc(100% - 20px);
+      transform: translateX(10px)
+    }
+    #bio {
+      grid-area: bio;
+    }
+    #story {
+      grid-area: story;
+    }
+    #aboutMe :not(.border) {
+      margin: 5%;
+      height: 90%;
+      width: 90%;
+      overflow: auto;
+    }
+    #myAge {
+      margin: 0px !important;
+    }
+    .indent {
+      margin: 0px 20px !important;
+      height: max-content !important;
+    }
+    #aboutMe br {
+      margin: 5px !important;
+    }
+  </style>
+  <div id="aboutMe">
+    <img src="https://avatars0.githubusercontent.com/u/25793130?s=460&v=4">
+    <div id="h-border" class="border"></div>
+    <div id="bio">
+      Name: Liam Bloom<br>
+      Age: <span id="myAge"></span><br>
+      Favorite...<br>
+      <div class="indent">
+        Sport: Swimming<br>
+        Band: Marianas Trench<br>
+        Team: Red Sox <img class="emoji" src="http://mlb.mlb.com/bos/images/social/emojis/Hanging_Sox.png">
+      </div>
+    </div>
+    <div id="v-border" class="border"></div>
+    <div id="story">
+      How am I supposed to fill such a large space with information about myself?
+    </div>
+  </div>
+  <script>
+    let size = () => {
+      let about = document.getElementById("aboutMe");
+      about.style.setProperty("grid-template-columns", `${about.clientHeight / 2}px 1px 1fr`);
+      let now = new Date();
+      let birthday = new Date(`8/7/${now.getFullYear()}`);
+      if (now.getTime() - birthday.getTime() < 0) {
+        document.getElementById("myAge").innerHTML = now.getFullYear() - 2004 - 1;
+      }
+      else {
+        document.getElementById("myAge").innerHTML = now.getFullYear() - 2004;
+      }
+    };
+    if (document.readyState === "interactive") size();
+    else window.addEventListener("DOMContentLoaded", size);
+  </script>
+</body>
