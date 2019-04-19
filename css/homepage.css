@@ -1,5 +1,11 @@
 body {
-  overflow: hidden;
+  overflow-x: hidden;
+}
+#content {
+  margin: 0px;
+}
+#innerContent {
+  margin: 50px;
 }
 @font-face {
   font-family: Mr Vampire;

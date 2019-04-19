@@ -4,7 +4,6 @@
 	<%- include("head", {beta: false, modal: false})%>
 	<title>Liam Bloom</title>
   <link id="css" rel="stylesheet" href="/css/homepage.css">
-  <script src="/js/fullScreenContent.js"></script>
 </head>
 <body>
 	<%- include("header", {title: "Liam Bloom", choice: true}) %>
@@ -13,6 +12,9 @@
 	</div>-->
   <div id="content">
     <canvas id="main"></canvas>
+    <div id="innerContent">
+      <%- include("about.html") %>
+    </div>
   </div>
   <script src="/js/homepage.js"></script>
 </body>
