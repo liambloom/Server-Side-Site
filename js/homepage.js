@@ -16,12 +16,12 @@ let funcolors = [
   "#ffff00",
   "#00ff00",
   "#00ffff",
-  "#0000ff",
   "#8800ff",
-  "#ff00ff"
+  "#ff00ff",
+  "#0000ff"
 ];
 let draw = () => {
-  let color = funcolors[Math.floor(Math.random() * 8)];
+  let color = funcolors[Math.floor(Math.random() * 7)];
   ctx.strokeStyle = "#" +
     (255 - parseInt(color.slice(1, 3), 16)).toString(16).padStart(2, "0") +
     (255 - parseInt(color.slice(3, 5), 16)).toString(16).padStart(2, "0") +
