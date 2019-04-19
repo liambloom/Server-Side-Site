@@ -3,11 +3,17 @@
 <head>
 	<%- include("head", {beta: false, modal: false})%>
 	<title>Liam Bloom</title>
+  <link rel="stylesheet" href="/css/homepage.css">
+  <script src="/js/fullScreenContent.js"></script>
 </head>
 <body>
 	<%- include("header", {title: "Liam Bloom", choice: true}) %>
-	<div id="content" class="center">
+	<!--<div id="content" class="center">
 		Hi! This is my homepage. I don't know what to put here. If you have any sugestions, you can send them to me <a href="/sugestions">here</a>.
-	</div>
+	</div>-->
+  <div id="content">
+    <canvas id="main"></canvas>
+  </div>
+  <script src="/js/homepage.js"></script>
 </body>
 </html>
