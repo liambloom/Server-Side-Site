@@ -1,3 +1,7 @@
 body {
   overflow: hidden;
 }
+@font-face {
+  font-family: Mr Vampire;
+  src: url("/fonts/MISTV___.TTF");
+}

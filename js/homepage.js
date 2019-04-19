@@ -1,25 +1,25 @@
 //jshint esversion:6
 document.getElementById("Capa_1").style.display = "none";
-let c = document.getElementById("main");
-let ctx = c.getContext("2d");
-let ss = 20;
-c.width = window.innerWidth;
-c.height = (window.innerHeight - document.getElementsByTagName("header")[0].clientHeight);
-let txt = "Welcome!";
-ctx.font = "bold 150px Times New Roman, Times, serif";
-let txtSize = ctx.measureText(txt);
-let textAlignX = (c.clientWidth / 2) - (txtSize.width / 2);
-let textAlignY = (window.innerHeight / 2) - (window.innerHeight - c.clientHeight) + 75;
-let funcolors = [
-  "#ff0000",
-  "#ff8800",
-  "#ffff00",
-  "#00ff00",
-  "#00ffff",
-  "#8800ff",
-  "#ff00ff",
-  "#0000ff"
-];
+let c, ctx, ss, txtSize, textAlignX, textAlignY, funcolors;
+//let prepare = () => {
+  c = document.getElementById("main");
+  ctx = c.getContext("2d");
+  ss = 20;
+  c.width = window.innerWidth;
+  c.height = (window.innerHeight - document.getElementsByTagName("header")[0].clientHeight);
+  txt = "Welcome!";
+  ctx.font = "150px Mr Vampire, Comic Sans MS";
+  funcolors = [
+    "#ff0000",
+    "#ff8800",
+    "#ffff00",
+    "#00ff00",
+    "#00ffff",
+    "#8800ff",
+    "#ff00ff",
+    "#0000ff"
+  ];
+//};
 let draw = () => {
   let color = funcolors[Math.floor(Math.random() * 7)];
   ctx.strokeStyle = "#" +
@@ -33,9 +33,13 @@ let draw = () => {
       ctx.strokeRect(x * ss, y * ss, ss, ss);
     }
   }
+  txtSize = ctx.measureText(txt);
+  textAlignX = (c.clientWidth / 2) - (txtSize.width / 2);
+  textAlignY = (window.innerHeight / 2) - (window.innerHeight - c.clientHeight) + 75;
   ctx.fillStyle = color;
   ctx.fillText(txt, textAlignX, textAlignY);
   ctx.strokeText(txt, textAlignX, textAlignY);
 };
 draw();
+//setTimeout(prepare, 1000);
 setInterval(draw, 500);
