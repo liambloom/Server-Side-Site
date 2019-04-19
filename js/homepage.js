@@ -21,20 +21,21 @@ let funcolors = [
   "#ff00ff"
 ];
 let draw = () => {
-  for (let y = 0; y < c.clientHeight / ss; y++) {
-    for (let x = 0; x < c.clientWidth / ss; x++) {
-      var color = funcolors[Math.floor(Math.random() * 8)];
-      ctx.fillStyle = color;
-      ctx.fillRect(x * ss, y * ss, ss, ss);
-      ctx.strokeRect(x * ss, y * ss, ss, ss);
-    }
-  }
-  ctx.fillText(txt, textAlignX, textAlignY);
-  ctx.strokeText(txt, textAlignX, textAlignY);
+  let color = funcolors[Math.floor(Math.random() * 8)];
   ctx.strokeStyle = "#" +
     (255 - parseInt(color.slice(1, 3), 16)).toString(16).padStart(2, "0") +
     (255 - parseInt(color.slice(3, 5), 16)).toString(16).padStart(2, "0") +
     (255 - parseInt(color.slice(5, 7), 16)).toString(16).padStart(2, "0");
+  for (let y = 0; y < c.clientHeight / ss; y++) {
+    for (let x = 0; x < c.clientWidth / ss; x++) {
+      ctx.fillStyle = funcolors[Math.floor(Math.random() * 8)];
+      ctx.fillRect(x * ss, y * ss, ss, ss);
+      ctx.strokeRect(x * ss, y * ss, ss, ss);
+    }
+  }
+  ctx.fillStyle = color;
+  ctx.fillText(txt, textAlignX, textAlignY);
+  ctx.strokeText(txt, textAlignX, textAlignY);
 };
 draw();
 setInterval(draw, 500);
