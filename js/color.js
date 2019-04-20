@@ -6,6 +6,13 @@ var $color = {
   normalize: function(color) {
     return color / 255;
   },
+  normalizeRGB: function(color) {
+    return {
+      r: color.r / 255,
+      g: color.g / 255,
+      b: color.b / 255
+    };
+  },
   parse: function(color) {
     return {
       r: parseInt(color.slice(1, 3), 16),
@@ -13,6 +20,21 @@ var $color = {
       b: parseInt(color.slice(5, 7), 16)
     };
   },
+  /*parseHSL: function(color) {
+    color = this.normalizeRGB(this.parseRGB(color));
+    let cmin = Math.min(r, g, b);
+    let cmax = Math.max(r, g, b);
+    let delta = cmax - cmin;
+    let HSL = {h: 0, s: 0, l: 0};
+    if (delta == 0) HSL.h = 0;
+    else if (cmax == color.r) HSL.h = ((color.g - color.b) / delta) % 6;
+    else if (cmax == g) HSL.h = (color.b - color.r) / delta + 2;
+    else HSL.h = (color.r - color.g) / delta + 4;
+    HSL.h = Math.round(h * 60);
+    if (HSL.h < 0) HSL.h += 360;
+    HSL.l = (cmax + cmin) / 2;
+    s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1)); s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1)); // What???
+  },*/
   invert: function(color) {
     color = this.parse(color);
     return "#" +
