@@ -1,3 +1,40 @@
+body {
+  overflow-x: hidden;
+}
 #content {
   margin: 0px;
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 3in 1fr;
+  grid-template-areas: "menu canvas";
+}
+#canvas {
+  grid-area: canvas;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+#menu {
+  grid-area: menu;
+  background-color: #111111;
+  padding: 30px;
+}
+#colors {
+  border-radius: 10px;
+  background-color: #333333;
+  padding: 10px;
+}
+[data-color] {
+  width: 15px;
+  height: 15px;
+  border-width: 0px;
+  border-style: solid;
+  margin: 0px;
+  display: inline-block;
+}
+[data-color].active {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
 }

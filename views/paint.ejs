@@ -7,11 +7,27 @@
   <script src="/js/paint.js"></script>
   <script src="/js/destroy.js"></script>
   <script src="/js/fullScreenContent.js"></script>
+  <script src="/js/color.js"></script>
 </head>
 <body>
   <%- include("header", {title: "Pixel Editor", choice: true}) %>
   <div id="content">
-    
+    <div id="menu">
+      <div id="colors">
+        <div data-color="#ff0000"></div>
+        <div data-color="#ff7f00"></div>
+        <div data-color="#ffff00"></div>
+        <div data-color="#00ff00"></div>
+        <div data-color="#00ffff"></div>
+        <div data-color="#0000ff"></div>
+        <div data-color="#7f00ff"></div>
+        <div data-color="#ff00ff"></div>
+        <div data-color="#ffffff"></div>
+        <div data-color="#7f7f7f"></div>
+        <div data-color="#000000"></div>
+      </div>
+    </div>
+    <canvas id="canvas"></canvas>
   </div>
 </body>
 </html>
