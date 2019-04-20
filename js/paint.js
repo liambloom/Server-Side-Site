@@ -73,8 +73,8 @@ let init = () => {
         else ctx.fillStyle = "#eeeeee";
       });
       future.unshift(drawHistory.shift());
-      console.log(drawHistory.length);
-      console.log(future.length);
+      //console.log(drawHistory.length);
+      //console.log(future.length);
     }
     /*if (key.Control && key.y) {
       console.log("redo");
