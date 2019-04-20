@@ -9,8 +9,8 @@ if (document.readyState === "complete") loadFunc();
 else window.addEventListener("load", loadFunc);
 var color = "#ff0000";
 var memory = [];
-/*var history = [];
-var future = [];*/
+var drawHistory = [];
+var future = [];
 var key = {};
 let init = () => {
   let c = document.getElementById("canvas");
@@ -23,13 +23,22 @@ let init = () => {
   }
   c.width = width * ss;
   c.height = height * ss;
-  for (let y = 0; y < c.clientHeight / ss; y++) {
-    for (let x = 0; x < c.clientWidth / ss; x++) {
+  let render = fun => {
+    for (let y = 0; y < c.clientHeight / ss; y++) {
+      for (let x = 0; x < c.clientWidth / ss; x++) {
+        fun(x, y);
+        ctx.fillRect(x * ss, y * ss, ss, ss);
+      }
+    }
+    drawHistory.unshift(JSON.parse(JSON.stringify(memory)));
+  };
+  let reset = () => {
+    render((x, y) => {
       if ((x + y) % 2 === 0) ctx.fillStyle = "#d0d0d0";
       else ctx.fillStyle = "#eeeeee";
-      ctx.fillRect(x * ss, y * ss, ss, ss);
-    }
-  }
+    });
+  };
+  reset();
   let draw = event => {
     if (mousedown) {
       let cp = c.getBoundingClientRect();
@@ -56,8 +65,25 @@ let init = () => {
   let mousedown;
   document.body.addEventListener("keydown", event => {
     key[event.key] = true;
-    /*if (key.Control && key.z) {
-      
+    if (key.Control && key.z) {
+      console.log("undo");
+      render((x, y) => {
+        if (drawHistory[1][x][y]) ctx.fillStyle = drawHistory[1][x][y];
+        else if ((x + y) % 2 === 0) ctx.fillStyle = "#d0d0d0";
+        else ctx.fillStyle = "#eeeeee";
+      });
+      future.unshift(drawHistory.shift());
+      console.log(drawHistory.length);
+      console.log(future.length);
+    }
+    /*if (key.Control && key.y) {
+      console.log("redo");
+      render((x, y) => {
+        if (future[0][x][y]) ctx.fillStyle = future[0][x][y];
+        else if ((x + y) % 2 === 0) ctx.fillStyle = "#d0d0d0";
+        else ctx.fillStyle = "#eeeeee";
+      });
+    drawHistory.unshift(future.shift());
     }*/
   });
   document.body.addEventListener("keyup", event => {
@@ -69,6 +95,9 @@ let init = () => {
   });
   document.body.addEventListener("mouseup", event => {
     if (event.button === 0) mousedown = false;
+  });
+  c.addEventListener("mouseup", () => {
+    drawHistory.unshift(JSON.parse(JSON.stringify(memory)));
   });
   c.addEventListener("mousemove", draw);
 };
