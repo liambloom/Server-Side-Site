@@ -14,14 +14,16 @@ function change() {
 		colorArray.push(colorp)
 	}
 	var colorFull = "#" + colorArray[0] + colorArray[1] + colorArray[2] + colorArray[3] + colorArray[4] + colorArray[5]*/
-	let color = "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0");
+  //let color = "#" + Math.floor(Math.random() * 16777216).toString(16).padStart(6, "0");
+  let color = $color.random;
 	let r = parseInt(color.slice(1, 3), 16);
 	let g = parseInt(color.slice(3, 5), 16);
-	let b = parseInt(color.slice(5, 7), 16);
-	inverted = "#" + 
+  let b = parseInt(color.slice(5, 7), 16);
+  let inverted = $color.invert(color);
+	/*inverted = "#" + 
 		(255 - r).toString(16).padStart(2, "0") +
 		(255 - g).toString(16).padStart(2, "0") +
-		(255 - b).toString(16).padStart(2, "0");
+    (255 - b).toString(16).padStart(2, "0");*/
 	document.body.style.backgroundColor = color;
 	document.getElementsByName("ReloadButton")[0].innerHTML = color;
 	//document.getElementsByName("ReloadButton")[0].style.background = color;
