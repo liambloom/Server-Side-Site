@@ -20,19 +20,26 @@ window.modal = {
   },
   init: function () {
     modals = document.getElementsByTagName("modal");
+    //console.log(modals[1]);
     fetch("/views/modal/index.html")
     .then(res => res.text())
     .then(res => {
-      for (let e of modals) {
+      for (let e of [...modals]) {
+      //for (let i = 0; i < modals.length; i++) {
+        //let e = modals[i];
+        /*console.log("foo");
+        console.log(e.id);*/
         content = e.innerHTML;
         type = e.getAttribute("data-escape");
         confirm = e.getAttribute("data-confirm") || "";
+        size = e.getAttribute("data-size") || "small";
         let newEl = document.createElement("div");
         newEl.id = e.id;
         newEl.classList = "center hidden modal";
         newEl.innerHTML = res;
         e.parentNode.replaceChild(newEl, e);
         e = document.getElementById(newEl.id);
+        document.querySelector(`#${id(e)} .modal-box`).classList.add(size);
         document.querySelector(`#${id(e)} .modal-content`).innerHTML = content;
         fetch(`/views/modal/${type}.html`)
         .then(res => {
@@ -43,7 +50,11 @@ window.modal = {
         .then(res => {
           document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
         });
+        //console.log("bar");
       }
+    })
+    .then(() => {
+      document.dispatchEvent(new Event("modalsReady"));
     });
   },
   get list() {

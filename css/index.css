@@ -176,7 +176,7 @@ header h1 {
 .topFixed {
 	grid-area: main;
 }
-input, button, select {
+input, button, select, .button {
 	text-align: center;
 	border-radius: calc(1.15em + 2px);
 	background-color: var(--bg);
@@ -191,15 +191,15 @@ input:focus, select:focus {
 	margin: 2px;
 	color: var(--headTxt);
 }
-input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"] {
+input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"], input[type = "number"] {
   text-align: center;
   width: 70px;
   transition: width 500ms ease;
 }
-input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus {
+input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus, input[type = "number"]:focus {
 	width: 150px;
 }
-input[type = "button"]:hover, input[type = "submit"]:hover, button:hover {
+input[type = "button"]:hover, input[type = "submit"]:hover, button:hover, .button:hover {
 	border: 2px solid var(--headTxt);
 	margin: 2px;
 	color: var(--headTxt);

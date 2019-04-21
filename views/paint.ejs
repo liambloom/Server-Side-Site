@@ -13,7 +13,7 @@
   <%- include("header", {title: "Pixel Editor", choice: true}) %>
   <div id="content">
     <div id="menu">
-      <div id="colors">
+      <div id="colors" class="menu">
         <div data-color="#ff0000"></div>
         <div data-color="#ff7f00"></div>
         <div data-color="#ffff00"></div>
@@ -26,8 +26,24 @@
         <div data-color="#7f7f7f"></div>
         <div data-color="#000000"></div>
       </div>
+      <span id="erase" class="menu">Eraser</span>
+      <span id="clear" class="menu">Clear All</span>
+      <!--<div clas="menu">
+        Import:
+        <input type="file" id="import" accept="image/png">-->
+        <a id="download" class="button" download="drawing.png">Download</a>
+      <!--</div>-->
     </div>
+    <div id="hoverShade"></div>
+    <canvas id="bg"></canvas>
     <canvas id="canvas"></canvas>
   </div>
+  <modal id="clearConfirm" data-escape="yn" data-confirm="document.getElementById('canvas').dispatchEvent(new Event('clear'))">
+    Are you sure you want to clear this and star over?
+  </modal>
+  <modal id="initial" data-escape="ok" data-confirm="init()" data-size="large">
+    Width: <input id="width" type="number" value="30"><br>
+    Height: <input id="height" type="number" value="20"> 
+  </modal>
 </body>
 </html>
