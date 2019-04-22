@@ -204,6 +204,16 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover, .butto
 	margin: 2px;
 	color: var(--headTxt);
 }
+input:invalid {
+  background-color: #220000;
+  border-color: #aa0000;
+  color: #aa0000;
+}
+input:invalid:hover, input:invalid:focus {
+  background-color: #440000;
+  border-color: #cc0000;
+  color: #cc0000;
+}
 textarea {
 	background-color: var(--bg);
 	color: var(--light);
