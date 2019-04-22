@@ -12,11 +12,15 @@ window.modal = {
       if (elem) {elem.blur();}
     }, 100);
   },
-  close: function () {
-    for (let e of this.list) {
-      document.getElementById(e).classList.add("hidden");
+  close: function (fun) {
+    if (!document.querySelector(".modal:not(.hidden) :invalid")) {
+      /*for (let e of this.list) {
+        document.getElementById(e).classList.add("hidden");
+      }*/
+      document.querySelector(".modal:not(.hidden)").classList.add("hidden");
+      clearInterval(this.blurKey);
+      fun();
     }
-    clearInterval(this.blurKey);
   },
   init: function () {
     modals = document.getElementsByTagName("modal");
@@ -25,14 +29,10 @@ window.modal = {
     .then(res => res.text())
     .then(res => {
       for (let e of [...modals]) {
-      //for (let i = 0; i < modals.length; i++) {
-        //let e = modals[i];
-        /*console.log("foo");
-        console.log(e.id);*/
-        content = e.innerHTML;
-        type = e.getAttribute("data-escape");
-        confirm = e.getAttribute("data-confirm") || "";
-        size = e.getAttribute("data-size") || "small";
+        let content = e.innerHTML;
+        let type = e.getAttribute("data-escape");
+        let confirm = e.getAttribute("data-confirm") || "";
+        let size = e.getAttribute("data-size") || "small";
         let newEl = document.createElement("div");
         newEl.id = e.id;
         newEl.classList = "center hidden modal";
@@ -50,7 +50,6 @@ window.modal = {
         .then(res => {
           document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
         });
-        //console.log("bar");
       }
     })
     .then(() => {
