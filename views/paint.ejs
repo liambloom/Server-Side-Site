@@ -15,19 +15,25 @@
     <div id="menu">
       <div id="colors" class="menu">
         <div data-color="#ff0000"></div>
-        <div data-color="#ff7f00"></div>
+        <div data-color="#ff8000"></div>
         <div data-color="#ffff00"></div>
         <div data-color="#00ff00"></div>
         <div data-color="#00ffff"></div>
+        <div data-color="#0088ff"></div>
         <div data-color="#0000ff"></div>
-        <div data-color="#7f00ff"></div>
+        <div data-color="#8000ff"></div>
         <div data-color="#ff00ff"></div>
         <div data-color="#ffffff"></div>
-        <div data-color="#7f7f7f"></div>
+        <div data-color="#808080"></div>
         <div data-color="#000000"></div>
       </div>
-      <span id="erase" class="button">Eraser</span>
-      <span id="clear" class="button">Clear All</span>
+      New Color:
+      <div id="colorHash">
+        <input id="color" class="menu" type="text" pattern="[a-f\d]{6}">
+      </div>
+      <div id="erase" class="button">Eraser</div>
+      <div id="fill" class="button">Fill</div>
+      <div id="clear" class="button">Clear All</div>
       <div clas="menu">
         <!--Import:
         <input type="file" id="import" accept="image/png">-->
@@ -42,8 +48,8 @@
     Are you sure you want to clear this and star over?
   </modal>
   <modal id="initial" data-escape="ok" data-confirm="init()" data-size="large">
-    Width: <input id="width" type="number" value="30"><br>
-    Height: <input id="height" type="number" value="20"> 
+    Width: <input id="width" type="number" value="30" required><br>
+    Height: <input id="height" type="number" value="20" required> 
   </modal>
 </body>
 </html>

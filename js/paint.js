@@ -7,7 +7,9 @@ const loadFunc = () => {
 };
 if (document.readyState === "complete") loadFunc();
 else window.addEventListener("load", loadFunc);
+//let defaultColor = "#ff0000"
 var color = "#ff0000";
+var fill = false;
 var memory = [];
 var drawHistory = [];
 var future = [];
@@ -15,6 +17,8 @@ var key = {};
 let undo = new Event("undo");
 let redo = new Event("redo");
 var init = () => {
+  let defaultColor = "#ff0000";// Eventually make this determined by the theme
+  window.color = defaultColor;
   let c = document.getElementById("canvas");
   let ctx = c.getContext("2d");
   let bc = document.getElementById("bg");
@@ -24,14 +28,19 @@ var init = () => {
   let ss = Math.max(...[Math.min(...[Math.floor((window.innerWidth - 500) / width), Math.floor((window.innerHeight - 200) / height), 20]), 5]);
   let cp = () => c.getBoundingClientRect();
   document.documentElement.style.setProperty("--ss", ss + "px");
-  let previous = {x: undefined, y: undefined};
-  for (let x = 0; x < width; x++) {
-    memory[x] = [];
-  }
+  //let previous = {x: undefined, y: undefined};
   c.width = width * ss;
   c.height = height * ss;
   bc.width = width * ss;
   bc.height = height * ss;
+  window.clear = () => {
+    //console.log("this ran");
+    ctx.clearRect(0, 0, width * ss, height * ss);
+    for (let x = 0; x < width; x++) {
+      memory[x] = [];
+    }
+    drawHistory = [JSON.parse(JSON.stringify(memory))];
+  };
   let mousePosition = event => {
     let x = Math.floor((event.clientX - cp().left - scrollX) / ss);
     let y = Math.floor((event.clientY - cp().top - scrollY) / ss);
@@ -52,11 +61,7 @@ var init = () => {
     if ((x + y) % 2 === 0) bctx.fillStyle = "#d0d0d0";
     else bctx.fillStyle = "#eeeeee";
   }, bctx);
-  let reset = () => {
-    ctx.clearRect(0, 0, width * ss, height * ss);
-    drawHistory.unshift(JSON.parse(JSON.stringify(memory)));
-  };
-  reset();
+  clear();
   let draw = event => {
     if (mousedown) {
       let pos = mousePosition(event);
@@ -66,29 +71,61 @@ var init = () => {
         ctx.fillRect(pos.x * ss, pos.y * ss, ss, ss);
       }
       else {
-        memory[pos.x][pos.y] = undefined;
+        delete memory[pos.x][pos.y];
         ctx.clearRect(pos.x * ss, pos.y * ss, ss, ss);
       }
       future = [];
     }
     return mousedown;
   };
-  let save = () => {
-    document.getElementById("download").href = c.toDataURL('image/png');
+  let fillFun = (x, y) => {
+    try {
+      let thisCol = memory[x][y];
+      if (/^#[a-f\d]{6}$/i.test(color) && thisCol !== color) {
+        memory[x][y] = color;
+        ctx.fillStyle = color;
+        ctx.fillRect(x * ss, y * ss, ss, ss);
+        if (memory[x - 1] && x - 1 >= 0) if (memory[x - 1][y] === thisCol) fillFun(x - 1, y);
+        if (memory[x + 1] && x - 1 < width) if (memory[x + 1][y] === thisCol) fillFun(x + 1, y);
+        if (memory[x][y - 1] === thisCol && y - 1 >= 0) fillFun(x, y - 1);
+        if (memory[x][y + 1] === thisCol && y + 1 < height) fillFun(x, y + 1);
+      }
+    }
+    catch (err) {
+      setTimeout(() => {
+        fillFun(x, y);
+      }, 1);
+    }
   };
-  document.querySelector(`[data-color="${color}"]`).classList.add("active");
-  for (let e of document.querySelectorAll("[data-color]")) {
+  let addColor = e => {
     thisColor = e.getAttribute("data-color");
     e.style.setProperty("background-color", thisColor);
-    //e.style.setProperty("border-color", $color.invert(thisColor));
     if ($color.isLight(thisColor, "intensityM")) e.style.setProperty("border-color", "#000000");
     else e.style.setProperty("border-color", "#ffffff");
     e.addEventListener("click", event => {
       if (/^#[a-f\d]{6}$/i.test(color)) document.querySelector(`[data-color="${color}"]`).classList.remove("active");
       color = event.target.getAttribute("data-color");
       event.target.classList.add("active");
+      document.getElementById("erase").classList.remove("on");
     });
+  };
+  let save = () => {
+    document.getElementById("download").href = c.toDataURL('image/png');
+  };
+  document.querySelector(`[data-color="${color}"]`).classList.add("active");
+  for (let e of document.querySelectorAll("[data-color]")) {
+    addColor(e);
   }
+  let mouseDetect = event => {
+    if (event.button === 0) mousedown = true;
+    if (event.target.closest("#canvas, #hoverShade")) {
+      if (fill) {
+        let pos = mousePosition(event);
+        fillFun(pos.x, pos.y);
+      }
+      else draw(event);
+    }
+  };
   let mousedown;
   document.body.addEventListener("keydown", event => {
     key[event.key] = true;
@@ -105,7 +142,7 @@ var init = () => {
   document.body.addEventListener("keyup", event => {
     key[event.key] = false;
   });
-  /*document.body*/c.addEventListener("mousemove", event => {
+  document.body/*c*/.addEventListener("mousemove", event => {
     let e = document.getElementById("hoverShade");
     if (event.target.closest("#canvas, #hoverShade")) {
       e.style.setProperty("display", "initial");
@@ -118,18 +155,21 @@ var init = () => {
     else e.style.setProperty("display", "none");
     //console.log(event.target.closest("#canvas, #hoverShade"));
   });
-  document.body.addEventListener("mousedown", event => {
-    if (event.button === 0) mousedown = true;
-    if (event.target.closest("#canvas, #hoverShade")) {
-      draw(event);
-    }
+  /*document.body*/c.addEventListener("mousedown", event => {
+    mouseDetect(event);
+  });
+  document.getElementById("hoverShade").addEventListener("mousedown", event => {
+    mouseDetect(event);
   });
   document.body.addEventListener("mouseup", event => {
     if (event.button === 0) mousedown = false;
     drawHistory.unshift(JSON.parse(JSON.stringify(memory)));
   });
+  c.addEventListener("mouseenter", () => {
+    if (!fill) draw(event);
+  });
   c.addEventListener("mousemove", event => {
-    draw(event);
+    if (!fill) draw(event);
   });
   c.addEventListener("undo", () => {
     if (drawHistory[1]) memory = drawHistory[1];
@@ -154,39 +194,52 @@ var init = () => {
     drawHistory.unshift(future.shift());
   });
   c.addEventListener("clear", () => {
-    ctx.clearRect(0, 0, width * ss, height * ss);
+    clear();
+  });
+  document.getElementById("color").addEventListener("change", event => {
+    let e = event.target;
+    if (/[a-f\d]/i.test(e.value)) e.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
+  });
+  document.getElementById("color").addEventListener("keyup", event => {
+    let el = event.target;
+    if (!/^[a-f\d]*$/i.test(el.value)) el.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
+    else if (!/^.{6}$/.test(el.value)) el.parentNode.setAttribute("data-err", "Must be exactally 6 characters");
+    else if (document.querySelector(`[data-color="#${el.value}"]`)) el.parentNode.setAttribute("data-err", "That color alredy exists");
+    else {
+      el.parentNode.removeAttribute("data-err");
+      if (event.keyCode === 13) {
+        let e = document.querySelector("#color:not(:invalid)");
+        if (e) {
+          let newColor = "#" + e.value;
+          let n = document.createElement("div");
+          n.setAttribute("data-color", newColor);
+          document.getElementById("colors").appendChild(n);
+          addColor(n);
+          n.dispatchEvent(new Event("click"));
+        }
+      }
+    }
   });
   document.getElementById("erase").addEventListener("click", () => {
     if (/^#[a-f\d]{6}$/i.test(color)) document.querySelector(`[data-color="${color}"]`).classList.remove("active");
     color = "clear";
+    event.target.classList.add("on");
+    if (document.querySelector("#fill.on")) document.querySelector("#fill.on").dispatchEvent(new Event("click"));
+  });
+  document.getElementById("fill").addEventListener("click", event => {
+    //console.log("Fill toggled");
+    fill = !fill;
+    if (fill) event.target.classList.add("on");
+    else event.target.classList.remove("on");
+    if (fill && document.querySelector("#erase.on")) document.querySelector(`[data-color = "${defaultColor}"]`).dispatchEvent(new Event("click"));// This may throw errors. Keep it at the END!
   });
   document.getElementById("clear").addEventListener("click", () => {
     modal.open("#clearConfirm");
   });
-  /*document.getElementById("import").addEventListener("change", event => {
-    if (window.confirm("Are you sure you want to replace your current drawing with this one?")) {
-      //console.log(event.target.result);
-      let reader = new FileReader();
-      reader.onload = e => {
-        ctx.drawImage(e.target.result, 0, 0);
-      };
-      reader.readAsDataURL(event.target.files[0]);
-    }
-  });*/
   document.getElementById("download").addEventListener("click", () => {
     save();
   });
 };
-/*let pre = () => {
-  let observer = new MutationObserver((mutationList, observer) => {
-    console.log("foo");
-    observer.disconnect();
-  }, { childList: true });
-  //modal.open("#initial");
-  observer.observe(document.getElementById("initial"));
-};
-if (document.readyState === "interactive") pre();
-else window.addEventListener("DOMContentLoaded", pre);*/
 document.addEventListener("modalsReady", () => {
   modal.open("#initial");
   document.getElementById("width").setAttribute("max", Math.floor((window.innerWidth - 500) / 5));

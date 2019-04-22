@@ -35,16 +35,29 @@ body {
   padding: 10px;
   margin: 5px;
 }
+.menu {
+  display: flex !important;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
 .menu *, .button {
   cursor: pointer;
+}
+.on {
+  color: var(--dark) !important;
+  background-color: var(--light);
+}
+.color-container {
+  display: inline !important;
 }
 [data-color] {
   width: 20px;
   height: 20px;
+  margin: 2px;
   border-width: 0px;
   border-style: solid;
-  margin: 0px;
-  display: inline-block;
+  display: block !important;
+  float: left;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -58,10 +71,35 @@ body {
   width: var(--ss);
   height: var(--ss);
   background-color: #000000;
-  opacity: 0.3;
+  opacity: 0.35;
   z-index: 1;
   display: none;
 }
 #menu input {
   width: calc(100% - 50px);
+}
+#color {
+  color: #ffffff;
+  border-color: #ffffff;
+}
+#colorHash {
+    position: relative;
+    display: block;
+}
+#colorHash::before {
+  position: absolute;
+  color: #ffffff;
+  left: 10px;
+  top: 10px;
+  content: "#";
+  pointer-events: none;
+  line-height: 1em;
+}
+[data-err]::after {
+  vertical-align: text-top;
+  font-size: 0.8em;
+  line-height: 0.8em;
+  color: #ff0000;
+  display: inline;
+  content: attr(data-err);
 }
