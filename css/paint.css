@@ -19,14 +19,14 @@ body {
   transform: translate(-50%, -50%);
 }
 #canvas, #hoverShade {
-  cursor: none;
+  cursor: cell;
 }
 #menu {
   grid-area: menu;
   background-color: #111111;
   padding: 20px;
 }
-#menu * {
+#menu :not(.override) {
   display: inline-block;
 }
 .menu, .button {
@@ -75,16 +75,25 @@ body {
   z-index: 1;
   display: none;
 }
-#menu input {
+#menu input:not(.override) {
   width: calc(100% - 50px);
 }
 #color {
   color: #ffffff;
   border-color: #ffffff;
+  cursor: text;
+  /*outline-color: #000000;*/
+}
+#colorMethod {
+  width: 100px;
+}
+#colorMethodContainer {
+  width: 100%;
 }
 #colorHash {
-    position: relative;
-    display: block;
+  position: relative;
+  display: block;
+  cursor: auto;
 }
 #colorHash::before {
   position: absolute;
@@ -102,4 +111,73 @@ body {
   color: #ff0000;
   display: inline;
   content: attr(data-err);
+}
+.descrete {
+  border: none !important;
+  border-radius: 2px;
+  padding: 0px;
+  width: 30px !important;
+  background-color: transparent;
+  width: max-content;
+  margin: 0px;
+}
+.descrete:invalid {
+  background-color: transparent;
+}
+#r {
+  background-color: #1e0000;
+}
+#g {
+  background-color: #001e00;
+}
+#b {
+  background-color: #00001e
+}
+#r-key {
+  background-image: linear-gradient(#ff0000, #000000);
+}
+#g-key {
+  background-image: linear-gradient(#00ff00, #000000);
+}
+#b-key {
+  background-image: linear-gradient(#0000ff, #000000);
+}
+#rgb {
+  width: 218px;
+}
+#rgbFlex {
+  display: flex !important;
+  justify-content: space-evenly;
+}
+.rgbGrid {
+  display: grid !important;
+  grid-template-rows: repeat(2, max-content);
+  grid-template-columns: 40px;
+  grid-template-areas: 
+  "t"
+  "s";
+  text-align: center;
+  border-radius: 5px;
+}
+.t {
+  grid-area: t;
+  place-self: center;
+}
+.s {
+  grid-area: s;
+  border: 1px solid #ffffff;
+  margin: 5px;
+  height: 80px;
+  width: 30px;/*30px;*/
+  place-self: center;
+}
+.s input[type="range"] {
+  -webkit-appearance: slider-vertical;
+  padding: 0px;
+  height: 80px;
+  width: 100%;/*30px;*/
+  margin: 0px;
+}
+#rgbAdd {
+  margin: 0px !important;
 }

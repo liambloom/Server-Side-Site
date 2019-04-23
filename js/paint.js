@@ -9,6 +9,7 @@ if (document.readyState === "complete") loadFunc();
 else window.addEventListener("load", loadFunc);
 //let defaultColor = "#ff0000"
 var color = "#ff0000";
+var rgbAddColor;
 var fill = false;
 var memory = [];
 var drawHistory = [];
@@ -41,6 +42,10 @@ var init = () => {
     }
     drawHistory = [JSON.parse(JSON.stringify(memory))];
   };
+  for (let e of [...document.querySelectorAll("#pickers .container")]) {
+    e.style.display = "none";
+  }
+  document.getElementById(document.getElementById("colorMethod").value.toLowerCase()).style.display = "inline-block";
   let mousePosition = event => {
     let x = Math.floor((event.clientX - cp().left - scrollX) / ss);
     let y = Math.floor((event.clientY - cp().top - scrollY) / ss);
@@ -78,6 +83,23 @@ var init = () => {
     }
     return mousedown;
   };
+  let syncColor = (event, element) => {
+    document.getElementById("rgb").removeAttribute("data-err");
+    let c = event.target.value;
+    document.getElementById(element).value = c;
+    syncColorButton();
+  };
+  let syncColorButton = () => {
+    let add = document.getElementById("rgbAdd");
+    rgbAddColor = "#" +
+      parseInt(document.getElementById("rs").value).toString(16).padStart(2, "0") +
+      parseInt(document.getElementById("gs").value).toString(16).padStart(2, "0") +
+      parseInt(document.getElementById("bs").value).toString(16).padStart(2, "0");
+    add.style.setProperty("color", $color.invert(rgbAddColor));
+    add.style.setProperty("background-color", rgbAddColor);
+    document.getElementById("storeRgbAdd").value = rgbAddColor;
+  };
+  syncColorButton();
   let fillFun = (x, y) => {
     try {
       let thisCol = memory[x][y];
@@ -98,16 +120,37 @@ var init = () => {
     }
   };
   let addColor = e => {
-    thisColor = e.getAttribute("data-color");
+    let thisColor = e.getAttribute("data-color");
     e.style.setProperty("background-color", thisColor);
     if ($color.isLight(thisColor, "intensityM")) e.style.setProperty("border-color", "#000000");
     else e.style.setProperty("border-color", "#ffffff");
+    let tooltip = document.createElement("div");
+    tooltip.classList = "arrowBox left override";
+    tooltip.innerHTML = thisColor;
+    e.appendChild(tooltip);
     e.addEventListener("click", event => {
       if (/^#[a-f\d]{6}$/i.test(color)) document.querySelector(`[data-color="${color}"]`).classList.remove("active");
       color = event.target.getAttribute("data-color");
       event.target.classList.add("active");
       document.getElementById("erase").classList.remove("on");
     });
+  };
+  createColor = el => {
+    if (!el) el = document.getElementById("color")
+    let e = document.querySelector(`#${el.id}:not(:invalid)`);
+    if (e) {
+      let thisColor;
+      if (/^#/.test(e.value)) thisColor = e.value;
+      else thisColor = "#" + e.value;
+      if (!document.querySelector(`[data-color="${thisColor}"]`)) {
+        let newColor = thisColor;
+        let n = document.createElement("div");
+        n.setAttribute("data-color", newColor);
+        document.getElementById("colors").appendChild(n);
+        addColor(n);
+        n.dispatchEvent(new Event("click"));
+      }
+    }
   };
   let save = () => {
     document.getElementById("download").href = c.toDataURL('image/png');
@@ -148,14 +191,12 @@ var init = () => {
       e.style.setProperty("display", "initial");
       let pos = mousePosition(event);
       let cpl = cp();
-      //console.log((pos.x * ss) + cpl.left);
       e.style.setProperty("left", ((pos.x * ss) + cpl.left) + "px");
       e.style.setProperty("top", ((pos.y * ss) + cpl.top) + "px");
     }
     else e.style.setProperty("display", "none");
-    //console.log(event.target.closest("#canvas, #hoverShade"));
   });
-  /*document.body*/c.addEventListener("mousedown", event => {
+  c.addEventListener("mousedown", event => {
     mouseDetect(event);
   });
   document.getElementById("hoverShade").addEventListener("mousedown", event => {
@@ -179,10 +220,10 @@ var init = () => {
         ctx.clearRect(x * ss, y * ss, ss, ss);
         ctx.globalAlpha = 0;
       }
-      console.log(drawHistory[1][x][y]);
+      //console.log(drawHistory[1][x][y]);
     });
     if (drawHistory[0]) future.unshift(drawHistory.shift());
-    console.log(drawHistory);
+    //console.log(drawHistory);
   });
   c.addEventListener("redo", () => {
     if (future[0][x][y]) memory = future[0];
@@ -196,29 +237,73 @@ var init = () => {
   c.addEventListener("clear", () => {
     clear();
   });
-  document.getElementById("color").addEventListener("change", event => {
+  /*document.getElementById("color").addEventListener("change", event => {
     let e = event.target;
     if (/[a-f\d]/i.test(e.value)) e.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
-  });
-  document.getElementById("color").addEventListener("keyup", event => {
+  });*/
+  document.getElementById("color").addEventListener("input", event => {
     let el = event.target;
-    if (!/^[a-f\d]*$/i.test(el.value)) el.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
-    else if (!/^.{6}$/.test(el.value)) el.parentNode.setAttribute("data-err", "Must be exactally 6 characters");
+    if (!/^[a-f\d]{6}$/i.test(el.value)) {
+      //console.log("This ran");
+      el.style.removeProperty("color");
+      el.style.removeProperty("background-color");
+      if (!/^[a-f\d]*$/i.test(el.value)) el.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
+      else if (!/^.{6}$/.test(el.value)) el.parentNode.setAttribute("data-err", "Must be exactally 6 characters");
+    }
     else if (document.querySelector(`[data-color="#${el.value}"]`)) el.parentNode.setAttribute("data-err", "That color alredy exists");
     else {
+      //console.log("this ran");
       el.parentNode.removeAttribute("data-err");
-      if (event.keyCode === 13) {
-        let e = document.querySelector("#color:not(:invalid)");
-        if (e) {
-          let newColor = "#" + e.value;
-          let n = document.createElement("div");
-          n.setAttribute("data-color", newColor);
-          document.getElementById("colors").appendChild(n);
-          addColor(n);
-          n.dispatchEvent(new Event("click"));
-        }
-      }
+      el.style.setProperty("color", $color.invert("#" + el.value));
+      el.style.setProperty("background-color", "#" + el.value);
     }
+  });
+  document.getElementById("color").addEventListener("keyup", event => {
+    if (event.keyCode === 13) {
+      createColor();
+    }
+  });
+  document.getElementById("color").addEventListener("change", event => {
+    createColor();
+  });
+  document.getElementById("rt").addEventListener("input", event => {
+    syncColor(event, "rs");
+  });
+  document.getElementById("rs").addEventListener("input", event => {
+    syncColor(event, "rt");
+  });
+  document.getElementById("gt").addEventListener("input", event => {
+    syncColor(event, "gs");
+  });
+  document.getElementById("gs").addEventListener("input", event => {
+    syncColor(event, "gt");
+  });
+  document.getElementById("bt").addEventListener("input", event => {
+    syncColor(event, "bs");
+  });
+  document.getElementById("bs").addEventListener("input", event => {
+    syncColor(event, "bt");
+  });
+  document.getElementById("rgbAdd").addEventListener("click", () => {
+    if (document.querySelector(`[data-color="${document.getElementById("storeRgbAdd").value}"]`)) {
+      console.log("this ran");
+      document.getElementById("rgb").setAttribute("data-err", "That color already exists");
+    }
+    else {
+      createColor(document.getElementById("storeRgbAdd"));
+    }
+  });
+  document.getElementById("osColorPick").addEventListener("change", event => {
+    if (document.querySelector(`[data-color="${event.target.value}"]`)) {
+      event.target.parentNode.setAttribute("data-err", "That color already exists");
+    } 
+    createColor(event.target);
+  });
+  document.getElementById("colorMethod").addEventListener("change", event => {
+    e = event.target;
+    //console.log(e.value.toLowerCase());
+    document.querySelector("#pickers [style='display: inline-block;']").style.display = "none";
+    document.getElementById(e.value.toLowerCase()).style.display = "inline-block";
   });
   document.getElementById("erase").addEventListener("click", () => {
     if (/^#[a-f\d]{6}$/i.test(color)) document.querySelector(`[data-color="${color}"]`).classList.remove("active");
