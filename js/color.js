@@ -36,11 +36,11 @@ var $color = {
     s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1)); s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1)); // What???
   },*/
   invert: function(color) {
-    color = this.parse(color);
+    c = this.parse(color);
     return "#" +
-      (255 - color.r.toString(16).padStart(2, "0")) +
-      (255 - color.g.toString(16).padStart(2, "0")) +
-      (255 - color.b.toString(16).padStart(2, "0"));
+      ((255 - c.r).toString(16).padStart(2, "0")) +
+      ((255 - c.g).toString(16).padStart(2, "0")) +
+      ((255 - c.b).toString(16).padStart(2, "0"));
   },
   HSBbrightness: function(color) {
     return Math.max(...this.parse(color));
