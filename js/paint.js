@@ -17,6 +17,7 @@ var future = [];
 var key = {};
 let undo = new Event("undo");
 let redo = new Event("redo");
+let prev;
 var init = () => {
   let defaultColor = "#ff0000";// Eventually make this determined by the theme
   window.color = defaultColor;
@@ -169,6 +170,38 @@ var init = () => {
       else draw(event);
     }
   };
+  let fix = (start, end) => {
+    //console.log(...[start, end]);
+    ctx.fillStyle = color;
+    let deltaX = (end.x - start.x);
+    let deltaY = (end.y - start.y);
+    let m = -(deltaY / deltaX);
+    let b = (deltaY * end.x) + (deltaX * end.y);// This is standart form because C in standard form is b in slope intercept
+    console.log(...[b, m]);
+    //console.log(start, end);
+    //console.log(deltaX, deltaY);
+    /*let toX = y => (y - b) / m;
+    let toY = x => m * x + b;*/
+    //console.log(Math.min(...[start.x, end.x]));
+    if (m > 1 || m < -1) {
+      //input x
+      for (let x = Math.min(...[start.x, end.x]); x < Math.max(...[start.x, end.x]); x++) {
+        //console.log(x);
+        let cords = { x: x, y: m * x + b};
+        ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
+        //console.log(cords.x);
+      }
+    }
+    else {
+      //input y
+      for (let y = Math.min(...[start.y, end.y]); y < Math.max(...[start.y, end.y]); y++) {
+        //console.log(y);
+        let cords = { x: (y - b) / m, y: y };
+        ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
+        console.log(cords);
+      }
+    }
+  };
   let mousedown;
   document.body.addEventListener("keydown", event => {
     key[event.key] = true;
@@ -198,9 +231,11 @@ var init = () => {
   });
   c.addEventListener("mousedown", event => {
     mouseDetect(event);
+    if (event.button === 0) prev = event;
   });
   document.getElementById("hoverShade").addEventListener("mousedown", event => {
     mouseDetect(event);
+    prev = event;
   });
   document.body.addEventListener("mouseup", event => {
     if (event.button === 0) mousedown = false;
@@ -211,6 +246,14 @@ var init = () => {
   });
   c.addEventListener("mousemove", event => {
     if (!fill) draw(event);
+    if (mousedown && false) {
+      new Promise((resolve, reject) => {
+        fix(mousePosition(prev), mousePosition(event));
+      })
+      .then(() => {
+        prev = event;
+      });
+    }
   });
   c.addEventListener("undo", () => {
     if (drawHistory[1]) memory = drawHistory[1];
