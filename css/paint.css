@@ -40,7 +40,7 @@ body {
   flex-direction: row;
   flex-wrap: wrap;
 }
-.menu *, .button {
+.menu :not(.override), .button {
   cursor: pointer;
 }
 .on {
@@ -118,8 +118,7 @@ body {
   padding: 0px;
   width: 30px !important;
   background-color: transparent;
-  width: max-content;
-  margin: 0px;
+  margin: 0px !important;
 }
 .descrete:invalid {
   background-color: transparent;
@@ -148,6 +147,7 @@ body {
 #rgbFlex {
   display: flex !important;
   justify-content: space-evenly;
+  cursor: auto !important;
 }
 .rgbGrid {
   display: grid !important;
@@ -158,6 +158,7 @@ body {
   "s";
   text-align: center;
   border-radius: 5px;
+  cursor: auto !important;
 }
 .t {
   grid-area: t;
@@ -170,13 +171,37 @@ body {
   height: 80px;
   width: 30px;/*30px;*/
   place-self: center;
+  cursor: auto !important;
 }
 .s input[type="range"] {
   -webkit-appearance: slider-vertical;
   padding: 0px;
   height: 80px;
   width: 100%;/*30px;*/
+  background: transparent;
+  border: none;
+  outline: none;
   margin: 0px;
+}
+.s input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+.s input[type="range"]::-moz-range-thumb {
+
+}
+.s input[type="range"]::-webkit-slider-thumb, .s input[type="range"]::-moz-range-thumb {
+  cursor: ns-resize;
+  height: 0px;
+  width: calc(100% - 9px);
+  background-color: transparent;
+  border-radius: 0px;
+  border-width: 5px;
+  border-style: solid;
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  border-right-color: #ffffff;
+  border-left-color: #ffffff;
+
 }
 #rgbAdd {
   margin: 0px !important;
