@@ -315,6 +315,9 @@ var init = () => {
   c.addEventListener("clear", () => {
     clear();
   });
+  c.addEventListener("new", () => {
+   location.assign("?ask=true");
+  });
   /*document.getElementById("color").addEventListener("change", event => {
     let e = event.target;
     if (/[a-f\d]/i.test(e.value)) e.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
@@ -426,12 +429,20 @@ var init = () => {
   document.getElementById("clear").addEventListener("click", () => {
     modal.open("#clearConfirm");
   });
+  document.getElementById("new").addEventListener("click", () => {
+    modal.open("#newConfirm");
+  });
   document.getElementById("download").addEventListener("click", () => {
     save();
   });
 };
 document.addEventListener("modalsReady", () => {
-  modal.open("#initial");
   document.getElementById("width").setAttribute("max", Math.floor((window.innerWidth - 500) / 5));
   document.getElementById("height").setAttribute("max", Math.floor((window.innerHeight - 200) / 5));
+  if (new URLSearchParams(location.search).get("ask") === "true") {
+    modal.open("#initial");
+  }
+  else {
+    init();
+  }
 });

@@ -106,6 +106,7 @@
       <div clas="menu">
         <!--Import:
         <input type="file" id="import" accept="image/png">-->
+        <div id="new" class="button">New</div>
         <a id="download" class="button" download="drawing.png">Download</a>
       </div>
     </div>
@@ -115,6 +116,9 @@
   </div>
   <modal id="clearConfirm" data-escape="yn" data-confirm="document.getElementById('canvas').dispatchEvent(new Event('clear'))">
     Are you sure you want to clear this and star over?
+  </modal>
+  <modal id="newConfirm" data-escape="yn" data-confirm="document.getElementById('canvas').dispatchEvent(new Event('new'))">
+    Are you sure you want to create a new canvas and delete this one?
   </modal>
   <modal id="initial" data-escape="ok" data-confirm="init()" data-size="large">
     Width: <input id="width" type="number" value="30" required><br>
