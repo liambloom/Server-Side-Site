@@ -132,6 +132,9 @@ body {
 #b {
   background-color: #00001e
 }
+#h, #s, #l {
+  background-color: #ff000040
+}
 #r-key {
   background-image: linear-gradient(#ff0000, #000000);
 }
@@ -141,15 +144,30 @@ body {
 #b-key {
   background-image: linear-gradient(#0000ff, #000000);
 }
-#rgb {
+/*#h, #s, #l {
+  background-color: #1e1e1e
+}*/
+#h-key {
+  background-image: linear-gradient(#ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)
+}
+#s-key {
+  background-image: linear-gradient(#ff0000, #888888);
+}
+#l-key {
+  background-image: linear-gradient(#ffffff, #ff0000, #000000);
+}
+#hs {
+  transform: rotate(180deg)
+}
+#rgb, #hsl {
   width: 218px;
 }
-#rgbFlex {
+#rgbFlex, #hslFlex {
   display: flex !important;
   justify-content: space-evenly;
   cursor: auto !important;
 }
-.rgbGrid {
+.rgbGrid, .hslGrid {
   display: grid !important;
   grid-template-rows: repeat(2, max-content);
   grid-template-columns: 40px;
@@ -186,9 +204,6 @@ body {
 .s input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
 }
-.s input[type="range"]::-moz-range-thumb {
-
-}
 .s input[type="range"]::-webkit-slider-thumb, .s input[type="range"]::-moz-range-thumb {
   cursor: ns-resize;
   height: 0px;
@@ -203,6 +218,6 @@ body {
   border-left-color: #ffffff;
 
 }
-#rgbAdd {
+#rgbAdd, #hslAdd {
   margin: 0px !important;
 }

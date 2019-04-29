@@ -31,10 +31,9 @@
         <div id="colorMethodContainer">
           New Color: <select id="colorMethod">
             <option>HEX</option>
-            <option selected>RGB</option>
-            <option>OS</option>
+            <option>RGB</option>
+            <option selected>HSL</option>
             <!--
-              <option>HSL</option>
               <option>HSB</option> // HSB is same as HSV
             -->
           </select>
@@ -68,6 +67,30 @@
               </div>
               <input id="rgbAdd" type="button" class="descrete" value="&plus;">
               <input id="storeRgbAdd" type="hidden">
+            </div>
+          </div>
+          <div id="hsl" class="container">
+            <div id="hslFlex">
+              <div id="h" class="hslGrid">
+                <input id="ht" class="descrete t override" value="360" pattern="^(?:36[0]|3[0-5][0-9]|[12][0-9][0-9]|[1-9]?[0-9])?$">
+                <div id="h-key" class="s">
+                  <input id="hs" type="range" orient="vertical" class="override" value="0" min="0" max="360">
+                </div>
+              </div>
+              <div id="s" class="hslGrid">
+                <input id="st" class="descrete t override" value="100" pattern="^[0-9][0-9]?$|^100$">
+                <div id="s-key" class="s">
+                  <input id="ss" type="range" orient="vertical" class="override" value="100" min="0" max="100">
+                </div>
+              </div>
+              <div id="l" class="hslGrid">
+                <input id="lt" class="descrete t override" value="50" pattern="^[0-9][0-9]?$|^100$">
+                <div id="l-key" class="s">
+                  <input id="ls" type="range" orient="vertical" class="override" value="50" min="0" max="100">
+                </div>
+              </div>
+              <input id="hslAdd" type="button" class="descrete" value="&plus;">
+              <input id="storeHslAdd" type="hidden">
             </div>
           </div>
           <div id="os" class="container">

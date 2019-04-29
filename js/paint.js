@@ -100,7 +100,42 @@ var init = () => {
     add.style.setProperty("background-color", rgbAddColor);
     document.getElementById("storeRgbAdd").value = rgbAddColor;
   };
+  let syncColorHSL = (event, element) => {
+    document.getElementById("hsl").removeAttribute("data-err");
+    document.getElementById(element).value = event.target.value;
+    let h = $color.HSLtoHEX(
+      document.getElementById("ht").value,
+      100,
+      50
+    );
+    //console.log(h);
+    if (/^h/.test(element)) {
+      document.getElementById("s-key").style.setProperty("background-image", `linear-gradient(${h}, #888888)`);
+      document.getElementById("l-key").style.setProperty("background-image", `linear-gradient(#ffffff, ${h}, #000000)`);
+    }
+    syncColorButtonHSL();
+  };
+  let syncColorButtonHSL = () => {
+    let add = document.getElementById("hslAdd");
+    hslAddColor = $color.HSLtoHEX(
+      document.getElementById("ht").value,
+      document.getElementById("st").value,
+      document.getElementById("lt").value
+    );
+    let h = $color.HSLtoHEX(
+      document.getElementById("ht").value,
+      100,
+      50
+    );
+    add.style.setProperty("color", $color.invert(hslAddColor));
+    add.style.setProperty("background-color", hslAddColor);
+    document.getElementById("h").style.setProperty("background-color", h + "40");
+    document.getElementById("s").style.setProperty("background-color", h + "40");
+    document.getElementById("l").style.setProperty("background-color", h + "40");
+    document.getElementById("storeHslAdd").value = hslAddColor;
+  };
   syncColorButton();
+  syncColorButtonHSL();
   let fillFun = (x, y) => {
     try {
       let thisCol = memory[x][y];
@@ -329,11 +364,38 @@ var init = () => {
   });
   document.getElementById("rgbAdd").addEventListener("click", () => {
     if (document.querySelector(`[data-color="${document.getElementById("storeRgbAdd").value}"]`)) {
-      console.log("this ran");
+      //console.log("this ran");
       document.getElementById("rgb").setAttribute("data-err", "That color already exists");
     }
     else {
       createColor(document.getElementById("storeRgbAdd"));
+    }
+  });
+  document.getElementById("ht").addEventListener("input", event => {
+    syncColorHSL(event, "hs");
+  });
+  document.getElementById("hs").addEventListener("input", event => {
+    syncColorHSL(event, "ht");
+  });
+  document.getElementById("st").addEventListener("input", event => {
+    syncColorHSL(event, "ss");
+  });
+  document.getElementById("ss").addEventListener("input", event => {
+    syncColorHSL(event, "st");
+  });
+  document.getElementById("lt").addEventListener("input", event => {
+    syncColorHSL(event, "ls");
+  });
+  document.getElementById("ls").addEventListener("input", event => {
+    syncColorHSL(event, "lt");
+  });
+  document.getElementById("hslAdd").addEventListener("click", () => {
+    if (document.querySelector(`[data-color="${document.getElementById("storeHslAdd").value}"]`)) {
+      //console.log("this ran");
+      document.getElementById("hsl").setAttribute("data-err", "That color already exists");
+    }
+    else {
+      createColor(document.getElementById("storeHslAdd"));
     }
   });
   document.getElementById("osColorPick").addEventListener("change", event => {
