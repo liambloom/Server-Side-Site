@@ -1,7 +1,10 @@
 :not(:hover) .arrowBox {
   display: none;
 }
- #topRight :hover .arrowBox {
+.arrowBox:hover {
+  display: none;
+}
+#topRight :hover .arrowBox {
   display: inline-block;
 }
 @supports (not (width: max-content)) {
