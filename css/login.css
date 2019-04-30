@@ -1,0 +1,26 @@
+#content {
+  display: flex;
+  justify-content: center;
+}
+/*#box {
+  width: 
+}*/
+#box input {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  height: 2.3rem;
+  padding: 5px;
+  margin: 15px;
+  border-width: 2px;
+}
+#box input:not([type="button"]) {
+  width: 40vw;
+  transition-duration: 750ms;
+}
+#box input:not([type="button"]):focus {
+  width: 60vw;
+}
+#box input[type="button"] {
+  padding: 5px 15px;
+  height: calc(2.3rem + 10px);
+}

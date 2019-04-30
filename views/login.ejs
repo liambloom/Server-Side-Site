@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: true})%>
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <%- include("header", {title: "Login", choice: true}) %>
+  <div id="content" class="center">
+    <div id="box">
+      <input type="text" placeholder="Username"><br>
+      <input type="password" placeholder="Password"><br>
+      <input type="button" value="Log in">
+    </div>
+  </div>
+</body>
+</html>

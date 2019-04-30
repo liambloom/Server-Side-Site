@@ -200,6 +200,7 @@ input[type = "text"]:focus, input[type = "username"]:focus, input[type = "passwo
 	width: 150px;
 }
 input[type = "button"]:hover, input[type = "submit"]:hover, button:hover, .button:hover {
+  cursor: pointer;
 	border: 2px solid var(--headTxt);
 	margin: 2px;
 	color: var(--headTxt);
