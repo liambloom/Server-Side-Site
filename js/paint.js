@@ -129,9 +129,9 @@ var init = () => {
     );
     add.style.setProperty("color", $color.invert(hslAddColor));
     add.style.setProperty("background-color", hslAddColor);
-    document.getElementById("h").style.setProperty("background-color", h + "40");
+    /*document.getElementById("h").style.setProperty("background-color", h + "40");
     document.getElementById("s").style.setProperty("background-color", h + "40");
-    document.getElementById("l").style.setProperty("background-color", h + "40");
+    document.getElementById("l").style.setProperty("background-color", h + "40");*/
     document.getElementById("storeHslAdd").value = hslAddColor;
   };
   syncColorButton();
@@ -212,7 +212,7 @@ var init = () => {
     let deltaY = (end.y - start.y);
     let m = -(deltaY / deltaX);
     let b = (deltaY * end.x) + (deltaX * end.y);// This is standart form because C in standard form is b in slope intercept
-    console.log(...[b, m]);
+    //console.log(`y=${m}x+${b}`);
     //console.log(start, end);
     //console.log(deltaX, deltaY);
     /*let toX = y => (y - b) / m;
@@ -224,7 +224,7 @@ var init = () => {
         //console.log(x);
         let cords = { x: x, y: m * x + b};
         ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        //console.log(cords.x);
+        console.log(`${cords.y}=${m}(${cords.x})+${b}`);
       }
     }
     else {
@@ -233,7 +233,7 @@ var init = () => {
         //console.log(y);
         let cords = { x: (y - b) / m, y: y };
         ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        console.log(cords);
+        console.log(`${cords.y}=${m}(${cords.x})+${b}`);
       }
     }
   };
