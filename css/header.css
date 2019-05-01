@@ -15,8 +15,6 @@ header nav ul li {
 }
 header nav ul li.right {
   float: right;
-}
-header nav ul li.right {
   transition: transform 400ms ease-out;
   transform: translateY(0px);
 }
