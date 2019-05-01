@@ -205,16 +205,27 @@ var init = () => {
       else draw(event);
     }
   };
-  let fix = (start, end) => {
+  let line = (s, e) => {
     //console.log(...[start, end]);
+    let start = {
+      x: s.clientX - cp().left - scrollX,
+      y: s.clientY - cp().top - scrollY
+    };
+    let end = {
+      x: (e.clientX - cp().left - scrollX),
+      y: (e.clientY - cp().top - scrollY)
+    };
+    //console.log(...[end.y, start.y]);
     ctx.fillStyle = color;
     let deltaX = (end.x - start.x);
     let deltaY = (end.y - start.y);
     let m = -(deltaY / deltaX);
     let b = (deltaY * end.x) + (deltaX * end.y);// This is standart form because C in standard form is b in slope intercept
-    //console.log(`y=${m}x+${b}`);
+    console.log(`dY=${Math.floor(deltaY / ss)} dX=${Math.floor(deltaX / ss)}`)
+    //console.log(`y=${m}x+${Math.floor(b / ss)}`);
     //console.log(start, end);
     //console.log(deltaX, deltaY);
+    //console.log("foo");
     /*let toX = y => (y - b) / m;
     let toY = x => m * x + b;*/
     //console.log(Math.min(...[start.x, end.x]));
@@ -222,20 +233,21 @@ var init = () => {
       //input x
       for (let x = Math.min(...[start.x, end.x]); x < Math.max(...[start.x, end.x]); x++) {
         //console.log(x);
-        let cords = { x: x, y: m * x + b};
+        let cords = { x: Math.floor(x / ss), y: Math.floor((m * x + b) / ss)};
         ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        console.log(`${cords.y}=${m}(${cords.x})+${b}`);
+        //console.log(`${cords.y}=${m}(${cords.x})+${b}`);
       }
     }
     else {
       //input y
       for (let y = Math.min(...[start.y, end.y]); y < Math.max(...[start.y, end.y]); y++) {
         //console.log(y);
-        let cords = { x: (y - b) / m, y: y };
+        let cords = { x: Math.floor(((y - b) / m) / ss), y: Math.floor(y / ss)};
         ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        console.log(`${cords.y}=${m}(${cords.x})+${b}`);
+        //console.log(`${cords.y}=${m}(${cords.x})+${b}`);
       }
     }
+    prev = event;
   };
   let mousedown;
   document.body.addEventListener("keydown", event => {
@@ -282,12 +294,14 @@ var init = () => {
   c.addEventListener("mousemove", event => {
     if (!fill) draw(event);
     if (mousedown && false) {
-      new Promise((resolve, reject) => {
-        fix(mousePosition(prev), mousePosition(event));
+      /*new Promise((resolve, reject) => {
+        line(prev, event);
       })
       .then(() => {
         prev = event;
-      });
+        console.log("this ran");
+      });*/
+      line(prev, event);
     }
   });
   c.addEventListener("undo", () => {
