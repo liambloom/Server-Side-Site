@@ -242,6 +242,12 @@ window.onload = () => {
     }
     alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
   }
+
+  /*for (let i of [...document.querySelectorAll("[pattern]")]) {
+    i.addEventListener("input", () => {
+
+    });
+  }*/
 };
 window.onscroll = () => {
   if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
