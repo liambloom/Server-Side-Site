@@ -104,14 +104,6 @@ body {
   pointer-events: none;
   line-height: 1em;
 }
-[data-err]::after {
-  vertical-align: text-top;
-  font-size: 0.8em;
-  line-height: 0.8em;
-  color: #ff0000;
-  display: inline;
-  content: attr(data-err);
-}
 .descrete {
   border: none !important;
   border-radius: 2px;
