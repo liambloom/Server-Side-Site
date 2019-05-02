@@ -1,15 +1,15 @@
 #content {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#box {
   width: calc(45vw + 34px);
   height: max-content;
   padding: 50px;
   background-color: #00000080;
   border-radius: 20px;
+  display: inline-block;
 }
-input {
+#box input {
   font-size: 1.5rem;
   line-height: 2rem;
   height: 2rem;
@@ -18,15 +18,20 @@ input {
   border-width: 2px;
   background-color: transparent;
 }
-input:not([type="button"]) {
+#box input:not([type="button"]) {
   width: 30vw;
   transition-duration: 750ms;
 }
-input:not([type="button"]):focus {
+#box input:not([type="button"]):focus {
   width: 45vw;
 }
-input[type="button"] {
+#box input[type="button"] {
   margin-top: 15px !important;
   padding: 5px 15px;
   height: calc(2.3rem + 10px);
+}
+[data-err]::after {
+  position: relative;
+  left: 20px;
+  bottom: 5px;
 }
