@@ -9,15 +9,20 @@
 <body>
   <%- include("header", {title: "Login", choice: true}) %>
   <div id="content" class="center">
-    <div id="box">
+    <form id="box">
       <div id="usernameContainer">
-        <input id="username" type="text" placeholder="Username" pattern="[A-Za-z0-9_\-.]+">
+        <input id="username" type="text" placeholder="Username">
       </div>
       <div id="passwordContainer">
-        <input id="password" type="password" placeholder="Password"><br>
+        <input id="password" type="password" placeholder="Password"><!--pattern="(?=[A-Za-z0-9!@#$%^&*()\-+`~\\|\[\]{};:'\u0022,.\/?_=]{6,}$)(?!.*password)(?!.*Password)(?!.*(.)\1{2,}).*"-->
+        <div for="password" id="showPassContainer">
+          <div id="showPass">
+            <%- include("../img/eye.svg") %>
+          </div>
+        </div>
       </div>
-      <input id="button" type="button" value="Log in">
-    </div>
+      <input id="button" type="submit" value="Log in">
+    </form>
   </div>
 </body>
 </html>

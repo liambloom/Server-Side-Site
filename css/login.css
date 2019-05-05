@@ -3,7 +3,7 @@
 }
 #box {
   width: calc(45vw + 34px);
-  height: max-content;
+  height: 202.2px;
   padding: 50px;
   background-color: #00000080;
   border-radius: 20px;
@@ -14,18 +14,18 @@
   line-height: 2rem;
   height: 2rem;
   padding: 5px;
-  margin: 10px !important;
+  margin: 10px 0px !important;
   border-width: 2px;
   background-color: transparent;
 }
-#box input:not([type="button"]) {
+#box input:not([type="submit"]) {
   width: 30vw;
   transition-duration: 750ms;
 }
-#box input:not([type="button"]):focus {
+#box input:not([type="submit"]):focus, #box input:not([type="submit"]).focus {
   width: 45vw;
 }
-#box input[type="button"] {
+#box input[type="submit"] {
   margin-top: 15px !important;
   padding: 5px 15px;
   height: calc(2.3rem + 10px);
@@ -34,4 +34,26 @@
   position: relative;
   left: 20px;
   bottom: 5px;
+  width: 45vw;
+  text-align: left;
+}
+#passwordContainer {
+  white-space: nowrap;
+}
+#showPassContainer {
+  width: 0px;
+  display: inline-block;
+  position: relative;
+  right: 25px;
+  top: calc(1.35em / 1.5);
+  transform: translateY(-50%);
+  height: 24px;
+}
+#showPass {
+  width: max-content;
+  transform: translateX(-100%);
+  opacity: 0.5
+}
+#showPass:active {
+  opacity: 1;
 }
