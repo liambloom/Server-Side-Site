@@ -59,7 +59,7 @@ a {
 	color: var(--txt);
 }
 #choose a {
-	color: var(--headTxt);
+  color: var(--headTxt);
 }
 #topRight {
 	position: fixed;
@@ -113,11 +113,12 @@ a {
 	width: 300px;
 	position: fixed;
   top: calc(1.15em + 38px);
-  bottom: calc(100vh - (1.15em + 38px));
 	right: 12px;
 	border-radius: 10px;
-  transition: bottom 300ms ease;
+  transition: height 300ms ease;
   background-color: var(--dark);
+  height: 0px;
+  overflow: hidden; /* The arrow for choose is overflow, and is therefore hidden. I want to hide part of the overflow*/
 }
 :not(:hover) #choose {
   display: initial;
@@ -131,7 +132,8 @@ a {
   display: none;
 }
 #choose.grow {
-  bottom: 13px;
+  height: calc(100% - (1.15em + 51px));
+  display: initial !important;
 }
 #choose.shrink {
   bottom: calc(100vh - (1.15em + 38px));
@@ -205,12 +207,12 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:hover, .butto
 	margin: 2px;
 	color: var(--headTxt);
 }
-input:invalid {
+input:invalid, [data-err] input {
   background-color: #220000;
   border-color: #aa0000;
   color: #aa0000;
 }
-input:invalid:hover, input:invalid:focus {
+input:invalid:hover, input:invalid:focus, [data-err] input:hover, [data-err] input:focus {
   background-color: #440000;
   border-color: #cc0000;
   color: #cc0000;
@@ -223,6 +225,7 @@ input:invalid:hover, input:invalid:focus {
   display: inline;
   float: left;
   content: attr(data-err);
+  height: 0px;
 }
 textarea {
 	background-color: var(--bg);

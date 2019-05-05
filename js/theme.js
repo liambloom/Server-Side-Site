@@ -282,7 +282,8 @@ window.theme = {
 				get: function() {
 					return name;
 				}
-			});
+      });
+      window.dispatchEvent(new Event("colorChange"));
 		}
 		else {
 			throw name.titleCase +  " is not an avalable theme";
@@ -343,11 +344,9 @@ window.theme = {
 var closeMenu = () => {
   document.getElementById("choose").classList.add("shrink");
   document.getElementById("choose").classList.remove("grow");
-  setTimeout(() => {
-    document.querySelector("#choose .inner").style.display = "none";
-  }, 240);
 	setTimeout(() => {
     document.getElementById("settings").className = "";
     document.getElementById("choose").classList.add("gone");
+    ocument.querySelector("#choose .inner").style.display = "none";
 	}, 300);
 };
