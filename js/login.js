@@ -65,7 +65,7 @@ let loadFunc = () => {
   document.getElementById("password").addEventListener("input", event => {
     let e = event.target;
     let pass = e.value;
-    if (/[^a-z0-9!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?_=]/i.test(pass)) errMsg(e, "Illegal character detected");
+    if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
     else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
     else if (/(.)\1{2,}/.test(pass)) errMsg(e, "Don't use the same character repeatedly");
     else if (checkConsecutive(pass.match(/\d{3,}/g))) errMsg(e, "Don't use consecutive numbers");
@@ -108,6 +108,10 @@ let loadFunc = () => {
     if (!password) errMsg(passwordElement, "Password is required");
     if (!document.querySelector(":invalid")) {
       //valid
+       
+    }
+    if (/^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,}).*/i.test(pass) && !checkConsecutive(pass.match(/\d{3,}/g) && !checkConsecutive(pass.match(/[a-z]{3,}/gi)))) {
+
     }
   };
 };
