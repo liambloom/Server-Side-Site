@@ -57,3 +57,6 @@
 #showPass:active {
   opacity: 1;
 }
+#loadingModal .modal-box {
+  background-color: transparent;
+}

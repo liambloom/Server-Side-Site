@@ -3,13 +3,16 @@ let boxColor = () => {
   if (theme.mode === "light") document.getElementById("box").style["background-color"] = "#ffffff80";
   else document.getElementById("box").style["background-color"] = "#00000080";
 };
+
 let eyeColor = () => {
   document.getElementById("eye").style.setProperty("fill", themes[theme.color].headTextColor);
 };
+
 let themeFunc = () => {
   boxColor();
   eyeColor();
 };
+
 let errMsg = (e, msg) => {
   if (msg) {
     e.parentNode.setAttribute("data-err", msg);
@@ -20,6 +23,7 @@ let errMsg = (e, msg) => {
     e.setCustomValidity("");
   }
 };
+
 let checkConsecutive = (strings) => {
   if (!strings) return false;
   let c = 0;
@@ -55,27 +59,35 @@ let checkConsecutive = (strings) => {
   }
   return false;
 };
+
+let signupString = new URLSearchParams(location.search).get("signup");
+if (signupString === "true") var signup = true;
+else/* if (signupString === "false")*/ var signup = false;
+//else location.search = "signup=false";
+
 let loadFunc = () => {
-  document.getElementById("username").addEventListener("input", event => {
-    //console.log(event.target.parentNode);
-    let e = event.target;
-    if (!/^[a-z\d_\-.]+$/i.test(e.value)) errMsg(e, "Usernames can only contain letters, numbers, _, -, .");
-    else errMsg(e);
-  });
-  document.getElementById("password").addEventListener("input", event => {
-    let e = event.target;
-    let pass = e.value;
-    if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
-    else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
-    else if (/(.)\1{2,}/.test(pass)) errMsg(e, "Don't use the same character repeatedly");
-    else if (checkConsecutive(pass.match(/\d{3,}/g))) errMsg(e, "Don't use consecutive numbers");
-    else if (checkConsecutive(pass.match(/[a-z]{3,}/gi))) errMsg(e, "Don't use consecutive letters");
-    else if (!/[a-z]/i.test(pass)) errMsg(e, "Password must contain a letter");
-    else if (!/\d/.test(pass)) errMsg(e, "Password must contain a number");
-    else if (/^[a-z\d]*$/i.test(pass)) errMsg(e, "Password must contain a special character");
-    else if (/^.{0,5}$/.test(pass)) errMsg(e, "Password must be at least 6 characters long");
-    else errMsg(e);
-  });
+  if (signup) {
+    document.getElementById("username").addEventListener("input", event => {
+      //console.log(event.target.parentNode);
+      let e = event.target;
+      if (!/^[\w\-.]+$/i.test(e.value)) errMsg(e, "Usernames can only contain letters, numbers, _, -, .");
+      else errMsg(e);
+    });
+    document.getElementById("password").addEventListener("input", event => {
+      let e = event.target;
+      let pass = e.value;
+      if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
+      else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
+      else if (/(.)\1{2,}/.test(pass)) errMsg(e, "Don't use the same character repeatedly");
+      else if (checkConsecutive(pass.match(/\d{3,}/g))) errMsg(e, "Don't use consecutive numbers");
+      else if (checkConsecutive(pass.match(/[a-z]{3,}/gi))) errMsg(e, "Don't use consecutive letters");
+      else if (!/[a-z]/i.test(pass)) errMsg(e, "Password must contain a letter");
+      else if (!/\d/.test(pass)) errMsg(e, "Password must contain a number");
+      else if (/^[a-z\d]*$/i.test(pass)) errMsg(e, "Password must contain a special character");
+      else if (/^.{0,5}$/.test(pass)) errMsg(e, "Password must be at least 6 characters long");
+      else errMsg(e);
+    });
+  }
   let show = () => {
     let e = document.getElementById("password");
     e.setAttribute("type", "text");
@@ -106,12 +118,37 @@ let loadFunc = () => {
     let password = passwordElement.value;
     passwordElement.setAttribute("required", "required");
     if (!password) errMsg(passwordElement, "Password is required");
-    if (!document.querySelector(":invalid")) {
-      //valid
-       
-    }
-    if (/^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,}).*/i.test(pass) && !checkConsecutive(pass.match(/\d{3,}/g) && !checkConsecutive(pass.match(/[a-z]{3,}/gi)))) {
+    if (/^[\w\-.]+$/.test(username) && /^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,})/i.test(password) && !checkConsecutive(password.match(/\d{3,}/g) && !checkConsecutive(password.match(/[a-z]{3,}/gi)))) {
+      document.getElementById("button").parentNode.removeAttribute("data-err");
+      modal.open("#loadingModal");
+      document.getElementById("loadingContainer").style.setProperty("display", "initial");
+      window.activateLoading();
+      let method;
+      if (signup) method = "POST";
+      else method = "PUT";
+      fetch("/api/users", {
+        method: method,
+        body: JSON.stringify({
+          username: username,
+          password: password,
+          timestamp: new Date()
+        }),
+        headers: {
+          "Content-Type": "application/json; charset=utf-8"
+        }
+      })
+        .then(res => {
+          if (res.ok) {
 
+          }
+          else {
+
+          }
+        })
+        .then(() => modal.close());
+    }
+    else {
+      document.getElementById("button").parentNode.setAttribute("data-err", "Invalid username or password");
     }
   };
 };

@@ -21,8 +21,15 @@
           </div>
         </div>
       </div>
-      <input id="button" type="submit" value="Log in">
+      <div id="buttonContainer">
+        <input id="button" type="submit" value="Log in">
+      </div>
     </form>
   </div>
+  <modal id="loadingModal">
+    <div id="loadingContainer" style="display: none;">
+      <%- include("loading.html") %>
+    </div>
+  </modal>
 </body>
 </html>

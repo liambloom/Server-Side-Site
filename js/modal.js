@@ -34,21 +34,26 @@ window.modal = {
         let confirm = e.getAttribute("data-confirm") || "";
         let size = e.getAttribute("data-size") || "small";
         let newEl = document.createElement("div");
-        newEl.id = e.id;
+        newEl.id = id(e);
         newEl.classList = "center hidden modal";
         newEl.innerHTML = res;
         e.parentNode.replaceChild(newEl, e);
         e = document.getElementById(newEl.id);
-        document.querySelector(`#${id(e)} .modal-box`).classList.add(size);
-        document.querySelector(`#${id(e)} .modal-content`).innerHTML = content;
+        document.querySelector(`#${e.id} .modal-box`).classList.add(size);
+        document.querySelector(`#${e.id} .modal-content`).innerHTML = content;
         fetch(`/views/modal/${type}.html`)
         .then(res => {
           if (res.ok) return res.text();
-          else throw type + " is not a valid type";
+          else if (type === null) throw `$:document.querySelector("#${e.id} .modal-bottom").style.display = "none";`;
+          else throw type + " is not a valid type    modal.js 47:16";
         })
         .then(res => res.replace("confirmFunction", confirm))
         .then(res => {
           document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
+        })
+        .catch(error => {
+          if (/^\$:/.test(error)) eval(error.replace("$:", ""));
+          else throw error;
         });
       }
     })
