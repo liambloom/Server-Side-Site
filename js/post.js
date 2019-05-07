@@ -3,7 +3,7 @@ const post = (elem, page) => {
   document.getElementById("main").style.setProperty("display", "none");
   document.getElementById("loadingContainer").style.setProperty("display", "initial");
   window.activateLoading();
-  fetch("/post/" + page, {
+  fetch("/api/" + page, {
     method: "POST",
     body: JSON.stringify({
       data: document.querySelector(elem).value.toString(),

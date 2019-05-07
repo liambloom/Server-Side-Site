@@ -4,6 +4,8 @@ const url = require("url");
 const fs = require("fs");
 const mime = require("mime-types");
 const nodemailer = require("nodemailer");
+const { Client } = require("pg");
+const client = new Client();
 //const bodyParser = require("body-parser");
 
 const app = express();
@@ -88,7 +90,7 @@ app.get(/\/[^]+\.[^]+$/, (req, res) => {
   serve(req, res, `.${path(req).pathname}`);
 });
 
-app.post("/post/sugestion", (req, res) => {
+app.post("/api/sugestion", (req, res) => {
   //info = req.body;
   /*fs.appendFile("." + path(req).pathname, info.info, (err) => {
     //console.log(err);
@@ -137,6 +139,12 @@ app.post("/post/sugestion", (req, res) => {
       res.end();
     }
   });
+});
+app.post("/api/users", (req, res) => {
+  //confirm login
+});
+app.put("api/users", (req, res) => {
+  //create user
 });
 
 app.listen(port, () => { console.log(`[Server] [${new Date().toString()}]: Server running on port ${port}.`); });
