@@ -15,11 +15,21 @@ header nav ul li {
 }
 header nav ul li.right {
   float: right;
-  transition: transform 400ms ease-out;
-  transform: translateY(0px);
 }
-header nav ul li.right.hide {
+header nav ul li.right a {
+  transition: transform 400ms ease-out;
+  transform: translateY(0px); 
+}
+header nav ul li.right.hide a {
   transform: translateY(calc(1.15em + 28px));
+}
+header nav ul li.right ul {
+  position: absolute;
+  right: 0px;
+  display: initial;
+}
+header nav ul li.right.hide ul {
+  display: none;
 }
 header nav ul li a {
 	display: block;
@@ -80,7 +90,7 @@ header nav ul li a[href].beta::after {
   content: "beta";
   color: #e79622;
 }
-header nav ul li.main:hover::after {
+header nav ul li.main:not(.hide):hover::after {
   height: 5px;
   bottom: 5px;
 }
