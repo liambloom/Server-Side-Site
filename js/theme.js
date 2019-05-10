@@ -70,9 +70,11 @@ window.onload = () => {
         document.getElementById("choose").classList.add("grow");
         document.getElementById("choose").classList.remove("shrink");
         document.getElementById("choose").classList.remove("gone");
-        setTimeout(() => {
+        document.getElementById("arrow").classList.remove("gone");
+        document.getElementById("chooseTooltip").classList.add("noTooltip");
+        /*setTimeout(() => {
           document.querySelector("#choose .inner").style.display = "block";
-        }, 60);
+        }, 60);*/
       }
       else {
         closeMenu();
@@ -347,6 +349,8 @@ var closeMenu = () => {
 	setTimeout(() => {
     document.getElementById("settings").className = "";
     document.getElementById("choose").classList.add("gone");
-    ocument.querySelector("#choose .inner").style.display = "none";
-	}, 300);
+    document.getElementById("arrow").classList.add("gone");
+    //document.querySelector("#choose .inner").style.display = "none";
+    document.getElementById("chooseTooltip").classList.remove("noTooltip");
+	}, 400);
 };

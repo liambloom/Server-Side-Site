@@ -9,7 +9,7 @@
 	<% if (choice) { %>
     <span id="settings">
       <%- include("../img/Settings-icon.svg") %>
-      <div class="arrowBox up">Change Theme</div>
+      <div id="chooseTooltip" class="arrowBox up">Change Theme</div>
     </span>	
   <% } %>
     <span id="visibility">
@@ -18,6 +18,7 @@
     </span>
   </div>
 <% if (choice) { %>
+  <div id="arrow" class="gone"></div>
 	<div id="choose" class="arrowBox required up gone">
       <div class="inner">
         <img src="/img/themes/Red.png" onclick="window.theme.color = 'red';">

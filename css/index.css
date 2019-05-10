@@ -120,6 +120,19 @@ a {
   height: 0px;
   overflow: hidden; /* The arrow for choose is overflow, and is therefore hidden. I want to hide part of the overflow*/
 }
+#arrow {
+  z-index: 3;
+  padding: 0px;
+  width: 0px;
+  height: 0px;
+  position: fixed;
+  top: calc(1.15em + 19px);
+  right: 44px;
+  border: 10px solid transparent;
+}
+#arrow:not(.gone) {
+  border-bottom-color: var(--dark);
+}
 :not(:hover) #choose {
   display: initial;
 }
@@ -145,7 +158,7 @@ a {
   overflow-x: hidden;
   height: calc(100% - 40px);
   width: calc(100% - 57px);
-  display: none;
+  /*display: none;*/
 }
 header {
 	display: grid;

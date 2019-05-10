@@ -1,5 +1,5 @@
-:not(:hover) .arrowBox {
-  display: none;
+:not(:hover) .arrowBox, .arrowBox.noTooltip {
+  display: none !important;
 }
 .arrowBox:hover {
   display: none;
