@@ -64,21 +64,22 @@ var init = () => {
     }
   };
   render((x, y) => {
-    if ((x + y) % 2 === 0) bctx.fillStyle = "#d0d0d0";
-    else bctx.fillStyle = "#eeeeee";
+    /*if ((x + y) % 2 === 0) bctx.fillStyle = "#d0d0d0";
+    else bctx.fillStyle = "#eeeeee";*/
+    bctx.fillStyle = ((x + y) % 2 === 0) ? "#d0d0d0" : "#eeeeee";
   }, bctx);
   clear();
   let draw = event => {
     if (mousedown) {
-      let pos = mousePosition(event);
+      let {x, y} = mousePosition(event);
       if (/^#[a-f\d]{6}$/i.test(color)) {
-        memory[pos.x][pos.y] = color;
+        memory[x][y] = color;
         ctx.fillStyle = color;
-        ctx.fillRect(pos.x * ss, pos.y * ss, ss, ss);
+        ctx.fillRect(x * ss, y * ss, ss, ss);
       }
       else {
-        delete memory[pos.x][pos.y];
-        ctx.clearRect(pos.x * ss, pos.y * ss, ss, ss);
+        delete memory[x][y];
+        ctx.clearRect(x * ss, y * ss, ss, ss);
       }
       future = [];
     }
@@ -175,9 +176,11 @@ var init = () => {
     if (!el) el = document.getElementById("color")
     let e = document.querySelector(`#${el.id}:not(:invalid)`);
     if (e) {
-      let thisColor;
+      /*let thisColor;
       if (/^#/.test(e.value)) thisColor = e.value;
-      else thisColor = "#" + e.value;
+      else thisColor = "#" + e.value;*/
+      let thisColor = e.value;
+      if (!/^#/.test(thisColor)) thisColor = "#" + thisColor;
       if (!document.querySelector(`[data-color="${thisColor}"]`)) {
         let newColor = thisColor;
         let n = document.createElement("div");
@@ -199,8 +202,8 @@ var init = () => {
     if (event.button === 0) mousedown = true;
     if (event.target.closest("#canvas, #hoverShade")) {
       if (fill) {
-        let pos = mousePosition(event);
-        fillFun(pos.x, pos.y);
+        let {x, y} = mousePosition(event);
+        fillFun(x, y);
       }
       else draw(event);
     }
@@ -269,10 +272,10 @@ var init = () => {
     let e = document.getElementById("hoverShade");
     if (event.target.closest("#canvas, #hoverShade")) {
       e.style.setProperty("display", "initial");
-      let pos = mousePosition(event);
+      let {x, y} = mousePosition(event);
       let cpl = cp();
-      e.style.setProperty("left", ((pos.x * ss) + cpl.left) + "px");
-      e.style.setProperty("top", ((pos.y * ss) + cpl.top) + "px");
+      e.style.setProperty("left", ((x * ss) + cpl.left) + "px");
+      e.style.setProperty("top", ((y * ss) + cpl.top) + "px");
     }
     else e.style.setProperty("display", "none");
   });
