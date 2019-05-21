@@ -19,7 +19,7 @@ window.modal = {
       }*/
       document.querySelector(".modal:not(.hidden)").classList.add("hidden");
       clearInterval(this.blurKey);
-      fun();
+      if (typeof fun === "function") fun();
     }
   },
   init: function () {
