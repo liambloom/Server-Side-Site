@@ -1,93 +1,5 @@
 //jshint esversion:6
-let boxColor = () => {
-  if (theme.mode === "light") document.getElementById("box").style["background-color"] = "#ffffff80";
-  else document.getElementById("box").style["background-color"] = "#00000080";
-};
-
-let eyeColor = () => {
-  document.getElementById("eye").style.setProperty("fill", themes[theme.color].headTextColor);
-};
-
-let themeFunc = () => {
-  boxColor();
-  eyeColor();
-};
-
-let errMsg = (e, msg) => {
-  if (msg) {
-    e.parentNode.setAttribute("data-err", msg);
-    e.setCustomValidity(msg);
-  }
-  else {
-    e.parentNode.removeAttribute("data-err");
-    e.setCustomValidity("");
-  }
-};
-
-let checkConsecutive = (strings) => {
-  if (!strings) return false;
-  let c = 0;
-  let prev;
-  let dir;
-  if (/\d/.test(strings[0])) type = "number";
-  else {
-    type = "string";
-    var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
-  }
-  for (let i of strings) {
-    for (let m of i.split("")) {
-      if (type === "number") m = parseInt(m) + 1;
-      else m = alphabet.indexOf(m) + 1;
-      if (prev) {
-        if (prev + 1 === m && dir !== "down") {
-          c++;
-          dir = "up";
-        }
-        else if (prev - 1 === m && dir !== "up") {
-          c++;
-          dir = "down";
-        }
-        else {
-          c = 0;
-          dir = "";
-        }
-      }
-      //console.log(c);
-      if (c >= 2) return true;
-      prev = m;
-    }
-  }
-  return false;
-};
-
-let signupString = new URLSearchParams(location.search).get("signup");
-if (signupString === "true") var signup = true;
-else/* if (signupString === "false")*/ var signup = false;
-//else location.search = "signup=false";
-
 let loadFunc = () => {
-  if (signup) {
-    document.getElementById("username").addEventListener("input", event => {
-      //console.log(event.target.parentNode);
-      let e = event.target;
-      if (!/^[\w\-.]+$/i.test(e.value)) errMsg(e, "Usernames can only contain letters, numbers, _, -, .");
-      else errMsg(e);
-    });
-    document.getElementById("password").addEventListener("input", event => {
-      let e = event.target;
-      let pass = e.value;
-      if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
-      else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
-      else if (/(.)\1{2,}/.test(pass)) errMsg(e, "Don't use the same character repeatedly");
-      else if (checkConsecutive(pass.match(/\d{3,}/g))) errMsg(e, "Don't use consecutive numbers");
-      else if (checkConsecutive(pass.match(/[a-z]{3,}/gi))) errMsg(e, "Don't use consecutive letters");
-      else if (!/[a-z]/i.test(pass)) errMsg(e, "Password must contain a letter");
-      else if (!/\d/.test(pass)) errMsg(e, "Password must contain a number");
-      else if (/^[a-z\d]*$/i.test(pass)) errMsg(e, "Password must contain a special character");
-      else if (/^.{0,5}$/.test(pass)) errMsg(e, "Password must be at least 6 characters long");
-      else errMsg(e);
-    });
-  }
   let show = () => {
     let e = document.getElementById("password");
     e.setAttribute("type", "text");
@@ -123,29 +35,25 @@ let loadFunc = () => {
       modal.open("#loadingModal");
       document.getElementById("loadingContainer").style.setProperty("display", "initial");
       window.activateLoading();
-      let method;
-      if (signup) method = "POST";
-      else method = "PUT";
-      fetch("/api/users", {
-        method: method,
+      fetch("/api/users/confirm", {
+        method: "POST",
         body: JSON.stringify({
           username: username,
-          password: password,
-          timestamp: new Date()
+          password: password
         }),
         headers: {
           "Content-Type": "application/json; charset=utf-8"
         }
       })
-        .then(res => {
-          if (res.ok) {
+      .then(res => {
+        if (res.ok) {
 
-          }
-          else {
+        }
+        else {
 
-          }
-        })
-        .then(() => modal.close());
+        }
+      })
+      .then(() => modal.close());
     }
     else {
       document.getElementById("button").parentNode.setAttribute("data-err", "Invalid username or password");
@@ -155,5 +63,3 @@ let loadFunc = () => {
 
 if (document.readyState === "complete") loadFunc();
 else window.addEventListener("load", loadFunc);
-if (window.themeReady) themeFunc();
-else window.addEventListener("themeReady", themeFunc);
