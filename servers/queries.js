@@ -22,7 +22,14 @@ const getUserById = (req, res) => {
   });
 };
 const confirmUser = (req, res) => {
-  
+  const {username, password} = req.body;
+
+  pool.query("SELECT password FROM users WHERE username = $1", [username], (err, data) => {
+    if (err) res.stauts(500).send(err);
+    else {
+      
+    }
+  });
 };
 const createUser = (req, res) => {
   const { username, password } = req.body;
@@ -52,6 +59,7 @@ const deleteUser = (req, res) => {
 module.exports = {
   getUsers,
   getUserById,
+  confirmUser,
   createUser,
   updateUser,
   deleteUser
