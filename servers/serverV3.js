@@ -1,7 +1,7 @@
 //jshint esversion:9
 const express = require("express");
 const nodemailer = require("nodemailer");
-
+//const passport = require("passport-local");
 const serve = require("./servePage");
 const DB = require("./queries");
 
@@ -10,8 +10,9 @@ const port = process.env.PORT || 8080;
 
 app.set("view engine", "ejs");
 app.use(express.json());
-
-
+app.use(express.urlencoded({ extended: true }));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post("/api/sugestion", (req, res) => {
   res.render("./email", {

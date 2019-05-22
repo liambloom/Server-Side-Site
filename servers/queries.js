@@ -1,12 +1,37 @@
 //jshint esversion:9
+//const passport = require("passport-local");
 const { Pool } = require("pg");
-const pool = new Pool({
-  user: "me",
-  host: "localhost",
-  database: "api",
-  password: "password",
-  port: "5432"
-});
+const { dbConfig } = {dbConfig: {user, password, host, port, max, idleTimeoutMillis} = config.db};//fo production, use process.env instead of config.db
+const pool = new Pool(dbConfig/*{
+  user: config.db.user,
+  password: config.db.password,
+  host: config.db.host,
+  port: config.db.port,
+  max: config.db.max,
+  idleTimeoutMillis: config.db.idleTimeoutMillis
+}*/);
+/*passport.use(new LocalStrategy((username, password, cb) => {
+  pool.query("SELECT * FROM users WHERE username=$1", [username], (err, data) => {
+    if (err) {
+      return cb(err);
+    }
+    if (data.rows.length > 0) {
+      const first = result.rows[0];
+      bcrypt.compare
+    }
+  });
+}));
+pool.on("error", (err) => {
+  //Handle error
+});*/
+const createTable = (req, res) => {
+  pool.query(`CREATE TABLE users (
+    id bigserial PRIMARY KEY,
+    username varchar(225) UNIQUE,
+    password varchar(100),
+    type varchar(50)
+  )`);
+};
 const getUsers = (req, res) => {
   pool.query("SELECT * FROM users ORDER BY id ASC", (err, data) => {
     if (err) res.status(500).send(err);
@@ -57,6 +82,7 @@ const deleteUser = (req, res) => {
   });
 };
 module.exports = {
+  query: pool.query,
   getUsers,
   getUserById,
   confirmUser,
