@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/liambloom/Server-Side-Site",
   "dependencies": {
-    "chalk": "^2.4.2"
+    "chalk": "^2.4.2",
+    "cookie-parser": "^1.4.4"
   }
 }
