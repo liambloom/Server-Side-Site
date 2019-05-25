@@ -1,7 +1,7 @@
 //jshint esversion:9
 const express = require("express");
 const nodemailer = require("nodemailer");
-//const passport = require("passport-local");
+//const passport = require("passport");
 const serve = require("./servePage");
 const DB = require("./queries");
 
@@ -62,7 +62,7 @@ app.post("/api/sugestion", (req, res) => {
 app.get("/api/users", DB.getUsers);
 app.get("/api/users/:id", DB.getUserById);
 app.post("/api/users/create", DB.createUser);
-app.post("/api/users/confirm", DB.confirmUser);
+app.post("/api/users/confirm", /*passport.authenticate("local"), */DB.confirmUser);
 /*app.put("api/users/:user", (req, res) => {
   //edit user status 201
 });*/
