@@ -3,8 +3,9 @@
 }
 #box {
   width: calc(45vw + 34px);
-  height: 202.2px;
+  height: max-content/*202.2px*/;
   padding: 50px;
+  padding-bottom: 40px;
   background-color: #00000080;
   border-radius: 20px;
   display: inline-block;
