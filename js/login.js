@@ -23,8 +23,8 @@ let loadFunc = () => {
         if (res.ok) {
           console.log("good");
         }
-        else if (res.status === 401) document.getElementById("button").parentNode.setAttribute("data-err", "No such user");
-        else if (res.status === 403) document.getElementById("button").parentNode.setAttribute("data-err", "Incorrect password");
+        else if (res.status === 401) errMsg(usernameElement, "No such user");
+        else if (res.status === 403) errMsg(passwordElement, "Incorrect password");
       })
       .then(() => modal.close());
     }
