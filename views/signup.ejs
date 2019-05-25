@@ -14,16 +14,22 @@
       <div id="usernameContainer">
         <input id="username" type="text" placeholder="Username">
       </div>
+      <div id="emailContainer">
+        <input id="email" type="emial" placeholder="Email">
+      </div>
       <div id="passwordContainer">
-        <input id="password" type="password" placeholder="Password"><!--pattern="(?=[A-Za-z0-9!@#$%^&*()\-+`~\\|\[\]{};:'\u0022,.\/?_=]{6,}$)(?!.*password)(?!.*Password)(?!.*(.)\1{2,}).*"-->
-        <div for="password" id="showPassContainer">
+        <input id="password" type="password" placeholder="Password">
+        <div id="showPassContainer">
           <div id="showPass">
             <%- include("../img/eye.svg") %>
           </div>
         </div>
       </div>
+      <div id="passwordConfirmContainer">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
+      </div>
       <div id="buttonContainer">
-        <input id="button" type="submit" value="Log in">
+        <input id="button" type="submit" value="Sign Up!">
       </div>
     </form>
   </div>

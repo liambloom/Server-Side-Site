@@ -68,24 +68,21 @@ let hide = () => {
   if (e.getBoundingClientRect().width > window.innerWidth * 0.45) e.focus();
   e.classList.remove("focus");
 };
-let usernameInit = () => {
-  let usernameElement = document.getElementById("username");
-  let username = usernameElement.value;
-  usernameElement.setAttribute("required", "required");
-  if (!username) errMsg(usernameElement, "Username is reqired");
-  else errMsg(usernameElement);
-  return {usernameElement, username};
-};
-let passwordInit = () => {
-  let passwordElement = document.getElementById("password");
-  let password = passwordElement.value;
-  passwordElement.setAttribute("required", "required");
-  if (!password) errMsg(passwordElement, "Password is required");
-  else errMsg(passwordElement);
-  return {passwordElement, password};
+let tbInit = (name) => {
+  let el = document.getElementById(name);
+  let output = {};
+  if (el) {
+    let val = el.value;
+    el.setAttribute("required", "required");
+    if (!val || !/\S/.test(val)) errMsg(el, name.replace(/(?=[A-Z])./, m => " " + m.toLowerCase()).replace(/(^.)/, m => m.toUpperCase()) + " is required");
+    else errMsg(el);
+    output[name] = val;
+    output[name + "Element"] = el;
+  }
+  return output;
 };
 var confirmInit = () => {
-  return {...usernameInit(), ...passwordInit()}; // Supported in Major browsers exept Edge
+  return {...tbInit("username"), ...tbInit("email"), ...tbInit("password"), ...tbInit("confirmPassword")}; // Supported in Major browsers exept Edge
 };
 
 let load = () => {
@@ -93,8 +90,8 @@ let load = () => {
   document.getElementById("showPass").addEventListener("mouseup", hide);
   document.getElementById("showPass").addEventListener("mouseleave", hide);
   document.getElementById("Layer_1").addEventListener("click", boxColor);
-  document.getElementById("username").addEventListener("input", usernameInit);
-  document.getElementById("password").addEventListener("input", passwordInit);
+  document.getElementById("username").addEventListener("input", () => {tbInit("username");});
+  document.getElementById("password").addEventListener("input", () => {tbInit("password");});
   window.addEventListener("colorChange", eyeColor);
 };
 
