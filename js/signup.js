@@ -43,10 +43,11 @@ let loadFunc = () => {
       })
       .then(res => {
         if (res.ok) {
-
+          document.getElementById("content").innerHTML = "Thank you for signing up!";
         }
         else {
-
+          document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
+          console.error(res.error);
         }
       })
       .then(() => modal.close());

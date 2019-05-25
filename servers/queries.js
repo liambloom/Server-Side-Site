@@ -1,15 +1,23 @@
 //jshint esversion:9
-//const passport = require("passport-local");
+const passport = require("passport-local");
+const os = require("os");
+const uuid = require("uuid/v4");
 const { Pool } = require("pg");
-const { dbConfig } = {dbConfig: {user, password, host, port, max, idleTimeoutMillis} = config.db};//fo production, use process.env instead of config.db
-const pool = new Pool(dbConfig/*{
-  user: config.db.user,
-  password: config.db.password,
-  host: config.db.host,
-  port: config.db.port,
-  max: config.db.max,
-  idleTimeoutMillis: config.db.idleTimeoutMillis
-}*/);
+const testConfig = {
+  user: "me",
+  host: "localhost",
+  database: "api",
+  password: "password",
+  port: "5432",
+  ssl: false
+};
+const herokuConfig = {
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+};
+//console.log(os.hostname());
+const pool = new Pool((os.hostname().includes("DESKTOP")) ? testConfig : herokuConfig);
+//pool.connect();
 /*passport.use(new LocalStrategy((username, password, cb) => {
   pool.query("SELECT * FROM users WHERE username=$1", [username], (err, data) => {
     if (err) {
@@ -25,15 +33,18 @@ pool.on("error", (err) => {
   //Handle error
 });*/
 const createTable = (req, res) => {
-  pool.query(`CREATE TABLE users (
-    id bigserial PRIMARY KEY,
-    username varchar(225) UNIQUE,
-    password varchar(100),
-    type varchar(50)
-  )`);
+  pool.query(`
+    CREATE TABLE IF NOT EXISTS users (
+      id varchar(36) UNIQUE NOT NULL,
+      username varchar(225) UNIQUE NOT NULL,
+      password varchar(100) NOT NULL,
+      type varchar(50) NOT NULL,
+      since date NOT NULL
+    )
+  `);
 };
 const getUsers = (req, res) => {
-  pool.query("SELECT * FROM users ORDER BY id ASC", (err, data) => {
+  pool.query("SELECT * FROM users", (err, data) => {
     if (err) res.status(500).send(err);
     else res.status(200).json(data.rows);
   });
@@ -50,25 +61,27 @@ const confirmUser = (req, res) => {
   const {username, password} = req.body;
 
   pool.query("SELECT password FROM users WHERE username = $1", [username], (err, data) => {
-    if (err) res.stauts(500).send(err);
-    else {
-      
-    }
+    if (err) res.status(500).send(err);
+    else if (!data.rows[0]) res.status(401).end();
+    else if (data.rows[0].password === password) res.status(200).send(data.rows[0].id);
+    else res.status(403).end();
   });
 };
 const createUser = (req, res) => {
   const { username, password } = req.body;
+  const now = new Date();
+  const id = uuid();
 
-  pool.query("INSERT INTO users (username, password) VALUES ($1, $2)", [username, password], (err, data) => {
+  pool.query("INSERT INTO users (id, username, password, type, since) VALUES ($1, $2, $3, $4, $5)", [id, username, password, "USER", `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`], (err, data) => {
     if (err) res.status(500).send(err);
-    else res.status(201).send(`User added with ID: ${id}`);
+    else res.status(201).send(id);
   });
 };
 const updateUser = (req, res) => {
   const id = parseInt(req.params.id);
-  const { username, password } = req.body;
+  const { username, password, type } = req.body;
 
-  pool.query("UPDATE users SET username = $1, password = $2 WHERE id = $3", [username, password, id], (err, data) => {
+  pool.query("UPDATE users SET username = $1, password = $2, type = $3 WHERE id = $4", [username, password, type, id], (err, data) => {
     if (err) res.status(500).send(err);
     else res.status(204).end();
   });
@@ -82,11 +95,12 @@ const deleteUser = (req, res) => {
   });
 };
 module.exports = {
-  query: pool.query,
+  //query: pool.query,
+  createTable,
   getUsers,
   getUserById,
   confirmUser,
   createUser,
-  updateUser,
+  //updateUser,
   deleteUser
 };

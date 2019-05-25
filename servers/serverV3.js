@@ -11,8 +11,8 @@ const port = process.env.PORT || 8080;
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(passport.initialize());
-app.use(passport.session());
+//app.use(passport.initialize());
+//app.use(passport.session());
 
 app.post("/api/sugestion", (req, res) => {
   res.render("./email", {
@@ -59,17 +59,14 @@ app.post("/api/sugestion", (req, res) => {
   });
 });
 
-/*app.post("/api/users/:id", (req, res) => {
-  //return a user
-});*/
+app.get("/api/users", DB.getUsers);
+app.get("/api/users/:id", DB.getUserById);
 app.post("/api/users/create", DB.createUser);
-app.post("api/users/confirm", DB.confirmUser);
+app.post("/api/users/confirm", DB.confirmUser);
 /*app.put("api/users/:user", (req, res) => {
   //edit user status 201
-});
-app.delete("api/users/:user", (req, res) => {
-  //delete user stauts 200 or 204
 });*/
+app.delete("/api/users/:id", DB.deleteUser);
 
 //learn PostgreSQL
 /*app.get("/DB/users", DB.getUsers);
@@ -78,6 +75,9 @@ app.post("/DB/users", DB.createUser);
 app.put("/DB/users/:id", DB.updateUser);
 app.delete("/DB/users/:id", DB.deleteUser);*/
 
-app.get(/.*/, serve);
+app.get(/^(?!\/api)/, serve);
 
-app.listen(port, () => { console.log(`[Server] [${new Date().toString()}]: Server running on port ${port}.`); });
+app.listen(port, () => { 
+  DB.createTable();
+  console.log(`[Server] [${new Date().toString()}]: Server running on port ${port}.`);
+});
