@@ -1,6 +1,6 @@
 //jshint esversion:9
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
+/*const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;*/
 const bcrypt = require("bcrypt"); // This works differently depending on the os it is compiled on, so must have a seperate download for local and server
 const os = require("os");
 const uuid = require("uuid/v4");
