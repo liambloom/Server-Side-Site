@@ -22,7 +22,18 @@
   },
   "homepage": "https://github.com/liambloom/Server-Side-Site",
   "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.18.3",
     "chalk": "^2.4.2",
-    "cookie-parser": "^1.4.4"
+    "content-type": "^1.0.4",
+    "cookie-parser": "^1.4.4",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mime-types": "^2.1.22",
+    "nodemailer": "^6.1.0",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "pg": "^7.10.0",
+    "uuid": "^3.3.2"
   }
 }
