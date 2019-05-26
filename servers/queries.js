@@ -51,7 +51,7 @@ const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
     CREATE TABLE IF NOT EXISTS users (
-      id uuid,
+      id uuid DEFAULT uuid_generate_v4,
       username varchar(100) UNIQUE NOT NULL,
       password varchar(100) NOT NULL,
       email varchar(50) NOT NULL,
