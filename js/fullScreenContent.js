@@ -1,7 +1,7 @@
 //jshint esversion:6
 let resizeFun = () => {
   document.getElementById("content").style.width = window.innerWidth + "px";
-  document.getElementById("content").style.height = (window.innerHeight - document.getElementsByTagName("header")[0].clientHeight) + "px";
+  document.getElementById("content").style.height = (window.innerHeight - document.getElementsByTagName("header")[0].clientHeight) + "px"; // This line of code causes the arrow moving to the right glitch
 };
 let loadFun = () => {
   document.getElementById("content").style.margin = "0px";

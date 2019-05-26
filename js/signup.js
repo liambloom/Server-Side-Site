@@ -63,9 +63,7 @@ let loadFunc = () => {
         }
       })
       .then(res => {
-        if (res.ok) {
-          document.getElementById("content").innerHTML = "Thank you for signing up!";
-        }
+        if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
       })
