@@ -59,10 +59,10 @@ app.post("/api/sugestion", (req, res) => {
   });
 });
 
-app.get("/api/users", DB.getUsers);
+//app.get("/api/users", DB.getUsers);
 app.get("/api/users/:id", DB.getUserById);
 app.post("/api/users/create", DB.createUser);
-app.post("/api/users/confirm", /*passport.authenticate("local"), */DB.confirmUser);
+app.post("/api/users/confirm", DB.confirmUser);
 /*app.put("api/users/:user", (req, res) => {
   //edit user status 201
 });*/
