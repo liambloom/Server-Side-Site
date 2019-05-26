@@ -48,7 +48,7 @@ pool.on("error", (err) => {
   //Handle error
 });
 const createTable = (req, res) => {
-  pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
+  //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id uuid,
