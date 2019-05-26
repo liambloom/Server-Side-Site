@@ -17,33 +17,7 @@ const herokuConfig = {
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 };
-//console.log(os.hostname());
 const pool = new Pool((os.hostname().includes("DESKTOP")) ? testConfig : herokuConfig);
-//pool.connect();
-/*passport.use(new LocalStrategy((username, password, cb) => { // cb = callback
-  pool.query("SELECT * FROM users WHERE username=$1", [username], (error, data) => {
-    if (error) {
-      return cb(error); //500
-    }
-    if (data.rows.length > 0) {
-      const first = result.rows[0];
-      bcrypt.compare(password, first.password, (err, res) => {
-        if (res) cb(null, first); //200
-        else cb(null, false); //403
-      });
-    }
-    else cb(null, false); //401
-  });
-}));
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-passport.deserializeUser((id, cb) => {
-  pool.query("SELECT * FROM users WHERE id = $1", [id], (err, data) => {
-    if (err) return cb(err);
-    cb(null, results.rows[0]);
-  });
-});*/
 pool.on("error", (err) => {
   //Handle error
 });
@@ -51,7 +25,7 @@ const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
     CREATE TABLE IF NOT EXISTS users (
-      id uuid DEFAULT uuid_generate_v4,
+      id uuid,
       username varchar(100) UNIQUE NOT NULL,
       password varchar(100) NOT NULL,
       email varchar(50) NOT NULL,
@@ -88,6 +62,7 @@ const confirmUser = (req, res) => {
   //res.status("204").end();
   //res.redirect(somewhere)
   pool.query("SELECT id, password FROM users WHERE username=$1", [username], (error, data) => {
+    //console.log(req.query.u);
     if (error) {
       return res.status(500).send(error);//cb(error); //500
     }
@@ -95,7 +70,7 @@ const confirmUser = (req, res) => {
       const user = data.rows[0];
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) res.status(500).send(err);
-        if (result) res.status(200).send(user.id); //cb(null, first); //200
+        if (result) res.status(204).end();//redirect(req.query.u); //cb(null, first); //200
         else res.status(403).end(); //cb(null, false); //403
       });
     }
