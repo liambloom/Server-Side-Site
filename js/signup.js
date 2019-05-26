@@ -69,7 +69,8 @@ let loadFunc = () => {
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
       })
-      .then(() => modal.close());
+      .then(() => modal.close())
+      .then(() => window.deactivateLoading());
     }
     else {
       document.getElementById("button").parentNode.setAttribute("data-err", "Please check over your form");

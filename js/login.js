@@ -9,7 +9,7 @@ let loadFunc = () => {
       modal.open("#loadingModal");
       document.getElementById("loadingContainer").style.setProperty("display", "initial");
       window.activateLoading();
-      fetch("/api/users/confirm", {
+      fetch("/api/users/confirm" + location.search, {
         method: "POST",
         body: JSON.stringify({
           username: username,
@@ -20,13 +20,12 @@ let loadFunc = () => {
         }
       })
       .then(res => {
-        if (res.ok) {
-          console.log("good");
-        }
+        if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 401) errMsg(usernameElement, "No such user");
         else if (res.status === 403) passwordElement.parentNode.setAttribute("data-err", "Incorrect password");
       })
-      .then(() => modal.close());
+      .then(() => modal.close())
+      .then(() => window.deactivateLoading());
     }
     else {
       document.getElementById("button").parentNode.setAttribute("data-err", "Invalid username or password");

@@ -24,29 +24,25 @@
 <span id="loading4" class="loading"></span>
 <span id="loading5" class="loading"></span>
 <script>
-  var loadingAnimation = () => {
-      document.getElementById("loading1").classList.add("active")
-      setTimeout(() => {
-        document.getElementById("loading2").classList.add("active")
-      }, 125);
-      setTimeout(() => {
-        document.getElementById("loading3").classList.add("active")
-      }, 250);
-      setTimeout(() => {
-        document.getElementById("loading4").classList.add("active")
-      }, 375);
-      setTimeout(() => {
-        document.getElementById("loading5").classList.add("active")
-      }, 500);
-      /*setTimeout(() => {
-        for (let e of document.getElementsByClassName("loading")) {
-          e.classList.remove("active");
-        }
-      }, 1400)*/
-    }
   window.activateLoading = () => {
-    loadingAnimation();
-    //return setInterval(loadingAnimation, 1500);
+    document.getElementById("loading1").classList.add("active")
+    setTimeout(() => {
+      document.getElementById("loading2").classList.add("active")
+    }, 125);
+    setTimeout(() => {
+      document.getElementById("loading3").classList.add("active")
+    }, 250);
+    setTimeout(() => {
+      document.getElementById("loading4").classList.add("active")
+    }, 375);
+    setTimeout(() => {
+      document.getElementById("loading5").classList.add("active")
+    }, 500);
+    }
+  window.deactivateLoading = () => {
+    forLoadingIcons(e => {
+      e.classList.remove("active")
+    })
   }
   window.forLoadingIcons = func => {
     for (let e of document.getElementsByClassName("loading")) {
