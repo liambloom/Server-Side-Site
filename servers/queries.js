@@ -1,10 +1,7 @@
 //jshint esversion:9
-/*const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;*/
-const bcrypt = require("bcrypt"); // This works differently depending on the os it is compiled on, so must have a seperate download for local and server
+const bcrypt = require("bcrypt");
 const os = require("os");
 const uuid = require("uuid/v4");
-//const session = require("client-sessions");
 const { Pool } = require("pg");
 const testing = os.hostname().includes("DESKTOP");
 const testConfig = {
