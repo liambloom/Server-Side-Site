@@ -4,7 +4,9 @@ const LocalStrategy = require("passport-local").Strategy;*/
 const bcrypt = require("bcrypt"); // This works differently depending on the os it is compiled on, so must have a seperate download for local and server
 const os = require("os");
 const uuid = require("uuid/v4");
+//const session = require("client-sessions");
 const { Pool } = require("pg");
+const testing = os.hostname().includes("DESKTOP");
 const testConfig = {
   user: "me",
   host: "localhost",
@@ -17,10 +19,11 @@ const herokuConfig = {
   connectionString: process.env.DATABASE_URL,
   ssl: true,
 };
-const pool = new Pool((os.hostname().includes("DESKTOP")) ? testConfig : herokuConfig);
+const pool = new Pool((testing) ? testConfig : herokuConfig);
 pool.on("error", (err) => {
   //Handle error
 });
+const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
@@ -35,6 +38,12 @@ const createTable = (req, res) => {
       since date NOT NULL
     );
   `);// I don't know if I actually need to make the id unique, since uuids have a very low chance of being the same (1/32^16 = 1/1,208,925,820,000,000,000,000,000 = 0.00000000000000000000008%)
+  pool.query(`
+     CREATE TABLE IF NOT EXISTS secret (
+       name varchar(20) UNIQUE,
+       data varchar(100)
+     );
+  `);
 };
 const getUsers = (req, res) => {
   pool.query("SELECT * FROM users", (err, data) => {
@@ -42,42 +51,42 @@ const getUsers = (req, res) => {
     else res.status(200).json(data.rows);
   });
 };
-const getUserById = (req, res) => {
-  const id = parseInt(req.params.id);
+const get = (id, callback) => {
+  //const id = parseInt(req.params.id);
 
-  pool.query("SELECT * FROM users WHERE id = $1", [id], (err, data) => { // $1 is a variable passed in as [id]
+  pool.query("SELECT * FROM users WHERE id = $1", [id]/*, (err, data) => { // $1 is a variable passed in as [id]
     if (err) res.status(500).send(err);
     else res.status(200).json(data.rows);
-  });
+  }*/)
+  .then(res => res.rows[0])
+  .then(res => {
+    delete res.password;
+    return res;
+  })
+  .then(callback);
 };
-const confirmUser = (req, res) => {
+const confirm = (req, res) => {
   const {username, password} = req.body;
 
-  /*pool.query("SELECT password FROM users WHERE username = $1", [username], (err, data) => {
-    if (err) res.status(500).send(err);
-    else if (!data.rows[0]) res.status(401).end();
-    else if (data.rows[0].password === password) res.status(200).send(data.rows[0].id);
-    else res.status(403).end();
-  });*/
-  //res.status("204").end();
-  //res.redirect(somewhere)
   pool.query("SELECT id, password FROM users WHERE username=$1", [username], (error, data) => {
-    //console.log(req.query.u);
     if (error) {
-      return res.status(500).send(error);//cb(error); //500
+      return res.status(500).send(error);
     }
     if (data.rows.length > 0) {
       const user = data.rows[0];
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) res.status(500).send(err);
-        if (result) res.status(204).end();//redirect(req.query.u); //cb(null, first); //200
-        else res.status(403).end(); //cb(null, false); //403
+        if (result) {
+          req.session.user = user.id;
+          res.status(204).end();
+        }
+        else res.status(403).end();
       });
     }
-    else res.status(401).end(); //cb(null, false); //401
+    else res.status(401).end()
   });
 };
-const createUser = (req, res) => {
+const create = (req, res) => {
   const { username, password, email, color, light } = req.body;
   bcrypt.hash(password, 10, (e, hash) => {
     if (e) res.status(500).send(e);
@@ -88,12 +97,15 @@ const createUser = (req, res) => {
       else if (user.rows[0]) res.status(409).end();
       else pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, hash, email, color, light, "USER", `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`], (err, data) => {
         if (err) res.status(500).send(err);
-        else res.status(201).send(id);
+        else {
+          req.session.user = id;
+          res.status(201).end();
+        }
       });
     });
-  })
+  });
 };
-const updateUser = (req, res) => {
+const update = (req, res) => {
   const id = parseInt(req.params.id);
   const { username, password, type } = req.body;
 
@@ -102,7 +114,7 @@ const updateUser = (req, res) => {
     else res.status(204).end();
   });
 };
-const deleteUser = (req, res) => {
+const remove = (req, res) => {
   const id = parseInt(req.params.id);
 
   pool.query("DELETE FROM users WHERE id = $1", [id], (err, data) => {
@@ -110,13 +122,27 @@ const deleteUser = (req, res) => {
     else res.status(204).end();
   });
 };
+const logout = (req, res) => {
+  req.session.reset();
+  res.redirect(path(req).query);
+};
+const getSecret = (name, callback) => {
+  pool.query("SELECT data FROM secret WHERE name = $1", [name])
+  .then(res => res.rows[0].data)
+  .then(callback);
+};
+
 module.exports = {
-  //query: pool.query,
   createTable,
-  getUsers,
-  getUserById,
-  confirmUser,
-  createUser,
-  //updateUser,
-  deleteUser
+  user: {
+    get,
+    confirm,
+    create,
+    //update,
+    //remove,
+    logout
+  },
+  secret: {
+    get: getSecret
+  }
 };
