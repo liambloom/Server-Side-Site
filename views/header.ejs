@@ -2,10 +2,6 @@
 <!-- Arrow Icon from Freepik @ https://www.flaticon.com/free-icon/arrow-point-to-right_32213 -->
 <!-- Switch Icon from Pixel Buddah @ https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92 -->
 <div id="topRight">
-	<span id="switchSpan">
-    <%- include("../img/switch3.svg") %>
-    <div class="arrowBox up">Light Mode</div>
-  </span>
 	<% if (choice) { %>
     <span id="settings">
       <%- include("../img/Settings-icon.svg") %>
@@ -17,32 +13,56 @@
       <div class="arrowBox up">Collapse Menu</div>
     </span>
   </div>
-<% if (choice) { %>
   <div id="arrow" class="gone"></div>
-	<div id="choose" class="arrowBox required up gone">
-      <div class="inner">
-        <img src="/img/themes/Red.png" onclick="window.theme.color = 'red';">
-        <img src="/img/themes/Orange.png" onclick="window.theme.color = 'orange';">
-        <img src="/img/themes/Yellow.png" onclick="window.theme.color = 'yellow';">
-        <img src="/img/themes/Lime.png" onclick="window.theme.color = 'lime';">
-        <img src="/img/themes/Green.png" onclick="window.theme.color = 'green';">
-        <img src="/img/themes/Mint.png" onclick="window.theme.color = 'mint';">
-        <img src="/img/themes/Cyan.png" onclick="window.theme.color = 'cyan';">
-        <img src="/img/themes/Teal.png" onclick="window.theme.color = 'teal';">
-        <img src="/img/themes/Blue.png" onclick="window.theme.color = 'blue';">
-        <img src="/img/themes/Purple.png" onclick="window.theme.color = 'purple';">
-        <img src="/img/themes/Magenta.png" onclick="window.theme.color = 'magenta';">
-        <img src="/img/themes/Pink.png" onclick="window.theme.color = 'pink';">
-        <div class="credit">
-          <a href="https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44">Settings icon</a> by <a href="https://icons8.com/">icons8</a> &#64; <a href="https://visualpharm.com/">visualpharm.com</a><br>
-          <a href="https://www.flaticon.com/free-icon/arrow-point-to-right_32213">Arrow icon</a> by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
-          <a href="https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92">Switch icon</a> by <a href="https://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
-          Icons licenced under <a href="https://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a><br>
-          Icon colors modified from originals
-        </div>
-      </div>
+	<div id="choose" class="arrowBox required up shrink">
+    <div id="tabs">
+      <button class="tab active" onclick="window.switchTab(event, 'color')">Color</button>
+      <button class="tab" onclick="window.switchTab(event, 'user')">Account</button>
+      <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
     </div>
-<% } %>
+    <div id="color" class="inner">
+      <img src="/img/themes/light-dark.svg" usemap="#light-dark-map" id="lightdark">
+      <map name="light-dark-map">
+        <area id="lightArea" shape="rect" href="foo">
+        <area id="darkArea" shape="rect" href="foo">
+      </map>
+      <img src="/img/themes/Red.png" onclick="window.theme.color = 'red';">
+      <img src="/img/themes/Orange.png" onclick="window.theme.color = 'orange';">
+      <img src="/img/themes/Yellow.png" onclick="window.theme.color = 'yellow';">
+      <img src="/img/themes/Lime.png" onclick="window.theme.color = 'lime';">
+      <img src="/img/themes/Green.png" onclick="window.theme.color = 'green';">
+      <img src="/img/themes/Mint.png" onclick="window.theme.color = 'mint';">
+      <img src="/img/themes/Cyan.png" onclick="window.theme.color = 'cyan';">
+      <img src="/img/themes/Teal.png" onclick="window.theme.color = 'teal';">
+      <img src="/img/themes/Blue.png" onclick="window.theme.color = 'blue';">
+      <img src="/img/themes/Purple.png" onclick="window.theme.color = 'purple';">
+      <img src="/img/themes/Magenta.png" onclick="window.theme.color = 'magenta';">
+      <img src="/img/themes/Pink.png" onclick="window.theme.color = 'pink';">
+    </div>
+    <div id="user" class="inner hidden">
+      <% if (user) { %>
+        Welcome, <%= user.username %><br>
+        <a class="button" href="<%= '/logout?u=' + here %>">Log out</a>
+      <% } else { %>
+        <a href="<%= '/login?u=' + here %>">Log in</a> or <a href="<%= '/signup?u=' + here %>">Sign up</a>
+      <% } %>
+      </div>
+      <div id="credits" class="inner hidden">
+        <a href="https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44">Settings icon</a> by <a href="https://icons8.com/">icons8</a> &#64; <a href="https://visualpharm.com/">visualpharm.com</a><br>
+        <a href="https://www.flaticon.com/free-icon/sun_25290#term=sun&page=1&position=24">Sun icon</a> by <a href="https://www.flaticon.com/authors/dave-gandy">Dave Gandy</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
+        Icons licenced under <a href="https://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a><br>
+        <br>
+        <a href="https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92">Switch icon</a> by <a href="https://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
+        <a href="https://www.flaticon.com/free-icon/arrow-point-to-right_32213">Arrow icon</a> by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
+        <a href="https://www.flaticon.com/free-icon/moon_1415431#term=moon&page=1&position=4">Moon Icon</a> by <a href="https://www.flaticon.com/authors/iconixar">iconixar</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
+        <% if (/login|signup/i.test(here)) { %>
+          <a href="https://www.flaticon.com/free-icon/eye-close-up_63568#term=eye&page=1&position=53">Eye icon</a> by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
+        <% } %>
+        Icons licented under <a href="https://file000.flaticon.com/downloads/license/license.pdf">Flaticon Basic Licence</a><br>
+        <br>
+        All icons modified from originals
+    </div>
+  </div>
 <div id="fixed">
 	<header>
 	<a id="logo" href="/">

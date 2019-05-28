@@ -23,11 +23,9 @@ window.onresize = () => {
     document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
-//window. = () => {
   let newStyle = document.createElement("style");
   document.head.appendChild(newStyle);
   window.arrowFix = newStyle.sheet;
-//};
 window.onload = () => {
   window.onresize();
   if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
@@ -69,12 +67,8 @@ window.onload = () => {
         document.getElementById("settings").className = "spin";
         document.getElementById("choose").classList.add("grow");
         document.getElementById("choose").classList.remove("shrink");
-        document.getElementById("choose").classList.remove("gone");
         document.getElementById("arrow").classList.remove("gone");
         document.getElementById("chooseTooltip").classList.add("noTooltip");
-        /*setTimeout(() => {
-          document.querySelector("#choose .inner").style.display = "block";
-        }, 60);*/
       }
       else {
         closeMenu();
@@ -102,7 +96,7 @@ window.onload = () => {
       document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
       document.getElementsByTagName("header")[0].style.display = "grid";
       document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-      document.getElementById("path2switch").style.setProperty("fill", "#000000"); 
+      document.getElementById("g10-user").style.setProperty("fill", "#000000"); 
       try {
         document.getElementById("path2Settings").style.setProperty("fill", "#000000");
       }
@@ -116,7 +110,7 @@ window.onload = () => {
       document.getElementsByTagName("header")[0].style.display = "none";
       if (theme.mode === "dark") {
         document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
-        document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
+        document.getElementById("g10-user").style.setProperty("fill", "#ffffff");
         try {
           document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
         }
@@ -129,24 +123,20 @@ window.onload = () => {
     }
   };
 
-  document.getElementById("Layer_1").onclick = () => {
-    theme.mode.change();
-    if (document.getElementById("switchSpan").className === "down") {
-      document.getElementById("switchSpan").className = "up";
-    }
-    else {
-      document.getElementById("switchSpan").className = "down";
-    }
-    if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
-    else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
-  };
-  if (theme.mode === "light") document.querySelector("#switchSpan .arrowBox").innerHTML = "Dark Mode";
-  else document.querySelector("#switchSpan .arrowBox").innerHTML = "Light Mode";
+  document.getElementById("lightArea").coords = `0, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
+  document.getElementById("lightArea").addEventListener("click", e => {
+    e.preventDefault();
+    theme.mode = "light";
+  });
+  document.getElementById("darkArea").coords = `${document.getElementById("lightdark").clientWidth}, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`
+  document.getElementById("darkArea").addEventListener("click", e => {
+    e.preventDefault();
+    theme.mode = "dark";
+  });
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
-    //[...event.target.children].find(event => event.tagName === "A").classList.remove("active");
     e = e.target;
     if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
     let opacity = parseFloat(window.getComputedStyle(document.querySelector(`#${e.id} ul`)).opacity);
@@ -156,14 +146,6 @@ window.onload = () => {
     window.timeout[e.id].push(setTimeout(() => {
       [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
     }, time));
-    /*let observer = new MutationObserver((list, observer) => {
-      console.log("this ran");
-      if (window.getComputedStyle(e).opacity === "0") {
-        [...e.children].find(event => event.tagName === "UL").style.setProperty("height", "0px");
-        observer.disconnect();
-      }
-    });
-    observer.observe(e, {attributes: true});*/
   };
   const elementShow = event => {
     let e = event.target;
@@ -216,15 +198,6 @@ window.onload = () => {
     }
   }
   else {
-    /*let changeTooltip = e => {e.parentNode.title = e.innerHTML;};
-    for (let e of document.querySelectorAll(".arrowBox:not(.required)")) {
-      console.log(changeTooltip);
-      console.log(e);
-      changeTooltip(e);
-      new MutationObserver((list, observer) => {
-        changeTooltip(e);
-      }).observe(e, { attributes: false, childList: false, subtree: true });
-    }*/
     let ua = navigator.userAgent;
     let browser;
     if (/MSIE|Trident/i.test(ua)) {
@@ -244,12 +217,6 @@ window.onload = () => {
     }
     alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
   }
-
-  /*for (let i of [...document.querySelectorAll("[pattern]")]) {
-    i.addEventListener("input", () => {
-
-    });
-  }*/
 };
 window.onscroll = () => {
   if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
@@ -301,7 +268,6 @@ window.theme = {
 				root.style.setProperty("--bg", themes[theme.color].offWhite);
 				root.style.setProperty("--txt", themes[theme.color].offBlack);
 				document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-        document.getElementById("path2switch").style.setProperty("fill", "#000000");
         if (typeof window.forLoadingIcons === "function") {
           window.forLoadingIcons(e => { e.style.setProperty("background-color", "#0000007f"); });
         }
@@ -319,7 +285,6 @@ window.theme = {
         }
 				if (document.getElementById("visibility").className === "down") {
 					document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
-					document.getElementById("path2switch").style.setProperty("fill", "#ffffff");
 					try {
 						document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
 					}
@@ -346,11 +311,19 @@ window.theme = {
 var closeMenu = () => {
   document.getElementById("choose").classList.add("shrink");
   document.getElementById("choose").classList.remove("grow");
+  setTimeout(() => {
+    document.getElementById("arrow").classList.add("gone");
+  }, 300);
 	setTimeout(() => {
     document.getElementById("settings").className = "";
-    document.getElementById("choose").classList.add("gone");
-    document.getElementById("arrow").classList.add("gone");
-    //document.querySelector("#choose .inner").style.display = "none";
+  }, 400);
+  setTimeout(() => {
     document.getElementById("chooseTooltip").classList.remove("noTooltip");
-	}, 400);
+  }, 500);
+};
+window.switchTab = (e, name) => {
+  document.querySelector(".inner:not(.hidden)").classList.add("hidden");
+  document.querySelector(".tab.active").classList.remove("active");
+  document.getElementById(name).classList.remove("hidden");
+  e.target.classList.add("active");
 };

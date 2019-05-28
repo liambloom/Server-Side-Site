@@ -20,20 +20,9 @@ body {
 :not(header).hidden {
   display: none !important;
 }
-.credit {
-	font-size: 10px;
-	color: #ffffff7f;
-  line-height: 12px;
-  margin-bottom: 20px;
-}
 ::selection {
   color: var(--bg);
   background-color: var(--txt)
-}
-#choose img {
-	width: calc(100% + 17px);
-	margin: 10px 0px;
-	border-radius: 10px;
 }
 #fixed {
 	display: grid;
@@ -58,9 +47,6 @@ body {
 a {
 	color: var(--txt);
 }
-#choose a {
-  color: var(--headTxt);
-}
 #topRight {
 	position: fixed;
 	z-index: 2;
@@ -78,7 +64,7 @@ a {
 #visibility.down #Capa_1 {
 	transform: rotate(90deg);
 }
-#settings #svg6 {
+#settings #svg6, #user-span #user-icon {
 	height: calc(1.15em + 12px);
 	width: calc(1.15em + 12px);
 	margin: 1.5px;
@@ -106,59 +92,6 @@ a {
 }
 #switchSpan.down #path4 {
 	transform: translate(0px, 100px);
-}
-#choose {
-  z-index: 3;
-  padding: 0px;
-	width: 300px;
-	position: fixed;
-  top: calc(1.15em + 38px);
-	right: 12px;
-	border-radius: 10px;
-  transition: height 300ms ease;
-  background-color: var(--dark);
-  height: 0px;
-  overflow: hidden; /* The arrow for choose is overflow, and is therefore hidden. I want to hide part of the overflow*/
-}
-#arrow {
-  z-index: 3;
-  padding: 0px;
-  width: 0px;
-  height: 0px;
-  position: fixed;
-  top: calc(1.15em + 19px);
-  right: 44px;
-  border: 10px solid transparent;
-}
-#arrow:not(.gone) {
-  border-bottom-color: var(--dark);
-}
-:not(:hover) #choose {
-  display: initial;
-}
-#choose:not(.gone)::after {
-  left: 248px;
-  border-bottom-color: var(--dark);
-  z-index: 3;
-}
-#choose.gone::after {
-  display: none;
-}
-#choose.grow {
-  height: calc(100% - (1.15em + 51px));
-  display: initial !important;
-}
-#choose.shrink {
-  bottom: calc(100vh - (1.15em + 38px));
-}
-#choose .inner {
-  padding: 20px;
-  padding-right: 37px;
-  overflow: scroll;
-  overflow-x: hidden;
-  height: calc(100% - 40px);
-  width: calc(100% - 57px);
-  /*display: none;*/
 }
 header {
 	display: grid;
@@ -191,7 +124,7 @@ header h1 {
 .topFixed {
 	grid-area: main;
 }
-input, button, select, .button {
+input, button:not(.tab), select, .button {
 	text-align: center;
 	border-radius: calc(1.15em + 2px);
 	background-color: var(--bg);
@@ -214,7 +147,7 @@ input[type = "text"], input[type = "username"], input[type = "password"], input[
 input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus, input[type = "number"]:focus {
 	width: 150px;
 }
-input[type = "button"]:hover, input[type = "submit"]:hover, button:hover, .button:hover {
+input[type = "button"]:hover, input[type = "submit"]:hover, button:not(.tab):hover, .button:hover {
   cursor: pointer;
 	border: 2px solid var(--headTxt);
 	margin: 2px;

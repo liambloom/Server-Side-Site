@@ -1,0 +1,109 @@
+#choose {
+  z-index: 3;
+  padding: 0px;
+	width: 300px;
+	position: fixed;
+  top: calc(1.15em + 38px);
+  right: 12px;
+	border-radius: 10px;
+  transition: height 300ms ease;
+  background-color: var(--dark);
+  height: 0px;
+  overflow: hidden;
+}
+:not(:hover) #choose {
+  display: initial;
+}
+#choose.grow {
+  height: calc(100% - (1.15em + 59px));
+  display: initial !important;
+}
+#choose.shrink {
+  bottom: calc(100vh - (1.15em + 38px));
+}
+#choose:not(.shrink) {
+  border-bottom: 8px solid var(--dark);
+}
+#choose .inner {
+  color: var(--txt);
+  background-color: var(--bg);
+  border: 8px solid var(--dark);
+  border-top-width: 0px;
+  padding: 20px;
+  padding-right: 37px;
+  overflow: auto;
+  overflow-x: hidden;
+  height: calc(100% - 84px);
+  width: calc(100% - 73px);
+}
+#choose img {
+	width: calc(100% + 17px);
+	margin: 10px 0px;
+  border-radius: 10px;
+}
+#choose a {
+  color: var(--headTxt);
+}
+#choose .inner .button, #choose .inner button {
+  border-radius: 10px;
+  padding: 5px 15px;
+  display: inline-block;
+}
+#arrow {
+  z-index: 3;
+  padding: 0px;
+  width: 0px;
+  height: 0px;
+  position: fixed;
+  top: calc(1.15em + 19px);
+  right: 44px;
+  border: 10px solid transparent;
+}
+#arrow:not(.gone) {
+  border-bottom-color: var(--dark);
+}
+#tabs {
+  /*border-bottom: 1px solid var(--headTxt);*/
+  background-color: var(--color);
+  height: 44px;
+}
+.tab {
+  color: var(--headTxt);
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px 13px 16px;
+  transition: 300ms;
+  height: 44px;
+}
+.tab::after {
+  content: "\200B";
+  transition-property: height, bottom;
+  transition-duration: 400ms;
+  transition-timing-function: ease-in-out;
+  color: var(--headTxt);
+  background-color: var(--headTxt);
+  display: inline-block;
+  position: relative;
+  left: -16px;
+  bottom: -14px;
+  width: calc(100% + 32px);
+  height: 0px;
+}
+.tab:hover {
+  background-color: #00000028;
+}
+.tab.active {
+  background-color: #0000005d;
+}
+.tab.active::after {
+  height: 5px;
+  bottom: -9px;
+}
+#credits {
+	font-size: 10px;
+	color: #0000007f;
+  line-height: 12px;
+}
