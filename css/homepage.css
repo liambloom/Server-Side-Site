@@ -1,11 +1,19 @@
 body {
-  overflow-x: hidden;
+  overflow: hidden;
+  height: 100vh;
 }
 #content {
   margin: 0px;
+  scroll-snap-type: y mandatory;
+  overflow: scroll;
+  height: calc(100% - ((0px - var(--size)) + 46.4px));
+  overflow-x: hidden;
+}
+#content > * {
+  scroll-snap-align: center;
 }
 #innerContent {
-  margin: 50px;
+  padding: 50px;
 }
 @font-face {
   font-family: Mr Vampire;
