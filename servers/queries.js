@@ -1,26 +1,6 @@
 //jshint esversion:9
-const bcrypt = require("bcrypt");
-const os = require("os");
-const uuid = require("uuid/v4");
-const { Pool } = require("pg");
-const testing = os.hostname().includes("DESKTOP");
-const testConfig = {
-  user: "me",
-  host: "localhost",
-  database: "api",
-  password: "password",
-  port: "5432",
-  ssl: false
-};
-const herokuConfig = {
-  connectionString: process.env.DATABASE_URL,
-  ssl: true,
-};
-const pool = new Pool((testing) ? testConfig : herokuConfig);
-pool.on("error", (err) => {
-  //Handle error
-});
-const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
+const { bcrypt, uuid, pool, path } = require("./initPool");
+
 const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
@@ -42,7 +22,7 @@ const createTable = (req, res) => {
      );
   `);
 };
-const getUsers = (req, res) => {
+const getAll = (req, res) => {
   pool.query("SELECT * FROM users", (err, data) => {
     if (err) res.status(500).send(err);
     else res.status(200).json(data.rows);
@@ -60,7 +40,8 @@ const get = (id, callback) => {
     delete res.password;
     return res;
   })
-  .then(callback);
+  .then(callback)
+  .catch(err => callback(undefined));
 };
 const confirm = (req, res) => {
   const {username, password} = req.body;
@@ -75,6 +56,7 @@ const confirm = (req, res) => {
         if (err) res.status(500).send(err);
         if (result) {
           req.session.user = user.id;
+          req.themeCookie.theme = 
           res.status(204).end();
         }
         else res.status(403).end();
@@ -104,9 +86,9 @@ const create = (req, res) => {
 };
 const update = (req, res) => {
   const id = parseInt(req.params.id);
-  const { username, password, type } = req.body;
+  const { category, value } = req.body;
 
-  pool.query("UPDATE users SET username = $1, password = $2, type = $3 WHERE id = $4", [username, password, type, id], (err, data) => {
+  pool.query(`UPDATE users SET ${category} = $1 WHERE id = $4`, [value, id], (err, data) => {
     if (err) res.status(500).send(err);
     else res.status(204).end();
   });
@@ -121,7 +103,7 @@ const remove = (req, res) => {
 };
 const logout = (req, res) => {
   req.session.reset();
-  res.redirect(path(req).query);
+  res.redirect(path(req).query.u);
 };
 const getSecret = (name, callback) => {
   pool.query("SELECT data FROM secret WHERE name = $1", [name])
@@ -132,6 +114,7 @@ const getSecret = (name, callback) => {
 module.exports = {
   createTable,
   user: {
+    getAll,
     get,
     confirm,
     create,

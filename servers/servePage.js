@@ -1,10 +1,8 @@
 //jshint esversion:9
-const url = require("url");
-const fs = require("fs");
-const mime = require("mime-types");
+const { fs, mime, filetype, url } = require("./init");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
-const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
+
 
 const serve = (req, res) => {
   try {
@@ -30,7 +28,7 @@ const serve = (req, res) => {
     }
     //if ejs
     else {
-      res.render(page, (error, html) => {
+      res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
         if (html) {
           // On success, serve page
           res.writeHead(200, { "Content-Type": "text/html" });

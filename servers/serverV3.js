@@ -1,47 +1,6 @@
 //jshint esversion:9
-const express = require("express");
-const nodemailer = require("nodemailer");
+const { app, nodemailer, DB, requireLogin, port, adminOnly } = require("./init");
 const serve = require("./servePage");
-const DB = require("./queries");
-const session = require("client-sessions");
-const os = require("os");
-
-const app = express();
-const port = process.env.PORT || 8080;
-const testing = os.hostname().includes("DESKTOP");
-const requireLogin = (req, res, next) => {//To use this: app.get("/somewhere", requireLogin, (req, res) => server("/somewhere")) - this will only be served if user is logged in
-  if (!req.user) res.redirect("/login?u=" + req.originalUrl);
-  else next();
-};
-
-
-app.set("view engine", "ejs");
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  cookieName: "session",
-  secret: process.env.SECRET || "L6WpMp3EJLroE9YtzXLoYr5pU2enJSSj",
-  duration: 30 * 60 * 60 * 1000,
-  activeDuration: 10 * 60 * 1000,
-  httpOnly: true,
-  secure: !testing,// I should probably get an ssl certificate
-  ephemeral: true// This means delete the cookie when the browser is closed
-}));
-app.use((req, res, next) => {
-  if ((req.session) ? req.session.user : false) {
-    DB.user.get(req.session.user, data => {
-      if (data) {
-        req.user = data;
-        req.session.user = data.id;
-        res.locals.user = data;
-      }
-      next();
-    });
-  }
-  else {
-    next();
-  }
-});
 
 app.post("/api/sugestion", (req, res) => {
   res.render("./email", {
@@ -88,6 +47,7 @@ app.post("/api/sugestion", (req, res) => {
   });
 });
 
+app.get("/api/users", adminOnly, DB.user.getAll)
 app.get("/api/users/:id", DB.user.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
@@ -95,8 +55,10 @@ app.post("/api/users/confirm", DB.user.confirm);
 //app.delete("/api/users/:id", DB.user.delete);
 app.get("/logout", DB.user.logout);
 
-app.get(/^(?!\/(?:non-existentPage))/, serve);
-app.get(/\/(?:non-exsitentPage)/, requireLogin, serve);
+//put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
+app.get(/^(?!\/(?:nothing))/, serve);
+app.get(/\/(?:nothing)/, requireLogin, serve);
+app.get(/\/(?:nothing)/, adminOnly, serve);
 
 app.listen(port, () => { 
   DB.createTable();

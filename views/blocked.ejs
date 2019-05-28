@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<%- include("head", {beta: false, modal: false}) %>
+	<title><%= title %></title>
+  <link rel="stylesheet" href="/css/blocked.css">
+</head>
+<body>
+	<%- include("header", {title: title, choice: true}) %>
+  <div id="content">
+    <%- msg %>
+  </div>
+</body>
+</html>
