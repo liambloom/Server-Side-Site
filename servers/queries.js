@@ -62,7 +62,7 @@ const confirm = (req, res) => {
         else res.status(403).end();
       });
     }
-    else res.status(401).end()
+    else res.status(401).end();
   });
 };
 const create = (req, res) => {

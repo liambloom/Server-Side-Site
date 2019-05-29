@@ -47,7 +47,7 @@ app.post("/api/sugestion", (req, res) => {
   });
 });
 
-app.get("/api/users", adminOnly, DB.user.getAll)
+app.get("/api/users", adminOnly, DB.user.getAll);
 app.get("/api/users/:id", DB.user.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
