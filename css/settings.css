@@ -6,10 +6,13 @@
   top: calc(1.15em + 38px);
   right: 12px;
 	border-radius: 10px;
-  transition: height 300ms ease;
+  transition: height 300ms ease, width 500ms ease-in-out;
   background-color: var(--dark);
   height: 0px;
   overflow: hidden;
+}
+#choose.big {
+  width: calc(100vw - 40px);
 }
 :not(:hover) #choose {
   display: initial;
@@ -45,10 +48,20 @@
   color: var(--headTxt);
 }
 #choose .inner .button, #choose .inner button {
+  width: 100px;
+  text-align: center;
   border-radius: 10px;
   padding: 5px 15px;
   display: inline-block;
 }
+#choose table, tr {
+  width: 100%;
+}
+#choose td {
+  white-space: nowrap;
+}
+#choose td:not(.button) {
+  width: 100%;}
 #arrow {
   z-index: 3;
   padding: 0px;

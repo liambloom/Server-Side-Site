@@ -22,7 +22,7 @@
       <div id="choose" class="arrowBox required up shrink">
         <div id="tabs">
           <button class="tab active" onclick="window.switchTab(event, 'color')">Color</button>
-          <button class="tab" onclick="window.switchTab(event, 'user')">Account</button>
+          <button class="tab" onclick="window.switchTab(event, 'user', true)">Account</button>
           <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
         </div>
         <div id="color" class="inner">
@@ -46,8 +46,12 @@
         </div>
         <div id="user" class="inner hidden">
           <% if (user) { %>
-            Welcome, <%= user.username %><br>
-            <a class="button" href="<%= '/logout?u=' + here %>">Log out</a>
+            <table>
+              <tr>
+                <td>Welcome, <%= user.username %></td>
+                <td class="button" onclick="location.assign('/logout?u=<%= here %>')"><a href="<%= '/logout?u=' + here %>">Log out</a></td>
+              </tr>
+            </table>
           <% } else { %>
             <a href="<%= '/login?u=' + here %>">Log in</a> or <a href="<%= '/signup?u=' + here %>">Sign up</a>
           <% } %>

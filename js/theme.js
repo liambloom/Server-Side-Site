@@ -128,7 +128,7 @@ window.onload = () => {
     e.preventDefault();
     theme.mode = "light";
   });
-  document.getElementById("darkArea").coords = `${document.getElementById("lightdark").clientWidth}, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`
+  document.getElementById("darkArea").coords = `${document.getElementById("lightdark").clientWidth}, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
   document.getElementById("darkArea").addEventListener("click", e => {
     e.preventDefault();
     theme.mode = "dark";
@@ -321,9 +321,11 @@ var closeMenu = () => {
     document.getElementById("chooseTooltip").classList.remove("noTooltip");
   }, 500);
 };
-window.switchTab = (e, name) => {
+window.switchTab = (e, name, big) => {
   document.querySelector(".inner:not(.hidden)").classList.add("hidden");
   document.querySelector(".tab.active").classList.remove("active");
   document.getElementById(name).classList.remove("hidden");
   e.target.classList.add("active");
+  if (big) document.getElementById("choose").classList.add("big");
+  else document.getElementById("choose").classList.remove("big");
 };
