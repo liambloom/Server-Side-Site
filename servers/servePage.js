@@ -40,7 +40,7 @@ const serve = (req, res) => {
           res.render("./404", { target: path(req).href }, (error404, html404) => {
             if (html404) {
               res.writeHead(404, { "Content-Type": "text/html" });
-              res.write(html);
+              res.write(html404);
               res.end();
             }
             else {
@@ -55,7 +55,10 @@ const serve = (req, res) => {
     }
   }
   catch (err) {
-    res.writeHead(500, { "Content-Type": "text/html" });
+    try {
+      res.writeHead(500, { "Content-Type": "text/html" });
+    }
+    catch (err) {}
     res.write(`Uh Oh! Something Broke :( <br>${err}`);
     res.end();
     console.error(err);
