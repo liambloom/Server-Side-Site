@@ -12,7 +12,7 @@
   overflow: hidden;
 }
 #choose.big {
-  width: calc(100vw - 40px);
+  width: calc(100% - 24px);
 }
 :not(:hover) #choose {
   display: initial;
