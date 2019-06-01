@@ -63,15 +63,6 @@ app.use(session({
   secure: !testing,// I should probably get an ssl certificate
   ephemeral: true// This means delete the cookie when the browser is closed
 }));
-app.use(session({
-  cookieName: "themeCookie",
-  secret: process.env.THEME_SECRET || "E170f18OfUVb2s0uq6d9nW7XHj9FzLVf",
-  duration: 30 * 60 * 60 * 1000,
-  activeDuration: 10 * 60 * 1000,
-  httpOnly: false,
-  secure: !testing,// I should probably get an ssl certificate
-  ephemeral: true// This means delete the cookie when the browser is closed
-}));
 app.use((req, res, next) => {
   if ((req.session) ? req.session.user : false) {
     DB.user.get(req.session.user, data => {

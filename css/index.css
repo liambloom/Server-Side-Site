@@ -24,7 +24,7 @@ body {
   color: var(--bg);
   background-color: var(--txt)
 }
-#fixed {
+/*#fixed {
 	display: grid;
 	position: sticky;
 	grid-template-rows: max-content 0px;
@@ -33,7 +33,7 @@ body {
 		"header"
 		"main";
 	top: var(--size);
-}
+}*/
 #content {
   line-height: 1.35em;
   margin: 50px;
@@ -100,9 +100,11 @@ header {
 	grid-template-areas:
 		"logo title"
 		"nav nav";
-	grid-area: header;
+	/*grid-area: header;*/
 	color: var(--headTxt);
-	background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
+  background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
+  position: sticky;
+  top: var(--size);
 }
 #logo {
 	grid-area: logo;

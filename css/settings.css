@@ -60,8 +60,16 @@
 #choose td {
   white-space: nowrap;
 }
-#choose td:not(.button) {
-  width: 100%;}
+#choose td a.button {
+  float: right;
+}
+#choose th {
+  columns: 2;
+  text-align: left;
+  font-size: 1.15em;
+  text-decoration: underline;
+  padding-top: 5px;
+}
 #arrow {
   z-index: 3;
   padding: 0px;

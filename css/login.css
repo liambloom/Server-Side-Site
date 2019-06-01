@@ -10,7 +10,7 @@
   border-radius: 20px;
   display: inline-block;
 }
-#box input {
+#box input:not([type="checkbox"]) {
   font-size: 1.5rem;
   line-height: 2rem;
   height: 2rem;
@@ -19,11 +19,11 @@
   border-width: 2px;
   background-color: transparent;
 }
-#box input:not([type="submit"]) {
+#box input:not([type="submit"]):not([type="checkbox"]) {
   width: 30vw;
   transition-duration: 750ms;
 }
-#box input:not([type="submit"]):focus, #box input:not([type="submit"]).focus {
+#box input:not([type="submit"]):not([type="checkbox"]):focus, #box input:not([type="submit"]):not([type="checkbox"]).focus {
   width: 45vw;
 }
 #box input[type="submit"] {
