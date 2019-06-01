@@ -14,13 +14,13 @@ window.root = document.documentElement;//imposible to not get this first
 window.onresize = () => {
 	root.style.setProperty("--size", -document.getElementsByTagName("h1")[0].clientHeight - 5 + "px");
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
-  if (window.innerWidth <= document.querySelector("#fixed header h1").clientWidth + 117) {
-    document.getElementById("fixed").style.setProperty("grid-template-columns", "max-content");
-    document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px max-content");
+  if (window.innerWidth <= document.querySelector("header h1").clientWidth + 117) {
+    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "max-content");
+    document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px max-content");
   }
   else {
-    document.getElementById("fixed").style.setProperty("grid-template-columns", "100%");
-    document.querySelector("#fixed header").style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
+    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "100%");
+    document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
   let newStyle = document.createElement("style");
@@ -28,8 +28,8 @@ window.onresize = () => {
   window.arrowFix = newStyle.sheet;
 window.onload = () => {
   window.onresize();
-  if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
-  if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
+  //if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
+  //if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
   fetch("/json/themes.json")
     .then(res => {
@@ -37,14 +37,21 @@ window.onload = () => {
       else throw "Unable to retrieve themes.json";
     })
     .then(res => window.themes = res)
-    .then(() => {
-      theme.color = theme.default.color;
-      theme.mode = theme.default.mode;
+    .then(res => {
+      if (res.user) {
+        theme.color = res.user.color;
+        theme.mode = res.user.mode;
+      }
+      else {
+        theme.color = theme.default.color;
+        theme.mode = theme.default.mode;
+      }
     })
     .then(() => {
       window.dispatchEvent(new Event("themeReady"));
       window.themeReady = true;
     });
+    //.catch(err => );
 
   try {
     path = `
@@ -246,7 +253,20 @@ window.theme = {
 				root.style.setProperty("--bg", themes[name].offWhite);
 				root.style.setProperty("--txt", themes[name].offBlack);
 			}
-			localStorage.setItem("color", name);
+      //localStorage.setItem("color", name);
+      fetch("/api/users/theme", {
+        method: "PUT",
+        body: JSON.stringify({
+          category: "color",
+          value: name
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => {
+          if (!res.ok && res.status !== 401) console.error(res.error);
+        });
 			Object.defineProperty(this, "color", {
 				get: function() {
 					return name;
@@ -292,7 +312,20 @@ window.theme = {
 					}
 				}
 			}
-			localStorage.setItem("mode", name);
+      //localStorage.setItem("mode", name);
+      fetch("/api/users/theme", {
+        method: "PUT",
+        body: JSON.stringify({
+          category: "light",
+          value: name
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(res => {
+          if (!res.ok && res.status !== 401) console.error(res.error);
+        });
 			Object.defineProperty(this, "mode", {
 				get: function () {
 					return name;

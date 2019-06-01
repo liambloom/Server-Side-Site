@@ -64,4 +64,26 @@ const serve = (req, res) => {
     console.error(err);
   }
 };
+serve.themes = (req, res) => {
+  fs.readFile("./json/themes.json", (err, data) => {
+    if (data) {
+      if (req.user) {
+        data = JSON.parse(data);
+        data.user = {
+          color: req.user.color,
+          mode: req.user.light
+        };
+        data = JSON.stringify(data);
+      }
+      res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+      res.write(data);
+      res.end();
+    }
+    else {
+      res.writeHead(500, { "Content-Type": "text/html" });
+      res.write(`Uh Oh! Something Broke :( <br>${err}`);
+      res.end();
+    }
+  });
+};
 module.exports = serve;

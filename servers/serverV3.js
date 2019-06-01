@@ -48,15 +48,17 @@ app.post("/api/sugestion", (req, res) => {
 });
 
 app.get("/api/users", adminOnly, DB.user.getAll);
-app.get("/api/users/:id", DB.user.get);
+//app.get("/api/users/:id", DB.user.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
+app.put("/api/users/theme", requireLogin, DB.user.update);
 //app.put("api/users/:id", DB.user.update);
 //app.delete("/api/users/:id", DB.user.delete);
 app.get("/logout", DB.user.logout);
 
 //put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
-app.get(/^(?!\/(?:nothing))/, serve);
+app.get(/^(?!\/(?:nothing|json\/themes\.json))/, serve);
+app.get("/json/themes.json", serve.themes);
 app.get(/\/(?:nothing)/, requireLogin, serve);
 app.get(/\/(?:nothing)/, adminOnly, serve);
 

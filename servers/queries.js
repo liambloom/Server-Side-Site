@@ -56,7 +56,6 @@ const confirm = (req, res) => {
         if (err) res.status(500).send(err);
         if (result) {
           req.session.user = user.id;
-          req.themeCookie.theme = 
           res.status(204).end();
         }
         else res.status(403).end();
@@ -85,14 +84,36 @@ const create = (req, res) => {
   });
 };
 const update = (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = req.user.id;
   const { category, value } = req.body;
+  if (/id|username|password|since/.test(category)) res.status(403).send("These categories cannot be updated");
+  if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action");
 
-  pool.query(`UPDATE users SET ${category} = $1 WHERE id = $4`, [value, id], (err, data) => {
-    if (err) res.status(500).send(err);
+  pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [value, id], (err, data) => {
+    if (err) {
+      res.status(500).send(err);
+      console.error(err);
+    }
     else res.status(204).end();
   });
-};
+}; 
+/*const update = (req, res) => {
+  const id = req.user.id;
+  try {
+    for (let i of req.body) {
+      const { category, value } = i;
+      if (/id|username|password|since/.test(category) || (category === "type" && req.user.type !== "ADMIN")) throw "Your request was marked as suspicious."; // This request is suspicious, do not continue
+
+      pool.query(`UPDATE users SET ${category} = $1 WHERE id = $4`, [value, id], (err, data) => {
+        if (err) throw err;
+      });
+    }
+    res.status(204).end();
+  }
+  catch (err) {
+    res.status(500).send(err);
+  }
+};*/
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -118,7 +139,7 @@ module.exports = {
     get,
     confirm,
     create,
-    //update,
+    update,
     //remove,
     logout
   },
