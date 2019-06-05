@@ -192,6 +192,36 @@ textarea:focus {
 textarea.wide {
   width: calc(100% - 20px);
 }
+.tag {
+  color: #ffffff;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 10px;
+}
+.tag.blue {
+  background-color: #0060ce;
+}
+.tag.red {
+  background-color: #cc0000;
+}
+.tag.green {
+  background-color: #004700;
+}
+.tag.purple {
+  background-color: #671d8c
+}
+.circle {
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+  height: 16px;
+  width: 16px;
+  border: 3px solid #ffffff;
+  border-radius: 50%;
+}
+.circle.high {
+  vertical-align: super;
+}
 @keyframes spin {
 	from {transform: rotate(0deg);}
 	to {transform: rotate(360deg);}

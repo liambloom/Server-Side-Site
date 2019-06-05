@@ -31,7 +31,7 @@ window.onload = () => {
   //if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
   //if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
-  fetch("/json/themes.json")
+  fetch("/api/json/themes.json")
     .then(res => {
       if (res.ok) return res.json();
       else throw "Unable to retrieve themes.json";

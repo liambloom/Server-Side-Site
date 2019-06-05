@@ -16,10 +16,12 @@ const createTable = (req, res) => {
     );
   `);// I don't know if I actually need to make the id unique, since uuids have a very low chance of being the same (1/32^16 = 1/1,208,925,820,000,000,000,000,000 = 0.00000000000000000000008%)
   pool.query(`
-     CREATE TABLE IF NOT EXISTS secret (
-       name varchar(20) UNIQUE,
-       data varchar(100)
-     );
+    CREATE TABLE IF NOT EXISTS sugestions (
+      content varchar(500) NOT NULL,
+      type varchar(10) NOT NULL,
+      by varchar(100),
+      when datetime NOT NULL
+    );
   `);
 };
 const getAll = (req, res) => {
@@ -68,12 +70,12 @@ const create = (req, res) => {
   const { username, password, email, color, light } = req.body;
   bcrypt.hash(password, 10, (e, hash) => {
     if (e) res.status(500).send(e);
-    const now = new Date();
+    const d = new Date();
     const id = uuid();
     pool.query("SELECT id FROM users WHERE username = $1", [username], (error, user) => {
       if (error) res.status(500).send(error);
       else if (user.rows[0]) res.status(409).end();
-      else pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, hash, email, color, light, "USER", `${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`], (err, data) => {
+      else pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, hash, email, color, light, "USER", d.toISOString().split("T")[0]], (err, data) => {
         if (err) res.status(500).send(err);
         else {
           req.session.user = id;
@@ -126,6 +128,15 @@ const logout = (req, res) => {
   req.session.reset();
   res.redirect(path(req).query.u);
 };
+const add = (req, res) => {
+  const { content, type } = req.body;
+  const d = new Date();
+
+  pool.query("INSERT INTO sugestions (content, type, by, when) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, d.toISOString().replace(/[a-z]$/i, "")], (err, data) => {
+    if (err) req.status(500).send(err);
+    else res.status(201).end();
+  });
+};
 const getSecret = (name, callback) => {
   pool.query("SELECT data FROM secret WHERE name = $1", [name])
   .then(res => res.rows[0].data)
@@ -143,7 +154,8 @@ module.exports = {
     //remove,
     logout
   },
-  secret: {
-    get: getSecret
+  sugestions: {
+    add,
+    //display
   }
 };

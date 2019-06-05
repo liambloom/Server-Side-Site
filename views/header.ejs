@@ -44,7 +44,7 @@
          <table>
             <tr>
               <td>Welcome, <%= user.username %></td>
-              <td class="button" onclick="location.assign('/logout?u=<%= here %>')"><a href="<%= '/logout?u=' + here %>">Log out</a></td>
+              <td class="button" onclick="location.assign('/logout?u=<%= here %>')"><a href="<%= '/api/logout?u=' + here %>">Log out</a></td>
             </tr>
           </table>
       <% } else { %>

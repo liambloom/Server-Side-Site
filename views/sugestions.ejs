@@ -13,6 +13,22 @@
     <div id="main">
       <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
       <br>
+      <input type="radio" name="type" value="sugestion">
+        <div class="tag blue">
+          <div class="circle">&ldquo;&rdquo;</div>Sugestion
+        </div>
+      <input type="radio" name="type" value="bug">
+        <div class="tag red">
+          <div class="circle">!</div>Issue
+        </div>
+      <input type="radio" name="type" value="question">
+        <div class="tag purple">
+          <div class="circle">?</div>Question
+        </div>
+      <input type="radio" name="type" value="Other">
+        <div class="tag green">
+          <div class="circle">&hellip;</div>Other
+        </div>
       <input type="button" value="Submit" onclick="window.modal.open('#confirm')">
     </div>
     <div id="loadingContainer" style="display: none;">
