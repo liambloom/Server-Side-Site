@@ -44,6 +44,9 @@ body {
 .right {
 	text-align: right;
 }
+.flex {
+  display: flex;
+}
 a {
 	color: var(--txt);
 }
@@ -155,6 +158,47 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:not(.tab):hov
 	margin: 2px;
 	color: var(--headTxt);
 }
+.button-3d {
+  cursor: pointer;
+  border-radius: 0px;
+  /*transition: box-shadow 500ms ease, transform 250ms ease;*/
+  transform: translate(0px, 0px);
+  box-shadow: -6px -6px 0px 0px #003388;
+}
+.button-3d:active, .button-3d.active {
+  transform: translate(-6px, -6px);
+}
+.button-3d > span { /* double check meaning of this selector */
+
+}
+.button-3d.blue {
+  background-color: #0060ce;
+  box-shadow: -6px -6px 0px 0px #003388;
+}
+.button-3d.red {
+  background-color: #cc0000;
+  box-shadow: -6px -6px 0px 0px #880000;
+}
+.button-3d.purple {
+  background-color: #671d8c;
+  box-shadow: -6px -6px 0px 0px #401060;
+}
+.button-3d.green {
+  background-color: #004700;
+  box-shadow: -6px -6px 0px 0px #002800;
+}
+.button-3d.blue:active,.button-3d.blue.active {
+  box-shadow: -6px -6px 0px 0px #003388 inset;
+}
+.button-3d.red:active,.button-3d.red.active {
+  box-shadow: -6px -6px 0px 0px #880000 inset;
+}
+.button-3d.purple:active,.button-3d.purple.active {
+  box-shadow: -6px -6px 0px 0px #401060 inset;
+}
+.button-3d.green:active,.button-3d.green.active {
+  box-shadow: -6px -6px 0px 0px #002800 inset;
+}
 input:invalid, [data-err] input {
   background-color: #220000;
   border-color: #aa0000;
@@ -197,30 +241,30 @@ textarea.wide {
   display: inline-block;
   border-radius: 5px;
   padding: 10px;
-}
-.tag.blue {
-  background-color: #0060ce;
-}
-.tag.red {
-  background-color: #cc0000;
-}
-.tag.green {
-  background-color: #004700;
-}
-.tag.purple {
-  background-color: #671d8c
+  font-size: 20px;
 }
 .circle {
   display: inline-block;
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   height: 16px;
   width: 16px;
   border: 3px solid #ffffff;
   border-radius: 50%;
+  margin-right: 5px;
+  transform: translateY(1.5px);
 }
-.circle.high {
-  vertical-align: super;
+.circle span {
+  display: inline-block;
+}
+.circle.high span {
+  transform: translateY(0px);
+}
+.circle.middle span {
+  transform: translateY(-3px);
+}
+.circle.low span {
+  transform: translateY(-7px);
 }
 @keyframes spin {
 	from {transform: rotate(0deg);}

@@ -43,3 +43,4 @@ if (require("os").hostname.includes("DESKTOP")) {
     }
   });
 }
+else console.log("Email not sent durring testing");
