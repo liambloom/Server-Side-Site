@@ -32,6 +32,7 @@
   height: calc(2.3rem + 10px);
 }
 [data-err]::after {
+  display: block;
   position: relative;
   left: 20px;
   bottom: 5px;
