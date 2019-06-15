@@ -11,7 +11,7 @@
 }
 body {
 	margin: 0px;
-	font-family: "Times New Roman", Times, serif;
+	font-family: 'Times New Roman', Times, serif;
 	line-height: 1.15em;
 	font-size: 16px;
 	color: var(--txt);
@@ -169,22 +169,34 @@ input[type = "button"]:hover, input[type = "submit"]:hover, button:not(.tab):hov
   transform: translate(-6px, -6px);
 }
 .button-3d > span { /* double check meaning of this selector */
-
+  transform: translate(0px, 0px);
+  display: block;
+}
+.button-3d:active > span, .button-3d.active > span {
+  transform: translate(-6px, -6px);
+}
+.tag.blue, .button-3d.blue {
+  background-color: #0060ce;
+}
+.tag.red, .button-3d.red {
+  background-color: #cc0000;
+}
+.tag.purple, .button-3d.purple {
+  background-color: #671d8c;
+}
+.tag.green, .button-3d.green {
+  background-color: #004700;
 }
 .button-3d.blue {
-  background-color: #0060ce;
   box-shadow: -6px -6px 0px 0px #003388;
 }
 .button-3d.red {
-  background-color: #cc0000;
   box-shadow: -6px -6px 0px 0px #880000;
 }
 .button-3d.purple {
-  background-color: #671d8c;
   box-shadow: -6px -6px 0px 0px #401060;
 }
 .button-3d.green {
-  background-color: #004700;
   box-shadow: -6px -6px 0px 0px #002800;
 }
 .button-3d.blue:active,.button-3d.blue.active {
@@ -215,9 +227,9 @@ input:invalid:hover, input:invalid:focus, [data-err] input:hover, [data-err] inp
   line-height: 0.8em;
   color: #ff0000;
   display: inline;
-  float: left;
+  /*float: left;*/
   content: attr(data-err);
-  height: 0px;
+  /*height: 0px;*/
 }
 textarea {
 	background-color: var(--bg);

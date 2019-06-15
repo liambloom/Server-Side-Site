@@ -13,34 +13,33 @@
   <div id="content" class="center">
     <div id="main">
       <textarea id="sugestion" class="wide" rows="10" placeholder="Type your sugestions here"></textarea>
-      <br>
-      <div id="tags" class="flex">
-        <div class="tag blue button-3d">
+      <div id="tags" class="flex pick1">
+        <div id="sugestion" class="tag blue button-3d">
           <span>
             <div class="circle high"><span>&ldquo;&rdquo;</span></div>
             Sugestion
           </span>
         </div>
-        <div class="tag red button-3d">
+        <div id="issue" class="tag red button-3d">
           <span>
             <div class="circle middle"><span>!</span></div>
             Issue
           </span>
         </div>
-        <div class="tag purple  button-3d">
+        <div id="question" class="tag purple button-3d">
           <span>
             <div class="circle middle"><span>?</span></div>
             Question
           </span>
         </div>
-        <div class="tag green  button-3d">
+        <div id="other" class="tag green button-3d">
           <span>
             <div class="circle low"><span>&hellip;</span></div>
             Other
           </span>
         </div>
       </div>
-      <input type="button" value="Submit" onclick="window.modal.open('#confirm')">
+      <input id="submit" type="button" value="Submit" onclick="window.modal.open('#confirm')">
     </div>
     <div id="loadingContainer" style="display: none;">
       <%- include("loading.html") %>

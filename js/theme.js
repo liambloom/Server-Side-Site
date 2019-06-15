@@ -72,8 +72,9 @@ window.onload = () => {
     document.getElementById("settings").onclick = () => {
       if (document.getElementById("settings").className === "") {
         document.getElementById("settings").className = "spin";
-        document.getElementById("choose").classList.add("grow");
-        document.getElementById("choose").classList.remove("shrink");
+        /*document.getElementById("choose").classList.add("grow");
+        document.getElementById("choose").classList.remove("shrink");*/
+        document.getElementById("choose").classList.replace("shrink", "grow");
         document.getElementById("arrow").classList.remove("gone");
         document.getElementById("chooseTooltip").classList.add("noTooltip");
       }
@@ -164,13 +165,27 @@ window.onload = () => {
     }
     document.querySelector(`#${id(e)} ul`).style.setProperty("height", "max-content");
   };
-  for (let e of document.querySelectorAll("header nav ul li.main")) {
+  for (let e of document.querySelectorAll("header nav > ul > li")) {
     e.addEventListener("mouseleave", e => {elementHide(e);});
     e.addEventListener("blur", e => {elementHide(e);});
   }
-  for (let e of document.querySelectorAll("header nav ul li.main")) {
+  for (let e of document.querySelectorAll("header nav > ul > li")) {
     e.addEventListener("mouseenter", e => { elementShow(e); });
     e.addEventListener("focus", e => { elementShow(e); });
+  }
+
+  let buttonFunc = e => {
+    e.parentNode.dispatchEvent(new Event(e.id));
+    if (e.parentNode.classList.contains("pick1")) [...e.parentNode.children].forEach(e => { e.classList.remove("active"); });
+    if (e.classList.contains("stick") || e.parentNode.classList.contains("pick1")) e.classList.toggle("active");
+  };
+  for (let e of document.getElementsByClassName("button-3d")) {
+    e.addEventListener("mousedown", () => {
+      buttonFunc(e);
+    });
+    e.addEventListener("touchstart", () => {
+      buttonFunc(e);
+    });
   }
 
   if (CSS.supports("width: max-content")) {
@@ -226,12 +241,13 @@ window.onload = () => {
   }
 };
 window.onscroll = () => {
-  if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
+  /*if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
     document.querySelector("header nav ul li.right").classList.remove("hide");
   }
   else {
     document.querySelector("header nav ul li.right").classList.add("hide");
-  }
+  }*/
+  document.querySelector("header nav ul li.right").classList.toggle("hide", !(window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)));
 };
 window.theme = {
 	get color() {
@@ -264,6 +280,10 @@ window.theme = {
           "Content-Type": "application/json"
         }
       })
+        .then(res => {
+          if (res.status === 401) localStorage.setItem("color", name);
+          return res;
+        })
         .then(res => {
           if (!res.ok && res.status !== 401) console.error(res.error);
         });
@@ -324,6 +344,10 @@ window.theme = {
         }
       })
         .then(res => {
+          if (res.status === 401) localStorage.setItem("mode", name);
+          return res;
+        })
+        .then(res => {
           if (!res.ok && res.status !== 401) console.error(res.error);
         });
 			Object.defineProperty(this, "mode", {
@@ -337,13 +361,14 @@ window.theme = {
 		}
 	},
 	default: {
-		color: "teal",
-		mode: "dark"
+		color: localStorage.getItem("color") || "teal",
+    mode: localStorage.getItem("mode") || "light"
 	}
 };
 var closeMenu = () => {
-  document.getElementById("choose").classList.add("shrink");
-  document.getElementById("choose").classList.remove("grow");
+  /*document.getElementById("choose").classList.add("shrink");
+  document.getElementById("choose").classList.remove("grow");*/
+  document.getElementById("choose").classList.replace("grow", "shrink");
   setTimeout(() => {
     document.getElementById("arrow").classList.add("gone");
   }, 300);
@@ -359,6 +384,7 @@ window.switchTab = (e, name, big) => {
   document.querySelector(".tab.active").classList.remove("active");
   document.getElementById(name).classList.remove("hidden");
   e.target.classList.add("active");
-  if (big) document.getElementById("choose").classList.add("big");
-  else document.getElementById("choose").classList.remove("big");
+  /*if (big) document.getElementById("choose").classList.add("big");
+  else document.getElementById("choose").classList.remove("big");*/
+  document.getElementById("choose").classList.toggle("big", big || false);
 };

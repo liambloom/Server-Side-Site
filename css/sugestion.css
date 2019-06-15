@@ -1,4 +1,9 @@
 #tags {
   justify-content: space-evenly;
   width: calc(100% - 20px);
+  margin-top: 21.6px;
+  margin-bottom: 7px;
+}
+#sugestion {
+  resize: none;
 }

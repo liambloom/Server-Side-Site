@@ -41,7 +41,7 @@ header nav ul li a {
   text-decoration: none;
   height: 1.15em;
 }
-header nav ul li a:not([href]) {
+header nav > ul > li > a {
   width: min-content;
 }
 header nav ul li ul li a:hover, header nav ul li ul li a:focus {
@@ -69,7 +69,7 @@ header nav ul li.right ul li a {
 header nav ul li ul li {
   float: none;
 }
-header nav ul li.main::after {
+header nav > ul > li::after {
   content: "\200B";
   transition-property: height, bottom;
   transition-duration: 400ms;
@@ -82,21 +82,21 @@ header nav ul li.main::after {
   width: 100%;
   height: 0px;
 }
-header nav ul li a[href]::after {
+header nav ul li a::after {
   vertical-align: super;
   font-style: italic;
   font-size: 0.9em;
   line-height: 0px;
 }
-header nav ul li a[href].alpha::after {
+header nav ul li a.alpha::after {
   content: "alpha";
   color: #f92472;
 }
-header nav ul li a[href].beta::after {
+header nav ul li a.beta::after {
   content: "beta";
   color: #e79622;
 }
-header nav ul li.main:not(.hide):hover::after {
+header nav > ul > li:not(.hide):hover::after {
   height: 5px;
   bottom: 5px;
 }
