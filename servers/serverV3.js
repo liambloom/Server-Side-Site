@@ -1,5 +1,5 @@
 //jshint esversion:9
-const { app, nodemailer, DB, requireLogin, port, adminOnly } = require("./init");
+const { app, DB, requireLogin, port, adminOnly } = require("./init");
 const serve = require("./servePage");
 
 app.get("/api/users", adminOnly, DB.user.getAll);

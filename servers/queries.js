@@ -20,7 +20,7 @@ const createTable = (req, res) => {
       content varchar(500) NOT NULL,
       type varchar(10) NOT NULL,
       by varchar(100),
-      when datetime NOT NULL
+      created timestamptz NOT NULL
     );
   `);
 };
@@ -75,7 +75,7 @@ const create = (req, res) => {
     pool.query("SELECT id FROM users WHERE username = $1", [username], (error, user) => {
       if (error) res.status(500).send(error);
       else if (user.rows[0]) res.status(409).end();
-      else pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, hash, email, color, light, "USER", d.toISOString().split("T")[0]], (err, data) => {
+      else pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, hash, email, color, light, "USER", "today"/*d.toISOString().split("T")[0]*/], (err, data) => {
         if (err) res.status(500).send(err);
         else {
           req.session.user = id;
@@ -130,10 +130,10 @@ const logout = (req, res) => {
 };
 const add = (req, res) => {
   const { content, type } = req.body;
-  const d = new Date();
+  //const d = new Date();
 
-  pool.query("INSERT INTO sugestions (content, type, by, when) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, d.toISOString().replace(/[a-z]$/i, "")], (err, data) => {
-    if (err) req.status(500).send(err);
+  pool.query("INSERT INTO sugestions (content, type, by, when) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"/*d.toISOString().replace(/[a-z]$/i, "")*/], (err, data) => {
+    if (err) res.status(500).send(err);
     else res.status(201).end();
   });
 };
