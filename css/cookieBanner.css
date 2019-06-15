@@ -1,0 +1,20 @@
+footer {
+  position: fixed;
+  display: block;
+  bottom: 0px;
+  width: 100%;
+  text-align: center;
+  padding: 15px;
+  background-color: var(--bg);
+  font-family: Tahoma, Geneva, sans-serif;
+  font-size: 14px;
+  background-color: var(--light);
+  color: var(--bg);
+}
+footer a {
+  color: var(--light);
+  filter: invert(1);
+}
+footer button {
+  border-radius: 5px !important;
+}
