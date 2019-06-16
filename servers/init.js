@@ -1,12 +1,13 @@
 //jshint esversion:9
 const express = require("express");
-const nodemailer = require("nodemailer");
 const os = require("os");
 const url = require("url");
 const fs = require("fs");
 const mime = require("mime-types");
 const session = require("client-sessions");
+//const shortHash = require("short-hash");
 const DB = require("./queries");
+//const mail = require("./mail");
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -65,27 +66,32 @@ app.use(session({
 }));
 app.use((req, res, next) => {
   if ((req.session) ? req.session.user : false) {
-    DB.user.get(req.session.user, data => {
-      if (data) {
-        req.user = data;
-        req.session.user = data.id;
-        req.themeCookie.theme = {
-          color: data.theme,
-          mode: data.light
-        };
-        res.locals.user = data;
+    //console.log(req.session.user);
+    DB.session.get(req.session.user, userId => {
+      //console.log(userId);
+      if (userId) {
+        //console.log(userId);
+        DB.user.get(userId, data => {
+          if (data) {
+            req.user = data;
+            req.session.user = req.session.user;
+            req.themeCookie.theme = {
+              color: data.theme,
+              mode: data.light
+            };
+            res.locals.user = data;
+          }
+          next();
+        });
       }
-      next();
+      else next();
     });
   }
-  else {
-    next();
-  }
+  else next();
 });
 
 module.exports = {
   app,
-  nodemailer,
   port,
   testing,
   requireLogin,

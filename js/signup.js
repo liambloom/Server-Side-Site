@@ -16,6 +16,7 @@ let loadFunc = () => {
   document.getElementById("password").addEventListener("input", event => {
     let e = event.target;
     let pass = e.value;
+    let confirm = document.getElementById("confirmPassword");
     if (!pass) errMsg(e, "Password is required");
     else if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
     else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
@@ -27,6 +28,7 @@ let loadFunc = () => {
     else if (/^[a-z\d]*$/i.test(pass)) errMsg(e, "Password must contain a special character");
     else if (/^.{0,5}$/.test(pass)) errMsg(e, "Password must be at least 6 characters long");
     else if (/^.{100,}$/.test(pass)) errMsg(e, "Password may not be longer that 100 characters");
+    else if (pass !== confirm.value && /\S/.test(confirm.value)) errMsg(confirm, "Must match password");
     else errMsg(e);
   });
   document.getElementById("confirmPassword").addEventListener("input", event => {
@@ -38,42 +40,51 @@ let loadFunc = () => {
   document.getElementById("box").onsubmit = event => {
     event.preventDefault();
     document.getElementById("button").parentNode.removeAttribute("data-err");
-    let {username, password, email} = confirmInit();
+    let {username, password, email, wait} = confirmInit();
+    if (wait) document.getElementById("emailWarning").addEventListener("closed", () => { login(username, password, email); });
+    else login(username, password, email);
     /*for (let e of [...event.target.children]) {
       let match = [...e.children].filter(i => i.tagName === "INPUT")[0];
       if (match) match.setAttribute("required", "required");
       if (!/\S/.test(match.value)) errMsg(match, "Field Required");
     }*/
-    if (!document.querySelector("#box :invalid")) {
-      document.getElementById("button").parentNode.removeAttribute("data-err");
-      modal.open("#loadingModal");
-      document.getElementById("loadingContainer").style.setProperty("display", "initial");
-      window.activateLoading();
-      fetch("/api/users/create", {
-        method: "POST",
-        body: JSON.stringify({
-          username: username,//document.getElementById("username").value,
-          password: password,//document.getElementById("password").value,
-          email: email,//document.getElementById("email").value,
-          color: theme.color,
-          light: theme.mode
-        }),
-        headers: {
-          "Content-Type": "application/json; charset=utf-8"
-        }
-      })
+    
+  };
+};
+let login = (username, password, email) => {
+  if (!document.querySelector("#box :invalid")) {
+    document.getElementById("button").parentNode.removeAttribute("data-err");
+    modal.open("#loadingModal");
+    document.getElementById("loadingContainer").style.setProperty("display", "initial");
+    window.activateLoading();
+    fetch("/api/users/create", {
+      method: "POST",
+      body: JSON.stringify({
+        username: username,//document.getElementById("username").value,
+        password: password,//document.getElementById("password").value,
+        email: email,//document.getElementById("email").value,
+        color: theme.color,
+        light: theme.mode
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    })
       .then(res => {
-        if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
+        if (res.status === 201) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
+        else if (res.status === 202) {
+          const page = document.getElementById("content");
+          
+        }
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
       })
       .then(() => modal.close())
       .then(() => window.deactivateLoading());
-    }
-    else {
-      document.getElementById("button").parentNode.setAttribute("data-err", "Please check over your form");
-    }
-  };
+  }
+  else {
+    document.getElementById("button").parentNode.setAttribute("data-err", "Please check over your form");
+  }
 };
 if (document.readyState === "complete") loadFunc();
 else window.addEventListener("load", loadFunc);

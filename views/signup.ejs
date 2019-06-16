@@ -39,5 +39,8 @@
       <%- include("loading.html") %>
     </div>
   </modal>
+  <modal id="emailWarning" data-escape="yn" data-confirm="document.getElementById('emailWarning').dispatchEvent(new Event('closed'));">
+    Without providing an email, there is no way to reset your password if you forget it. Are you sure you want to sign up without providing an email?
+  </modal>
 </body>
 </html>

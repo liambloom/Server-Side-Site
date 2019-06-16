@@ -3,6 +3,9 @@ const os = require("os");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid/v4");
 const url = require("url");
+const shortHash = require("short-hash");
+const fs = require("fs");
+const mail = require("./mail");
 const { Pool } = require("pg");
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 const testing = os.hostname().includes("DESKTOP");
@@ -26,5 +29,8 @@ module.exports = {
   pool,
   bcrypt,
   uuid,
-  path
+  path,
+  mail,
+  shortHash,
+  fs
 };
