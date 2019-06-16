@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false})%>
+  <title>Cookie Policy</title>
+</head>
+<body>
+  <%- include("header", {title: "Cookie Policy", choice: true}) %>
+  <div id="content">
+    This site uses cookies.<br><br>
+    If you are not logged in, these cookies are only to keep track of your color theme.<br><br>
+    If you are logged in, they allow the server to identify you and keep you logged in. The information linked to your account includes:
+    <ul>
+      <li>Your email (if provided)</li>
+      <li>Your color theme</li>
+      <li>The date you signed up</li>
+    </ul>
+    Obviously, it also stores your username, password, and user id
+  </div>
+</body>
+</html>

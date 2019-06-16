@@ -46,6 +46,7 @@
     </div>
     <div id="user" class="inner hidden">
       <% if (user) { %>
+        <input type="hidden" id="loggedIn">
         <table>
           <tr>
             <td>Welcome, <b><%= user.username %></b></td>
@@ -83,7 +84,6 @@
       All icons modified from originals
     </div>
   </div>
-  <!--<div id="fixed">-->
   <header>
     <a id="logo" href="/">
       <%- include("../img/favicon/main/favicon_vector.svg") %>
@@ -136,11 +136,10 @@
       </ul>
     </nav>
   </header>
-  <!--</div>-->
-  <footer>
+  <footer class="hidden">
     This site uses cookies. For more information click <a href="/cookiePolicy">here</a>.
-    <button>I accept cookies!</button>
-    <button>No cookies for me.</button>
+    <button id="yesCookie">I accept cookies!</button>
+    <button id="noCookie">No cookies for me.</button>
   </footer>
 	<div id="content">
 	<p>Some Text</p>

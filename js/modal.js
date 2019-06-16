@@ -13,11 +13,12 @@ window.modal = {
     }, 100);
   },
   close: function (fun) {
+    let open = document.querySelector(".modal:not(.hidden)");
     if (!document.querySelector(".modal:not(.hidden) :invalid")) {
       /*for (let e of this.list) {
         document.getElementById(e).classList.add("hidden");
       }*/
-      document.querySelector(".modal:not(.hidden)").classList.add("hidden");
+      open.classList.add("hidden");
       clearInterval(this.blurKey);
       if (typeof fun === "function") fun();
     }

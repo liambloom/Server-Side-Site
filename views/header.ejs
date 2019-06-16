@@ -41,12 +41,13 @@
     </div>
     <div id="user" class="inner hidden">
       <% if (user) { %>
-         <table>
-            <tr>
-              <td>Welcome, <%= user.username %></td>
-              <td class="button" onclick="location.assign('/logout?u=<%= here %>')"><a href="<%= '/api/logout?u=' + here %>">Log out</a></td>
-            </tr>
-          </table>
+        <input type="hidden" id="loggedIn">
+        <table>
+          <tr>
+            <td>Welcome, <%= user.username %></td>
+            <td class="button" onclick="location.assign('/logout?u=<%= here %>')"><a href="<%= '/api/logout?u=' + here %>">Log out</a></td>
+          </tr>
+        </table>
       <% } else { %>
         <a href="<%= '/login?u=' + here %>">Log in</a> or <a href="<%= '/signup?u=' + here %>">Sign up</a>
       <% } %>
@@ -119,5 +120,10 @@
       </li>
 		</ul>
 	</nav>
-	</header>
+  </header>
+  <footer class="hidden">
+    This site uses cookies. For more information click <a href="/cookiePolicy">here</a>.
+    <button id="yesCookie">I accept cookies!</button>
+    <button id="noCookie">No cookies for me.</button>
+  </footer>
 </div>

@@ -188,6 +188,18 @@ window.onload = () => {
     });
   }
 
+  //console.log(...[localStorage.getItem("cookie"), document.getElementById("loggedIn")]);
+  if (!localStorage.getItem("cookie") && !document.getElementById("loggedIn")) document.getElementsByTagName("footer")[0].classList.remove("hidden");
+  document.getElementById("yesCookie").addEventListener("click", () => {
+    localStorage.setItem("cookie", "true");
+    theme.color = theme.color;
+    theme.mode = theme.mode;
+    document.getElementsByTagName("footer")[0].classList.add("hidden");
+  });
+  document.getElementById("noCookie").addEventListener("click", () => {
+    document.getElementsByTagName("footer")[0].classList.add("hidden");
+  });
+
   if (CSS.supports("width: max-content")) {
     for (let e of document.querySelectorAll(".arrowBox.up:not(#choose), arrowBox.down")) {
       e.parentNode.style.setProperty("display", "inline-flex");
@@ -281,7 +293,7 @@ window.theme = {
         }
       })
         .then(res => {
-          if (res.status === 401) localStorage.setItem("color", name);
+          if (res.status === 401 && localStorage.getItem("cookie")) localStorage.setItem("color", name);
           return res;
         })
         .then(res => {
@@ -344,7 +356,7 @@ window.theme = {
         }
       })
         .then(res => {
-          if (res.status === 401) localStorage.setItem("mode", name);
+          if (res.status === 401 && localStorage.getItem("cookie")) localStorage.setItem("mode", name);
           return res;
         })
         .then(res => {

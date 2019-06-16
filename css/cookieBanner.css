@@ -12,9 +12,11 @@ footer {
   color: var(--bg);
 }
 footer a {
-  color: var(--light);
+  color: var(--dark);
   filter: invert(1);
 }
 footer button {
+  border: none !important;
   border-radius: 5px !important;
+  margin: 3px !important;
 }
