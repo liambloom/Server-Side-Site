@@ -44,7 +44,7 @@ const login = (req, res, userid) => {
     });
   });
 };
-const newUser = (req, res, username, password, email, color, light) => {
+const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"/*d.toISOString().split("T")[0]*/], (err, data) => {
     if (err) res.status(500).send(err);
     else {
@@ -110,17 +110,17 @@ const create = (req, res) => {
       if (error) res.status(500).send(error);
       else if (user.rows[0]) res.status(409).end();
       else {
-        if (!email) newUser(req, res, username, hash, email, color, light);
+        if (!email) newUser(req, res, id, username, hash, email, color, light);
         else {
-          const code = shortHash(uuid());
+          const code = shortHash(id);
           fs.readFile("./json/themes.json", (err, data) => {
             if (err) res.status(500).end(err);
             else {
               res.status(202).json({ code });
               const theme = JSON.parse(data)[color];
-              mail.confirm(email, username, {
+              /*mail.confirm(res, email, username, {
 
-              }, code);
+              }, code);*/
             }
           });
         }

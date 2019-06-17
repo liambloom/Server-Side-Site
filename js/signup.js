@@ -9,8 +9,8 @@ let loadFunc = () => {
   });
   document.getElementById("email").addEventListener("input", event => {
     let e = event.target;
-    if (!e.value) errMsg(e, "Email is required");
-    else if (!/^[a-z0-9!#%&'*+\-\/=?^_`{|}~.]{1,64}@(?:[a-z0-9](?:[a-z0-9\d]*[a-z0-9])?\.)+[a-z0-9][a-z0-9\d]*[a-z0-9]$/i.test(e.value)) errMsg(e, "Invalid Email");
+    //if (!e.value) errMsg(e, "Email is required");
+    /*else */if (!/^(?:(?:[a-z0-9!#%&'*+\-\/=?^_`{|}~.]{1,64}@(?:[a-z0-9](?:[a-z0-9\d]*[a-z0-9])?\.)+[a-z0-9][a-z0-9\d]*[a-z0-9])|)$/i.test(e.value)) errMsg(e, "Invalid Email");
     else errMsg(e);
   });
   document.getElementById("password").addEventListener("input", event => {
@@ -29,7 +29,7 @@ let loadFunc = () => {
     else if (/^.{0,5}$/.test(pass)) errMsg(e, "Password must be at least 6 characters long");
     else if (/^.{100,}$/.test(pass)) errMsg(e, "Password may not be longer that 100 characters");
     else if (pass !== confirm.value && /\S/.test(confirm.value)) errMsg(confirm, "Must match password");
-    else errMsg(e);
+    else { errMsg(e); errMsg(confirm); }
   });
   document.getElementById("confirmPassword").addEventListener("input", event => {
     let e = event.target;
@@ -41,6 +41,7 @@ let loadFunc = () => {
     event.preventDefault();
     document.getElementById("button").parentNode.removeAttribute("data-err");
     let {username, password, email, wait} = confirmInit();
+    //console.log(username);
     if (wait) document.getElementById("emailWarning").addEventListener("closed", () => { login(username, password, email); });
     else login(username, password, email);
     /*for (let e of [...event.target.children]) {
@@ -57,6 +58,7 @@ let login = (username, password, email) => {
     modal.open("#loadingModal");
     document.getElementById("loadingContainer").style.setProperty("display", "initial");
     window.activateLoading();
+    console.log(username);
     fetch("/api/users/create", {
       method: "POST",
       body: JSON.stringify({
@@ -73,11 +75,27 @@ let login = (username, password, email) => {
       .then(res => {
         if (res.status === 201) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
-        else if (res.status === 202) {
-          const page = document.getElementById("content");
-          
-        }
+        else if (res.status === 202) return res.json();
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
+      })
+      .then(res => {
+        if (res) {
+          console.log(res);
+          document.getElementById("content").innerHTML = "Enter code from email to continue <div><input id='emailConfirm' type='text'></div>";
+          document.getElementById("emailConfirm").addEventListener("keyup", event => {
+            if (event.keyCode === 13) {
+              if (event.target.value === res.code) {
+                errMsg(event.target);
+                console.log("yay");
+              }
+              else errMsg(event.target, "Incorrect");
+            }
+          });
+          const css = document.createElement("link");
+          css.setAttribute("rel", "stylesheet");
+          css.setAttribute("href", "/css/blocked.css");
+          document.head.appendChild(css);
+        }
       })
       .then(() => modal.close())
       .then(() => window.deactivateLoading());

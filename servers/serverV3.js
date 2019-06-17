@@ -11,7 +11,8 @@ app.post("/api/sugestion", DB.sugestions.add);
 app.put("/api/users/theme", requireLogin, DB.user.update);
 
 //put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
-app.get(/^(?!\/(?:api))/, serve);
+app.get("/null", (req, res) => { res.redirect(404, "/"); });
+app.get(/^(?!\/(?:api|null))/, serve);
 //app.get(/\/(?:nothing)/, requireLogin, serve);
 //app.get(/\/(?:nothing)/, adminOnly, serve);
 

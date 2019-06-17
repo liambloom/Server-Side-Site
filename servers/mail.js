@@ -1,6 +1,6 @@
 //jshint esversion:9
 const nodemailer = require("nodemailer");
-const confirm = (email, username, theme, code) => {
+const confirm = (res, email, username, theme, code) => {
   res.render("./confirmEmail", {
     offWhite: req.body.theme.offWhite,
     offBlack: req.body.theme.offBlack,
