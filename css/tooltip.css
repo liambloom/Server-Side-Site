@@ -29,7 +29,7 @@
   position: absolute;
   height: 0px;
   width: 0px;
-  border: 10px solid transparent;
+  border: 7.5px solid transparent; /* 5.773503px for equalateral triangle */
 }
 .arrowBox.up {
   top: calc(100% + 20px);

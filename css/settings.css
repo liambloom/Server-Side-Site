@@ -76,9 +76,10 @@
   width: 0px;
   height: 0px;
   position: fixed;
-  top: calc(1.15em + 19px);
-  right: 44px;
-  border: 10px solid transparent;
+  top: calc(1.15em + 21.5px);
+  right: 46.5px;
+  border: 7.5px solid transparent;
+  border-bottom-width: 10px;
 }
 #arrow:not(.gone) {
   border-bottom-color: var(--dark);
