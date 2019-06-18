@@ -3,7 +3,7 @@ const os = require("os");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid/v4");
 const url = require("url");
-const shortHash = require("short-hash");
+//const shortHash = require("short-hash");
 const fs = require("fs");
 const mail = require("./mail");
 const { Pool } = require("pg");
@@ -31,6 +31,6 @@ module.exports = {
   uuid,
   path,
   mail,
-  shortHash,
+  //shortHash,
   fs
 };

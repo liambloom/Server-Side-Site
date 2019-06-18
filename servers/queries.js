@@ -1,5 +1,5 @@
 //jshint esversion:9
-const { bcrypt, uuid, pool, path, shortHash, mail, fs } = require("./initPool");
+const { bcrypt, uuid, pool, path, mail, fs } = require("./initPool");
 
 const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -29,13 +29,20 @@ const createTable = (req, res) => {
       userid uuid NOT NULL
     );
   `);
+  pool.query(`
+      CREATE TABLE IF NOT EXISTS confirm (
+        userid uuid NOT NULL,
+        code uuid NOT NULL,
+        email varchar(50) NOT NULL
+      );
+  `);
 };
 const login = (req, res, userid) => {
   return new Promise((resolve, reject) => {
     //console.log("logged in");
     const id = uuid();
     pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid/*, new Date(new Date().getTime() + 1000 * 60 * 60 * 24).toISOString().replace("T", " ").replace(/[a-z]*$/i, "")*/], (err, data) => {
-      console.log(err);
+      //console.log(err);
       if (err) reject(err);
       else {
         req.session.user = id;
@@ -112,15 +119,27 @@ const create = (req, res) => {
       else {
         if (!email) newUser(req, res, id, username, hash, email, color, light);
         else {
-          const code = shortHash(id);
+          const code = uuid();
+          pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email]); // Is this valid syntax, or is the callback required?
           fs.readFile("./json/themes.json", (err, data) => {
             if (err) res.status(500).end(err);
             else {
-              res.status(202).json({ code });
+              newUser(req, res, id, username, hash, null, color, light);
               const theme = JSON.parse(data)[color];
-              /*mail.confirm(res, email, username, {
-
-              }, code);*/
+              const newTheme = {
+                light: theme.gradientLight,
+                dark: theme.gradientDark,
+                headTxt: theme.headTextColor
+              };
+              if (light === "dark") {
+                newTheme.bg = theme.offBlack;
+                newTheme.txt = theme.headTextColor;
+              }
+              else {
+                newTheme.bg = theme.offWhite;
+                newTheme.txt = theme.offBlack;
+              }
+              mail.confirm(res, email, username, newTheme, code, path(req));
             }
           });
         }

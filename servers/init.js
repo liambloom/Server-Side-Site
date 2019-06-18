@@ -5,6 +5,7 @@ const url = require("url");
 const fs = require("fs");
 const mime = require("mime-types");
 const session = require("client-sessions");
+const mail = require("./mail");
 //const shortHash = require("short-hash");
 const DB = require("./queries");
 //const mail = require("./mail");
@@ -100,5 +101,6 @@ module.exports = {
   filetype,
   fs,
   mime,
-  url
+  url,
+  mail
 };

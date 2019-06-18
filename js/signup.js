@@ -73,28 +73,22 @@ let login = (username, password, email) => {
       }
     })
       .then(res => {
-        if (res.status === 201) location.assign(new URLSearchParams(location.search).get("u"));
+        if (res.status === 201 && !email) location.assign(new URLSearchParams(location.search).get("u"));
+        else if (res.status === 201 && email) return true;
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
-        else if (res.status === 202) return res.json();
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
       })
-      .then(res => {
-        if (res) {
-          console.log(res);
-          document.getElementById("content").innerHTML = "Enter code from email to continue <div><input id='emailConfirm' type='text'></div>";
-          document.getElementById("emailConfirm").addEventListener("keyup", event => {
-            if (event.keyCode === 13) {
-              if (event.target.value === res.code) {
-                errMsg(event.target);
-                console.log("yay");
-              }
-              else errMsg(event.target, "Incorrect");
-            }
-          });
+      .then(wait => {
+        console.log(wait);
+        if (wait) {
+          document.getElementById("content").innerHTML = "Waiting for email conformation...";
           const css = document.createElement("link");
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
+          setInterval(() => {
+            //fetch("")
+          }, 1000);
         }
       })
       .then(() => modal.close())

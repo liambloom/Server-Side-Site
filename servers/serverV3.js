@@ -1,5 +1,5 @@
 //jshint esversion:9
-const { app, DB, requireLogin, port, adminOnly } = require("./init");
+const { app, DB, requireLogin, port, adminOnly, mail } = require("./init");
 const serve = require("./servePage");
 
 app.get("/api/users", adminOnly, DB.user.getAll);
@@ -10,9 +10,11 @@ app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);
 app.put("/api/users/theme", requireLogin, DB.user.update);
 
+app.get("/test/email", adminOnly, mail.confirm.test);
+
 //put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
 app.get("/null", (req, res) => { res.redirect(404, "/"); });
-app.get(/^(?!\/(?:api|null))/, serve);
+app.get(/^(?!\/(?:api|null|test))/, serve);
 //app.get(/\/(?:nothing)/, requireLogin, serve);
 //app.get(/\/(?:nothing)/, adminOnly, serve);
 
