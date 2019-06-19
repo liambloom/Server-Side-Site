@@ -5,3 +5,5 @@ MontyHallProblem.js
 /svg
 /node_modules
 js/randomKey.js
+views/sentEmail.html
+RandomNotes.txt
