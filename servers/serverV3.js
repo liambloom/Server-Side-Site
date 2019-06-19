@@ -8,7 +8,7 @@ app.get("/api/json/themes.json", serve.themes);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);
-app.put("/api/users/theme", requireLogin, DB.user.update);
+app.put("/api/users", requireLogin, DB.user.update);
 
 app.get("/test/email", adminOnly, mail.confirm.test);
 

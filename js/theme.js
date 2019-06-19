@@ -282,7 +282,7 @@ window.theme = {
 				root.style.setProperty("--txt", themes[name].offBlack);
 			}
       //localStorage.setItem("color", name);
-      fetch("/api/users/theme", {
+      fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
           category: "color",
