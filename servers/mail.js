@@ -51,49 +51,6 @@ const confirm = (res, email, username, theme, code, site) => {
       });
   });
 };
-confirm.test = (req, res) => {
-  fs.readFile("./json/themes.json", (err, data) => {
-    if (err) res.status(500).end(err);
-    else {
-      //newUser(req, res, id, username, password, null, color, light);
-      fs.readFile("./json/themes.json", (err, data) => {
-        if (err) res.status(500).end(err);
-        else {
-          //console.log(JSON.parse(data));
-          //console.log(req.user.color);
-          const theme = JSON.parse(data)[req.user.color];
-          const newTheme = {
-            light: theme.gradientLight,
-            dark: theme.gradientDark,
-            headTxt: theme.headTextColor
-          };
-          if (req.user.light === "dark") {
-            newTheme.bg = theme.offBlack;
-            newTheme.txt = theme.headTextColor;
-          }
-          else {
-            newTheme.bg = theme.offWhite;
-            newTheme.txt = theme.offBlack;
-          }
-          //console.log(`${path(req).protocol}//${path(req).host}`);
-          res.render("./confirmEmail", {
-            ...newTheme,
-            username: req.user.username,
-            code: uuid(),
-            site: `${path(req).protocol}//${path(req).host}`
-          }, (err, html) => {
-            if (err) {
-              console.error(err);
-              res.status(500).end(err);
-            }
-            else {
-              res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
-              res.write(html);
-              res.end();
-            }
-          });
-        }
-      });
     }
   });
 };

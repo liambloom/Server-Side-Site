@@ -10,8 +10,6 @@ app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);
 app.put("/api/users", requireLogin, DB.user.update);
 
-app.get("/test/email", adminOnly, mail.confirm.test);
-
 //put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
 app.get("/null", (req, res) => { res.redirect(404, "/"); });
 app.get(/^(?!\/(?:api|null|test))/, serve);
