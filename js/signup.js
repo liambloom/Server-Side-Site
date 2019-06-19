@@ -79,7 +79,7 @@ let login = (username, password, email) => {
         else document.getElementById("button").parentNode.setAttribute("data-err", "Something went wrong. Error code " + res.status);
       })
       .then(wait => {
-        console.log(wait);
+        //console.log(wait);
         if (wait) {
           document.getElementById("content").innerHTML = "Waiting for email conformation...";
           const css = document.createElement("link");
