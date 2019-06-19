@@ -18,5 +18,6 @@ app.get(/^(?!\/(?:api|null|test))/, serve);
 
 app.listen(port, () => { 
   DB.createTable();
+  icons();
   console.log(`[Server] [${new Date().toString()}]: Server running on port ${port}.`);
 });
