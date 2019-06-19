@@ -1,5 +1,6 @@
 //jshint esversion:9
-const { bcrypt, uuid, pool, path, mail, fs } = require("./initPool");
+const { mail, initPool } = require("./mail");
+const { bcrypt, uuid, pool, path, /*mail, */fs } = initPool;//require("./initPool");
 
 const createTable = (req, res) => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -129,7 +130,8 @@ const create = (req, res) => {
               const newTheme = {
                 light: theme.gradientLight,
                 dark: theme.gradientDark,
-                headTxt: theme.headTextColor
+                headTxt: theme.headTextColor,
+                color: color
               };
               if (light === "dark") {
                 newTheme.bg = theme.offBlack;
@@ -161,23 +163,9 @@ const update = (req, res) => {
     else res.status(204).end();
   });
 }; 
-/*const update = (req, res) => {
-  const id = req.user.id;
-  try {
-    for (let i of req.body) {
-      const { category, value } = i;
-      if (/id|username|password|since/.test(category) || (category === "type" && req.user.type !== "ADMIN")) throw "Your request was marked as suspicious."; // This request is suspicious, do not continue
-
-      pool.query(`UPDATE users SET ${category} = $1 WHERE id = $4`, [value, id], (err, data) => {
-        if (err) throw err;
-      });
-    }
-    res.status(204).end();
-  }
-  catch (err) {
-    res.status(500).send(err);
-  }
-};*/
+update.fromEmailConfirm = (req, res) => {
+  // almost done!!!
+};
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
 

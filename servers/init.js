@@ -5,14 +5,15 @@ const url = require("url");
 const fs = require("fs");
 const mime = require("mime-types");
 const session = require("client-sessions");
-const mail = require("./mail");
+const { mail } = require("./mail");
+const icons = require("./makeIcons");
 //const shortHash = require("short-hash");
 const DB = require("./queries");
 //const mail = require("./mail");
 
 const app = express();
-const port = process.env.PORT || 8080;
 const testing = os.hostname().includes("DESKTOP");
+const port = process.env.PORT || process.env.EMAIL_PASS ? 8090 : 8080;
 const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
 const redirect401 = (req, res) => {
   res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "401 Unauthorized", msg: `Please <a href="/login?u=${req.originalUrl}">log in</a> or <a href="/signup?u=${req.originalUrl}">sign up</a> to view this content` }, (err, html) => {
@@ -50,6 +51,14 @@ const adminOnly = (req, res, next) => {
     });
   }
   else next();
+};
+const testingOnly = (req, res, next) => {
+  if (testing) next();
+  else {
+    res.writeHead(404, { "Content-Type": "text/html" });
+    res.write(`The page ${path(req).href} could not be found<br>${err}`);
+    res.end();
+  }
 };
 
 
@@ -97,10 +106,12 @@ module.exports = {
   testing,
   requireLogin,
   adminOnly,
+  testingOnly,
   DB,
   filetype,
   fs,
   mime,
   url,
-  mail
+  mail,
+  icons
 };

@@ -1,9 +1,10 @@
 //jshint esversion:9
-const { app, DB, requireLogin, port, adminOnly, mail } = require("./init");
+const { app, DB, requireLogin, port, adminOnly, testingOnly, mail, icons } = require("./init");
 const serve = require("./servePage");
 
 app.get("/api/users", adminOnly, DB.user.getAll);
 app.get("/api/logout", DB.user.logout);
+app.get("/api/confirm-email/:addId", DB.user.update.fromEmailConfirm);
 app.get("/api/json/themes.json", serve.themes);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
