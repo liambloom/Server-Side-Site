@@ -58,7 +58,7 @@ let login = (username, password, email) => {
     modal.open("#loadingModal");
     document.getElementById("loadingContainer").style.setProperty("display", "initial");
     window.activateLoading();
-    console.log(username);
+    //console.log(username);
     fetch("/api/users/create", {
       method: "POST",
       body: JSON.stringify({
@@ -81,13 +81,21 @@ let login = (username, password, email) => {
       .then(wait => {
         //console.log(wait);
         if (wait) {
-          document.getElementById("content").innerHTML = "Waiting for email conformation...";
+          document.getElementById("content").innerHTML = "Waiting for email conformation, please check your email";
           const css = document.createElement("link");
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
           setInterval(() => {
-            //fetch("")
+            console.log("this ran");
+            fetch("/api/users/hasEmail", {
+              method: "GET"
+            })
+              .then(res => {
+                console.log(res.status);
+                if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
+                else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
+              });
           }, 1000);
         }
       })

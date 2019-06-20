@@ -54,7 +54,7 @@ const login = (req, res, userid) => {
 };
 const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"/*d.toISOString().split("T")[0]*/], (err, data) => {
-    if (err) res.status(500).send(err);
+    if (err) res.status(500).send(err).end();
     else {
       //req.session.user = id;
       login(req, res, id)
@@ -66,7 +66,7 @@ const newUser = (req, res, id, username, password, email, color, light) => {
 };
 const getAll = (req, res) => {
   pool.query("SELECT * FROM users", (err, data) => {
-    if (err) res.status(500).send(err);
+    if (err) res.status(500).send(err).end();
     else res.status(200).json(data.rows);
   });
 };
@@ -90,12 +90,12 @@ const confirm = (req, res) => {
 
   pool.query("SELECT id, password FROM users WHERE username=$1", [username], (error, data) => {
     if (error) {
-      return res.status(500).send(error);
+      return res.status(500).send(error).end();
     }
     if (data.rows.length > 0) {
       const user = data.rows[0];
       bcrypt.compare(password, user.password, (err, result) => {
-        if (err) res.status(500).send(err);
+        if (err) res.status(500).send(err).end();
         if (result) {
           //req.session.user = user.id;
           login(req, res, user.id)
@@ -112,10 +112,10 @@ const confirm = (req, res) => {
 const create = (req, res) => {
   const { username, password, email, color, light } = req.body;
   bcrypt.hash(password, 10, (e, hash) => {
-    if (e) res.status(500).send(e);
+    if (e) res.status(500).send(e).end();
     const id = uuid();
     pool.query("SELECT id FROM users WHERE username = $1", [username], (error, user) => {
-      if (error) res.status(500).send(error);
+      if (error) res.status(500).send(error).end();
       else if (user.rows[0]) res.status(409).end();
       else {
         if (!email) newUser(req, res, id, username, hash, email, color, light);
@@ -152,25 +152,62 @@ const create = (req, res) => {
 const update = (req, res) => {
   const id = req.user.id;
   const { category, value } = req.body;
-  if (/id|username|password|since/.test(category)) res.status(403).send("These categories cannot be updated");
-  if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action");
+  if (/id|username|password|since/.test(category)) res.status(400).send("These categories cannot be updated").end();
+  if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
 
   pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [value, id], (err, data) => {
     if (err) {
-      res.status(500).send(err);
+      res.status(500).send(err).end();
       console.error(err);
     }
     else res.status(204).end();
   });
 }; 
 update.fromEmailConfirm = (req, res) => {
-  // almost done!!!
+  const id = req.params.addId;
+  pool.query("UPDATE users SET email = (SELECT email FROM confirm WHERE code = $1) WHERE id = (SELECT userid FROM confirm WHERE code = $1)", [id], (err, data) => {
+    //console.log(data);
+    if (err) {
+      console.log("500 error updating user");
+      res.status(500).end();
+      console.error(err);
+    }
+    else if (data.rowCount >= 1) {
+      pool.query("DELETE FROM confirm WHERE code = $1 RETURNING userid", [id], (error, data) => {
+        if (error || data.rows[0] ? !data.rows[0].userid : true) {
+          res.status(500).end();
+          console.error(err);
+        }
+        else {
+          login(req, res, data.rows[0].userid)
+            .then(() => { res.redirect(303, "/"); })
+            .catch(err => { 
+              console.error(err); 
+              res.status(500).send(err).end(); 
+            });
+        }
+      });
+    }
+    else { res.status(404).end(); console.log("no such user"); }
+  });
+};
+hasEmail = (req, res) => {
+  //console.log("checked email");
+  const id = req.user.id;
+  pool.query("SELECT email FROM users WHERE id = $1", [id], (err, data) => {
+    if (err) {
+      res.status(500).end();
+      console.error(err);
+    }
+    else if (data.rows[0] ? data.rows[0].email : false) res.status(204).end();
+    else res.status(404).end();
+  });
 };
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
 
   pool.query("DELETE FROM users WHERE id = $1", [id], (err, data) => {
-    if (err) res.status(500).send(err);
+    if (err) res.status(500).send(err).end();
     else res.status(204).end();
   });
 };
@@ -183,7 +220,7 @@ const add = (req, res) => {
   //const d = new Date();
 
   pool.query("INSERT INTO sugestions (content, type, by, when) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"/*d.toISOString().replace(/[a-z]$/i, "")*/], (err, data) => {
-    if (err) res.status(500).send(err);
+    if (err) res.status(500).send(err).end();
     else res.status(201).end();
   });
 };
@@ -212,7 +249,8 @@ module.exports = {
     create,
     update,
     //remove,
-    logout
+    logout,
+    hasEmail
   },
   sugestions: {
     add
