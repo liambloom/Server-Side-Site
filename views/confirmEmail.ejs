@@ -54,11 +54,11 @@
       <a id="logo" href="<%- `${site}` %>">
         <img src="<%- `${site}/img/favicon/colors/${color}.png` %>">
       </a><!--
-  --><span><%- site.split("://")[1].split(".")[0] %></span>
+  --><span><%- site.split("://")[1].split(".")[0].replace(/^(.)/, c => c.toUpperCase()) %></span>
     </header>
     <div id="content">
       Hello <%= username %>,<br>
-      <span class="notPurple">This is to confirm your email for the new account you just created at <%= site %>. If you did not just sign up for such an account, ignore this. If you did, click <a href="<%- `${site}/api/confirm-email/${code}` %>">here</a> to confirm your email.</span>
+      <span class="notPurple">This is to confirm your email for the new account you just created at <%= site.split("://")[1] %>. If you did not just sign up for such an account, ignore this. If you did, click <a href="<%- `${site}/api/confirm-email/${code}` %>">here</a> to confirm your email.</span>
     </div>
   </div>
 </body>
