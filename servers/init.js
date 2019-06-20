@@ -85,10 +85,6 @@ app.use((req, res, next) => {
           if (data) {
             req.user = data;
             req.session.user = req.session.user;
-            req.themeCookie.theme = {
-              color: data.theme,
-              mode: data.light
-            };
             res.locals.user = data;
           }
           next();
