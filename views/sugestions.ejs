@@ -7,7 +7,7 @@
 	<script src="/js/post.js"></script>
 </head>
 	<%- include("header", {title: "Suggestions", choice: true}) %>
-  <modal id="confirm" data-escape="yn" data-confirm="post('#sugestion', 'sugestion');">
+  <modal id="confirm" data-escape="yn" data-confirm="post();">
     Are you sure you want to submit this?
   </modal>
   <div id="content" class="center">
@@ -39,7 +39,9 @@
           </span>
         </div>
       </div>
-      <input id="submit" type="button" value="Submit" onclick="window.modal.open('#confirm')">
+      <div>
+        <input id="submit" type="button" value="Submit">
+      </div>
     </div>
     <div id="loadingContainer" style="display: none;">
       <%- include("loading.html") %>

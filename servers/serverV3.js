@@ -7,6 +7,7 @@ app.get("/api/logout", DB.user.logout);
 app.get("/api/confirm-email/:addId", DB.user.update.fromEmailConfirm);
 app.get("/api/json/themes.json", serve.themes);
 app.get("/api/users/hasEmail", requireLogin, DB.user.hasEmail);
+//app.get("/api/sugestions", adminOnly, DB.sugestions.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);

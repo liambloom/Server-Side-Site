@@ -1,15 +1,24 @@
 //jshint esversion:6
-const post = (elem, page) => {
+let onload = () => {
+  document.getElementById("submit").addEventListener("click", () => {
+    if (document.querySelector("#tags .active")) {
+      document.getElementById("submit").error.clear();
+      window.modal.open('#confirm');
+    }
+    else document.getElementById("submit").error = "Select a type (push a button)";
+  });
+};
+// onclick="window.modal.open('#confirm')"
+const post = () => {
   document.getElementById("main").style.setProperty("display", "none");
   document.getElementById("loadingContainer").style.setProperty("display", "initial");
+  document.getElementById("submit").error.clear();
   window.activateLoading();
-  fetch("/api/" + page, {
+  fetch("/api/sugestion", {
     method: "POST",
     body: JSON.stringify({
-      data: document.querySelector(elem).value.toString(),
-      timestamp: new Date(),
-      theme: window.themes[window.theme.color],
-      color: window.theme.color
+      content: document.getElementById("sugestion").value.toString(),
+      type: document.querySelector("#tags .active").id.replace(/^(.)/, c => c.toUpperCase())
     }),
     headers: {
       "Content-Type": "application/json; charset=utf-8"
@@ -27,3 +36,5 @@ const post = (elem, page) => {
       }
     });
 };
+if (document.readyState === "complete") onload();
+else window.addEventListener("load", onload);

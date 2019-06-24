@@ -219,10 +219,16 @@ const add = (req, res) => {
   const { content, type } = req.body;
   //const d = new Date();
 
-  pool.query("INSERT INTO sugestions (content, type, by, when) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"/*d.toISOString().replace(/[a-z]$/i, "")*/], (err, data) => {
-    if (err) res.status(500).send(err).end();
+  pool.query("INSERT INTO sugestions (content, type, by, created) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"/*d.toISOString().replace(/[a-z]$/i, "")*/], (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send(err).end();
+    }
     else res.status(201).end();
   });
+};
+const getSugestions = (req, res) => {
+
 };
 const getSession = (sessionId, callback) => {
   pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {
@@ -253,7 +259,8 @@ module.exports = {
     hasEmail
   },
   sugestions: {
-    add
+    add,
+    get: getSugestions
   },
   session: {
     get: getSession
