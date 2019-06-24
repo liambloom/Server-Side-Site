@@ -1,13 +1,11 @@
 :root {
-	--size: -111.2px;
-	--angle: 130deg;
-	--light: #0077aa;
-	--dark: #00242b;
-	--headTxt: #0060ce;
-	--bg: #001215;
-	--path: path("");
-	--txt: ;
-	--hidePath: path("M20,10 h225 l7,-10 l7,10 h30 a10,10 0 0 1 10,10 v0 a10,10 0 0 1 -10,10 h-278 a10,10 0 0 1 -10,-10 v0 a10,10 0 0 1 10,-10 z");
+  --size: -121px;
+  --angle: 0.15921773400349035rad;
+  --light: #0077aa; 
+  --dark: #00242b; 
+  --headTxt: #0093d9; 
+  --bg: #ddeeff; 
+  --txt: #001215;
 }
 body {
 	margin: 0px;

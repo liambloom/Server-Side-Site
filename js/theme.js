@@ -54,21 +54,6 @@ window.onload = () => {
     //.catch(err => );
 
   try {
-    path = `
-      M20,10 
-      h225 
-      l7,-10 
-      l7,10 
-      h30 
-      a10,10 0 0 1 10,10 
-      v${Math.floor(window.innerHeight * 0.9) - 31} 
-      a10,10 0 0 1 -10,10 
-      h-278 
-      a10,10 0 0 1 -10,-10 
-      v-${Math.floor(window.innerHeight * 0.9) - 31} 
-      a10,10 0 0 1 10,-10 
-      z`;
-    root.style.setProperty("--path", `path("${path.replace(/\n\s+/g, "")}")`);
     document.getElementById("settings").onclick = () => {
       if (document.getElementById("settings").className === "") {
         document.getElementById("settings").className = "spin";
