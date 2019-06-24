@@ -23,9 +23,28 @@ window.onresize = () => {
     document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
-  let newStyle = document.createElement("style");
-  document.head.appendChild(newStyle);
-  window.arrowFix = newStyle.sheet;
+
+// Old
+window.errMsg = (e, msg) => {
+  if (msg) {
+    e.parentNode.setAttribute("data-err", msg);
+    e.setCustomValidity(msg);
+  }
+  else {
+    e.parentNode.removeAttribute("data-err");
+    e.setCustomValidity("");
+  }
+};
+// New
+Object.defineProperty(Element.prototype, "error", {
+  get: function () { return this; },
+  set: function (msg) { errMsg(this, msg); }
+});
+Element.prototype.error.clear = function() { errMsg(this); };
+
+let newStyle = document.createElement("style");
+document.head.appendChild(newStyle);
+window.arrowFix = newStyle.sheet;
 window.onload = () => {
   window.onresize();
   //if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
@@ -330,7 +349,7 @@ window.theme = {
 				}
 			}
       //localStorage.setItem("mode", name);
-      fetch("/api/users/theme", {
+      fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
           category: "light",

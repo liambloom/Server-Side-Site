@@ -12,16 +12,6 @@ var themeFunc = () => {
   boxColor();
   eyeColor();
 };
-var errMsg = (e, msg) => {
-  if (msg) {
-    e.parentNode.setAttribute("data-err", msg);
-    e.setCustomValidity(msg);
-  }
-  else {
-    e.parentNode.removeAttribute("data-err");
-    e.setCustomValidity("");
-  }
-};
 var checkConsecutive = (strings) => {
   if (!strings) return false;
   let c = 0;
@@ -105,6 +95,6 @@ let load = () => {
 };
 
 if (document.readyState === "complete") load();
-else window.addEventListener("load", load)
+else window.addEventListener("load", load);
 if (window.themeReady) themeFunc();
 else window.addEventListener("themeReady", themeFunc);
