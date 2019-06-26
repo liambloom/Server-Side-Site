@@ -53,9 +53,11 @@ header nav ul li ul {
 	opacity: 0;
   position: absolute;
   height: 0px;
+  max-height: calc(100vh + (var(--size) - 46.4px));
   z-index: 6; /* why wont this work!? */
   overflow: auto;
   transform: translate(0px, 0px);
+  overflow: auto;
 }
 header nav ul li:hover ul {
   height: max-content;
