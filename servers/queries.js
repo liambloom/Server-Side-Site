@@ -212,7 +212,21 @@ const add = (req, res) => {
     .catch(handle);
 };
 const getSugestions = (req, res) => {
-
+  pool.query("SELECT * FROM sugestions")
+    .then(data => {
+      if (data.rowCount) {
+        res.render("./api-sugestions", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+          if (err) handle(err);
+          else {
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(html);
+            res.end();
+          }
+        });
+      }
+      else throw "No Sugestions";
+    })
+    .catch(handle);
 };
 const getSession = (sessionId, callback) => {
   pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {

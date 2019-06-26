@@ -127,6 +127,13 @@ header h1 {
 .topFixed {
 	grid-area: main;
 }
+table {
+  border-collapse: collapse;
+}
+td, th {
+  border: 2px solid var(--txt);
+  padding: 10px;
+}
 input, button:not(.tab), select, .button {
 	text-align: center;
 	border-radius: calc(1.15em + 2px);
@@ -252,6 +259,7 @@ textarea.wide {
   border-radius: 5px;
   padding: 10px;
   font-size: 20px;
+  white-space: nowrap;
 }
 .circle {
   display: inline-block;

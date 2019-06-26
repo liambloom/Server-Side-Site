@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false})%>
+  <title>Sugestions</title>
+  <link rel="stylesheet" href="/css/sugestionsTable.css">
+</head>
+<body>
+  <%- include("header", {title: "Sugestions", choice: true}) %>
+  <div id="content">
+  <% data = JSON.parse(data) %>
+    <table>
+      <colgroup>
+        <col id="sugestionColumn">
+        <col id="otherColumns" span="3">
+      </colgroup>
+      <tr>
+        <th>Sugestion</th>
+        <th>Type</th>
+        <th>Author</th>
+        <th>Date</th>
+      </tr>
+      <% for (let i in data) { %>
+        <tr>
+          <td><%= data[i].content %></td>
+          <td>
+            <% switch (data[i].type) {
+              case "Sugestion": %>
+                <div class="tag blue">
+                  <span>
+                    <div class="circle high"><span>&ldquo;&rdquo;</span></div>
+                    Sugestion
+                  </span>
+                </div>
+                <% break; %>
+              <% case "Issue": %>
+                <div class="tag red">
+                  <span>
+                    <div class="circle middle"><span>!</span></div>
+                    Issue
+                  </span>
+                </div>
+                <% break; %>
+              <% case "Question": %>
+                <div class="tag purple">
+                  <span>
+                    <div class="circle middle"><span>?</span></div>
+                    Question
+                  </span>
+                </div>
+                <% break; %>
+              <% case "Other": %>
+                <div id="other" class="tag green button-3d">
+                  <span>
+                    <div class="circle low"><span>&hellip;</span></div>
+                    Other
+                  </span>
+                </div>
+                <% break; %>
+              <% default: %>
+                Error
+            <% } %>
+          </td>
+          <td><%= data[i].by %></td>
+          <td><%= new Date(data[i].created).toLocaleDateString("en-US")//.toString().replace(/^\w+\s/, "").replace(/\d*:.*/, "")/*.replace(/\s\(.*\)/, "")*/ %></td>
+        </tr>
+      <% } %>
+    </table>
+  </div>
+</body>
+</html>

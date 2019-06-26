@@ -1,0 +1,9 @@
+.tag {
+  width: calc(100% - 20px);
+}
+table {
+  width: 100%;
+}
+#sugestionColumn {
+  width: 100%;
+}
