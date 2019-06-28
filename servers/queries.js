@@ -39,14 +39,16 @@ const createTable = () => {
   `);
 };
 const login = (req, res, userid) => {
-  return Promise.resolve()
-    .then(() => {
-      const id = uuid();
-      pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid])
-        .then(data => {
-          req.session.user = id;
-        });
-    });
+  //returnValue = 
+  return new Promise((resolve, reject) => {
+    const id = uuid();
+    pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid])
+      .then(() => {
+        req.session.user = id;
+      })
+      .then(resolve)
+      .catch(reject);
+  });;
 };
 const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
