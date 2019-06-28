@@ -60,8 +60,24 @@ const newUser = (req, res, id, username, password, email, color, light) => {
 const getAll = (req, res) => {
   pool.query("SELECT * FROM users")
     .then(data => {
-      if (err) res.status(500).send(err).end();
-      else res.status(200).json(data.rows);
+      for (let row of data.rows) {
+        delete row.id;
+        delete row.password;
+      }
+      return data;
+    })
+    .then(data => {
+      if (data.rowCount) {
+        res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+          if (err) handle(err);
+          else {
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(html);
+            res.end();
+          }
+        });
+      }
+      else throw "No Sugestions";
     })
     .catch(handle);
 };
@@ -85,10 +101,10 @@ const confirm = (req, res) => {
       if (data.rows.length > 0) {
         const user = data.rows[0];
         bcrypt.compare(password, user.password)
-          .then(result => {
+          .then(async(result) => {
             if (result) {
               login(req, res, user.id)
-                .then(() => { res.status(204).end(); })
+                .then(() => { res.status(204).end(); console.log("logged in"); })
                 .catch(handle);
             }
             else res.status(403).end();
@@ -188,6 +204,9 @@ hasEmail = (req, res) => {
     })
     .catch(handle);
 };
+const removeEmail = (req, res) => {
+
+};
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
 
@@ -215,7 +234,7 @@ const getSugestions = (req, res) => {
   pool.query("SELECT * FROM sugestions")
     .then(data => {
       if (data.rowCount) {
-        res.render("./api-sugestions", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+        res.render("./admin/sugestions", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
           if (err) handle(err);
           else {
             res.writeHead(200, { "Content-Type": "text/html" });
@@ -252,6 +271,7 @@ module.exports = {
     confirm,
     create,
     update,
+    removeEmail,
     //remove,
     logout,
     hasEmail

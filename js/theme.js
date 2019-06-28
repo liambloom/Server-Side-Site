@@ -130,7 +130,6 @@ window.onload = () => {
       document.querySelector("#visibility .arrowBox").innerHTML = "Collapse Menu";
       document.getElementsByTagName("header")[0].style.display = "grid";
       document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-      document.getElementById("g10-user").style.setProperty("fill", "#000000"); 
       try {
         document.getElementById("path2Settings").style.setProperty("fill", "#000000");
       }
@@ -144,7 +143,6 @@ window.onload = () => {
       document.getElementsByTagName("header")[0].style.display = "none";
       if (theme.mode === "dark") {
         document.getElementById("path2Arrow").style.setProperty("fill", "#ffffff");
-        document.getElementById("g10-user").style.setProperty("fill", "#ffffff");
         try {
           document.getElementById("path2Settings").style.setProperty("fill", "#ffffff");
         }
@@ -407,15 +405,20 @@ var closeMenu = () => {
   /*document.getElementById("choose").classList.add("shrink");
   document.getElementById("choose").classList.remove("grow");*/
   document.getElementById("choose").classList.replace("grow", "shrink");
+  document.getElementById("settings").className = "";
   setTimeout(() => {
     document.getElementById("arrow").classList.add("gone");
   }, 300);
-	setTimeout(() => {
-    document.getElementById("settings").className = "";
-  }, 400);
   setTimeout(() => {
     document.getElementById("chooseTooltip").classList.remove("noTooltip");
   }, 500);
+};
+window.deleteEmail = () => {
+  modal.open("#loadingModal");
+  fetch("/api/email", {
+    method: "DELETE"
+  })
+    .then();
 };
 window.switchTab = (e, name, big) => {
   document.querySelector(".inner:not(.hidden)").classList.add("hidden");

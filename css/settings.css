@@ -22,6 +22,7 @@
   display: initial !important;
 }
 #choose.shrink {
+  height: 0px;
   bottom: calc(100vh - (1.15em + 38px));
 }
 #choose:not(.shrink) {
@@ -45,7 +46,8 @@
   border-radius: 10px;
 }
 #choose a {
-  color: var(--headTxt);
+  color: var(--txt);
+  border-color: var(--txt);
 }
 #choose .inner .button, #choose .inner button {
   width: 100px;
@@ -57,17 +59,28 @@
 #choose table, tr {
   width: 100%;
 }
+#choose tr:not(:last-child) {
+  border-bottom: 1px solid var(--txt)
+}
+#choose td, #choose th {
+  border: none;
+}
 #choose td {
   white-space: nowrap;
+  padding: 2px 10px;
 }
-#choose td a.button {
-  float: right;
+#choose td:first-child {
+  font-weight: bold;
+}
+#choose td:last-child {
+  width: 100%;
+  text-align: right;
 }
 #choose th {
-  columns: 2;
+  columns: 3;
   text-align: left;
   font-size: 1.15em;
-  text-decoration: underline;
+  padding: 10px;
   padding-top: 5px;
 }
 #arrow {
@@ -85,9 +98,10 @@
   border-bottom-color: var(--dark);
 }
 #tabs {
-  /*border-bottom: 1px solid var(--headTxt);*/
-  background-color: var(--color);
   height: 44px;
+  border-width: 0px 8px 0px 8px;
+  border-style: solid;
+  border-color: var(--dark);
 }
 .tab {
   color: var(--headTxt);
@@ -97,10 +111,18 @@
   outline: none;
   cursor: pointer;
   padding: 14px 16px 13px 16px;
-  transition: 300ms;
+  transition: 350ms;
   height: 44px;
+  border-top: 7px solid var(--dark);
 }
-.tab::after {
+/*#colorTab {
+  border-left: 1px solid var(--bg);
+}
+/*#accountTab {
+  
+  border-right: 1px solid var(--bg);
+}*/
+/*.tab::after {
   content: "\200B";
   transition-property: height, bottom;
   transition-duration: 400ms;
@@ -113,17 +135,25 @@
   bottom: -14px;
   width: calc(100% + 32px);
   height: 0px;
-}
+}*/
 .tab:hover {
-  background-color: #00000028;
+  background-color: #00000038;
+  /*border-top-color: var(--dark);*/
 }
 .tab.active {
-  background-color: #0000005d;
+  padding: 10px 16px 10px 16px;
+  /*height: 51px;*/
+  background-color: var(--bg)/*#0000005d*/;
+  border-top-color: var(--dark);
 }
-.tab.active::after {
+.tab:not(.active) {
+  border-width: 0px;
+  /*border-radius: 10px 10px 0px 0px;*/
+}
+/*.tab.active::after {
   height: 5px;
   bottom: -9px;
-}
+}*/
 #credits {
 	font-size: 10px;
 	color: #0000007f;

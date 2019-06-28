@@ -35,8 +35,8 @@ const requireLogin = (req, res, next) => {//To use this: app.get("/somewhere", r
   else next();
 };
 const adminOnly = (req, res, next) => {
-  if (!req.user) redirect401(req, res);
-  else if (req.user.type !== "ADMIN") {
+  /*if (!req.user) redirect401(req, res);
+  else */if (req.user ? req.user.type !== "ADMIN" : true) {
     res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "403 Forbiden", msg: "This is admin only content" }, (err, html) => {
       if (html) {
         res.writeHead(403, { "Content-Type": "text/html" });

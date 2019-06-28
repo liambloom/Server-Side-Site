@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-	<%- include("head", { beta: true, modal: false}) %>
+	<%- include("head", { beta: true}) %>
 </head>
 
 <body lang="en">
@@ -21,8 +21,8 @@
   <div id="arrow" class="gone"></div>
   <div id="choose" class="arrowBox required up shrink">
     <div id="tabs">
-      <button class="tab active" onclick="window.switchTab(event, 'color')">Color</button>
-      <button class="tab" onclick="window.switchTab(event, 'user', true)">Account</button>
+      <button class="tab active" onclick="window.switchTab(event, 'color')" id="colorTab">Color</button>
+      <button class="tab" onclick="window.switchTab(event, 'user', true)" id="accountTab">Account</button>
       <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
     </div>
     <div id="color" class="inner">
@@ -47,20 +47,39 @@
     <div id="user" class="inner hidden">
       <% if (user) { %>
         <input type="hidden" id="loggedIn">
+        Welcome, <b><%= user.username %></b>
+        <a class="button float-right" href="/api/logout?u=<%= here %>">Log out</a>
         <table>
-          <tr>
-            <td>Welcome, <b><%= user.username %></b></td>
-            <td><a class="button" href="/api/logout?u=<%= here %>">Log out</a></td>
-          </tr>
           <tr>
             <th>Info</th>
           </tr>
           <tr>
-            <td><b>Email: </b><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
+            <td>Username:</td>
+            <td><%= user.username %></td>
             <td>
-            <!--Because these are float: right; they apear in the oposite order from what they are writed in-->
-              <a class="button" href="/delete?c=email&u=<%= here %>">Remove</a>
-              <a class="button" href="/update?c=email&u=<%= here %>">Update</a>
+              <a class="button" href="/update?c=username&u=<%= here %>">Update</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <% if (user.email) { %>
+              <td><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
+              <td>
+                <a class="button" href="/update?c=email&u=<%= here %>">Update</a>
+                <a class="button" onclick="modal.open('#emailDeletionWarning');">Remove</a>
+              </td>
+            <% } else { %>
+              <td>none</td>
+              <td>
+                <a class="button" href="/update?c=email&u=<%= here %>">Add</a>
+              </td>
+            <% } %>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</td>
+            <td>
+              <a class="button" href="/update?c=password&u=<%= here %>">Update</a>
             </td>
           </tr>
         </table>
@@ -71,7 +90,7 @@
     <div id="credits" class="inner hidden">
       <a href="https://visualpharm.com/free-icons/settings-595b40b85ba036ed117daa44">Settings icon</a> by <a href="https://icons8.com/">icons8</a> &#64; <a href="https://visualpharm.com/">visualpharm.com</a><br>
       <a href="https://www.flaticon.com/free-icon/sun_25290#term=sun&page=1&position=24">Sun icon</a> by <a href="https://www.flaticon.com/authors/dave-gandy">Dave Gandy</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
-      Icons licenced under <a href="https://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a><br>
+      Icons licenced under <a href="https://creativecommons.org/licenses/by/3.0/">CC BY 3.0</a><br>
       <br>
       <a href="https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92">Switch icon</a> by <a href="https://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
       <a href="https://www.flaticon.com/free-icon/arrow-point-to-right_32213">Arrow icon</a> by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
@@ -141,6 +160,17 @@
     <button id="yesCookie">I accept cookies!</button>
     <button id="noCookie">No cookies for me.</button>
   </footer>
+  <modal id="emailDeletionWarning" data-escape="yn" data-confirm="deleteEmail()">
+    Warning! Deleting your email will make it imposable to recover your password if you forget it. Are you sure you want to delete it?
+  </modal>
+  <modal id="loadingModal">
+    <div id="loadingContainer" style="display: none;">
+      <%- include("loading.html") %>
+    </div>
+  </modal>
+  <modal id="emailDeleted" data-escape="ok">
+    Your email has been deleted
+  </modal>
 	<div id="content">
 	<p>Some Text</p>
 	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>

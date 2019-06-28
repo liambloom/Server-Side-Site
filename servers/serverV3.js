@@ -2,18 +2,19 @@
 const { app, DB, requireLogin, port, adminOnly, testingOnly, mail, icons } = require("./init");
 const serve = require("./servePage");
 
-app.get("/api/users", adminOnly, DB.user.getAll);
 app.get("/api/logout", DB.user.logout);
 app.get("/api/confirm-email/:addId", DB.user.update.fromEmailConfirm);
 app.get("/api/json/themes.json", serve.themes);
 app.get("/api/users/hasEmail", requireLogin, DB.user.hasEmail);
-app.get("/api/sugestions", adminOnly, DB.sugestions.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);
 app.put("/api/users", requireLogin, DB.user.update);
+app.delete("/api/email", requireLogin, DB.user.removeEmail);
 
-//put in the first, everything that needs permisions. The second ones that only need to be logged in, and the third admin only pages
+app.get("/admin/users", adminOnly, DB.user.getAll);
+app.get("/admin/sugestions", adminOnly, DB.sugestions.get);
+
 app.get("/null", (req, res) => { res.redirect(404, "/"); });
 app.get(/^(?!\/(?:api|null|test))/, serve);
 //app.get(/\/(?:nothing)/, requireLogin, serve);
