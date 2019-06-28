@@ -1,0 +1,9 @@
+table {
+  width: 100%;
+}
+.censored::after {
+  content: attr(data-filler);
+}
+:active > .censored::after {
+  content: attr(data-content);
+}

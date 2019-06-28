@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("../head", {beta: false, modal: false})%>
+  <title>Sugestions</title>
+  <link rel="stylesheet" href="/css/usersTable.css">
+</head>
+<body>
+  <%- include("../header", {title: "Sugestions", choice: true}) %>
+  <div id="content">
+  <% data = JSON.parse(data) %>
+    <table>
+      <colgroup>
+        <col id="sugestionColumn">
+        <col id="otherColumns" span="3">
+      </colgroup>
+      <tr>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Theme</th>
+        <th>Type</th>
+        <th>Since</th>
+      </tr>
+      <% for (let i in data) { %>
+        <tr>
+          <% console.log(data[i]) %>
+          <td><%= data[i].username %></td>
+          <td>
+            <% let email = data[i].email %>
+            <%= email.slice(0, 5) %><span class="censored" data-filler="<%= email.split('@')[0].slice(5).replace(/./g, '*') %>" data-content="<%= email.split('@')[0].slice(5) %>"></span><%= email.split("@")[1] %>
+          </td>
+          <td><%= data[i].light + " " + data[i].color %></td>
+          <td><%= data[i].type %></td>
+          <td><%= new Date(data[i].since).toLocaleDateString("en-US")//.toString().replace(/^\w+\s/, "").replace(/\d*:.*/, "")/*.replace(/\s\(.*\)/, "")*/ %></td>
+        </tr>
+      <% } %>
+    </table>
+  </div>
+</body>
+</html>
