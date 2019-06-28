@@ -42,6 +42,28 @@ Object.defineProperty(Element.prototype, "error", {
 });
 Element.prototype.error.clear = function() { errMsg(this); };
 
+document.querySelectorAll("*").forEach(e => {
+  e.addEventListener("keyup", event => {
+    if (event.keyCode === 13) {
+      event.target.dispatchEvent(new Event("enter"));
+    }
+  });
+});
+Object.defineProperty(Element.prototype, "onenter", {
+  get: function() { return null; },
+  set: function(callback) {
+    if (typeof callback === "function") {
+      Object.defineProperty(this, "onenter", {
+        get: function() { return callback; }
+      });
+      this.addEventListener("enter", event => {
+        if (typeof this.onenter === "function") this.onenter();
+      });
+    }
+  },
+  writeable: true
+});
+
 let newStyle = document.createElement("style");
 document.head.appendChild(newStyle);
 window.arrowFix = newStyle.sheet;
