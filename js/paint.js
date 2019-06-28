@@ -173,7 +173,7 @@ var init = () => {
     });
   };
   createColor = el => {
-    if (!el) el = document.getElementById("color")
+    if (!el) el = document.getElementById("hexColor");
     let e = document.querySelector(`#${el.id}:not(:invalid)`);
     if (e) {
       /*let thisColor;
@@ -209,7 +209,6 @@ var init = () => {
     }
   };
   let line = (s, e) => {
-    //console.log(...[start, end]);
     let start = {
       x: s.clientX - cp().left - scrollX,
       y: s.clientY - cp().top - scrollY
@@ -218,36 +217,30 @@ var init = () => {
       x: (e.clientX - cp().left - scrollX),
       y: (e.clientY - cp().top - scrollY)
     };
-    //console.log(...[end.y, start.y]);
     ctx.fillStyle = color;
     let deltaX = (end.x - start.x);
     let deltaY = (end.y - start.y);
-    let m = -(deltaY / deltaX);
-    let b = (deltaY * end.x) + (deltaX * end.y);// This is standart form because C in standard form is b in slope intercept
-    console.log(`dY=${Math.floor(deltaY / ss)} dX=${Math.floor(deltaX / ss)}`)
-    //console.log(`y=${m}x+${Math.floor(b / ss)}`);
-    //console.log(start, end);
-    //console.log(deltaX, deltaY);
-    //console.log("foo");
-    /*let toX = y => (y - b) / m;
-    let toY = x => m * x + b;*/
-    //console.log(Math.min(...[start.x, end.x]));
-    if (m > 1 || m < -1) {
-      //input x
-      for (let x = Math.min(...[start.x, end.x]); x < Math.max(...[start.x, end.x]); x++) {
-        //console.log(x);
-        let cords = { x: Math.floor(x / ss), y: Math.floor((m * x + b) / ss)};
-        ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        //console.log(`${cords.y}=${m}(${cords.x})+${b}`);
+    let m = deltaY / deltaX;
+    
+    if (Math.abs(m) === Infinity) {
+      for (let y = Math.min(...[start.y, end.y]); y < Math.max(...[start.y, end.y]); y++) {
+        let cords = { x: Math.floor(start.x / ss) * ss, y: Math.floor(y / ss) * ss };
+        if (color === "clear") ctx.clearRect(cords.x, cords.y, ss, ss);
+        else ctx.fillRect(cords.x, cords.y, ss, ss);
       }
     }
-    else {
-      //input y
+    else if (Math.abs(m) > 1) {
       for (let y = Math.min(...[start.y, end.y]); y < Math.max(...[start.y, end.y]); y++) {
-        //console.log(y);
-        let cords = { x: Math.floor(((y - b) / m) / ss), y: Math.floor(y / ss)};
-        ctx.fillRect(cords.x * ss, cords.y * ss, ss, ss);
-        //console.log(`${cords.y}=${m}(${cords.x})+${b}`);
+        let cords = { x: Math.floor((((start.y - y) - (m * start.x)) / -m) / ss) * ss, y: Math.floor(y / ss) * ss };
+        if (color === "clear") ctx.clearRect(cords.x, cords.y, ss, ss);
+        else ctx.fillRect(cords.x, cords.y, ss, ss);
+      }
+    }
+    else {      
+      for (let x = Math.min(...[start.x, end.x]); x < Math.max(...[start.x, end.x]); x++) {
+        let cords = { x: Math.floor(x / ss) * ss, y: Math.floor(((m * (start.x - x)) - start.y) / -ss) * ss };
+        if (color === "clear") ctx.clearRect(cords.x, cords.y, ss, ss);
+        else ctx.fillRect(cords.x, cords.y, ss, ss);
       }
     }
     prev = event;
@@ -296,7 +289,7 @@ var init = () => {
   });
   c.addEventListener("mousemove", event => {
     if (!fill) draw(event);
-    if (mousedown && false) {
+    if (mousedown) {
       /*new Promise((resolve, reject) => {
         line(prev, event);
       })
@@ -335,11 +328,11 @@ var init = () => {
   c.addEventListener("new", () => {
    location.assign("?ask=true");
   });
-  /*document.getElementById("color").addEventListener("change", event => {
+  /*document.getElementById("hexColor").addEventListener("change", event => {
     let e = event.target;
     if (/[a-f\d]/i.test(e.value)) e.parentNode.setAttribute("data-err", "Numbers 0-9 or letters a-f only");
   });*/
-  document.getElementById("color").addEventListener("input", event => {
+  document.getElementById("hexColor").addEventListener("input", event => {
     let el = event.target;
     if (!/^[a-f\d]{6}$/i.test(el.value)) {
       //console.log("This ran");
@@ -356,12 +349,16 @@ var init = () => {
       el.style.setProperty("background-color", "#" + el.value);
     }
   });
-  document.getElementById("color").addEventListener("keyup", event => {
+  document.getElementById("hexColor").addEventListener("input", event => {
+    if (!/^[a-f\d]{6}$/.test(event.target.value)) event.target.error = "Invalid hex code";
+    else event.target.error.clear();
+  });
+  document.getElementById("hexColor").addEventListener("keyup", event => {
     if (event.keyCode === 13) {
       createColor();
     }
   });
-  document.getElementById("color").addEventListener("change", event => {
+  document.getElementById("hexColor").addEventListener("change", event => {
     createColor();
   });
   document.getElementById("rt").addEventListener("input", event => {

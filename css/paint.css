@@ -25,6 +25,7 @@ body {
   grid-area: menu;
   background-color: #111111;
   padding: 20px;
+  color: var(--headTxt)
 }
 #menu :not(.override) {
   display: inline-block;
