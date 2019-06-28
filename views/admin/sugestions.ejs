@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <%- include("head", {beta: false, modal: false})%>
+  <%- include("../head", {beta: false, modal: false})%>
   <title>Sugestions</title>
   <link rel="stylesheet" href="/css/sugestionsTable.css">
 </head>
 <body>
-  <%- include("header", {title: "Sugestions", choice: true}) %>
+  <%- include("../header", {title: "Sugestions", choice: true}) %>
   <div id="content">
   <% data = JSON.parse(data) %>
     <table>
