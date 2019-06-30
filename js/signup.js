@@ -87,12 +87,12 @@ let login = (username, password, email) => {
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
           setInterval(() => {
-            console.log("this ran");
+            //console.log("this ran");
             fetch("/api/users/hasEmail", {
               method: "GET"
             })
               .then(res => {
-                console.log(res.status);
+                //console.log(res.status);
                 if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
                 else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
               });

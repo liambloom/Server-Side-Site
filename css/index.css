@@ -36,6 +36,19 @@ body {
   line-height: 1.35em;
   margin: 50px;
 }
+#content.box {
+  font-family: "Consolas", "Courier New", Courier, monospace;
+  position: absolute;
+  border: 2px solid var(--txt);
+  border-radius: 2px;
+  padding: 30px 28px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: max-content;
+  text-align: center;
+}
 .center {
   text-align: center;
 }
@@ -135,6 +148,13 @@ td, th {
 }
 .float-right {
   float: right;
+}
+.subtext {
+  font-size: 10px;
+  float: right;
+}
+.underlined {
+  text-decoration: underline;
 }
 input, button:not(.tab), select, .button {
 	text-align: center;

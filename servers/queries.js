@@ -165,7 +165,7 @@ const create = (req, res) => {
 const update = (req, res) => {
   const id = req.user.id;
   const { category, value } = req.body;
-  if (/id|username|password|since/.test(category)) res.status(400).send("These categories cannot be updated").end();
+  if (/id|username|password|since/.test(category)) res.status(405).send("These categories cannot be updated").end();
   if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
 
   pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [value, id])
@@ -207,7 +207,9 @@ hasEmail = (req, res) => {
     .catch(handle);
 };
 const removeEmail = (req, res) => {
-
+  pool.query("UPDATE users SET email = NULL WHERE id = $1", [req.user.id])
+    .then(res.status(204).end())
+    .catch(handle);
 };
 const remove = (req, res) => {
   const id = parseInt(req.params.id);

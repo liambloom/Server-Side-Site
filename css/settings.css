@@ -59,7 +59,7 @@
 #choose table, tr {
   width: 100%;
 }
-#choose tr:not(:last-child) {
+#choose tr:not(:last-of-type) {
   border-bottom: 1px solid var(--txt)
 }
 #choose td, #choose th {
@@ -69,10 +69,10 @@
   white-space: nowrap;
   padding: 2px 10px;
 }
-#choose td:first-child {
+#choose td:first-of-type {
   font-weight: bold;
 }
-#choose td:last-child {
+#choose td:last-of-type {
   width: 100%;
   text-align: right;
 }
@@ -80,7 +80,7 @@
   columns: 3;
   text-align: left;
   font-size: 1.15em;
-  padding: 10px;
+  /*padding: 10px;*/
   padding-top: 5px;
 }
 #arrow {

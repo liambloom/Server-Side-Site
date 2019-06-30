@@ -5,7 +5,7 @@ window.modal = {
       if (!document.getElementById(c).classList.contains("hidden")) throw "There is already a modal showing";
     }
     e = document.querySelector(e);
-    if (!e) throw "That element does not exist";
+    if (!e) { throw `The element ${e} does not exist`; }
     e.classList.remove("hidden");
     this.blurKey = setInterval(() => {
       let elem = this.focusOutside;

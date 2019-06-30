@@ -121,9 +121,14 @@
 		</ul>
 	</nav>
   </header>
-  <footer class="hidden">
-    This site uses cookies. For more information click <a href="/cookiePolicy">here</a>.
-    <button id="yesCookie">I accept cookies!</button>
-    <button id="noCookie">No cookies for me.</button>
-  </footer>
 </div>
+<footer class="hidden">
+  This site uses cookies. For more information click <a href="/cookiePolicy">here</a>.
+  <button id="yesCookie">I accept cookies!</button>
+  <button id="noCookie">No cookies for me.</button>
+</footer>
+<modal id="loadingModal">
+  <div id="loadingContainer" style="display: none;">
+    <%- include("loading.html") %>
+  </div>
+</modal>

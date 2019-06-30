@@ -57,7 +57,7 @@ Object.defineProperty(Element.prototype, "onenter", {
         get: function() { return callback; }
       });
       this.addEventListener("enter", event => {
-        if (typeof this.onenter === "function") this.onenter();
+        if (typeof this.onenter === "function") this.onenter(event);
       });
     }
   },
@@ -415,10 +415,29 @@ var closeMenu = () => {
 };
 window.deleteEmail = () => {
   modal.open("#loadingModal");
+  activateLoading();
   fetch("/api/email", {
     method: "DELETE"
   })
-    .then();
+    .then(res => {
+      modal.close();
+      deactivateLoading();
+      return res;
+    })
+    .then(res => {
+      if (res.ok) return res;
+      else throw res;
+    })
+    .then(() => {
+      modal.open("#emailDeleted");
+      document.getElementById("emailCell").innerHTML = "none";
+      document.getElementById("emailButtonsCell").innerHTML = `<a class="button" href="/update?c=email&u=${location.pathname}">Add</a>`;
+    })
+    .catch(err => {
+      modal.open("#emailFaliure");
+      document.getElementById("error").innerHTML = err.json() || "";
+      console.error(err.json());
+    });
 };
 window.switchTab = (e, name, big) => {
   document.querySelector(".inner:not(.hidden)").classList.add("hidden");

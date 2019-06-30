@@ -62,3 +62,6 @@
 #loadingModal .modal-box {
   background-color: transparent;
 }
+#passwordRecovery {
+  cursor: pointer;
+}

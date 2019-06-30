@@ -63,8 +63,8 @@
           <tr>
             <td>Email:</td>
             <% if (user.email) { %>
-              <td><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
-              <td>
+              <td id="emailCell"><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
+              <td id="emailButtonsCell">
                 <a class="button" href="/update?c=email&u=<%= here %>">Update</a>
                 <a class="button" onclick="modal.open('#emailDeletionWarning');">Remove</a>
               </td>
@@ -170,6 +170,10 @@
   </modal>
   <modal id="emailDeleted" data-escape="ok">
     Your email has been deleted
+  </modal>
+  <modal id="emailFaliure" data-escape="ok">
+    Something went wrong
+    <div id="error"></div>
   </modal>
 	<div id="content">
 	<p>Some Text</p>

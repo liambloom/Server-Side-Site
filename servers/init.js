@@ -7,6 +7,7 @@ const mime = require("mime-types");
 const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
+const randomKey = require("./randomKey");
 //const shortHash = require("short-hash");
 const DB = require("./queries");
 //const mail = require("./mail");

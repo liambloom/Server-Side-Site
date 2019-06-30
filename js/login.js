@@ -31,6 +31,15 @@ let loadFunc = () => {
       document.getElementById("button").parentNode.setAttribute("data-err", "Invalid username or password");
     }
   };
+  document.getElementById("passwordRecovery").addEventListener("click", () => {
+    document.getElementById("content").classList.add("box");
+    document.getElementById("content").innerHTML = 'Enter your username: <input id="usernamePassRecover" type="text">';
+    document.getElementById("usernamePassRecover").onenter = event => {
+      if (/^[\w\-.]{1,50}$/.test(event.target.value)) {
+        fetch()
+      }
+    };
+  });
 };
 
 if (document.readyState === "complete") loadFunc();
