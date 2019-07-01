@@ -7,7 +7,6 @@ let loadFunc = () => {
     if (/^[\w\-.]{1,50}$/.test(username) && /^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,100}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,})/i.test(password) && !checkConsecutive(password.match(/\d{3,}/g)) && !checkConsecutive(password.match(/[a-z]{3,}/gi))) {
       document.getElementById("button").parentNode.removeAttribute("data-err");
       modal.open("#loadingModal");
-      document.getElementById("loadingContainer").style.setProperty("display", "initial");
       window.activateLoading();
       fetch("/api/users/confirm" + location.search, {
         method: "POST",
@@ -33,11 +32,57 @@ let loadFunc = () => {
   };
   document.getElementById("passwordRecovery").addEventListener("click", () => {
     document.getElementById("content").classList.add("box");
-    document.getElementById("content").innerHTML = 'Enter your username: <input id="usernamePassRecover" type="text">';
+    document.getElementById("content").innerHTML = 'Enter your username: <br><input id="usernamePassRecover" type="text">';
     document.getElementById("usernamePassRecover").onenter = event => {
-      if (/^[\w\-.]{1,50}$/.test(event.target.value)) {
-        fetch()
+      let username = event.target.value;
+      if (/^[\w\-.]{1,50}$/.test(username)) {
+        event.target.error.clear();
+        modal.open("#loadingModal");
+        window.activateLoading();
+        
+        fetch("/api/recover/" + username)
+          .then(res => {
+            if (res.ok) document.getElementById("content").innerHTML = 'You were emailed a recovery code: <br><input id="recoveryCode" type="text">';
+            else throw res.status; 
+          })
+          .then(() => {
+            document.getElementById("recoveryCode").onenter = event => {
+              let code = event.target.value;
+              if (/^[a-z0-9]{7}$/.test(code)) {
+                modal.open("#loadingModal");
+                activateLoading();
+                fetch("/api/recover", {
+                  body: JSON.stringify({
+                    username,
+                    code
+                  })
+                })
+                  .then(res => {
+                    if (res.ok) document.getElementById("content").innerHTML = 'New Password: <input id="newPassword" type="text"><br>Retype Password: <input id="passwordCheck" type="text"';
+                    else throw res;
+                  })
+                  .then(() => {
+                    
+                  })
+                  .catch(err => {
+
+                  })
+                  .finally(() => {
+
+                  });
+              }
+            };
+          })
+          .catch(status => {
+            if (status === 404) document.getElementById("usernamePassRecover").error = "No such user";
+            else document.getElementById("usernamePassRecover").error = "Something Broke :(";
+          })
+          .finally(() => {
+            modal.close();
+            deactivateLoading();
+          });
       }
+      else event.target.error = "Invalid Username";
     };
   });
 };
