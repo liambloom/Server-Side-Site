@@ -41,14 +41,18 @@ Object.defineProperty(Element.prototype, "error", {
   set: function (msg) { errMsg(this, msg); }
 });
 Element.prototype.error.clear = function() { errMsg(this); };
-
-document.querySelectorAll("*").forEach(e => {
-  e.addEventListener("keyup", event => {
-    if (event.keyCode === 13) {
-      event.target.dispatchEvent(new Event("enter"));
-    }
-  });
-});
+Element.prototype.eventListenerApi = Element.prototype.addEventListener;
+Element.prototype.addEventListener = function(type, listener, options) {
+  if (type === "enter") {
+    this.eventListenerApi("keyup", event => {
+      if (event.keyCode === 13) listener(event);
+    }, options);
+  }
+  else {
+    //console.log(this);
+    this.eventListenerApi(type, listener, options);
+  }
+};
 Object.defineProperty(Element.prototype, "onenter", {
   get: function() { return null; },
   set: function(callback) {
