@@ -48,7 +48,7 @@ const login = (req, res, userid) => {
       })
       .then(resolve)
       .catch(reject);
-  });;
+  });
 };
 const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
