@@ -1,4 +1,3 @@
-//jshint esversion:9
 const { app, DB, requireLogin, port, adminOnly, testingOnly, mail, icons } = require("./init");
 const serve = require("./servePage");
 
