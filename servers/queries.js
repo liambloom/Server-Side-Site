@@ -1,4 +1,3 @@
-//jshint esversion:9
 const { mail, initPool } = require("./mail");
 const { bcrypt, uuid, pool, path, handle, fs } = initPool;//require("./initPool");
 
@@ -196,6 +195,15 @@ update.fromEmailConfirm = (req, res) => {
     })
     .catch(handle);
 };
+sendRecoveryCode = (req, res) => {
+
+};
+getRecoveryCode = (req, res) => {
+
+};
+update.fromPasswordRecovery = (req, res) => {
+
+};
 hasEmail = (req, res) => {
   //console.log("checked email");
   const id = req.user.id;
@@ -278,7 +286,11 @@ module.exports = {
     removeEmail,
     //remove,
     logout,
-    hasEmail
+    hasEmail,
+    recover: {
+      get: getRecoveryCode,
+      send: sendRecoveryCode
+    }
   },
   sugestions: {
     add,

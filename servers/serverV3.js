@@ -1,14 +1,17 @@
-const { app, DB, requireLogin, port, adminOnly, testingOnly, mail, icons } = require("./init");
+const { app, DB, requireLogin, port, adminOnly, icons } = require("./init");
 const serve = require("./servePage");
 
 app.get("/api/logout", DB.user.logout);
 app.get("/api/confirm-email/:addId", DB.user.update.fromEmailConfirm);
 app.get("/api/json/themes.json", serve.themes);
 app.get("/api/users/hasEmail", requireLogin, DB.user.hasEmail);
+app.get("/api/recover", DB.user.recover.get);
 app.post("/api/users/create", DB.user.create);
 app.post("/api/users/confirm", DB.user.confirm);
 app.post("/api/sugestion", DB.sugestions.add);
+app.post("/api/recover", DB.user.recover.send);
 app.put("/api/users", requireLogin, DB.user.update);
+app.put("/api/recover", DB.user.update.fromPasswordRecovery);
 app.delete("/api/email", requireLogin, DB.user.removeEmail);
 
 app.get("/admin/users", adminOnly, DB.user.getAll);
