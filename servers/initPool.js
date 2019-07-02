@@ -7,9 +7,9 @@ const fs = require("fs");
 const mail = require("./mail");
 const { Pool } = require("pg");
 
-const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
-const testing = os.hostname().includes("DESKTOP");
-const handle = (err) => {
+global.path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
+global.testing = os.hostname().includes("DESKTOP");
+global.handle = (err) => {
   console.error(err);
   res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
   res.send(JSON.stringify({ error: err }));
