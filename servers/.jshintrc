@@ -1,5 +1,5 @@
 {
   "esversion": 9,
   "node": true,
-  "unused": "strict"
+  "unused": true
 }
