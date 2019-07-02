@@ -20,7 +20,7 @@ let loadFunc = () => {
       })
       .then(res => {
         if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
-        else if (res.status === 401) errMsg(usernameElement, "No such user");
+        else if (res.status === 401) usernameElement.error = "No such user";
         else if (res.status === 403) passwordElement.parentNode.setAttribute("data-err", "Incorrect password");
       })
       .then(() => modal.close())
