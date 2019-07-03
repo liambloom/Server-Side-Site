@@ -7,9 +7,10 @@
   --bg: #ddeeff; 
   --txt: #001215;
 }
+@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
 body {
 	margin: 0px;
-	font-family: 'Times New Roman', Times, serif;
+	font-family: 'Raleway', sans-serif;
 	line-height: 1.15em;
 	font-size: 16px;
 	color: var(--txt);
@@ -33,6 +34,7 @@ body {
 	top: var(--size);
 }*/
 #content {
+  font-size: 14px;
   line-height: 1.35em;
   margin: 50px;
 }
@@ -126,12 +128,14 @@ header {
 }
 header h1 {
 	grid-area: title;
-	font-size: 90px;
+	font-size: 85px;
 	padding-left: 2px;
 	margin: 0px;
 	margin-bottom: 5px;
   line-height: 113.2px;
   width: max-content;
+  position: relative;
+  top: 5px;
 }
 .topFixed {
 	grid-area: main;
