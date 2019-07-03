@@ -1,5 +1,5 @@
 const { mail, initPool } = require("./mail");
-const { bcrypt, uuid, pool, path, handle, fs } = initPool;//require("./initPool");
+const { bcrypt, uuid, pool, path, handle, fs, randomKey } = initPool;//require("./initPool");
 
 const createTable = () => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -30,11 +30,17 @@ const createTable = () => {
     );
   `);
   pool.query(`
-      CREATE TABLE IF NOT EXISTS confirm (
-        userid uuid NOT NULL,
-        code uuid NOT NULL,
-        email varchar(50) NOT NULL
-      );
+    CREATE TABLE IF NOT EXISTS confirm (
+      userid uuid NOT NULL,
+      code uuid NOT NULL,
+      email varchar(50) NOT NULL
+    );
+  `);
+  pool.query(`
+    CREATE TABLE IF NOT EXISTS recovery (
+      userid uuid NOT NULL,
+      code varchar(7) NOT NULL
+    )
   `);
 };
 const login = (req, res, userid) => {
@@ -54,9 +60,8 @@ const newUser = (req, res, id, username, password, email, color, light) => {
     .then(data => {
       login(req, res, id)
         .then(() => { res.status(201).end(); })
-        .catch(handle);
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const getAll = (req, res) => {
   pool.query("SELECT * FROM users")
@@ -80,7 +85,7 @@ const getAll = (req, res) => {
       }
       else throw "No Sugestions";
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const get = (id, callback) => {
   //const id = parseInt(req.params.id);
@@ -106,15 +111,15 @@ const confirm = (req, res) => {
             if (result) {
               login(req, res, user.id)
                 .then(() => { res.status(204).end(); console.log("logged in"); })
-                .catch(handle);
+                .catch(err => { handle(err, res); });
             }
             else res.status(403).end();
           })
-          .catch(handle);
+          .catch(err => { handle(err, res); });
       }
       else res.status(401).end();
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const create = (req, res) => {
   const { username, password, email, color, light } = req.body;
@@ -153,13 +158,13 @@ const create = (req, res) => {
                     }
                   });
                 })
-                .catch(handle); // Is this valid syntax, or is the callback required?
+                .catch(err => { handle(err, res); }); // Is this valid syntax, or is the callback required?
             }
           }
         })
-        .catch(handle);
+        .catch(err => { handle(err, res); });
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const update = (req, res) => {
   const id = req.user.id;
@@ -171,7 +176,7 @@ const update = (req, res) => {
     .then(data => {
       res.status(204).end();
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 }; 
 update.fromEmailConfirm = (req, res) => {
   const id = req.params.addId;
@@ -186,23 +191,88 @@ update.fromEmailConfirm = (req, res) => {
             else {
               login(req, res, data.rows[0].userid)
                 .then(() => { res.redirect(303, "/"); })
-                .catch(handle);
+                .catch(err => { handle(err, res); });
             }
           })
-          .catch(handle);
+          .catch(err => { handle(err, res); });
       }
       else { res.status(404).end(); console.log("no such user"); }
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 sendRecoveryCode = (req, res) => {
+  const { username } = req.body;
+  const code = randomKey(7, 62);
 
+  pool.query("SELECT * FROM users WHERE username = $1", [username])
+    .then(data => {
+      if (data.rowCount < 1) res.status(404).end();
+      else {
+        data = data.rows[0];
+        pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.rows, code])
+          .then(() => {
+            const { email, light, color } = data;
+            fs.readFile("./json/themes.json", (err, data) => {
+              if (err) handle(err);
+              else {
+                const theme = JSON.parse(data)[color];
+                const newTheme = {
+                  light: theme.gradientLight,
+                  dark: theme.gradientDark,
+                  headTxt: theme.headTextColor,
+                  color: color
+                };
+                if (light === "dark") {
+                  newTheme.bg = theme.offBlack;
+                  newTheme.txt = theme.headTextColor;
+                }
+                else {
+                  newTheme.bg = theme.offWhite;
+                  newTheme.txt = theme.offBlack;
+                }
+                mail.confirm(res, email, username, newTheme, code, path(req));
+              }
+            });
+          });
+      }
+    })
+    .catch(err => { handle(err, res); });
 };
 getRecoveryCode = (req, res) => {
+  const { username, code } = req.body;
 
+  pool.query("(SELECT id FROM users WHERE username = $1) INTERSECT (SELECT userid FROM recovery WHERE code = $2)", [username, code])
+    .then(data => {
+      if (data.rowCount > 0) res.status(204).end();
+      else res.status(401).end();
+    })
+    .catch(err => { handle(err, res); });
 };
 update.fromPasswordRecovery = (req, res) => {
-
+  
+};
+secure = async (req, res) => {
+  try {
+    const data = await Promise.all([
+      pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
+      pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
+      pool.query("DELETE FROM confirm WHERE userid = $1", [req.user.id])
+    ]);
+    const num = await data.reduce((a, b) => a + b.rowCount, 0);
+    res.render("./secure", { user: (req.user) ? req.user : false, here: req.originalUrl, num }, (error, html) => {
+      if (html) {
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.write(html);
+        res.end();
+      }
+      else throw error;
+    });
+  }
+  catch (err) {
+    res.writeHead(500, { "Content-Type": "text/html" });
+    res.write(`Something Broke<br>${JSON.stringify(err).replace(/"/g, "")}`);
+    res.end();
+  }
 };
 hasEmail = (req, res) => {
   //console.log("checked email");
@@ -212,12 +282,12 @@ hasEmail = (req, res) => {
       if (data.rows[0] ? data.rows[0].email : false) res.status(204).end();
       else res.status(404).end();
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const removeEmail = (req, res) => {
   pool.query("UPDATE users SET email = NULL WHERE id = $1", [req.user.id])
     .then(res.status(204).end())
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const remove = (req, res) => {
   const id = parseInt(req.params.id);
@@ -226,7 +296,7 @@ const remove = (req, res) => {
     .then(data => {
       res.status(204).end();
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const logout = (req, res) => {
   req.session.reset();
@@ -240,7 +310,7 @@ const add = (req, res) => {
     .then(data => {
       res.status(201).end();
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const getSugestions = (req, res) => {
   pool.query("SELECT * FROM sugestions")
@@ -257,7 +327,7 @@ const getSugestions = (req, res) => {
       }
       else throw "No Sugestions";
     })
-    .catch(handle);
+    .catch(err => { handle(err, res); });
 };
 const getSession = (sessionId, callback) => {
   pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {
@@ -287,6 +357,7 @@ module.exports = {
     //remove,
     logout,
     hasEmail,
+    secure,
     recover: {
       get: getRecoveryCode,
       send: sendRecoveryCode

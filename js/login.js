@@ -5,7 +5,7 @@ let loadFunc = () => {
     let { usernameElement, username, passwordElement, password } = confirmInit();
     
     if (/^[\w\-.]{1,50}$/.test(username) && /^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,100}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,})/i.test(password) && !checkConsecutive(password.match(/\d{3,}/g)) && !checkConsecutive(password.match(/[a-z]{3,}/gi))) {
-      document.getElementById("button").parentNode.removeAttribute("data-err");
+      document.getElementById("button").error.clear();
       modal.open("#loadingModal");
       window.activateLoading();
       fetch("/api/users/confirm" + location.search, {
@@ -22,6 +22,7 @@ let loadFunc = () => {
         if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 401) usernameElement.error = "No such user";
         else if (res.status === 403) passwordElement.parentNode.setAttribute("data-err", "Incorrect password");
+        else document.getElementById("button").error = "Something Broke :(";
       })
       .then(() => modal.close())
       .then(() => window.deactivateLoading());
@@ -93,6 +94,8 @@ let loadFunc = () => {
                         else e.error.clear();
                       });
                       document.getElementById("content").addEventListener("enter", () => {
+                        document.getElementById("newPassword").setAttribute("required", "required");
+                        document.getElementById("passwordCheck").setAttribute("required", "required");
                         if (!document.querySelector("#content :invalid")) {
                           fetch("/api/recover", {
                             method: "PUT",

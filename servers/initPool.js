@@ -5,14 +5,19 @@ const uuid = require("uuid/v4");
 const url = require("url");
 const fs = require("fs");
 const mail = require("./mail");
+const randomKey = require("./randomKey");
 const { Pool } = require("pg");
 
 global.path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 global.testing = os.hostname().includes("DESKTOP");
-global.handle = (err) => {
+global.handle = (err, res) => {
   console.error(err);
-  res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-  res.send(JSON.stringify({ error: err }));
+  try {
+    res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+    console.log("wrotehead")
+  }
+  catch (err) {console.error(err);}
+  res.write(JSON.stringify({ error: err }));
   res.end();
 };
 const testConfig = {
@@ -39,5 +44,6 @@ module.exports = {
   path,
   mail,
   handle,
-  fs
+  fs,
+  randomKey
 };

@@ -1,0 +1,25 @@
+#message {
+  font-size: 20px;
+  font-weight: bold;
+  position: absolute;
+  top: calc(50% + 160px);
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  line-height: 25px;
+}
+#padlock {
+  height: 306px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+#lockleft, #lockright {
+  animation: closeLock 1000ms ease-in-out;
+  animation-fill-mode: forwards;
+}
+@keyframes closeLock {
+  from { transform: translateY(0px); }
+  to { transform: translateY(100px); }
+}

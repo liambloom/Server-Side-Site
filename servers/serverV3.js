@@ -17,6 +17,8 @@ app.delete("/api/email", requireLogin, DB.user.removeEmail);
 app.get("/admin/users", adminOnly, DB.user.getAll);
 app.get("/admin/sugestions", adminOnly, DB.sugestions.get);
 
+app.get("/secure", requireLogin, DB.user.secure);
+
 app.get("/null", (req, res) => { res.redirect(404, "/"); });
 app.get(/^(?!\/(?:api|null|test))/, serve);
 //app.get(/\/(?:nothing)/, requireLogin, serve);

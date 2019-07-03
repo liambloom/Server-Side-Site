@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false})%>
+  <title>Secure Account</title>
+  <link rel="stylesheet" href="/css/secure.css">
+</head>
+<body>
+  <%- include("header", {title: "Account Secured", choice: true}) %>
+  <%- include("../img/padlock.svg") %>
+  <p id="message">
+    <%= num %> vulnerabilities patched<br>
+    <!--Your account is <%= (num / 32**16) * 100 %>% more secure-->
+  </p>
+</body>
+</html>
