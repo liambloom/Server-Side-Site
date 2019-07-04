@@ -52,6 +52,7 @@ const recover = (res, email, username, theme, code, site) => {
       res.status(500).end();
     }
     else {
+      console.log(email);
       nodemailer.createTransport({
         service: "gmail",
         auth: {

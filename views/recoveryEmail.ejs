@@ -20,6 +20,7 @@
       font-size: 55px;
       line-height: 55px;
       padding-bottom: 3px;
+      white-space: nowrap;
     }
     header * {
       display: inline-block;
@@ -52,6 +53,7 @@
       width: 100%;
       text-align: center;
       margin: 10px;
+      font-size: 24px;
     }
   </style>
 </head>
@@ -63,12 +65,12 @@
       </a><!--
   --><span><%- site.split("://")[1].split(".")[0].replace(/^(.)/, c => c.toUpperCase()) %></span>
     </header>
-    <p id="content">
+    <div id="content">
       Hello <%= username %>,<br>
       <span class="notPurple">It has come to our atention that you are trying to log in to <%= site.split("://")[1] %>, but you have forgotten your password.
       If this is true, enter the code <div id="code"><%= code %></div>
       If you are not trying to log in, click <a href="<%- `${site}/secure` %>">here</a> to delete the code.</span>
-    </p>
+    </div>
   </div>
 </body>
 </html>

@@ -65,3 +65,6 @@
 #passwordRecovery {
   cursor: pointer;
 }
+#content.box {
+  width: 350px;
+}

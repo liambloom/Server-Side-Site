@@ -59,7 +59,7 @@ const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
     .then(data => {
       login(req, res, id)
-        .then(() => { res.status(201).end(); })
+        .then(() => { res.status(201).end(); });
     })
     .catch(err => { handle(err, res); });
 };
@@ -201,15 +201,19 @@ update.fromEmailConfirm = (req, res) => {
     .catch(err => { handle(err, res); });
 };
 sendRecoveryCode = (req, res) => {
-  const { username } = req.body;
+  const { username } = req.params;
+  //console.log(req.body);
   const code = randomKey(7, 62);
+  //console.log(username);
 
   pool.query("SELECT * FROM users WHERE username = $1", [username])
     .then(data => {
+      //console.log(data);
       if (data.rowCount < 1) res.status(404).end();
+      else if (data.rows[0].email === null) res.status(410).end();
       else {
         data = data.rows[0];
-        pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.rows, code])
+        pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code])
           .then(() => {
             const { email, light, color } = data;
             fs.readFile("./json/themes.json", (err, data) => {
@@ -230,7 +234,8 @@ sendRecoveryCode = (req, res) => {
                   newTheme.bg = theme.offWhite;
                   newTheme.txt = theme.offBlack;
                 }
-                mail.confirm(res, email, username, newTheme, code, path(req));
+                //console.log(email);
+                mail.recover(res, email, username, newTheme, code, path(req));
               }
             });
           });
@@ -249,7 +254,17 @@ getRecoveryCode = (req, res) => {
     .catch(err => { handle(err, res); });
 };
 update.fromPasswordRecovery = (req, res) => {
-  
+  const { username, password, code } = req.body;
+  bcrypt.hash(password, 10)
+    .then(hash => {
+      pool.query("UPDATE users SET password = $1 WHERE id = ((SELECT id FROM users WHERE username = $2) INTERSECT (SELECT userid FROM recovery WHERE code = $3)) RETURNING id", [hash, username, code])
+        .then(data => {
+          login(req, res, data.rows[0].id)
+            .then(() => { res.status(204).end(); });
+        });
+      
+    })
+    .catch(err => { handle(err, res); });
 };
 secure = async (req, res) => {
   try {
