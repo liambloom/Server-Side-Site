@@ -7,7 +7,11 @@
   --bg: #ddeeff; 
   --txt: #001215;
 }
-@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');
+/*@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');*/
+@font-face {
+  font-family: 'Anurati-Coustom';
+  src: url(/fonts/Anurati-Coustom.ttf);
+}
 body {
 	margin: 0px;
 	font-family: 'Raleway', sans-serif;
@@ -136,6 +140,7 @@ header h1 {
   width: max-content;
   position: relative;
   top: 5px;
+  font-family: 'Anurati-Coustom';
 }
 .topFixed {
 	grid-area: main;
