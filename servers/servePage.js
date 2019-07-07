@@ -86,4 +86,8 @@ serve.themes = (req, res) => {
     }
   });
 };
+serve.update = (req, res) => {
+  res.locals.category = req.params.category;
+  serve(req, res);
+};
 module.exports = serve;
