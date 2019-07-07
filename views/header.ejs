@@ -17,8 +17,8 @@
 	<div id="choose" class="arrowBox required up shrink">
     <div id="tabs">
       <button class="tab active" onclick="window.switchTab(event, 'color')">Color</button>
-        <button class="tab" onclick="window.switchTab(event, 'user', true)">Account</button>
-        <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
+      <button class="tab" onclick="window.switchTab(event, 'user', <%= !!user %>)">Account</button>
+      <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
     </div>
     <div id="color" class="inner">
       <img src="/img/themes/light-dark.svg" usemap="#light-dark-map" id="lightdark">
@@ -42,10 +42,40 @@
     <div id="user" class="inner hidden">
       <% if (user) { %>
         <input type="hidden" id="loggedIn">
+        Welcome, <b><%= user.username %></b>
+        <a class="button float-right" href="/api/logout?u=<%= here %>">Log out</a>
         <table>
           <tr>
-            <td>Welcome, <%= user.username %></td>
-            <td class="button" onclick="location.assign('/api/logout?u=<%= here %>')"><a href="<%= '/api/logout?u=' + here %>">Log out</a></td>
+            <th>Info</th>
+          </tr>
+          <tr>
+            <td>Username:</td>
+            <td><%= user.username %></td>
+            <td>
+              <a class="button" href="/update?c=username&u=<%= here %>">Update</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Email:</td>
+            <% if (user.email) { %>
+              <td id="emailCell"><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
+              <td id="emailButtonsCell">
+                <a class="button" href="/update?c=email&u=<%= here %>">Update</a>
+                <a class="button" onclick="modal.open('#emailDeletionWarning');">Remove</a>
+              </td>
+            <% } else { %>
+              <td>none</td>
+              <td>
+                <a class="button" href="/update?c=email&u=<%= here %>">Add</a>
+              </td>
+            <% } %>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</td>
+            <td>
+              <a class="button" href="/update?c=password&u=<%= here %>">Update</a>
+            </td>
           </tr>
         </table>
       <% } else { %>
@@ -57,6 +87,11 @@
         <a href="https://www.flaticon.com/free-icon/sun_25290#term=sun&page=1&position=24">Sun icon</a> by <a href="https://www.flaticon.com/authors/dave-gandy">Dave Gandy</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
         Icons licenced under <a href="https://creativecommons.org/licenses/by/3.0/">CC 3.0 BY</a><br>
         <br>
+        <% if (/secure/i.test(here)) { %>
+          <a href="https://www.svgrepo.com/svg/184196/lock-padlock">Lock icon</a> from <a href="https://www.svgrepo.com">svgrepo.com</a><br>
+          Icon lisenced under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+          <br>
+        <% } %>
         <a href="https://www.flaticon.com/free-icon/switch_179588#term=switch&page=1&position=92">Switch icon</a> by <a href="https://www.flaticon.com/authors/pixel-buddha">Pixel Buddha</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
         <a href="https://www.flaticon.com/free-icon/arrow-point-to-right_32213">Arrow icon</a> by <a href="https://www.flaticon.com/authors/freepik">Freepik</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
         <a href="https://www.flaticon.com/free-icon/moon_1415431#term=moon&page=1&position=4">Moon Icon</a> by <a href="https://www.flaticon.com/authors/iconixar">iconixar</a> &#64; <a href="https://www.flaticon.com/">flaticon.com</a><br>
@@ -129,4 +164,14 @@
 </footer>
 <modal id="loadingModal">
   <%- include("loading.html") %>
+</modal>
+<modal id="emailDeletionWarning" data-escape="yn" data-confirm="deleteEmail()">
+    Warning! Deleting your email will make it imposable to recover your password if you forget it. Are you sure you want to delete it?
+  </modal>
+<modal id="emailDeleted" data-escape="ok">
+  Your email has been deleted
+</modal>
+<modal id="emailFaliure" data-escape="ok">
+  Something went wrong
+  <div id="error"></div>
 </modal>
