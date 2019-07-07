@@ -173,11 +173,11 @@ const update = (req, res) => {
   if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
 
   pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [value, id])
-    .then(data => {
+    .then(() => {
       res.status(204).end();
     })
     .catch(err => { handle(err, res); });
-}; 
+};
 update.fromEmailConfirm = (req, res) => {
   const id = req.params.addId;
   pool.query("UPDATE users SET email = (SELECT email FROM confirm WHERE code = $1) WHERE id = (SELECT userid FROM confirm WHERE code = $1)", [id])
@@ -210,7 +210,7 @@ sendRecoveryCode = (req, res) => {
     .then(data => {
       //console.log(data);
       if (data.rowCount < 1) res.status(404).end();
-      else if (data.rows[0].email === null) res.status(410).end();
+      else if (data.rows[0].email === "") res.status(410).end();
       else {
         data = data.rows[0];
         pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code])
