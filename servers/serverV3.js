@@ -1,28 +1,25 @@
-const { app, DB, requireLogin, port, adminOnly, icons } = require("./init");
+const { app, DB, requireLogin, port, icons, site, admin, api } = require("./init");
 const serve = require("./servePage");
 
-app.get("/api/logout", DB.user.logout);
-app.get("/api/confirm-email/:addId", DB.user.update.fromEmailConfirm);
-app.get("/api/json/themes.json", serve.themes);
-app.get("/api/users/hasEmail", requireLogin, DB.user.hasEmail);
-app.post("/api/users/create", DB.user.create);
-app.post("/api/users/confirm", DB.user.confirm);
-app.post("/api/sugestion", DB.sugestions.add);
-app.post("/api/recover", DB.user.recover.get);
-app.post("/api/recover/:username", DB.user.recover.send);
-app.put("/api/users", requireLogin, DB.user.update);
-app.put("/api/recover", DB.user.update.fromPasswordRecovery);
-app.delete("/api/email", requireLogin, DB.user.removeEmail);
+api.get("/logout", DB.user.logout);
+api.get("/confirm-email/:addId", DB.user.update.fromEmailConfirm);
+api.get("/json/themes.json", serve.themes);
+api.get("/users/hasEmail", requireLogin, DB.user.hasEmail);
+api.post("/users/create", DB.user.create);
+api.post("/users/confirm", DB.user.confirm);
+api.post("/sugestion", DB.sugestions.add);
+api.post("/recover", DB.user.recover.get);
+api.post("/recover/:username", DB.user.recover.send);
+api.put("/users", requireLogin, DB.user.update);
+api.put("/recover", DB.user.update.fromPasswordRecovery);
+api.delete("/email", requireLogin, DB.user.removeEmail);
 
-app.get("/admin/users", adminOnly, DB.user.getAll);
-app.get("/admin/sugestions", adminOnly, DB.sugestions.get);
+admin.get("/users", DB.user.getAll);
+admin.get("/sugestions", DB.sugestions.get);
 
-app.get("/secure", requireLogin, DB.user.secure);
-
-app.get("/null", (req, res) => { res.redirect(404, "/"); });
-app.get(/^(?!\/(?:api|null|test))/, serve);
-//app.get(/\/(?:nothing)/, requireLogin, serve);
-//app.get(/\/(?:nothing)/, adminOnly, serve);
+site.get(/^(?!\/(?:secure|update))/, serve);
+site.get("/secure", requireLogin, DB.user.secure);
+site.get("/update/:category", requireLogin, serve.update);
 
 app.listen(port, () => { 
   DB.createTable();

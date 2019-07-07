@@ -7,11 +7,8 @@ const mime = require("mime-types");
 const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
-//const shortHash = require("short-hash");
 const DB = require("./queries");
-//const mail = require("./mail");
 
-const app = express();
 const testing = os.hostname().includes("DESKTOP");
 const port = process.env.PORT || process.env.EMAIL_PASS ? 8090 : 8080;
 const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
@@ -34,9 +31,9 @@ const requireLogin = (req, res, next) => {//To use this: app.get("/somewhere", r
   if (!req.user) redirect401(req, res);
   else next();
 };
-const adminOnly = (req, res, next) => {
-  /*if (!req.user) redirect401(req, res);
-  else */if (req.user ? req.user.type !== "ADMIN" : true) {
+var adminOnly = (req, res, next) => {
+  console.log("adminOnly Ran");
+  if (req.user ? req.user.type !== "ADMIN" : true) {
     res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "403 Forbiden", msg: "This is admin only content" }, (err, html) => {
       if (html) {
         res.writeHead(403, { "Content-Type": "text/html" });
@@ -61,6 +58,14 @@ const testingOnly = (req, res, next) => {
   }
 };
 
+const app = express();
+const site = express.Router();
+const admin = express.Router();
+const api = express.Router();
+admin.use(adminOnly);
+app.use("/admin", admin);
+app.use("/api", api);
+app.use(/^(?!\/(?:api|admin))/, site);
 
 app.set("view engine", "ejs");
 app.use(express.json());
@@ -109,5 +114,8 @@ module.exports = {
   mime,
   url,
   mail,
-  icons
+  icons,
+  site, 
+  admin,
+  api
 };
