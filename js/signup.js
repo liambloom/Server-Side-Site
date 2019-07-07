@@ -56,7 +56,7 @@ let login = (username, password, email) => {
   if (!document.querySelector("#box :invalid")) {
     document.getElementById("button").parentNode.removeAttribute("data-err");
     modal.open("#loadingModal");
-    document.getElementById("loadingContainer").style.setProperty("display", "initial");
+    //document.getElementById("loadingContainer").style.setProperty("display", "initial");
     window.activateLoading();
     //console.log(username);
     fetch("/api/users/create", {

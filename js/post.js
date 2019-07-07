@@ -11,7 +11,7 @@ let onload = () => {
 // onclick="window.modal.open('#confirm')"
 const post = () => {
   document.getElementById("main").style.setProperty("display", "none");
-  document.getElementById("loadingContainer").style.setProperty("display", "initial");
+  //document.getElementById("loadingContainer").style.setProperty("display", "initial");
   document.getElementById("submit").error.clear();
   window.activateLoading();
   fetch("/api/sugestion", {
