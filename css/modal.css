@@ -1,3 +1,6 @@
+modal {
+  display: none;
+}
 .modal-box {
   position: fixed;
 	z-index: 5;
