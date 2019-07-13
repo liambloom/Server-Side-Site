@@ -89,7 +89,7 @@ let load = () => {
   document.getElementById("showPass").addEventListener("mouseup", hide);
   document.getElementById("showPass").addEventListener("mouseleave", hide);
   document.getElementById("lightdark").addEventListener("click", boxColor);
-  document.getElementById("username").addEventListener("input", () => {tbInit("username");});
+  if (document.getElementById("username")) document.getElementById("username").addEventListener("input", () => {tbInit("username");});
   document.getElementById("password").addEventListener("input", () => {tbInit("password");});
   window.addEventListener("colorChange", eyeColor);
 };

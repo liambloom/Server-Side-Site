@@ -1,4 +1,3 @@
-//jshint esversion:9
 const express = require("express");
 const os = require("os");
 const url = require("url");
@@ -8,6 +7,8 @@ const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
 const DB = require("./queries");
+
+const app = express();
 
 const testing = os.hostname().includes("DESKTOP");
 const port = process.env.PORT || process.env.EMAIL_PASS ? 8090 : 8080;
@@ -58,15 +59,6 @@ const testingOnly = (req, res, next) => {
   }
 };
 
-const app = express();
-const site = express.Router();
-const admin = express.Router();
-const api = express.Router();
-admin.use(adminOnly);
-app.use("/admin", admin);
-app.use("/api", api);
-app.use(/^(?!\/(?:api|admin))/, site);
-
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -100,6 +92,14 @@ app.use((req, res, next) => {
   }
   else next();
 });
+
+const site = express.Router();
+const admin = express.Router();
+const api = express.Router();
+admin.use(adminOnly);
+app.use("/admin", admin);
+app.use("/api", api);
+app.use(/^(?!\/(?:api|admin))/, site);
 
 module.exports = {
   app,

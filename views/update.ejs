@@ -3,10 +3,39 @@
 <head>
   <%- include("head", {beta: false, modal: false})%>
   <title>Update Account</title>
+  <link rel="stylesheet" href="/css/login.css">
+  <script src="/js/loginInit.js"></script>
 </head>
 <body>
   <%- include("header", {title: "Update Account", choice: true}) %>
-  <div id="content">
+  <div id="content" class="center">
+    <form id="box">
+      <% if (category === "password") { %>
+        <input id="oldPassword" type="password" placeholder="Current Password">
+        <div id="passwordContainer">
+          <input id="password" type="password" placeholder="New Password">
+          <div id="showPassContainer">
+            <div id="showPass">
+              <%- include("../img/eye.svg") %>
+            </div>
+          </div>
+        </div>
+        <div id="passwordConfirmContainer">
+          <input id="confirmPassword" type="password" placeholder="Confirm Password">
+        </div>
+      <% } else { %>
+        <% switch (category) {
+          case "email": %>
+            <input id="update" type="email" placeholder="Email">
+            <% break; %>
+          <% default: %>
+             You can't update your account's <%= category %>
+        <% } %>
+      <% } %>
+      <div id="buttonContainer">
+        <input id="button" type="submit" value="Update">
+      </div>
+    </form>
   </div>
 </body>
 </html>

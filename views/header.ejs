@@ -53,13 +53,13 @@
             <% if (user.email) { %>
               <td id="emailCell"><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
               <td id="emailButtonsCell">
-                <a class="button" href="/update?c=email&u=<%= here %>">Update</a>
+                <a class="button" href="/update/email?u=<%= here %>">Update</a>
                 <a class="button" onclick="modal.open('#emailDeletionWarning');">Remove</a>
               </td>
             <% } else { %>
               <td>none</td>
               <td>
-                <a class="button" href="/update?c=email&u=<%= here %>">Add</a>
+                <a class="button" href="/update/email?u=<%= here %>">Add</a>
               </td>
             <% } %>
           </tr>
@@ -67,7 +67,7 @@
             <td>Password:</td>
             <td>&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</td>
             <td>
-              <a class="button" href="/update?c=password&u=<%= here %>">Update</a>
+              <a class="button" href="/update/password?u=<%= here %>">Update</a>
             </td>
           </tr>
         </table>

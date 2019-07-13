@@ -1,5 +1,5 @@
 //jshint esversion:9
-const { fs, mime, filetype, url, DB } = require("./init");
+const { fs, mime, filetype, url } = require("./init");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
@@ -88,6 +88,7 @@ serve.themes = (req, res) => {
 };
 serve.update = (req, res) => {
   res.locals.category = req.params.category;
+  req.originalUrl = "/update";
   serve(req, res);
 };
 module.exports = serve;
