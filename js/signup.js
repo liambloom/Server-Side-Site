@@ -1,4 +1,3 @@
-//jshint esversion:6
 let loadFunc = () => {
   document.getElementById("username").addEventListener("input", event => {
     let e = event.target;
@@ -86,7 +85,10 @@ let login = (username, password, email) => {
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
-          setInterval(() => {
+          new EventSource("").onmessage = () => {
+            location.assign(new URLSearchParams(location.search).get("u"));
+          };
+          /*setInterval(() => {
             //console.log("this ran");
             fetch("/api/users/hasEmail", {
               method: "GET"
@@ -96,7 +98,7 @@ let login = (username, password, email) => {
                 if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
                 else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
               });
-          }, 1000);
+          }, 1000);*/
         }
       })
       .then(() => modal.close())
