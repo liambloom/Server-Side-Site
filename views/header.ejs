@@ -49,13 +49,6 @@
             <th>Info</th>
           </tr>
           <tr>
-            <td>Username:</td>
-            <td><%= user.username %></td>
-            <td>
-              <a class="button" href="/update?c=username&u=<%= here %>">Update</a>
-            </td>
-          </tr>
-          <tr>
             <td>Email:</td>
             <% if (user.email) { %>
               <td id="emailCell"><%= user.email.replace(/(?<=.{5}.*).(?=.*@)/g, "*") %></td>
