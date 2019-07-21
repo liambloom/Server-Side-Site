@@ -29,13 +29,7 @@ const confirm = (res, email, username, theme, code, site) => {
           subject: "Confirm Email for " + site.hostname,
           html: html
         }, (err, info) => {
-          if (err) {
-            console.error(err);
-            res.status(500).end(err);
-          }
-          else {
-            res.status(201).end();
-          }
+          if (err) console.error(err);
         });
     }
   });

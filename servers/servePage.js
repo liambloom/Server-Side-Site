@@ -87,8 +87,18 @@ serve.themes = (req, res) => {
   });
 };
 serve.update = (req, res) => {
-  res.locals.category = req.params.category;
-  req.originalUrl = "/update";
-  serve(req, res);
+  res.render("update", { user: (req.user) ? req.user : false, here: req.originalUrl, category: req.params.category }, (error, html) => {
+    if (html) {
+      // On success, serve page
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.write(html);
+      res.end();
+    }
+    else {
+      res.writeHead(500, { "Content-Type": "text/html" });
+      res.write(`The page ${path(req).href} could not be found <br>${error}`);
+      res.end();
+    }
+  });
 };
 module.exports = serve;

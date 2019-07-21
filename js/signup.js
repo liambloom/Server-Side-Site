@@ -72,6 +72,7 @@ let login = (username, password, email) => {
       }
     })
       .then(res => {
+        console.log(res);
         if (res.status === 201 && !email) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 201 && email) return true;
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");
@@ -85,7 +86,7 @@ let login = (username, password, email) => {
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
-          new EventSource("").onmessage = () => {
+          new EventSource(`/api/users/email`).onmessage = () => {
             location.assign(new URLSearchParams(location.search).get("u"));
           };
           /*setInterval(() => {

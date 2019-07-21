@@ -110,7 +110,7 @@ const confirm = (req, res) => {
           .then(async(result) => {
             if (result) {
               login(req, res, user.id)
-                .then(() => { res.status(204).end(); console.log("logged in"); })
+                .then(() => { res.status(204).end(); })
                 .catch(err => { handle(err, res); });
             }
             else res.status(403).end();
@@ -189,26 +189,25 @@ update.fromEmailConfirm = (req, res) => {
               throw "No user id found";
             }
             else {
-              login(req, res, data.rows[0].userid)
+              let id = data.rows[0].userid;
+              event.emit("email-confirmed", id);
+              login(req, res, id)
                 .then(() => { res.redirect(303, "/"); })
                 .catch(err => { handle(err, res); });
             }
           })
           .catch(err => { handle(err, res); });
       }
-      else { res.status(404).end(); console.log("no such user"); }
+      else { res.status(404).end(); }
     })
     .catch(err => { handle(err, res); });
 };
 sendRecoveryCode = (req, res) => {
   const { username } = req.params;
-  //console.log(req.body);
   const code = randomKey(7, 62);
-  //console.log(username);
 
   pool.query("SELECT * FROM users WHERE username = $1", [username])
     .then(data => {
-      //console.log(data);
       if (data.rowCount < 1) res.status(404).end();
       else if (data.rows[0].email === "") res.status(410).end();
       else {
@@ -234,7 +233,6 @@ sendRecoveryCode = (req, res) => {
                   newTheme.bg = theme.offWhite;
                   newTheme.txt = theme.offBlack;
                 }
-                //console.log(email);
                 mail.recover(res, email, username, newTheme, code, path(req));
               }
             });
@@ -290,14 +288,30 @@ secure = async (req, res) => {
   }
 };
 hasEmail = (req, res) => {
-  //console.log("checked email");
+  /*//console.log("checked email");
   const id = req.user.id;
   pool.query("SELECT email FROM users WHERE id = $1", [id])
     .then(data => {
       if (data.rows[0] ? data.rows[0].email : false) res.status(204).end();
       else res.status(404).end();
     })
-    .catch(err => { handle(err, res); });
+    .catch(err => { handle(err, res); });*/
+  res.status(200).set({
+    "connection": "keep-alive",
+    "cache-control": "no-cache",
+    "content-Type": "text/event-stream"
+  });
+  event.on("email-confirmed", id => {
+    console.log(id);
+    console.log(req.user.id);
+    if (id === req.user.id) {
+      console.log("the same");
+      res.write("Confirmed\n\n");
+    }
+    else {
+      console.log("different");
+    }
+  });
 };
 const removeEmail = (req, res) => {
   pool.query("UPDATE users SET email = NULL WHERE id = $1", [req.user.id])
@@ -346,15 +360,12 @@ const getSugestions = (req, res) => {
 };
 const getSession = (sessionId, callback) => {
   pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {
-    //console.log("this ran");
     if (err) {
       callback(false);
       console.error(err);
     }
     else if (data.rows) {
-      //if (new Date(data.expires).getTime() < new Date().getTime()) callback(false);
-      //console.log(data);
-      /*else */callback(data.rows[0].userid);
+      callback(data.rows[0].userid);
     }
     else callback(false);
   });
