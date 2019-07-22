@@ -9,7 +9,7 @@ const confirm = (res, email, username, theme, code, site) => {
     ...theme,
     username,
     code,
-    site: testing ? "https://liambloom.herokuapp.com" : `${site.protocol}//${site.host}`
+    site: `${site.protocol}//${site.host}`
   }, (err, html) => {
     if (err) {
       console.error(err);
@@ -39,7 +39,7 @@ const recover = (res, email, username, theme, code, site) => {
     ...theme,
     username,
     code,
-    site: testing ? "https://liambloom.herokuapp.com" : `${site.protocol}//${site.host}`
+    site: `${site.protocol}//${site.host}`
   }, (err, html) => {
     if (err) {
       console.error(err);
