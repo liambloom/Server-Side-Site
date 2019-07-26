@@ -296,17 +296,12 @@ hasEmail = (req, res) => {
       else res.status(404).end();
     })
     .catch(err => { handle(err, res); });*/
-  res.status(200).set({
-    "connection": "keep-alive",
-    "cache-control": "no-cache",
-    "content-Type": "text/event-stream"
-  });
+  //res.write("\n");
   event.on("email-confirmed", id => {
     console.log(id);
     console.log(req.user.id);
     if (id === req.user.id) {
-      console.log("the same");
-      res.write("Confirmed\n\n");
+      res.status(200).end();
     }
     else {
       console.log("different");

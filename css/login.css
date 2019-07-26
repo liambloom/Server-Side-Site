@@ -1,5 +1,7 @@
 #content {
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 #box {
   width: calc(45vw + 34px);
@@ -8,7 +10,7 @@
   padding-bottom: 40px;
   background-color: #00000080;
   border-radius: 20px;
-  display: inline-block;
+  display: block;
 }
 #box input:not([type="checkbox"]) {
   font-size: 1.5rem;

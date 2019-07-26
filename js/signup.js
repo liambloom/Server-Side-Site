@@ -86,9 +86,15 @@ let login = (username, password, email) => {
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
           document.head.appendChild(css);
-          new EventSource(`/api/users/email`).onmessage = () => {
+          fetch("/api/users/email")
+            .then(res => {
+              if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
+              else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
+            });
+          /*new EventSource(`/api/users/email`).onmessage = () => {
+            console.log("foo");
             location.assign(new URLSearchParams(location.search).get("u"));
-          };
+          };*/
           /*setInterval(() => {
             //console.log("this ran");
             fetch("/api/users/hasEmail", {
