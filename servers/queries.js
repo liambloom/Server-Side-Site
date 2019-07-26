@@ -57,7 +57,7 @@ const login = (req, res, userid) => {
 };
 const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
-    .then(data => {
+    .then(() => {
       login(req, res, id)
         .then(() => { res.status(201).end(); });
     })
@@ -97,7 +97,7 @@ const get = (id, callback) => {
       return res;
     })
     .then(callback)
-    .catch(err => callback(undefined));
+    .catch(() => callback(undefined));
 };
 const confirm = (req, res) => {
   const {username, password} = req.body;
@@ -322,7 +322,7 @@ const remove = (req, res) => {
   const id = parseInt(req.params.id);
 
   pool.query("DELETE FROM users WHERE id = $1", [id])
-    .then(data => {
+    .then(() => {
       res.status(204).end();
     })
     .catch(err => { handle(err, res); });
@@ -336,7 +336,7 @@ const add = (req, res) => {
   //const d = new Date();
 
   pool.query("INSERT INTO sugestions (content, type, by, created) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"])
-    .then(data => {
+    .then(() => {
       res.status(201).end();
     })
     .catch(err => { handle(err, res); });
@@ -384,6 +384,7 @@ module.exports = {
     logout,
     hasEmail,
     secure,
+    remove,
     recover: {
       get: getRecoveryCode,
       send: sendRecoveryCode
