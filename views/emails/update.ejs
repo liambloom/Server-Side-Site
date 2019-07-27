@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.65">
+  <style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+    #body {
+      margin: 0px;
+      padding: 20px;
+      color: <%= txt %>;
+      background-color: <%= bg %>;
+      font-family: 'Roboto';
+    }
+    header {
+      color: <%= headTxt %>;
+      /*background-color: <%= light %>;*/
+      background-image: linear-gradient(70deg, <%= dark %>, 70%, <%= light %>);
+      width: 100%;
+      font-size: 55px;
+      line-height: 55px;
+      padding-bottom: 3px;
+      white-space: nowrap;
+    }
+    header * {
+      display: inline-block;
+    }
+    header span {
+      margin-top: -10px;
+    }
+    #logo, #logo img {
+      height: 50px;
+      width: 50px;
+    }
+    #logo {
+      display: inline-block;
+      text-decoration: none;
+      margin: 15px;
+    }
+    #content {
+      margin: 10px 35px;
+    }
+    #content a {
+      color: <%= headTxt %>;
+      filter: invert(1)
+    }
+    .notPurple {
+      color: <%= txt %>;
+    }
+  </style>
+</head>
+<body>
+  <div id="body">
+    <header>
+      <a id="logo" href="<%- `${site}` %>">
+        <img src="<%- `${site}/img/favicon/colors/${color}.png` %>">
+      </a><!--
+  --><span><%- site.split("://")[1].split(".")[0].replace(/^(.)/, c => c.toUpperCase()) %></span>
+    </header>
+    <div id="content">
+      Hello <%= username %>,<br>
+      <span class="notPurple">This is to confirm your email your account at <%= site.split("://")[1] %>. If you do not have such an account, ignore this. If you do, click <a href="<%- `${site}/api/confirm-email/${code}` %>">here</a> to confirm your email.</span>
+    </div>
+  </div>
+</body>
+</html>
