@@ -335,7 +335,7 @@ window.theme = {
       window.dispatchEvent(new Event("colorChange"));
 		}
 		else {
-			throw name.titleCase +  " is not an avalable theme";
+			throw name.titleCase() +  " is not an avalable theme";
 		}
 	},
 	get mode() {
@@ -397,7 +397,7 @@ window.theme = {
 			});
 		}
 		else {
-			throw name.titleCase + " is not an avalable theme";
+			throw name.titleCase() + " is not an avalable theme";
 		}
 	},
 	default: {
