@@ -158,7 +158,7 @@ const create = (req, res) => {
                     }
                   });
                 })
-                .catch(err => { handle(err, res); }); // Is this valid syntax, or is the callback required?
+                .catch(err => { handle(err, res); });
             }
           }
         })
@@ -167,16 +167,65 @@ const create = (req, res) => {
     .catch(err => { handle(err, res); });
 };
 const update = (req, res) => {
-  const id = req.user.id;
-  const { category, value } = req.body;
-  if (/id|username|password|since/.test(category)) res.status(405).send("These categories cannot be updated").end();
-  if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
-
-  pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [value, id])
-    .then(() => {
-      res.status(204).end();
-    })
-    .catch(err => { handle(err, res); });
+  const { id, username, color, light } = req.user;
+  const { password, category, value } = req.body;
+  if (/id|username|since/.test(category)) res.status(405).send("These categories cannot be updated").end();
+  else if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
+  else {
+    let func = (override) => {
+      pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [override || value, id])
+        .then(() => {
+          res.status(204).end();
+        })
+        .catch(err => { handle(err, res); });
+    };
+    if (category === "password") {
+      pool.query("SELECT password FROM users WHERE id = $1", [id])
+        .then(data => {
+          bcrypt.compare(password, data.rows[0].password)
+          .then((result) => {
+            if (result) {
+              bcrypt.hash(value, 10)
+                .then(hash => {
+                  func(hash);
+                });
+            }
+            else res.status(403).end();
+          });
+        })
+        .catch(err => { handle(err, res); });
+      
+    }
+    else if (category === "email") {
+      const code = uuid();
+      pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value])
+        .then(() => {
+          fs.readFile("./json/themes.json", (err, data) => {
+            if (err) handle(err);
+            else {
+              const theme = JSON.parse(data)[color];
+              const newTheme = {
+                light: theme.gradientLight,
+                dark: theme.gradientDark,
+                headTxt: theme.headTextColor,
+                color: color
+              };
+              if (light === "dark") {
+                newTheme.bg = theme.offBlack;
+                newTheme.txt = theme.headTextColor;
+              }
+              else {
+                newTheme.bg = theme.offWhite;
+                newTheme.txt = theme.offBlack;
+              }
+              mail.update(res, value, username, newTheme, code, path(req));
+            }
+          });
+        })
+        .catch(err => { handle(err, res); });
+    }
+    else func(null);
+  }
 };
 update.fromEmailConfirm = (req, res) => {
   const id = req.params.addId;
