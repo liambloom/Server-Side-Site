@@ -1,5 +1,6 @@
 //jshint esversion:6
 let loadFunc = () => {
+  document.getElementById("password").addEventListener("input", () => { tbInit("password"); });
   document.getElementById("box").onsubmit = event => {
     event.preventDefault();
     document.getElementById("button").parentNode.removeAttribute("data-err");

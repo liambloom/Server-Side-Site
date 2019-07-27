@@ -16,7 +16,7 @@ let loadFunc = () => {
     let e = event.target;
     let pass = e.value;
     let confirm = document.getElementById("confirmPassword");
-    if (!pass) errMsg(e, "Password is required");
+    if (!/\S/.test(pass)) errMsg(e, "Password is required");
     else if (/[^\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]/i.test(pass)) errMsg(e, "Illegal character detected");
     else if (/pass?word/i.test(pass)) errMsg(e, "Don't use the word \"password\"");
     else if (/(.)\1{2,}/.test(pass)) errMsg(e, "Don't use the same character repeatedly");

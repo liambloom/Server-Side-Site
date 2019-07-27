@@ -10,7 +10,7 @@ var eyeColor = () => {
 
 var themeFunc = () => {
   boxColor();
-  eyeColor();
+  if (document.getElementById("password")) eyeColor();
 };
 var checkConsecutive = (strings) => {
   if (!strings) return false;
@@ -85,13 +85,15 @@ var confirmInit = () => {
 };
 
 let load = () => {
-  document.getElementById("showPass").addEventListener("mousedown", show);
-  document.getElementById("showPass").addEventListener("mouseup", hide);
-  document.getElementById("showPass").addEventListener("mouseleave", hide);
+  if (document.getElementById("password")) {
+    document.getElementById("showPass").addEventListener("mousedown", show);
+    document.getElementById("showPass").addEventListener("mouseup", hide);
+    document.getElementById("showPass").addEventListener("mouseleave", hide);
+    window.addEventListener("colorChange", eyeColor);
+  }
   document.getElementById("lightdark").addEventListener("click", boxColor);
   if (document.getElementById("username")) document.getElementById("username").addEventListener("input", () => {tbInit("username");});
-  document.getElementById("password").addEventListener("input", () => {tbInit("password");});
-  window.addEventListener("colorChange", eyeColor);
+  //document.getElementById("password").addEventListener("input", () => {tbInit("password");});
 };
 
 if (document.readyState === "complete") load();
