@@ -8,6 +8,7 @@ const serve = (req, res) => {
   try {
     const page = "." + path(req).pathname.replace(/\/$/, "/index");
     let type = filetype(page);
+    //console.log(page, type);
     if (Array.isArray(type)) type = type[0];
     //If not ejs
     if (type) {

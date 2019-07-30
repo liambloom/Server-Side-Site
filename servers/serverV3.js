@@ -14,6 +14,7 @@ api.put("/users", requireLogin, DB.user.update);
 api.put("/recover", DB.user.update.fromPasswordRecovery);
 api.delete("/email", requireLogin, DB.user.removeEmail);
 
+admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 

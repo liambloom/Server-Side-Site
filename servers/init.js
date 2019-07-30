@@ -33,7 +33,6 @@ const requireLogin = (req, res, next) => {//To use this: app.get("/somewhere", r
   else next();
 };
 var adminOnly = (req, res, next) => {
-  console.log("adminOnly Ran");
   if (req.user ? req.user.type !== "ADMIN" : true) {
     res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "403 Forbiden", msg: "This is admin only content" }, (err, html) => {
       if (html) {
