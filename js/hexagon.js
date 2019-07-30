@@ -24,30 +24,23 @@ let draw = i => {
 };
 
 let spin = until => { // How did I figure this out? I typed random numbers into desmos until they did what I wanted.
-  if (typeof until !== "number") {
-    until = Infinity;
-    dif = 1;
-  }
-  //console.log(until);
+  if (typeof until !== "number") until = Infinity;
   i = 0;
   iMax = (2 * Math.PI * until) / 9;
   dif = iMax / Math.round(iMax);
   count = setInterval(() => {
     draw(Math.cos(i / 40) * size + size);
-    //i = i + dif;
     i++;
     if (dif === 0) {
       clearInterval(count);
       ctx.clearRect(0, 0, width, height);
-      //console.log(i, iMax);
     }
     if (Math.round(i) >= Math.round(iMax - (10 * Math.PI))) { // If ecceds is 45 degrees from done
-      //console.log((Math.acos((i - (iMax - (10 * Math.PI))) / (10 * Math.PI))) * (2 * (iMax / Math.round(iMax)) / Math.PI));
       dif = (Math.acos((i - (iMax - (10 * Math.PI))) / (10 * Math.PI))) * (2 /* * (iMax / Math.round(iMax)) */ / Math.PI);
       if (isNaN(dif)) {
         dif = 0;
       }
-      //console.log(dif);
     }
   }, 1000 / 75);
+  return count;
 };
