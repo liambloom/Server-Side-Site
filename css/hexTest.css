@@ -1,0 +1,17 @@
+canvas {
+  border: 2px dashed var(--light);
+  float: left;
+}
+input, select {
+  border-radius: 7px;
+}
+input[type = "number"]:focus {
+  width: 70px;
+}
+#menu {
+  clear: left;
+}
+#fps {
+  display: inline;
+  margin-left: 10px;
+}
