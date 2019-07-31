@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false})%>
+  <title>Hexagons</title>
+  <link rel="stylesheet" href="/css/hexTest.css">
+  <script src="/js/fps.js"></script>
+  <script src="/js/hexagon.js"></script>
+  <script src="/js/hexTest.js" defer></script>
+</head>
+<body>
+  <%- include("header", {title: "Hexagons", choice: true}) %>
+  <div id="content">
+    <canvas id="hex"></canvas><div id="fps"></div><br>
+    <div id="menu">
+      Radius: <input id="radius" type="number" max="150" min="0" value="100" required><br>
+      RPM: <input id="rpm" type="number" min="0" value="20" required><br>
+      Spin: <input id="degOrSec" type="number" min="0" value="360" required>
+      <select id="dropdown">
+        <option default>Degrees</option>
+        <option>Seconds</option>
+        <option>Forever</option>
+      </select><br>
+      <input id="run" type="button" value="GO" class="yes">
+      <input id="stop" type="button" value="STOP" class="no">
+      <input id="clear" type="button" value="CLEAR">
+    </div>
+  </div>
+</body>
+</html>
