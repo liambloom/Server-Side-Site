@@ -7,7 +7,8 @@ window.hex = () => {
   hex.size = 100; // radius at points
   let x = 150; // center x
   let y = 150; // center y
-  let fpsArr;
+  let fpsArr = [1]; // The first thing pushed is framerate / framerate
+  let fpsL = [1];
   let framerate = fps || 60;
 
   hex.draw = i => {
@@ -34,7 +35,6 @@ window.hex = () => {
     let dif = 1;
     let speed = (framerate * 60 * dif) / (2 * Math.PI * rpm);
     let iMax = (Math.PI * speed * until) / 180;
-    fpsArr = [1]; // The first thing pushed is framerate / framerate
     let start, b4Decrease;
 
     hex.count = setInterval(() => {
@@ -61,12 +61,11 @@ window.hex = () => {
     let rate = framerate / (1 / ((new Date() - start) / 1000));
     fpsArr.push(rate);
     if (fpsArr.length > 10) fpsArr.shift();
+    fpsL.push(rate);
     return rate;
   };
   
-  hex.fps = () => {
-    return 1 / (fpsArr.slice(-1)[0] / framerate);
-  };
+  hex.fps = framerate;
 
   hex.stop = () => {
     clearInterval(hex.count);
@@ -75,6 +74,15 @@ window.hex = () => {
   hex.clear = () => {
     ctx.clearRect(0, 0, c.width, c.height);
   };
+
+  setInterval(() => {
+    if (fpsL.length) {
+      hex.fps = 1 / ((fpsL.reduce((a, b) => a + b) / fpsL.length) / framerate);
+      fpsL = [];
+    }
+    else hex.fps = null;
+    c.dispatchEvent(new Event("fpsUpdate"));
+  }, 1000);
 };
 
 if (window.themeReady) hex();

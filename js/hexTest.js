@@ -4,7 +4,7 @@ let clearFps = () => {
   document.getElementById("fps").innerHTML = "";
 };
 let getFps = () => {
-  document.getElementById("fps").innerHTML = Math.round(hex.fps()) + " fps";
+  document.getElementById("fps").innerHTML = (typeof hex.fps === "number") ? Math.round(hex.fps) + " fps" : "";
 };
 document.getElementById("run").addEventListener("click", () => {
   if (!document.querySelector(":invalid")) {
@@ -24,17 +24,18 @@ document.getElementById("run").addEventListener("click", () => {
     }
     hex.spin(rpm, deg);
   }
-  getFps();
-  fpsCount = setInterval(getFps, 1000);
+  /*getFps();
+  fpsCount = setInterval(getFps, 1000);*/
+  document.getElementById("hex").addEventListener("fpsUpdate", getFps);
 });
 document.getElementById("stop").addEventListener("click", () => {
   hex.stop();
-  clearFps();
+  //clearFps();
 });
 document.getElementById("clear").addEventListener("click", () => {
   hex.stop();
   hex.clear();
-  clearFps();
+  //clearFps();
 });
 document.getElementById("dropdown").addEventListener("input", event => {
   if (event.target.value === "Forever") document.getElementById("degOrSec").style.display = "none";
