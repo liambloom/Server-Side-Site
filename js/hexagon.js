@@ -1,5 +1,5 @@
+import fps from "/js/fps.js";
 window.hex = () => {
-  fpsMonitor();
   let c = document.getElementById("hex"); // Get canvas element
   c.height = 300; // Set height
   c.width = 300; // Set width
@@ -77,7 +77,7 @@ window.hex = () => {
 
   setInterval(() => {
     if (fpsL.length) {
-      hex.fps = 1 / ((fpsL.reduce((a, b) => a + b) / fpsL.length) / framerate);
+      hex.fps = fpsL.length;//1 / ((fpsL.reduce((a, b) => a + b) / fpsL.length) / framerate);
       fpsL = [];
     }
     else hex.fps = null;
@@ -87,3 +87,112 @@ window.hex = () => {
 
 if (window.themeReady) hex();
 else window.addEventListener("themeReady", hex);
+
+export default class Hexagon {
+  constructor(config) {
+    this.c = config.canvas || document.getElementsByTagName("canvas")[0];
+    this.ctx = this.c.getContext('2d');
+    //this.radius = config.radius || this.c.width / 3;
+    //this.height = this.radius * Math.sqrt(3);
+    //this.color = config.color || themes[theme.color].gradientLight || "#888888";
+    this.fpsArr = [1];
+    this.framerate = fps || 60;
+    this.redraw = () => {};
+    /*this.x = config.x || this.c.width / 2;
+    this.y = config.y || this.c.height / 2;*/
+    Object.defineProperties(this, {
+      x: {
+        configurable: true,
+        get: function() {
+          return config.x || this.c.width / 2;
+        },
+        set: function(value) {
+          if (this.redraw.toString() !== "() => {}")  this.clear(true, 0.5);
+          Object.defineProperty(this, "x", {
+            get: function() {
+              return value;
+            }
+          });
+          this.redraw();
+        }
+      },
+      y: {
+        configurable: true,
+        get: function () {
+          return config.y || this.c.height / 2;
+        },
+        set: function (value) {
+          if (this.redraw.toString() !== "() => {}") this.clear(true, 0.5);
+          Object.defineProperty(this, "y", {
+            get: function () {
+              return value;
+            }
+          });
+          this.redraw();
+        }
+      },
+      color: {
+        configurable: true,
+        get: function () {
+          return config.color || themes[theme.color].gradientLight || "#888888";
+        },
+        set: function (value) {
+          if (this.redraw.toString() !== "() => {}") this.clear(true);
+          Object.defineProperty(this, "color", {
+            get: function () {
+              return value;
+            }
+          });
+          this.redraw();
+        }
+      },
+      radius: {
+        configurable: true,
+        get: function () {
+          return config.radius || this.c.width / 3;
+        },
+        set: function (value) {
+          if (this.redraw.toString() !== "() => {}") this.clear(true, 0.5);
+          Object.defineProperty(this, "radius", {
+            get: function () {
+              return value;
+            }
+          });
+          this.height = this.radius * Math.sqrt(3);
+          this.redraw();
+        }
+      }
+    });
+    this.draw = (degrees) => {
+      if (typeof degrees !== "number") degrees = 0;
+      this.clear(false, 0.5);
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+      for (let side = 0; side <= 6; side++) {
+        this.ctx.lineTo(this.x + (this.radius - (Math.cos(degrees * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / 6), this.y + this.radius * Math.sin(side * 2 * Math.PI / 6));
+      }
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+      this.redraw = () => { this.draw(degrees); };
+    };
+    this.spin = () => {
+
+    };
+    this.clear = (save, add) => {
+      if (typeof add !== "number") add = 0;
+      this.ctx.save();
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+      for (let side = 0; side <= 6; side++) {
+        this.ctx.lineTo(this.x + (this.radius + add) * Math.cos(side * 2 * Math.PI / 6), this.y + (this.radius + add) * Math.sin(side * 2 * Math.PI / 6));
+      }
+      this.ctx.clip();
+      this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+      this.ctx.restore();
+      if (!save) this.redraw = () => {};
+    };
+    this.stop = () => {
+
+    };
+  }
+}
