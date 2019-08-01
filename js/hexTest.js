@@ -1,13 +1,13 @@
-let fpsCount;
+/*let fpsCount;
 let clearFps = () => {
   clearInterval(fpsCount);
   document.getElementById("fps").innerHTML = "";
-};
+};*/
 let getFps = () => {
   document.getElementById("fps").innerHTML = (typeof hex.fps === "number") ? Math.round(hex.fps) + " fps" : "";
 };
 document.getElementById("run").addEventListener("click", () => {
-  if (!document.querySelector(":invalid")) {
+  if (!document.querySelector(':invalid:not([style="display: none;"])')) {
     hex.size = parseInt(document.getElementById("radius").value);
     let rpm = parseInt(document.getElementById("rpm").value);
     let deg;
