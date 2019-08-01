@@ -1,7 +1,7 @@
 const times = [];
 window.fps = undefined;
 
-let fpsMonitor = () => {
+const fpsMonitor = () => {
   window.requestAnimationFrame(() => {
     const now = performance.now();
     while (times.length > 0 && times[0] <= now - 1000) {
@@ -12,5 +12,6 @@ let fpsMonitor = () => {
     fpsMonitor();
   });
 };
-/*fpsMonitor();
-export { fpsMonitor };*/
+fpsMonitor();
+
+export default { fps };
