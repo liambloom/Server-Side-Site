@@ -88,111 +88,148 @@ window.hex = () => {
 if (window.themeReady) hex();
 else window.addEventListener("themeReady", hex);
 
-export default class Hexagon {
-  constructor(config) {
-    this.c = config.canvas || document.getElementsByTagName("canvas")[0];
+let verify = (value, fallback) => (typeof value === typeof fallback) ? value : fallback;
+
+class Shape {
+  constructor(sides, config) {
+    //if (typeof config !== "object") config = {};
+    config = verify(config, {});
+    this.c = verify(config.canvas, document.getElementsByTagName("canvas")[0]);
     this.ctx = this.c.getContext('2d');
-    //this.radius = config.radius || this.c.width / 3;
-    //this.height = this.radius * Math.sqrt(3);
-    //this.color = config.color || themes[theme.color].gradientLight || "#888888";
+    this.sides = verify(sides, 4);
+    this.angle = 180 - 360 / this.sides;
     this.fpsArr = [1];
     this.framerate = fps || 60;
-    this.redraw = () => {};
-    /*this.x = config.x || this.c.width / 2;
-    this.y = config.y || this.c.height / 2;*/
+    this.rotations = [];
+    this.loop = -1;
     Object.defineProperties(this, {
+      show: {
+        get: function() {
+          return this.rotations.length === 3;
+        }
+      },
       x: {
         configurable: true,
-        get: function() {
-          return config.x || this.c.width / 2;
-        },
         set: function(value) {
-          if (this.redraw.toString() !== "() => {}")  this.clear(true, 0.5);
+          if (this.show)  this.clear(true);
           Object.defineProperty(this, "x", {
             get: function() {
               return value;
             }
           });
-          this.redraw();
+          if (this.show) this.draw(...this.rotations);
         }
       },
       y: {
         configurable: true,
-        get: function () {
-          return config.y || this.c.height / 2;
-        },
         set: function (value) {
-          if (this.redraw.toString() !== "() => {}") this.clear(true, 0.5);
+          if (this.show) this.clear(true);
           Object.defineProperty(this, "y", {
             get: function () {
               return value;
             }
           });
-          this.redraw();
+          if (this.show) this.draw(...this.rotations);
         }
       },
       color: {
         configurable: true,
-        get: function () {
-          return config.color || themes[theme.color].gradientLight || "#888888";
-        },
         set: function (value) {
-          if (this.redraw.toString() !== "() => {}") this.clear(true);
+          if (this.show) this.clear(true);
           Object.defineProperty(this, "color", {
             get: function () {
               return value;
             }
           });
-          this.redraw();
+          if (this.show) this.draw(...this.rotations);
         }
       },
-      radius: {
+      width: {
         configurable: true,
-        get: function () {
-          return config.radius || this.c.width / 3;
-        },
         set: function (value) {
-          if (this.redraw.toString() !== "() => {}") this.clear(true, 0.5);
-          Object.defineProperty(this, "radius", {
+          if (this.show) this.clear(true);
+          Object.defineProperty(this, "width", {
             get: function () {
               return value;
             }
           });
-          this.height = this.radius * Math.sqrt(3);
-          this.redraw();
+          if ((sides + 2) % 4 === 0) this.radius = value / 2;
+          //else if (sides % 4 === 0) this.radius = (value / 2) / (Math.cos(360 / this.sides));//wrong
+          //else this.radius = //nothing
+          //this.height = this.radius * Math.sqrt(3);
+          if (this.show) this.draw(...this.rotations);
         }
       }
     });
-    this.draw = (degrees) => {
-      if (typeof degrees !== "number") degrees = 0;
-      this.clear(false, 0.5);
-      this.ctx.beginPath();
+    this.x = verify(config.x, this.c.width / 2);
+    this.y = verify(config.y, this.c.height / 2);
+    this.color = verify(verify(config.color, themes[theme.color].gradientLight), "#888888");
+    this.width = verify(config.radius, 2 * this.c.width / 3);
+    //this.height = this.radius * Math.sqrt(3);
+    this.shape = (x, y, z, add) => {
       this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
-      for (let side = 0; side <= 6; side++) {
-        this.ctx.lineTo(this.x + (this.radius - (Math.cos(degrees * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / 6), this.y + this.radius * Math.sin(side * 2 * Math.PI / 6));
+      if (this.sides % 4 === 0) z += 180 / this.sides;
+      else if (this.sides % 2 !== 0) z += 90;
+      for (let side = 0; side <= this.sides; side++) {
+        let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
+        this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
       }
+    };
+    this.draw = (x, y, z) => {
+      x = verify(x, 0);
+      y = verify(y, 0);
+      z = verify(z, 0);
+      this.clear(false);
+      this.ctx.beginPath();
+      this.shape(x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
-      this.redraw = () => { this.draw(degrees); };
+      this.rotations = [x, y, z];
     };
     this.spin = () => {
 
     };
     this.clear = (save, add) => {
-      if (typeof add !== "number") add = 0;
-      this.ctx.save();
-      this.ctx.beginPath();
-      this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
-      for (let side = 0; side <= 6; side++) {
-        this.ctx.lineTo(this.x + (this.radius + add) * Math.cos(side * 2 * Math.PI / 6), this.y + (this.radius + add) * Math.sin(side * 2 * Math.PI / 6));
+      if (this.show) {
+        //if (typeof add !== "number") add = 0.5;
+        add = verify(add, 0.5);
+        let x = this.rotations[0];
+        let y = this.rotations[1];
+        let z = this.rotations[2];
+        this.stop();
+        this.ctx.save();
+        this.ctx.beginPath();
+        this.shape(x, y, z, add);
+        /*this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+        for (let side = 0; side <= this.sides; side++) {
+          this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle));
+        }*/
+        this.ctx.clip();
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.ctx.restore();
+        if (!save) this.rotations = [];
       }
-      this.ctx.clip();
-      this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-      this.ctx.restore();
-      if (!save) this.redraw = () => {};
     };
     this.stop = () => {
-
+      clearInterval(this.loop);
     };
   }
+
+  test(increment, start) {
+    let shape = [];
+    for (let i = start; i <= 30; i = i + increment) {
+      setTimeout(() => {
+        document.onclick = undefined;
+        if (shape[i - 1]) shape[i - increment].clear();
+        shape[i] = new Shape(i);
+        shape[i].draw(0, 0, 0);
+        document.onclick = () => { console.log(i); };
+        console.log(i);
+      }, 1000 * i);
+    }
+  }
 }
+
+window.Shape = Shape;
+
+export default Shape;
