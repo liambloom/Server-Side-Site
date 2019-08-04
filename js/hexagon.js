@@ -88,7 +88,19 @@ window.hex = () => {
 if (window.themeReady) hex();
 else window.addEventListener("themeReady", hex);
 
+//Private methods here
 let verify = (value, fallback) => (typeof value === typeof fallback) ? value : fallback;
+
+function shape(x, y, z, add) {
+  this.ctx.beginPath();
+  this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+  if (this.sides % 4 === 0) z += 180 / this.sides;
+  else if (this.sides % 2 !== 0) z += 90;
+  for (let side = 0; side <= this.sides; side++) {
+    let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
+    this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
+  }
+}
 
 class Shape {
   constructor(sides, config) {
@@ -166,22 +178,12 @@ class Shape {
     this.color = verify(verify(config.color, themes[theme.color].gradientLight), "#888888");
     this.width = verify(config.radius, 2 * this.c.width / 3);
     //this.height = this.radius * Math.sqrt(3);
-    this.shape = (x, y, z, add) => {
-      this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
-      if (this.sides % 4 === 0) z += 180 / this.sides;
-      else if (this.sides % 2 !== 0) z += 90;
-      for (let side = 0; side <= this.sides; side++) {
-        let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
-        this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
-      }
-    };
     this.draw = (x, y, z) => {
       x = verify(x, 0);
       y = verify(y, 0);
       z = verify(z, 0);
       this.clear(false);
-      this.ctx.beginPath();
-      this.shape(x, y, z, 0);
+      shape.call(this, x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
       this.rotations = [x, y, z];
@@ -198,8 +200,7 @@ class Shape {
         let z = this.rotations[2];
         this.stop();
         this.ctx.save();
-        this.ctx.beginPath();
-        this.shape(x, y, z, add);
+        shape.call(this, x, y, z, add);
         /*this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
         for (let side = 0; side <= this.sides; side++) {
           this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle));
