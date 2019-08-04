@@ -165,8 +165,12 @@ class Shape {
               return value;
             }
           });
-          if ((sides + 2) % 4 === 0) this.radius = value / 2;
-          //else if (sides % 4 === 0) this.radius = (value / 2) / (Math.cos(360 / this.sides));//wrong
+          
+          if (sides % 4 === 0) this.radius = (value / 2) / Math.sin(Math.PI * this.angle / 360); // cos works too
+          else if (sides % 2 === 0) this.radius = value / 2;
+          //else this.radius = value / (Math.sin(this.angle * Math.PI / 360) + 1);//(value / Math.sin(/*Math.round(this.sides / 4) * 4*/((this.sides - 1) / 2) * 2 * Math.PI / this.sides)) * (180 - /*Math.round(this.sides / 4)*/((this.sides - 1) / 2) * 360 / this.sides) / 2;
+          //console.log(this.radius);
+          //console.log(this.angle);
           //else this.radius = //nothing
           //this.height = this.radius * Math.sqrt(3);
           if (this.show) this.draw(...this.rotations);
@@ -176,7 +180,7 @@ class Shape {
     this.x = verify(config.x, this.c.width / 2);
     this.y = verify(config.y, this.c.height / 2);
     this.color = verify(verify(config.color, themes[theme.color].gradientLight), "#888888");
-    this.width = verify(config.radius, 2 * this.c.width / 3);
+    this.width = verify(config.width, 2 * this.c.width / 3);
     //this.height = this.radius * Math.sqrt(3);
     this.draw = (x, y, z) => {
       x = verify(x, 0);
@@ -216,16 +220,15 @@ class Shape {
     };
   }
 
-  test(increment, start) {
+  test(increment, start, config) {
     let shape = [];
     for (let i = start; i <= 30; i = i + increment) {
       setTimeout(() => {
         document.onclick = undefined;
-        if (shape[i - 1]) shape[i - increment].clear();
-        shape[i] = new Shape(i);
+        if (shape[i - increment]) shape[i - increment].clear();
+        shape[i] = new Shape(i, config);
         shape[i].draw(0, 0, 0);
         document.onclick = () => { console.log(i); };
-        console.log(i);
       }, 1000 * i);
     }
   }
