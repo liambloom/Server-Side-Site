@@ -137,9 +137,12 @@ class Shape {
         configurable: true,
         set: function (value) {
           if (this.show) this.clear(true);
+          let y;
+          if (this.sides % 2 === 0 || this.center === "origin") y = value;
+          else y = value + ((this.radius - (this.radius * Math.cos(Math.PI / this.sides))) / 2);
           Object.defineProperty(this, "y", {
             get: function () {
-              return value;
+              return y;
             }
           });
           if (this.show) this.draw(...this.rotations);
@@ -167,21 +170,38 @@ class Shape {
             }
           });
           
-          if (sides % 4 === 0) this.radius = (value / 2) / Math.sin(Math.PI * this.angle / 360); // cos works too
+          if (sides % 4 === 0) this.radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
           else if (sides % 2 === 0) this.radius = value / 2;
-          //else this.radius = value / (Math.sin(this.angle * Math.PI / 360) + 1);//(value / Math.sin(/*Math.round(this.sides / 4) * 4*/((this.sides - 1) / 2) * 2 * Math.PI / this.sides)) * (180 - /*Math.round(this.sides / 4)*/((this.sides - 1) / 2) * 360 / this.sides) / 2;
+          else this.radius = (value / Math.sin((this.sides / 2 - 0.5) * (360 / this.sides) * Math.PI / 180)) * Math.sin(Math.PI * (180 - (this.sides / 2 - 0.5) * (360 / this.sides)) / 360);
           //console.log(this.radius);
           //console.log(this.angle);
           //else this.radius = //nothing
           //this.height = this.radius * Math.sqrt(3);
           if (this.show) this.draw(...this.rotations);
         }
+      },
+      center: {
+        configurable: true,
+        set: function (value) {
+          if (this.sides % 2 !== 0) {
+            if (value !== "origin" && value !== "vertical") throw "Center must be 'origin' or 'vertical'";
+            Object.defineProperty(this, "center", {
+              get: function () {
+                return value;
+              }
+            });
+            this.y = this.y;
+          }
+          else console.warn("The center property only applies to shapes with odd numbers of sides");
+        }
       }
     });
+    if (this.sides % 2 !== 0) this.center = verify(config.center, "origin");
+    else if (config.center) console.warn("The center property only applies to shapes with odd numbers of sides");
+    this.width = verify(config.width, 2 * this.c.width / 3);
     this.x = verify(config.x, this.c.width / 2);
     this.y = verify(config.y, this.c.height / 2);
     this.color = verify(verify(config.color, themes[theme.color].gradientLight), "#888888");
-    this.width = verify(config.width, 2 * this.c.width / 3);
     //this.height = this.radius * Math.sqrt(3);
     this.draw = (x, y, z) => {
       x = verify(x, 0);
