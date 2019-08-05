@@ -114,6 +114,7 @@ class Shape {
     this.framerate = fps || 60;
     this.rotations = [];
     this.loop = -1;
+    this.shape = (...params) => shape.apply(this, params);
     Object.defineProperties(this, {
       show: {
         get: function() {
@@ -187,7 +188,7 @@ class Shape {
       y = verify(y, 0);
       z = verify(z, 0);
       this.clear(false);
-      shape.call(this, x, y, z, 0);
+      this.shape(x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
       this.rotations = [x, y, z];
@@ -204,7 +205,7 @@ class Shape {
         let z = this.rotations[2];
         this.stop();
         this.ctx.save();
-        shape.call(this, x, y, z, add);
+        this.shape(x, y, z, add);
         /*this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
         for (let side = 0; side <= this.sides; side++) {
           this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle));
