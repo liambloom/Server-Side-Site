@@ -89,7 +89,12 @@ if (window.themeReady) hex();
 else window.addEventListener("themeReady", hex);
 
 //Private methods here
-let verify = (value, fallback) => (typeof value === typeof fallback) ? value : fallback;
+let verify = (...values) => {
+  let correct = typeof values[values.length - 1];
+  for (let i of values) {
+    if (typeof i === correct) return i;
+  }
+};
 
 function shape(x, y, z, add) {
   this.ctx.beginPath();
@@ -214,8 +219,8 @@ class Shape {
     this.width = verify(config.width, 2 * this.c.width / 3);
     this.x = verify(config.x, this.c.width / 2);
     this.y = verify(config.y, this.c.height / 2);
-    this.color = verify(verify(config.color, themes[theme.color].gradientLight), "#888888");
-    //this.height = this.radius * Math.sqrt(3);
+    this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
+
     this.draw = (x, y, z) => {
       x = verify(x, 0);
       y = verify(y, 0);
