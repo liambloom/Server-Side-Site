@@ -1,0 +1,154 @@
+import fps from "/js/fps.js";
+
+let verify = (...values) => {
+  let correct = typeof values[values.length - 1];
+  for (let i of values) {
+    if (typeof i === correct) return i;
+  }
+};
+
+function shape(x, y, z, add) {
+  this.ctx.beginPath();
+  this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+  if (this.sides % 4 === 0) z += 180 / this.sides;
+  else if (this.sides % 2 !== 0) z += 90;
+  for (let side = 0; side <= this.sides; side++) {
+    let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
+    this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
+  }
+}
+
+let secret = [];
+
+export default class Shape {
+  constructor(sides, config) {
+    this.__key__ = secret.length;
+    for (let property of ["x", "color"]) {
+      Object.defineProperty(this, property, {
+        get: function () {
+          return secret[this.__key__][property];
+        },
+        set: function (value) {
+          if (this.show) this.clear(true);
+          secret[this.__key__][property] = value;
+          if (this.show) this.draw(...this.rotations);
+        }
+      });
+    }
+    for (let property of ["c", "ctx", "sides", "angle", "fpsArr", "framerate", "rotations", "loop", "radius"]) {
+      Object.defineProperty(this, property, {
+        get: function () {
+          return secret[this.__key__][property];
+        }
+      });
+    }
+
+    Object.defineProperties(this, {
+      show: {
+        get: function () {
+          return this.rotations.length === 3;
+        }
+      },
+      y: {
+        get: function () {
+          return secret[this.__key__].y;
+        },
+        set: function (value) {
+          if (this.show) this.clear(true);
+          let y;
+          if (this.sides % 2 === 0 || this.center === "origin") y = value;
+          else y = value + ((this.radius - (this.radius * Math.cos(Math.PI / this.sides))) / 2);
+          secret[this.__key__].y = y;
+          if (this.show) this.draw(...this.rotations);
+        }
+      },
+      width: {
+        get: function () {
+          return secret[this.__key__][width];
+        },
+        set: function (value) {
+          if (this.show) this.clear(true);
+          secret[this.__key__].width = value;
+
+          if (sides % 4 === 0) secret[this.__key__].radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
+          else if (sides % 2 === 0) secret[this.__key__].radius = value / 2;
+          else secret[this.__key__].radius = (value / Math.sin((this.sides / 2 - 0.5) * (360 / this.sides) * Math.PI / 180)) * Math.sin(Math.PI * (180 - (this.sides / 2 - 0.5) * (360 / this.sides)) / 360);
+          if (this.show) this.draw(...this.rotations);
+        }
+      },
+      center: {
+        get: function () {
+          return secret[this.__key__].center;
+        },
+        set: function (value) {
+          if (this.sides % 2 !== 0) {
+            if (value !== "origin" && value !== "vertical") throw "Center must be 'origin' or 'vertical'";
+            secret[this.__key__].center = value;
+            this.y = this.y;
+          }
+          else console.warn("The center property only applies to shapes with odd numbers of sides");
+        }
+      }
+    });
+
+    config = verify(config, {});
+    secret[this.__key__] = {
+      c: verify(document.getElementById(id(config.canvas)), document.getElementsByTagName("canvas")[0]),
+      sides: verify(sides, 4),
+      fpsArr: [1],
+      framerate: verify(config.fps, fps, 60),
+      rotations: [],
+      loop: -1,
+    };
+    secret[this.__key__].ctx = this.c.getContext('2d');
+    secret[this.__key__].angle = 180 - 360 / this.sides;
+    if (this.sides % 2 !== 0) this.center = verify(config.center, "origin");
+    else if (config.center) console.warn("The center property only applies to shapes with odd numbers of sides");
+    this.width = verify(config.width, 2 * this.c.width / 3);
+    this.x = verify(config.x, this.c.width / 2);
+    this.y = verify(config.y, this.c.height / 2);
+    this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
+
+    this.draw = (x, y, z) => {
+      let axis = { x, y, z };
+      for (let name in axis) {
+        let a = axis[name];
+        if (typeof a === "string") {
+          let value = parseFloat(a);
+          let unit = a.replace(/\d*\.?\d*\s?/, "");
+          if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) a = value * 180 / Math.PI;
+          else if (/^d(?:eg(?:ree)?s?)?$/.test(unit)) a = value;
+          else throw unit + " is not a valid unit";
+        }
+        axis[name] = verify(a, 0);
+      }
+      ({ x, y, z } = axis);
+      this.clear(false);
+      shape.call(this, x, y, z, 0);
+      this.ctx.fillStyle = this.color;
+      this.ctx.fill();
+      secret[this.__key__].rotations = [x, y, z];
+    };
+    this.spin = () => {
+
+    };
+    this.clear = (save, add) => {
+      if (this.show) {
+        add = verify(add, 0.5);
+        let x = this.rotations[0];
+        let y = this.rotations[1];
+        let z = this.rotations[2];
+        this.stop();
+        this.ctx.save();
+        shape.call(this, x, y, z, add);
+        this.ctx.clip();
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.ctx.restore();
+        if (!save) secret[this.__key__].rotations = [];
+      }
+    };
+    this.stop = () => {
+      clearInterval(this.loop);
+    };
+  }
+}

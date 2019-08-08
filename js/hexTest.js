@@ -1,8 +1,21 @@
-/*let fpsCount;
-let clearFps = () => {
-  clearInterval(fpsCount);
-  document.getElementById("fps").innerHTML = "";
-};*/
+import Shape from "/js/shapes.js";
+window.Shape = Shape;
+Shape.test = (increment, start, config, axis) => {
+  if (!increment) increment = 1;
+  if (!start) start = 3;
+  if (!config) config = {};
+  if (!axis) axis = [0, 0, 0];
+  let shape = [];
+  for (let i = start; i <= 30; i = i + increment) {
+    setTimeout(() => {
+      document.onclick = undefined;
+      if (shape[i - increment]) shape[i - increment].clear();
+      shape[i] = new Shape(i, config);
+      shape[i].draw(...axis);
+      document.onclick = () => { console.debug(i); };
+    }, 1000 * (i - start));
+  }
+}
 let getFps = () => {
   document.getElementById("fps").innerHTML = (typeof hex.fps === "number") ? Math.round(hex.fps) + " fps" : "";
 };

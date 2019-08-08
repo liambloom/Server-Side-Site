@@ -14,4 +14,4 @@ const fpsMonitor = () => {
 };
 fpsMonitor();
 
-export default { fps };
+export default fps;
