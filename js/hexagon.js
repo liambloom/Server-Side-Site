@@ -222,11 +222,23 @@ class Shape {
     this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
 
     this.draw = (x, y, z) => {
-      x = verify(x, 0);
-      y = verify(y, 0);
-      z = verify(z, 0);
+      console.log(y);
+      let axis = {x, y, z};
+      for (let name in axis) {
+        let a = axis[name];
+        if (typeof a === "string") {
+          let value = parseFloat(a);
+          let unit = a.replace(/\d*\.?\d*\s?/, "");
+          if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) a = value * 180 / Math.PI;
+          else if (/^d(?:eg(?:ree)?s?)?$/.test(unit)) a = value;
+          else throw unit + " is not a valid unit";
+        }
+        axis[name] = verify(a, 0);
+      }
+      ({x, y, z} = axis);
+      console.log(y);
       this.clear(false);
-      this.shape(x, y, z, 0);
+      shape.call(this, x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
       secret[this.__key__].rotations = [x, y, z];
