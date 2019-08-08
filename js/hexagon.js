@@ -102,29 +102,42 @@ function shape(x, y, z, add) {
   }
 }
 
+let secret = [];
+
 class Shape {
   constructor(sides, config) {
-    //if (typeof config !== "object") config = {};
-    config = verify(config, {});
-    this.c = verify(config.canvas, document.getElementsByTagName("canvas")[0]);
-    this.ctx = this.c.getContext('2d');
-    this.sides = verify(sides, 4);
-    this.angle = 180 - 360 / this.sides;
-    this.fpsArr = [1];
-    this.framerate = fps || 60;
-    this.rotations = [];
-    this.loop = -1;
-    this.shape = (...params) => shape.apply(this, params);
+    this.__key__ = secret.length;
+    secret[this.__key__] = {};
+    for (let property of ["x", "color"]) {
+      Object.defineProperty(this, property, {
+        get: function () {
+          return secret[this.__key__][property];
+        },
+        set: function (value) {
+          if (this.show) this.clear(true);
+          secret[this.__key__][property] = value;
+          if (this.show) this.draw(...this.rotations);
+        }
+      });
+    }
+    for (let property of ["c", "ctx", "sides", "angle", "fpsArr", "framerate", "rotations", "loop", "radius"]) {
+      Object.defineProperty(this, property, {
+        get: function() {
+          return secret[this.__key__][property];
+        }
+      });
+    }
+
     Object.defineProperties(this, {
       show: {
         get: function() {
           return this.rotations.length === 3;
         }
       },
-      x: {
+      /*x: {
         configurable: true,
         set: function(value) {
-          if (this.show)  this.clear(true);
+          if (this.show) this.clear(true);
           Object.defineProperty(this, "x", {
             get: function() {
               return value;
@@ -132,23 +145,21 @@ class Shape {
           });
           if (this.show) this.draw(...this.rotations);
         }
-      },
+      },*/
       y: {
-        configurable: true,
+        get: function () {
+          return secret[this.__key__].y;
+        },
         set: function (value) {
           if (this.show) this.clear(true);
           let y;
           if (this.sides % 2 === 0 || this.center === "origin") y = value;
           else y = value + ((this.radius - (this.radius * Math.cos(Math.PI / this.sides))) / 2);
-          Object.defineProperty(this, "y", {
-            get: function () {
-              return y;
-            }
-          });
+          secret[this.__key__].y = y;
           if (this.show) this.draw(...this.rotations);
         }
       },
-      color: {
+      /*color: {
         configurable: true,
         set: function (value) {
           if (this.show) this.clear(true);
@@ -159,43 +170,45 @@ class Shape {
           });
           if (this.show) this.draw(...this.rotations);
         }
-      },
+      },*/
       width: {
-        configurable: true,
+        get: function () {
+          return secret[this.__key__][width];
+        },
         set: function (value) {
           if (this.show) this.clear(true);
-          Object.defineProperty(this, "width", {
-            get: function () {
-              return value;
-            }
-          });
+          secret[this.__key__].width = value;
           
-          if (sides % 4 === 0) this.radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
-          else if (sides % 2 === 0) this.radius = value / 2;
-          else this.radius = (value / Math.sin((this.sides / 2 - 0.5) * (360 / this.sides) * Math.PI / 180)) * Math.sin(Math.PI * (180 - (this.sides / 2 - 0.5) * (360 / this.sides)) / 360);
-          //console.log(this.radius);
-          //console.log(this.angle);
-          //else this.radius = //nothing
-          //this.height = this.radius * Math.sqrt(3);
+          if (sides % 4 === 0) secret[this.__key__].radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
+          else if (sides % 2 === 0) secret[this.__key__].radius = value / 2;
+          else secret[this.__key__].radius = (value / Math.sin((this.sides / 2 - 0.5) * (360 / this.sides) * Math.PI / 180)) * Math.sin(Math.PI * (180 - (this.sides / 2 - 0.5) * (360 / this.sides)) / 360);
           if (this.show) this.draw(...this.rotations);
         }
       },
       center: {
-        configurable: true,
+        get: function () {
+          return secret[this.__key__].center;
+        },
         set: function (value) {
           if (this.sides % 2 !== 0) {
             if (value !== "origin" && value !== "vertical") throw "Center must be 'origin' or 'vertical'";
-            Object.defineProperty(this, "center", {
-              get: function () {
-                return value;
-              }
-            });
+            secret[this.__key__].center = value;
             this.y = this.y;
           }
           else console.warn("The center property only applies to shapes with odd numbers of sides");
         }
       }
     });
+
+    config = verify(config, {});
+    secret[this.__key__].c = verify(config.canvas, document.getElementsByTagName("canvas")[0]);
+    secret[this.__key__].ctx = this.c.getContext('2d');
+    secret[this.__key__].sides = verify(sides, 4);
+    secret[this.__key__].angle = 180 - 360 / this.sides;
+    secret[this.__key__].fpsArr = [1];
+    secret[this.__key__].framerate = verify(config.fps, fps, 60);
+    secret[this.__key__].rotations = [];
+    secret[this.__key__].loop = -1;
     if (this.sides % 2 !== 0) this.center = verify(config.center, "origin");
     else if (config.center) console.warn("The center property only applies to shapes with odd numbers of sides");
     this.width = verify(config.width, 2 * this.c.width / 3);
@@ -211,7 +224,7 @@ class Shape {
       this.shape(x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
-      this.rotations = [x, y, z];
+      secret[this.__key__].rotations = [x, y, z];
     };
     this.spin = () => {
 
@@ -225,7 +238,7 @@ class Shape {
         let z = this.rotations[2];
         this.stop();
         this.ctx.save();
-        this.shape(x, y, z, add);
+        shape.call(this, x, y, z, add);
         /*this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
         for (let side = 0; side <= this.sides; side++) {
           this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(side * 2 * Math.PI / this.sides + Math.PI * z / this.angle));
@@ -233,7 +246,7 @@ class Shape {
         this.ctx.clip();
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
         this.ctx.restore();
-        if (!save) this.rotations = [];
+        if (!save) secret[this.__key__].rotations = [];
       }
     };
     this.stop = () => {
@@ -241,16 +254,16 @@ class Shape {
     };
   }
 
-  test(increment, start, config) {
+  test(increment, start, config, axis) {
     let shape = [];
     for (let i = start; i <= 30; i = i + increment) {
       setTimeout(() => {
         document.onclick = undefined;
         if (shape[i - increment]) shape[i - increment].clear();
         shape[i] = new Shape(i, config);
-        shape[i].draw(0, 0, 0);
-        document.onclick = () => { console.log(i); };
-      }, 1000 * i);
+        shape[i].draw(...axis);
+        document.onclick = () => { console.debug(i); };
+      }, 1000 * (i - start));
     }
   }
 }
