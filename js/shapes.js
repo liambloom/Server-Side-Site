@@ -16,6 +16,24 @@ function shape(x, y, z, add) {
   }
 }
 
+function clearApi(save, stop, add) {
+  if (this.show) {
+    save = verify(save, false);
+    stop = verify(stop, true);
+    add = verify(add, 0.5);
+    let x = this.rotations[0];
+    let y = this.rotations[1];
+    let z = this.rotations[2];
+    if (stop) this.stop();
+    this.ctx.save();
+    shape.call(this, x, y, z, add);
+    this.ctx.clip();
+    this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+    this.ctx.restore();
+    if (!save) secret[this.__key__].rotations = [];
+  }
+}
+
 let secret = [];
 
 export default class Shape {
@@ -27,9 +45,9 @@ export default class Shape {
           return secret[this.__key__][property];
         },
         set: function (value) {
-          if (this.show) this.clear(true);
+          if (this.show && this.loop === -1) clearApi.call(this, true);
           secret[this.__key__][property] = value;
-          if (this.show) this.draw(...this.rotations);
+          if (this.show && this.loop === -1) this.draw(...this.rotations);
         }
       });
     }
@@ -52,12 +70,12 @@ export default class Shape {
           return secret[this.__key__].y;
         },
         set: function (value) {
-          if (this.show) this.clear(true);
+          if (this.show && this.loop === -1) clearApi.call(this, true);
           let y;
           if (this.sides % 2 === 0 || this.center === "origin") y = value;
           else y = value + ((this.radius - (this.radius * Math.cos(Math.PI / this.sides))) / 2);
           secret[this.__key__].y = y;
-          if (this.show) this.draw(...this.rotations);
+          if (this.show && this.loop === -1) this.draw(...this.rotations);
         }
       },
       width: {
@@ -65,7 +83,7 @@ export default class Shape {
           return secret[this.__key__][width];
         },
         set: function (value) {
-          if (this.show) this.clear(true);
+          if (this.show && this.loop === -1) clearApi.call(this, true);
           secret[this.__key__].width = value;
 
           if (sides % 4 === 0) secret[this.__key__].radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
@@ -74,7 +92,7 @@ export default class Shape {
           secret[this.__key__].inradius = this.radius * Math.cos(Math.PI / this.sides);
           if (this.sides % 2 === 0) secret[this.__key__].height = this.inradius * 2;
           else secret[this.__key__].height = this.inradius + this.radius;
-          if (this.show) this.draw(...this.rotations);
+          if (this.show && this.loop === -1) this.draw(...this.rotations);
         }
       },
       center: {
@@ -84,8 +102,10 @@ export default class Shape {
         set: function (value) {
           if (this.sides % 2 !== 0) {
             if (value !== "origin" && value !== "vertical") throw "Center must be 'origin' or 'vertical'";
+            if (this.show && this.loop === -1) clearApi.call(this, true);
             secret[this.__key__].center = value;
             this.y = this.y;
+            if (this.show && this.loop === -1) this.draw(...this.rotations);
           }
           else console.warn("The center property only applies to shapes with odd numbers of sides");
         }
@@ -168,7 +188,7 @@ export default class Shape {
         else {
           let value = parseFloat(i);
           let unit = i.replace(/\d*\.?\d+\s*(.*)/, "$1").replace(/\s*$/, "");
-          if (isNaN(value)) throw i.match(/\d*\.\d*/)[0] + " is not a valid measurement";
+          if (isNaN(value)) throw i + " is not a valid measurement";
           if (/^m(?:in(?:ute)?s?)?$/i.test(unit)) ms = value * 60000; // minutes
           else if (/^s(?:ec(?:ond)?s?)?$/i.test(unit)) ms = value * 1000; // seconds
           else if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) degrees = value * 180 / Math.PI; // radians
@@ -197,15 +217,18 @@ export default class Shape {
           else this.stop();
         }
         else {
-          this.clear(false, false);
-          axes.push((performance.now() - startTime) * dpms + start);
+          clearApi.call(this, false, false, 1);
+          let angle = (performance.now() - startTime) * dpms + start;
+          if (angle % 360 < 180) axes.push(angle);
+          else axes.push(angle + 180);
           this.draw(...axes);
           axes.pop();
         }
       }, 1000 / this.fps);
     };
-    this.clear = (save, stop, add) => {
-      if (this.show) {
+    this.clear = (/*save, stop, add*/) => {
+      clearApi.call(this);
+      /*if (this.show) {
         save = verify(save, false);
         stop = verify(stop, true);
         add = verify(add, 0.5);
@@ -219,10 +242,11 @@ export default class Shape {
         this.ctx.clearRect(0, 0, this.c.width, this.c.height);
         this.ctx.restore();
         if (!save) secret[this.__key__].rotations = [];
-      }
+      }*/
     };
     this.stop = () => {
       clearInterval(this.loop);
+      secret[this.__key__].loop = -1;
     };
   }
 }
