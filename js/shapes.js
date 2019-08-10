@@ -1,7 +1,7 @@
 let verify = (...values) => {
   let correct = typeof values[values.length - 1];
   for (let i of values) {
-    if (typeof i === correct) return i;
+    if (typeof i === correct && i !== null) return i;
   }
 };
 
@@ -44,7 +44,7 @@ export default class Shape {
     Object.defineProperties(this, {
       show: {
         get: function () {
-          return this.rotations.length === 3;
+          return this.rotations ? this.rotations.length === 3 : false;
         }
       },
       y: {
@@ -115,9 +115,9 @@ export default class Shape {
     this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
 
     this.draw = (x, y, z) => {
-      let axis = { x, y, z };
-      for (let name in axis) {
-        let a = axis[name];
+      let axes = { x, y, z };
+      for (let name in axes) {
+        let a = axes[name];
         if (typeof a === "string") {
           let value = parseFloat(a);
           let unit = a.replace(/\d*\.?\d+\s?/, "");
@@ -125,60 +125,85 @@ export default class Shape {
           else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) a = value;
           else throw unit + " is not a valid unit";
         }
-        axis[name] = verify(a, 0);
+        axes[name] = verify(a, 0);
       }
-      ({ x, y, z } = axis);
-      this.clear(false);
+      ({ x, y, z } = axes);
+      this.clear();
+      //this.ctx.save();
       shape.call(this, x, y, z, 0);
+      //this.ctx.clip();
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
+      /*let gradient = this.ctx.createLinearGradient(x - this.width / 2, y - this.height / 2, x + this.width / 2, y + this.height / 2);
+      gradient.addColorStop(0, "#444444");
+      gradient.addColorStop(1, "#bbbbbb");
+      this.ctx.fillStyle = gradient;
+      this.ctx.fillRect(0, 0, this.c.width, this.c.height);
+      this.ctx.restore();*/
       secret[this.__key__].rotations = [x, y, z];
     };
     this.spin = (axis, input1, input2, start) => {
-      if (typeof axis !== string|| !/^(?:x|y|z)$/i.test(axis)) throw 'Axis must be "x", "y", or "z"';
-      let rpms, rotations, ms;
+      let dpms, degrees, ms, axes;
       let disapear = false;
+      start = verify(start, 0);
+      if (typeof axis !== "string") throw 'Axis must be "x", "y", or "z"';
+      else if (/^x$/i.test(axis)) axes = [];
+      else if (/^y$/i.test(axis)) axes = [0];
+      else if (/^z$/i.test(axis)) axes = [0, 0];
+      else throw 'Axis must be "x", "y", or "z"';
       for (let i of [input1, input2]) {
         if (typeof i !== "string") throw i + " is not a valid input";
         if (/^\s*infinit(?:e(?:ly)?|y)\s*$/i.test(i)) {
           ms = Infinity;
-          rotations = Infinity;
+          degrees = Infinity;
         }
         else {
           let value = parseFloat(i);
-          let unit = i.replace(/\d*\.?\d+\s*(\S*)\s/, "$1");
+          let unit = i.replace(/\d*\.?\d+\s*(.*)/, "$1").replace(/\s*$/, "");
           if (isNaN(value)) throw i.match(/\d*\.\d*/)[0] + " is not a valid measurement";
           if (/^m(?:in(?:ute)?s?)?$/i.test(unit)) ms = value * 60000; // minutes
           else if (/^s(?:ec(?:ond)?s?)?$/i.test(unit)) ms = value * 1000; // seconds
-          else if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) rotations = value / (2 * Math.PI); // radians
-          else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) rotations = value / 360; // degrees
-          else if (/^rot(?:ations?)?\s*$/i.test(unit)) rotations = value; // rotations
-          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*m(?:in(?:ute)?)?$/i.test(unit)) rpms = value / 60000; // rpm
-          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*s(?:ec(?:ond)?)?$/i.test(unit)) rpms = value / 1000; // rps
+          else if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) degrees = value * 180 / Math.PI; // radians
+          else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) degrees = value; // degrees
+          else if (/^rot(?:ations?)?\s*$/i.test(unit)) degrees = value * 360; // rotations
+          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*m(?:in(?:ute)?)?$/i.test(unit)) dpms = 360 * value / 60000; // rpm
+          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*s(?:ec(?:ond)?)?$/i.test(unit)) dpms = 360 * value / 1000; // rps
           else throw unit + " is not a valid unit";
         }
       }
-      if ((ms === Infinity || rotations === Infinity) && rpms === undefined) throw "Spin speed must be specified to spin infinitely";
-      if (rpms !== undefined && rotations !== undefined) ms = rotations / rpms;
-      else if (ms !== undefined && rotations !== undefined) rpms = rotations / ms;
-      if (rpms === undefined || ms === undefined) throw "Not enouph information to spin shape";
-      //if (rotations % 0.25 === 0 && rotations % 0.5 !== 0) disapear = true;
+      if ((ms === Infinity || degrees === Infinity) && dpms === undefined) throw "Spin speed must be specified to spin infinitely";
+      if (dpms !== undefined && degrees !== undefined) ms = degrees / dpms;
+      else if (ms !== undefined && degrees !== undefined) dpms = degrees / ms;
+      if (dpms === undefined || ms === undefined) throw "Not enouph information to spin shape";
+      let checker = degrees % 90;
+      if (checker < 1 || checker > 89) disapear = true;
 
-      let end = performance.now() + ms - 1;
+      console.log(ms);
+      let startTime = performance.now();
+      let end = startTime + ms - 1;
+      this.draw(0, 0, 0);
       secret[this.__key__].loop = setInterval(() => {
-        if (performance.now() >= end) this.stop();
+        if (performance.now() >= end) {
+          if (disapear) this.clear();
+          else this.stop();
+        }
         else {
-          this.draw();
+          this.clear(false, false);
+          axes.push((performance.now() - startTime) * dpms + start);
+          this.draw(...axes);
+          axes.pop();
         }
       }, 1000 / this.fps);
     };
-    this.clear = (save, add) => {
+    this.clear = (save, stop, add) => {
       if (this.show) {
+        save = verify(save, false);
+        stop = verify(stop, true);
         add = verify(add, 0.5);
         let x = this.rotations[0];
         let y = this.rotations[1];
         let z = this.rotations[2];
-        this.stop();
+        if (stop) this.stop();
         this.ctx.save();
         shape.call(this, x, y, z, add);
         this.ctx.clip();
