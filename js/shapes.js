@@ -5,7 +5,7 @@ let verify = (...values) => {
   }
 };
 
-function shape(x, y, z, add) {
+function shape (x, y, z, add) {
   this.ctx.beginPath();
   this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
   if (this.sides % 4 === 0) z += 180 / this.sides;
@@ -16,7 +16,7 @@ function shape(x, y, z, add) {
   }
 }
 
-function clearApi(save, stop, add) {
+function clearApi (save, stop, add) {
   if (this.show) {
     save = verify(save, false);
     stop = verify(stop, true);
@@ -211,7 +211,7 @@ export default class Shape {
         else {
           clearApi.call(this, false, false, 1);
           let angle = (performance.now() - startTime) * dpms + start;
-          if (angle % 360 < 180) axes.push(angle);
+          if (angle % 360 < 180 || axes.length === 2) axes.push(angle);
           else axes.push(angle + 180);
           this.draw(...axes);
           axes.pop();
