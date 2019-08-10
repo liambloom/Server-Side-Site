@@ -145,7 +145,15 @@ export default class Shape {
     this.spin = (axis, input1, input2, start) => {
       let dpms, degrees, ms, axes;
       let disapear = false;
-      start = verify(start, 0);
+      if (typeof start === "string") {
+        let value = parseFloat(start);
+        let unit = start.replace(/\d*\.?\d+\s?/, "");
+        if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) start = value * 180 / Math.PI;
+        else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) start = value;
+        else throw unit + " is not a valid unit";
+      }
+      else if (start === undefined) start = 0;
+      else throw start + " is not a valid starting point";
       if (typeof axis !== "string") throw 'Axis must be "x", "y", or "z"';
       else if (/^x$/i.test(axis)) axes = [];
       else if (/^y$/i.test(axis)) axes = [0];
@@ -175,13 +183,14 @@ export default class Shape {
       if (dpms !== undefined && degrees !== undefined) ms = degrees / dpms;
       else if (ms !== undefined && degrees !== undefined) dpms = degrees / ms;
       if (dpms === undefined || ms === undefined) throw "Not enouph information to spin shape";
-      let checker = degrees % 90;
-      if (checker < 1 || checker > 89) disapear = true;
+      let checker = (degrees + start + 90) % 180;
+      if (checker < 1 || checker > 179) disapear = true;
 
-      console.log(ms);
       let startTime = performance.now();
       let end = startTime + ms - 1;
-      this.draw(0, 0, 0);
+      axes.push(start);
+      this.draw(...axes);
+      axes.pop();
       secret[this.__key__].loop = setInterval(() => {
         if (performance.now() >= end) {
           if (disapear) this.clear();
