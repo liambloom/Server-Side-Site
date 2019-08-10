@@ -1,5 +1,3 @@
-import fps from "/js/fps.js";
-
 let verify = (...values) => {
   let correct = typeof values[values.length - 1];
   for (let i of values) {
@@ -35,7 +33,7 @@ export default class Shape {
         }
       });
     }
-    for (let property of ["c", "ctx", "sides", "angle", "fpsArr", "framerate", "rotations", "loop", "radius"]) {
+    for (let property of ["c", "ctx", "sides", "angle", "fpsArr", "fps", "rotations", "loop", "radius", "inradius", "height"]) {
       Object.defineProperty(this, property, {
         get: function () {
           return secret[this.__key__][property];
@@ -73,6 +71,9 @@ export default class Shape {
           if (sides % 4 === 0) secret[this.__key__].radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
           else if (sides % 2 === 0) secret[this.__key__].radius = value / 2;
           else secret[this.__key__].radius = (value / Math.sin((this.sides / 2 - 0.5) * (360 / this.sides) * Math.PI / 180)) * Math.sin(Math.PI * (180 - (this.sides / 2 - 0.5) * (360 / this.sides)) / 360);
+          secret[this.__key__].inradius = this.radius * Math.cos(Math.PI / this.sides);
+          if (this.sides % 2 === 0) secret[this.__key__].height = this.inradius * 2;
+          else secret[this.__key__].height = this.inradius + this.radius;
           if (this.show) this.draw(...this.rotations);
         }
       },
@@ -93,13 +94,17 @@ export default class Shape {
 
     config = verify(config, {});
     secret[this.__key__] = {
-      c: verify(document.getElementById(id(config.canvas)), document.getElementsByTagName("canvas")[0]),
       sides: verify(sides, 4),
       fpsArr: [1],
-      framerate: verify(config.fps, fps, 60),
-      rotations: [],
-      loop: -1,
+      fps: verify(config.fps, 144),
+      loop: -1
     };
+    if ((typeof config.canvas === "object" && config.canvas !== null) ?
+      (Object.getPrototypeOf(config.canvas) === HTMLCanvasElement.prototype) : false) {
+      secret[this.__key__] = config.canvas;
+    }
+    else secret[this.__key__].c = document.getElementsByTagName("canvas")[0];
+    if (!this.c) throw "There are no canvas elements on this page";
     secret[this.__key__].ctx = this.c.getContext('2d');
     secret[this.__key__].angle = 180 - 360 / this.sides;
     if (this.sides % 2 !== 0) this.center = verify(config.center, "origin");
@@ -115,9 +120,9 @@ export default class Shape {
         let a = axis[name];
         if (typeof a === "string") {
           let value = parseFloat(a);
-          let unit = a.replace(/\d*\.?\d*\s?/, "");
+          let unit = a.replace(/\d*\.?\d+\s?/, "");
           if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) a = value * 180 / Math.PI;
-          else if (/^d(?:eg(?:ree)?s?)?$/.test(unit)) a = value;
+          else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) a = value;
           else throw unit + " is not a valid unit";
         }
         axis[name] = verify(a, 0);
@@ -129,8 +134,43 @@ export default class Shape {
       this.ctx.fill();
       secret[this.__key__].rotations = [x, y, z];
     };
-    this.spin = () => {
+    this.spin = (axis, input1, input2, start) => {
+      if (typeof axis !== string|| !/^(?:x|y|z)$/i.test(axis)) throw 'Axis must be "x", "y", or "z"';
+      let rpms, rotations, ms;
+      let disapear = false;
+      for (let i of [input1, input2]) {
+        if (typeof i !== "string") throw i + " is not a valid input";
+        if (/^\s*infinit(?:e(?:ly)?|y)\s*$/i.test(i)) {
+          ms = Infinity;
+          rotations = Infinity;
+        }
+        else {
+          let value = parseFloat(i);
+          let unit = i.replace(/\d*\.?\d+\s*(\S*)\s/, "$1");
+          if (isNaN(value)) throw i.match(/\d*\.\d*/)[0] + " is not a valid measurement";
+          if (/^m(?:in(?:ute)?s?)?$/i.test(unit)) ms = value * 60000; // minutes
+          else if (/^s(?:ec(?:ond)?s?)?$/i.test(unit)) ms = value * 1000; // seconds
+          else if (/^r(?:ad(?:ian)?s?)?$/i.test(unit)) rotations = value / (2 * Math.PI); // radians
+          else if (/^d(?:eg(?:ree)?s?)?$/i.test(unit)) rotations = value / 360; // degrees
+          else if (/^rot(?:ations?)?\s*$/i.test(unit)) rotations = value; // rotations
+          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*m(?:in(?:ute)?)?$/i.test(unit)) rpms = value / 60000; // rpm
+          else if (/^r(?:otations)?\s*(?:p(?:er)?|\/)\s*s(?:ec(?:ond)?)?$/i.test(unit)) rpms = value / 1000; // rps
+          else throw unit + " is not a valid unit";
+        }
+      }
+      if ((ms === Infinity || rotations === Infinity) && rpms === undefined) throw "Spin speed must be specified to spin infinitely";
+      if (rpms !== undefined && rotations !== undefined) ms = rotations / rpms;
+      else if (ms !== undefined && rotations !== undefined) rpms = rotations / ms;
+      if (rpms === undefined || ms === undefined) throw "Not enouph information to spin shape";
+      //if (rotations % 0.25 === 0 && rotations % 0.5 !== 0) disapear = true;
 
+      let end = performance.now() + ms - 1;
+      secret[this.__key__].loop = setInterval(() => {
+        if (performance.now() >= end) this.stop();
+        else {
+          this.draw();
+        }
+      }, 1000 / this.fps);
     };
     this.clear = (save, add) => {
       if (this.show) {
