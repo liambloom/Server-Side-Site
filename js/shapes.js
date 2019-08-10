@@ -149,17 +149,9 @@ export default class Shape {
       }
       ({ x, y, z } = axes);
       this.clear();
-      //this.ctx.save();
       shape.call(this, x, y, z, 0);
-      //this.ctx.clip();
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
-      /*let gradient = this.ctx.createLinearGradient(x - this.width / 2, y - this.height / 2, x + this.width / 2, y + this.height / 2);
-      gradient.addColorStop(0, "#444444");
-      gradient.addColorStop(1, "#bbbbbb");
-      this.ctx.fillStyle = gradient;
-      this.ctx.fillRect(0, 0, this.c.width, this.c.height);
-      this.ctx.restore();*/
       secret[this.__key__].rotations = [x, y, z];
     };
     this.spin = (axis, input1, input2, start) => {
@@ -226,23 +218,8 @@ export default class Shape {
         }
       }, 1000 / this.fps);
     };
-    this.clear = (/*save, stop, add*/) => {
+    this.clear = () => {
       clearApi.call(this);
-      /*if (this.show) {
-        save = verify(save, false);
-        stop = verify(stop, true);
-        add = verify(add, 0.5);
-        let x = this.rotations[0];
-        let y = this.rotations[1];
-        let z = this.rotations[2];
-        if (stop) this.stop();
-        this.ctx.save();
-        shape.call(this, x, y, z, add);
-        this.ctx.clip();
-        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-        this.ctx.restore();
-        if (!save) secret[this.__key__].rotations = [];
-      }*/
     };
     this.stop = () => {
       clearInterval(this.loop);
