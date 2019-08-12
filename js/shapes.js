@@ -1,7 +1,15 @@
 let verify = (...values) => {
-  let correct = typeof values[values.length - 1];
-  for (let i of values) {
-    if (typeof i === correct && i !== null) return i;
+  let final = values[values.length - 1];
+  if (final === null) return null;
+  else if (typeof final === "number" && isNaN(final)) return NaN;
+  else if (final === undefined) return undefined;
+  else {
+    let correct = typeof final;
+    let shouldBeArray = Array.isArray(final);
+    let isNumber = typeof final === "number" || typeof final === "boolean"; // why is isNaN(booleanValue) false
+    for (let i of values) {
+      if (typeof i === correct && i !== null && (isNumber ^ isNaN(i)) && Array.isArray(i) === shouldBeArray) return i;
+    }
   }
 };
 
