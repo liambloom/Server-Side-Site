@@ -1,5 +1,6 @@
-import Shape from "/js/shapes.js";
-window.Shape = Shape;
+import * as polygons from "/js/shapes.js";
+window.Shape = polygons.Shape;
+window.HexGrid = polygons.HexGrid;
 Shape.test = (increment, start, config, axis) => {
   if (!increment) increment = 1;
   if (!start) start = 3;
@@ -15,7 +16,7 @@ Shape.test = (increment, start, config, axis) => {
       document.onclick = () => { console.debug(i); };
     }, 1000 * (i - start));
   }
-}
+};
 let getFps = () => {
   document.getElementById("fps").innerHTML = (typeof hex.fps === "number") ? Math.round(hex.fps) + " fps" : "";
 };
