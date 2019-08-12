@@ -15,7 +15,7 @@ let verify = (...values) => {
 
 let secret = [];
 
-export default class Shape {
+export class Shape {
   constructor(sides, config) {
     this.__key__ = secret.length;
     for (let property of ["x", "color"]) {
