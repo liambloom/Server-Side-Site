@@ -13,35 +13,6 @@ let verify = (...values) => {
   }
 };
 
-function shape (x, y, z, add) {
-  this.ctx.beginPath();
-  this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
-  if (this.sides % 4 === 0) z += 180 / this.sides;
-  else if (this.sides % 2 !== 0) z += 90;
-  for (let side = 0; side <= this.sides; side++) {
-    let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
-    this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
-  }
-}
-
-function clearApi (save, stop, add) {
-  if (this.show) {
-    save = verify(save, false);
-    stop = verify(stop, true);
-    add = verify(add, 0.5);
-    let x = this.rotations[0];
-    let y = this.rotations[1];
-    let z = this.rotations[2];
-    if (stop) this.stop();
-    this.ctx.save();
-    shape.call(this, x, y, z, add);
-    this.ctx.clip();
-    this.ctx.clearRect(0, 0, this.c.width, this.c.height);
-    this.ctx.restore();
-    if (!save) secret[this.__key__].rotations = [];
-  }
-}
-
 let secret = [];
 
 export default class Shape {
@@ -53,7 +24,7 @@ export default class Shape {
           return secret[this.__key__][property];
         },
         set: function (value) {
-          if (this.show && this.loop === -1) clearApi.call(this, true);
+          if (this.show && this.loop === -1) clearApi(true);
           secret[this.__key__][property] = value;
           if (this.show && this.loop === -1) this.draw(...this.rotations);
         }
@@ -78,7 +49,7 @@ export default class Shape {
           return secret[this.__key__].y;
         },
         set: function (value) {
-          if (this.show && this.loop === -1) clearApi.call(this, true);
+          if (this.show && this.loop === -1) clearApi(true);
           let y;
           if (this.sides % 2 === 0 || this.center === "origin") y = value;
           else y = value + ((this.radius - (this.radius * Math.cos(Math.PI / this.sides))) / 2);
@@ -91,7 +62,7 @@ export default class Shape {
           return secret[this.__key__][width];
         },
         set: function (value) {
-          if (this.show && this.loop === -1) clearApi.call(this, true);
+          if (this.show && this.loop === -1) clearApi(true);
           secret[this.__key__].width = value;
 
           if (sides % 4 === 0) secret[this.__key__].radius = (value / 2) / Math.sin(Math.PI * this.angle / 360);
@@ -110,7 +81,7 @@ export default class Shape {
         set: function (value) {
           if (this.sides % 2 !== 0) {
             if (value !== "origin" && value !== "vertical") throw "Center must be 'origin' or 'vertical'";
-            if (this.show && this.loop === -1) clearApi.call(this, true);
+            if (this.show && this.loop === -1) clearApi(true);
             secret[this.__key__].center = value;
             this.y = this.y;
             if (this.show && this.loop === -1) this.draw(...this.rotations);
@@ -142,6 +113,35 @@ export default class Shape {
     this.y = verify(config.y, this.c.height / 2);
     this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
 
+    let shape = (function shape(x, y, z, add) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
+      if (this.sides % 4 === 0) z += 180 / this.sides;
+      else if (this.sides % 2 !== 0) z += 90;
+      for (let side = 0; side <= this.sides; side++) {
+        let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
+        this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
+      }
+    }).bind(this);
+
+    let clearApi = (function clearApi(save, stop, add) {
+      if (this.show) {
+        save = verify(save, false);
+        stop = verify(stop, true);
+        add = verify(add, 0.5);
+        let x = this.rotations[0];
+        let y = this.rotations[1];
+        let z = this.rotations[2];
+        if (stop) this.stop();
+        this.ctx.save();
+        shape(x, y, z, add);
+        this.ctx.clip();
+        this.ctx.clearRect(0, 0, this.c.width, this.c.height);
+        this.ctx.restore();
+        if (!save) secret[this.__key__].rotations = [];
+      }
+    }).bind(this);
+
     this.draw = (x, y, z) => {
       let axes = { x, y, z };
       for (let name in axes) {
@@ -157,7 +157,7 @@ export default class Shape {
       }
       ({ x, y, z } = axes);
       this.clear();
-      shape.call(this, x, y, z, 0);
+      shape(x, y, z, 0);
       this.ctx.fillStyle = this.color;
       this.ctx.fill();
       secret[this.__key__].rotations = [x, y, z];
@@ -217,7 +217,7 @@ export default class Shape {
           else this.stop();
         }
         else {
-          clearApi.call(this, false, false, 1);
+          clearApi(false, false, 1);
           let angle = (performance.now() - startTime) * dpms + start;
           if (angle % 360 < 180 || axes.length === 2) axes.push(angle);
           else axes.push(angle + 180);
@@ -227,7 +227,7 @@ export default class Shape {
       }, 1000 / this.fps);
     };
     this.clear = () => {
-      clearApi.call(this);
+      clearApi();
     };
     this.stop = () => {
       clearInterval(this.loop);
