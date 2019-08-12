@@ -235,3 +235,63 @@ export class Shape {
     };
   }
 }
+
+export class HexGrid {
+  constructor(config) {
+    config = verify(config, {});
+    config.grid = verify(config.grid, {});
+    config.spin = verify(config.spin, ["y", "infinitely", "20rpm"]);
+    this.hexagons = [];
+    let c, minX, minY, maxX, maxY, offsetFinalX, offsetFinalY;
+    if ((typeof config.canvas === "object" && config.canvas !== null) ?
+      (Object.getPrototypeOf(config.canvas) === HTMLCanvasElement.prototype) : false) {
+      c = config.canvas;
+    }
+    else c = document.getElementsByTagName("canvas")[0];
+    let gridX = verify(config.grid.x, 0);
+    let gridY = verify(config.grid.y, 0);
+    let height = verify(config.grid.height, c.height);
+    let width = verify(config.grid.width, c.width);
+    let shapeWidth = verify(config.width, 30);
+    let radius = shapeWidth / 2;
+    let inradius = radius * Math.cos(Math.PI / 6);
+    let side = 2 * radius * Math.sin(Math.PI / 6);
+    let shapeHeight = inradius * 2;
+    config.width = shapeWidth;
+
+    let addShape = (function(config, x, y) {
+      config.color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+      config.x = x;
+      config.y = y;
+      let hex = new Shape(6, config);
+      this.hexagons.push(hex);
+      hex.draw();
+      //hex.spin(...config.spin);
+    }).bind(this);
+
+    //lots of stuff in this if statement are wrong
+    if (verify(config.grid.allowOverflow, false)) { 
+      minX = gridX - (side / 2);
+      minY = gridY;
+      maxX = width + gridX + shapeWidth + /*side*/ - width % (shapeWidth + side);
+      maxY = height + gridY + shapeHeight - height % shapeHeight;
+      offsetFinalX = (width + gridX - (maxX - side)) > (side / 2);
+      offsetFinalY = (height + gridY - maxY) > 0;
+    }
+    else {
+      minX = gridX + radius;
+      minY = gridY + inradius;
+      maxX = Math.ceil((width + gridX - radius) / shapeWidth) * shapeWidth - radius;
+      maxY = Math.floor((height + gridY - inradius) / shapeHeight) * shapeHeight - inradius;
+      offsetFinalX = (width - maxX) >= shapeWidth;
+      offsetFinalY = (height - maxY) >= shapeHeight;
+    }
+
+    for (let x = minX; x <= maxX; x = x + shapeWidth + side) {
+      for (let y = minY; y <= maxY; y = y + shapeHeight) {
+        addShape(config, x, y);
+        if ((offsetFinalX || x + shapeWidth + side <= maxX) && (offsetFinalY || y + shapeHeight <= maxY)) addShape(config, x + radius + (side / 2), y + inradius);
+      }
+    }
+  }
+}
