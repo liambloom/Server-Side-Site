@@ -240,7 +240,6 @@ export class HexGrid {
   constructor(config) {
     config = verify(config, {});
     config.grid = verify(config.grid, {});
-    config.spin = verify(config.spin, ["y", "infinitely", "20rpm"]);
     this.hexagons = [];
     let c, minX, minY, maxX, maxY, offsetFinalX, offsetFinalY;
     if ((typeof config.canvas === "object" && config.canvas !== null) ?
@@ -265,8 +264,6 @@ export class HexGrid {
       config.y = y;
       let hex = new Shape(6, config);
       this.hexagons.push(hex);
-      hex.draw();
-      //hex.spin(...config.spin);
     }).bind(this);
 
     //lots of stuff in this if statement are wrong
@@ -293,5 +290,29 @@ export class HexGrid {
         if ((offsetFinalX || x + shapeWidth + side <= maxX) && (offsetFinalY || y + shapeHeight <= maxY)) addShape(config, x + radius + (side / 2), y + inradius);
       }
     }
+    
+    this.draw = () => {
+      this.hexagons.forEach(hex => {
+        hex.draw();
+      });
+    };
+
+    this.spin = (axis, input1, input2, start) => {
+      this.hexagons.forEach(hex => {
+        hex.spin(axis, input1, input2, start);
+      });
+    };
+
+    this.stop = () => {
+      this.hexagons.forEach(hex => {
+        hex.stop();
+      });
+    };
+
+    this.clear = () => {
+      this.hexagons.forEach(hex => {
+        hex.clear();
+      });
+    };
   }
 }
