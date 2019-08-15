@@ -247,6 +247,7 @@ export class HexGrid {
       c = config.canvas;
     }
     else c = document.getElementsByTagName("canvas")[0];
+    if (c === null) throw "There are no canvases on this page";
     let ctx = c.getContext("2d");
     let gridX = verify(config.grid.x, 0);
     let gridY = verify(config.grid.y, 0);
