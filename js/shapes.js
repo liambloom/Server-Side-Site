@@ -116,11 +116,11 @@ export class Shape {
     let shape = (function shape(x, y, z, add) {
       this.ctx.beginPath();
       this.ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0));
-      if (this.sides % 4 === 0) z += 180 / this.sides;
-      else if (this.sides % 2 !== 0) z += 90;
+      if (this.sides % 4 === 0) x += 180 / this.sides;
+      else if (this.sides % 2 !== 0) x += 90;
       for (let side = 0; side <= this.sides; side++) {
-        let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * z / (this.angle * this.sides);
-        this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(x * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
+        let a = side * 2 * Math.PI / this.sides + (this.sides - 2) * Math.PI * x / (this.angle * this.sides);
+        this.ctx.lineTo(this.x + (this.radius - add - (Math.cos(y * Math.PI / 180) + 1) * this.radius) * Math.cos(a), this.y + (this.radius - add - (Math.cos(z * Math.PI / 180) + 1) * this.radius) * Math.sin(a));
       }
     }).bind(this);
 
@@ -219,7 +219,7 @@ export class Shape {
         else {
           clearApi(false, false, 1);
           let angle = (performance.now() - startTime) * dpms + start;
-          if (angle % 360 < 180 || axes.length === 2) axes.push(angle);
+          if (angle % 360 < 180 || axes.length === 0) axes.push(angle);
           else axes.push(angle + 180);
           this.draw(...axes);
           axes.pop();
