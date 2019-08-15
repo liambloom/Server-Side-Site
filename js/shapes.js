@@ -247,6 +247,7 @@ export class HexGrid {
       c = config.canvas;
     }
     else c = document.getElementsByTagName("canvas")[0];
+    let ctx = c.getContext("2d");
     let gridX = verify(config.grid.x, 0);
     let gridY = verify(config.grid.y, 0);
     let height = verify(config.grid.height, c.height);
@@ -257,6 +258,8 @@ export class HexGrid {
     let side = 2 * radius * Math.sin(Math.PI / 6);
     let shapeHeight = inradius * 2;
     config.width = shapeWidth;
+
+    ctx.strokeRect(gridX, gridY, width, height);
 
     let addShape = (function(config, x, y) {
       config.color = "#" + Math.floor(Math.random() * 16777215).toString(16);
