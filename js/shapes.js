@@ -24,7 +24,7 @@ export class Shape {
           return secret[this.__key__][property];
         },
         set: function (value) {
-          if (this.show && this.loop === -1) clearApi(true);
+          if (this.show) clearApi(true, false);
           secret[this.__key__][property] = value;
           if (this.show && this.loop === -1) this.draw(...this.rotations);
         }
