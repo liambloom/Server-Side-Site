@@ -270,18 +270,18 @@ export class HexGrid {
     if (verify(config.grid.allowOverflow, false)) { 
       minX = gridX - (side / 2);
       minY = gridY;
-      maxX = width + gridX + shapeWidth + /*side*/ - width % (shapeWidth + side);
-      maxY = height + gridY + shapeHeight - height % shapeHeight;
-      offsetFinalX = (width + gridX - (maxX - side)) > (side / 2);
-      offsetFinalY = (height + gridY - maxY) > 0;
+      maxX = width + gridX + shapeWidth + side - width % (shapeWidth + side); // Bad
+      maxY = height + gridY + shapeHeight - height % shapeHeight; // Bad
+      offsetFinalX = (width + gridX - (maxX - side)) > (side / 2); // Untestable
+      offsetFinalY = (height + gridY - maxY) > 0; // Untestable
     }
     else {
       minX = gridX + radius;
       minY = gridY + inradius;
-      maxX = Math.ceil((width + gridX - radius) / shapeWidth) * shapeWidth - radius;
-      maxY = Math.floor((height + gridY - inradius) / shapeHeight) * shapeHeight - inradius;
-      offsetFinalX = (width - maxX) >= shapeWidth;
-      offsetFinalY = (height - maxY) >= shapeHeight;
+      maxX = Math.floor((width + gridX + radius) / (shapeWidth + side)) * (shapeWidth + side); // Bad
+      maxY = Math.floor((height + minY + gridY - inradius) / shapeHeight) * shapeHeight - inradius; // Bad
+      offsetFinalX = (width - maxX) >= shapeWidth; // Untestable
+      offsetFinalY = (height - maxY) >= shapeHeight; // Untestable
     }
 
     for (let x = minX; x <= maxX; x = x + shapeWidth + side) {
