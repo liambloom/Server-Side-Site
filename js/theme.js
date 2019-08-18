@@ -68,6 +68,8 @@ Object.defineProperty(Element.prototype, "onenter", {
   writeable: true
 });
 
+Math.average = (...array) => array.reduce((a, b) => a + b) / array.length;
+
 let newStyle = document.createElement("style");
 document.head.appendChild(newStyle);
 window.arrowFix = newStyle.sheet;

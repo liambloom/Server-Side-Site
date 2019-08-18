@@ -112,6 +112,10 @@ export class Shape {
     this.x = verify(config.x, this.c.width / 2);
     this.y = verify(config.y, this.c.height / 2);
     this.color = verify(config.color, themes[theme.color].gradientLight, "#888888");
+    if (typeof config.fpsOut === "function") {
+      secret[this.__key__].fpsRecord = [];
+      this.fpsOut = config.fpsOut;
+    }
 
     let shape = (function shape(x, y, z, add) {
       this.ctx.beginPath();
@@ -165,6 +169,7 @@ export class Shape {
     this.spin = (axis, input1, input2, start) => {
       let dpms, degrees, ms, axes;
       let disapear = false;
+      let record = false;
       if (typeof start === "string") {
         let value = parseFloat(start);
         let unit = start.replace(/\d*\.?\d+\s?/, "");
@@ -208,22 +213,37 @@ export class Shape {
 
       let startTime = performance.now();
       let end = startTime + ms - 1;
+      
       axes.push(start);
       this.draw(...axes);
       axes.pop();
+
+      if (secret[this.__key__].fpsRecord) {
+        secret[this.__key__].fpsRecord = [start];
+        record = true;
+      }
+
       secret[this.__key__].loop = setInterval(() => {
-        if (performance.now() >= end) {
+        let now = performance.now();
+        if (now >= end) {
           if (disapear) this.clear();
           else this.stop();
         }
         else {
           clearApi(false, false, 1);
-          let angle = (performance.now() - startTime) * dpms + start;
+          let angle = (now - startTime) * dpms + start;
           if (angle % 360 < 180 || axes.length === 0) axes.push(angle);
           else axes.push(angle + 180);
           this.draw(...axes);
           axes.pop();
         }
+        if (record) {
+          let fpsRecord = secret[this.__key__].fpsRecord;
+          fpsRecord.push(now);
+          this.fpsOut(1000 / (fpsRecord[1] - fpsRecord[0]));
+          fpsRecord.shift();
+        }
+
       }, 1000 / this.fps);
     };
     this.clear = () => {
@@ -232,6 +252,7 @@ export class Shape {
     this.stop = () => {
       clearInterval(this.loop);
       secret[this.__key__].loop = -1;
+      secret[this.__key__].fpsRecord = [];
     };
   }
 }
