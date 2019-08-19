@@ -7,12 +7,13 @@
 </head>
 <body>
 	<%- include("header", {title: "Liam Bloom", choice: true}) %>
+  <canvas id="main"></canvas>
   <div id="content">
-    <canvas id="main"></canvas>
     <div id="innerContent">
+      <h1>Welcome</h1>
       <%- include("about.html") %>
     </div>
   </div>
-  <script src="/js/homepage.js"></script>
+  <script src="/js/homepage.js" type="module"></script>
 </body>
 </html>
