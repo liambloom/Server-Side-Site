@@ -19,3 +19,9 @@ body {
   font-family: Mr Vampire;
   src: url("/fonts/MISTV___.TTF");
 }
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
