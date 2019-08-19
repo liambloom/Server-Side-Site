@@ -69,6 +69,7 @@ Object.defineProperty(Element.prototype, "onenter", {
 });
 
 Math.average = (...array) => array.reduce((a, b) => a + b) / array.length;
+Math.distance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 let newStyle = document.createElement("style");
 document.head.appendChild(newStyle);
