@@ -45,6 +45,7 @@ h1 {
   padding: 50px;
   height: calc(100% - 100px);
 }
+
 canvas {
   position: fixed;
   top: 0;
@@ -83,10 +84,13 @@ h2 * {
   margin: 0px;
   height: 12vh !important;
   width: 12vh !important;
-  /*filter: drop-shadow(0px 0px 10px var(--light));*/
+  filter: drop-shadow(0px 0px 5px var(--light));
 }
-h2.reveal #logo {
-  animation: glow 4s ease-in-out 1.5s, steady-glow 4s ease-in-out 5.5s infinite;
+#logo #stop4538, #logo #stop4540 {
+  stop-color: var(--bg) !important;
+}
+h2.reveal #svgLogo {
+  animation: svg-glow 4s ease-in-out 1.5s, svg-steady-glow 4s ease-in-out 5.5s infinite;
 }
 @keyframes glow {
   0% { text-shadow: 0 0 10px var(--light); }
@@ -95,6 +99,16 @@ h2.reveal #logo {
 }
 @keyframes steady-glow {
   0% { text-shadow: 0 0 10px var(--light); }
-  50% { text-shadow: 0 0 15px var(--light); }
+  50% { text-shadow: 0 0 17px var(--light); }
   100% { text-shadow: 0 0 10px var(--light); }
+}
+@keyframes svg-glow {
+  0% { filter: drop-shadow(0 0 5px var(--light)); }
+  50% { filter: drop-shadow(0 0 12px var(--light)); }
+  100% { filter: drop-shadow(0 0 8px var(--light)); }
+}
+@keyframes svg-steady-glow {
+  0% { filter: drop-shadow(0 0 8px var(--light)); }
+  50% { filter: drop-shadow(0 0 12px var(--light)); }
+  100% { filter: drop-shadow(0 0 8px var(--light)); }
 }
