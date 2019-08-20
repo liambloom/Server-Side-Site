@@ -130,6 +130,12 @@ header {
 	width: 85px;
 	height: 85px;
 }
+#logo #stop4538 {
+  stop-color: var(--headTxt) !important;
+}
+#logo #stop4540 {
+  stop-color: var(--light) !important;
+}
 header h1 {
 	grid-area: title;
 	font-size: 85px;

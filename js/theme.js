@@ -264,8 +264,8 @@ window.theme = {
 			root.style.setProperty("--light", themes[name].gradientLight);
 			root.style.setProperty("--dark", themes[name].gradientDark);
 			root.style.setProperty("--headTxt", themes[name].headTextColor);
-			document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
-			document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
+			//document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
+			//document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
 			if (this.mode === "dark") {
 				root.style.setProperty("--bg", themes[name].offBlack);
 				root.style.setProperty("--txt", themes[name].headTextColor);
