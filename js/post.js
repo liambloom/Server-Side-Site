@@ -2,7 +2,7 @@
 let onload = () => {
   document.getElementById("submit").addEventListener("click", () => {
     if (document.querySelector("#tags .active")) {
-      document.getElementById("submit").error.clear();
+      document.getElementById("submit").error = "";
       window.modal.open('#confirm');
     }
     else document.getElementById("submit").error = "Select a type (push a button)";
@@ -12,7 +12,7 @@ let onload = () => {
 const post = () => {
   document.getElementById("main").style.setProperty("display", "none");
   //document.getElementById("loadingContainer").style.setProperty("display", "initial");
-  document.getElementById("submit").error.clear();
+  document.getElementById("submit").error = "";
   window.activateLoading();
   fetch("/api/sugestion", {
     method: "POST",

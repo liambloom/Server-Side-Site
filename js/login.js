@@ -7,7 +7,7 @@ let loadFunc = () => {
     let { usernameElement, username, passwordElement, password } = confirmInit();
     
     if (/^[\w\-.]{1,50}$/.test(username) && /^(?=[\w!@#$%^&*()\-+`~\\|\[\]{};:'",.\/?=]{6,100}$)(?=.*[a-z])(?=.*\d)(?=.*[^a-z\d])(?!.*pass?word)(?!.*(.)\1{2,})/i.test(password) && !checkConsecutive(password.match(/\d{3,}/g)) && !checkConsecutive(password.match(/[a-z]{3,}/gi))) {
-      document.getElementById("button").error.clear();
+      document.getElementById("button").error = "";
       modal.open("#loadingModal");
       window.activateLoading();
       fetch("/api/users/confirm", {
@@ -39,7 +39,7 @@ let loadFunc = () => {
     document.getElementById("usernamePassRecover").onenter = event => {
       let username = event.target.value;
       if (/^[\w\-.]{1,50}$/.test(username)) {
-        event.target.error.clear();
+        event.target.error = "";
         modal.open("#loadingModal");
         window.activateLoading();
         
@@ -55,7 +55,7 @@ let loadFunc = () => {
           })
           .then(() => {
             document.getElementById("recoveryCode").onenter = event => {
-              event.target.error.clear();
+              event.target.error = "";
               let code = event.target.value;
               if (/^[a-z0-9]{7}$/i.test(code)) {
                 modal.open("#loadingModal");
@@ -91,13 +91,13 @@ let loadFunc = () => {
                       else if (/^.{0,5}$/.test(pass)) e.error = "Password must be at least 6 characters long";
                       else if (/^.{100,}$/.test(pass)) e.error = "Password may not be longer that 100 characters";
                       else if (pass !== confirm.value && /\S/.test(confirm.value)) confirm.error = "Must match password";
-                      else { e.error.clear(); confirm.error.clear(); }
+                      else { e.error = ""; confirm.error = ""; }
                     });
                     document.getElementById("passwordCheck").addEventListener("input", event => {
                       let e = event.target;
                       if (!e.value) e.error = "Confirm password is required";
                       else if (e.value !== document.getElementById("newPassword").value) e.error = "Must match password";
-                      else e.error.clear();
+                      else e.error = "";
                     });
                     document.getElementById("content").addEventListener("enter", () => {
                       document.getElementById("newPassword").setAttribute("required", "required");

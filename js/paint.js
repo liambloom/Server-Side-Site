@@ -351,7 +351,7 @@ var init = () => {
   });
   document.getElementById("hexColor").addEventListener("input", event => {
     if (!/^[a-f\d]{6}$/.test(event.target.value)) event.target.error = "Invalid hex code";
-    else event.target.error.clear();
+    else event.target.error = "";
   });
   document.getElementById("hexColor").addEventListener("keyup", event => {
     if (event.keyCode === 13) {

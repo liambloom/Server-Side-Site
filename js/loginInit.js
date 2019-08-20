@@ -66,8 +66,8 @@ let tbInit = (name, required) => {
     if (typeof required === "undefined") required = true;
     if (required) {
       el.setAttribute("required", "required");
-      if (!val || !/\S/.test(val)) errMsg(el, name.replace(/(?=[A-Z])./, m => " " + m.toLowerCase()).replace(/(^.)/, m => m.toUpperCase()) + " is required");
-      else errMsg(el);
+      if (!val || !/\S/.test(val)) el.error = name.replace(/(?=[A-Z])./, m => " " + m.toLowerCase()).replace(/(^.)/, m => m.toUpperCase()) + " is required");
+      else el.error = "";
     }
     else if (!val || !/\S/.test(val)) {
       //let modal = document.getElementById(name + "Warning");

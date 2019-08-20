@@ -16,13 +16,13 @@ document.getElementById("password").addEventListener("input", event => {
   else if (/^.{0,5}$/.test(pass)) { e.error = "Password must be at least 6 characters long"; }
   else if (/^.{100,}$/.test(pass)) e.error = "Password may not be longer that 100 characters";
   else if (pass !== confirm.value && /\S/.test(confirm.value)) confirm.error = "Must match password";
-  else { e.error.clear(); confirm.error.clear(); }
+  else { e.error = ""; confirm.error = ""; }
 });
 document.getElementById("confirmPassword").addEventListener("input", event => {
   let e = event.target;
   if (!e.value) e.error = "Confirm password is required";
   else if (e.value !== document.getElementById("password").value) e.error = "Must match password";
-  else e.error.clear();
+  else e.error = "";
 });
 document.getElementById("box").onsubmit = event => {
   event.preventDefault();
