@@ -9,7 +9,7 @@
 	<%- include("header", {title: "Liam Bloom", choice: true}) %>
   <canvas id="main"></canvas>
   <div id="content">
-    <h2>
+    <h2 id="welcome">
       <span>W</span>
       <span>E</span>
       <span>L</span>
@@ -17,10 +17,13 @@
       <span>O</span>
       <span>M</span>
       <span>E</span>
+      <div id="logo">
+        <%- include("../img/favicon/main/favicon_vector.svg") %>
+      </div>
     </h2>
-    <div id="myBio">
+    <!--<div id="myBio">
       <%- include("about.html") %>
-    </div>
+    </div>-->
   </div>
   <script src="/js/homepage.js" type="module"></script>
 </body>
