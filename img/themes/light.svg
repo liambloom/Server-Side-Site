@@ -9,9 +9,9 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="651"
+   width="325.5"
    height="208"
-   viewBox="0 0 172.24375 55.033335"
+   viewBox="0 0 86.121875 55.033335"
    version="1.1"
    id="svg8"
    sodipodi:docname="light-dark.svg"
@@ -26,7 +26,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2"
-     inkscape:cx="305.74155"
+     inkscape:cx="209.49155"
      inkscape:cy="125.307"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -55,40 +55,17 @@
      id="layer1"
      transform="translate(0,-241.96665)">
     <rect
-       style="fill:#ffffff;fill-opacity:0.95522386;fill-rule:nonzero;stroke:none;stroke-width:0.24653447;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.2745098"
+       style="fill:#ffffff;fill-opacity:0.95522383;fill-rule:nonzero;stroke:none;stroke-width:0.24653447;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.2745098"
        id="rect837"
        width="86.12188"
        height="55.033333"
        x="0"
        y="241.96664" />
-    <rect
-       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.24653447;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.2745098"
-       id="rect837-6"
-       width="86.12188"
-       height="55.033333"
-       x="86.12188"
-       y="241.96664" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:15.80232334px;line-height:1.25;font-family:'Segoe Script';-inkscape-font-specification:'Segoe Script, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#8826ff;fill-opacity:1;stroke:none;stroke-width:0.59258723"
-       x="91.742447"
-       y="290.43842"
-       id="text869-6"><tspan
-         sodipodi:role="line"
-         id="tspan867-4"
-         x="91.742447"
-         y="290.43842"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Times New Roman';-inkscape-font-specification:'Times New Roman, Bold';fill:#8826ff;fill-opacity:1;stroke-width:0.59258723">Dark Mode</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="Layer 2">
-    <path
-       style="fill:#8826ff;fill-opacity:1;stroke-width:0.06648017"
-       inkscape:connector-curvature="0"
-       d="m 129.69761,34.838666 c 5.69834,0.06002 10.90353,-3.223509 13.30382,-8.39182 -1.5106,0.65909 -3.14663,0.981882 -4.79435,0.946046 -6.45896,-0.0073 -11.69324,-5.24155 -11.70051,-11.70051 0.0646,-4.368994 2.47533,-8.3653369 6.30964,-10.4607615 -1.03408,-0.1316583 -2.07621,-0.1906058 -3.1186,-0.1760622 -8.22459,0 -14.89156,6.6672277 -14.89156,14.8915527 0,8.224584 6.66697,14.891555 14.89156,14.891555 z m 0,0"
-       id="path2-5" />
     <g
        id="g4"
        transform="matrix(0.06704727,0,0,0.06704727,21.666778,2.6390917)"

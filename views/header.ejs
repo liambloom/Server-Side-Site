@@ -21,11 +21,10 @@
       <button class="tab" onclick="window.switchTab(event, 'credits')">Credits</button>
     </div>
     <div id="color" class="inner">
-      <img src="/img/themes/light-dark.svg" usemap="#light-dark-map" id="lightdark">
-      <map name="light-dark-map">
-        <area id="lightArea" shape="rect" href="foo">
-        <area id="darkArea" shape="rect" href="foo">
-      </map>
+      <div id="lightdark">
+        <img src="/img/themes/light.svg" onclick="window.theme.mode = 'light'">
+        <img src="/img/themes/dark.svg" onclick="window.theme.mode = 'dark'">
+      </div>
       <img src="/img/themes/Red.png" onclick="window.theme.color = 'red';">
       <img src="/img/themes/Orange.png" onclick="window.theme.color = 'orange';">
       <img src="/img/themes/Yellow.png" onclick="window.theme.color = 'yellow';">

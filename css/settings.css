@@ -28,6 +28,10 @@
 #choose:not(.shrink) {
   border-bottom: 8px solid var(--dark);
 }
+#choose img {
+  border-radius: 10px;
+  cursor: pointer;
+}
 #choose .inner {
   color: var(--txt);
   background-color: var(--bg);
@@ -40,10 +44,20 @@
   height: calc(100% - 84px);
   width: calc(100% - 73px);
 }
-#choose img {
+#choose > #color > img {
 	width: calc(100% + 17px);
 	margin: 10px 0px;
+}
+#lightdark {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-column-gap: 10px;
+  width: calc(100% + 17px);
+	margin: 10px 0px;
   border-radius: 10px;
+}
+#lightdark img {
+  width: 100%;
 }
 #choose a {
   color: var(--txt);

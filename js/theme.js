@@ -124,7 +124,7 @@ window.onload = () => {
     }
   };
 
-  document.getElementById("lightArea").coords = `0, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
+  /*document.getElementById("lightArea").coords = `0, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
   document.getElementById("lightArea").addEventListener("click", e => {
     e.preventDefault();
     theme.mode = "light";
@@ -133,7 +133,7 @@ window.onload = () => {
   document.getElementById("darkArea").addEventListener("click", e => {
     e.preventDefault();
     theme.mode = "dark";
-  });
+  });*/
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
