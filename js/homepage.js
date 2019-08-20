@@ -8,7 +8,7 @@ c.height = window.innerHeight;
 let draw = () => {
   let grid = new HexGrid({ grid: { allowOverflow: true } });
   //console.log(grid.spin);
-  grid.spin("y", "90deg", "20rpm", "0deg", "(0, 0)", 1, () => {
+  grid.spin("y", "90deg", "20rpm", "0deg", "(0, 0)", "1.5secs", () => {
     document.getElementById("main").style.display = "none";
   });
 };
