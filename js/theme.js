@@ -1,7 +1,4 @@
 //jshint esversion:7
-String.prototype.titleCase = function () {//arrow functions have a different use of "this" property
-	return this.charAt(0).toUpperCase() + this.slice(1);
-};
 String.prototype.change = function () {
 	if (this.toString() === theme.mode) {
 		if (theme.mode === "dark") theme.mode = "light";
@@ -35,41 +32,6 @@ window.errMsg = (e, msg) => {
     e.setCustomValidity("");
   }
 };
-// New
-Object.defineProperty(Element.prototype, "error", {
-  get: function () { return this; },
-  set: function (msg) { errMsg(this, msg); }
-});
-Element.prototype.error.clear = function() { errMsg(this); };
-Element.prototype.eventListenerApi = Element.prototype.addEventListener;
-Element.prototype.addEventListener = function(type, listener, options) {
-  if (type === "enter") {
-    this.eventListenerApi("keyup", event => {
-      if (event.keyCode === 13) listener(event);
-    }, options);
-  }
-  else {
-    //console.log(this);
-    this.eventListenerApi(type, listener, options);
-  }
-};
-Object.defineProperty(Element.prototype, "onenter", {
-  get: function() { return null; },
-  set: function(callback) {
-    if (typeof callback === "function") {
-      Object.defineProperty(this, "onenter", {
-        get: function() { return callback; }
-      });
-      this.addEventListener("enter", event => {
-        if (typeof this.onenter === "function") this.onenter(event);
-      });
-    }
-  },
-  writeable: true
-});
-
-Math.average = (...array) => array.reduce((a, b) => a + b) / array.length;
-Math.distance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
 
 let newStyle = document.createElement("style");
 document.head.appendChild(newStyle);
