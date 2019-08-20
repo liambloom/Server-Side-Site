@@ -89,6 +89,9 @@ h2 * {
 #logo #stop4538, #logo #stop4540 {
   stop-color: var(--bg) !important;
 }
+#stop4729, #stop4731 {
+    stop-opacity: 0 !important;
+  }
 h2.reveal #svgLogo {
   animation: svg-glow 4s ease-in-out 1.5s, svg-steady-glow 4s ease-in-out 5.5s infinite;
 }
