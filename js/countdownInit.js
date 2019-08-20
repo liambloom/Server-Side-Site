@@ -29,7 +29,7 @@ const init = () => {
 	else {
 		destroy("pre");
 		document.getElementById("Capa_1").onclick();
-		document.getElementById("Layer_1").style.display = "none";
+		//document.getElementById("Layer_1").style.display = "none";
 		const style = document.createElement('style');
 		style.type = 'text/css';
 		style.innerHTML = `
