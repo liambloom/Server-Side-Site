@@ -65,12 +65,17 @@ h2 {
   align-items: center;
   align-content: center;
   flex-wrap: wrap;
+  opacity: 0;
   /*clip-path: polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 100%, 0% 100%, 0% 100%, 0% 100%);*/
-  transition: clip-path 2s ease-out;
+  clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
+  transition: clip-path 1.5s ease-out, opacity 2s;
+  /*transition: opacity 3s;*/
 }
 h2.reveal {
+  opacity: 1;
   /*clip-path: polygon(0% 0%, 100% 0%, 100% calc(50% - 7.25vh), 50% calc(50% - 7.5vh), 0% calc(50% - 7.25vh), 100% calc(50% - 7.25vh), 100% 100%, 0% 100%);*/
-  animation: glow 4s ease-in-out 1.5s, steady-glow 4s ease-in-out 5.5s infinite;
+  clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+  animation: glow 4s ease-in-out 2s, steady-glow 4s ease-in-out 6s infinite;
 }
 h2 * {
   margin: 5vh 0px 5vh 0px;
