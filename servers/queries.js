@@ -209,7 +209,7 @@ const update = (req, res) => {
       pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value])
         .then(() => {
           const site = path(req);
-          mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, email, {
+          mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, value, {
             ...theme(color, light),
             username,
             code,
@@ -263,7 +263,7 @@ sendRecoveryCode = (req, res) => {
           .then(() => {
             const { email, light, color } = data;
             const site = path(req);
-            mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, email, {
+            mail("../views/emails/recovery.ejs", "Recover Account for " + site.hostname, email, {
               ...theme(color, light),
               username,
               code,

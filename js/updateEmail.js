@@ -28,8 +28,7 @@ document.getElementById("box").onsubmit = event => {
             else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
           });
       }
-      else updateElement.setAttribute("data-err", "Something went wrong");
-    })
-  
+      else updateElement.parentNode.setAttribute("data-err", "Something went wrong");
+    });
   
 };
