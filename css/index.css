@@ -69,7 +69,7 @@ a {
 }
 #topRight {
 	position: fixed;
-	z-index: 2;
+	z-index: 3;
 	top: 6.5px;
 	right: 6.5px;
 	height: calc(1.15em + 15px);
@@ -121,6 +121,7 @@ header {
   background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
   position: sticky;
   top: var(--size);
+  z-index: 2;
 }
 #logo {
 	grid-area: logo;
