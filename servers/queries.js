@@ -1,5 +1,4 @@
-const { mail, initPool } = require("./mail");
-const { bcrypt, uuid, pool, path, handle, fs, randomKey } = initPool;//require("./initPool");
+const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
   //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
@@ -44,7 +43,6 @@ const createTable = () => {
   `);
 };
 const login = (req, res, userid) => {
-  //returnValue = 
   return new Promise((resolve, reject) => {
     const id = uuid();
     pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid])
@@ -62,6 +60,27 @@ const newUser = (req, res, id, username, password, email, color, light) => {
         .then(() => { res.status(201).end(); });
     })
     .catch(err => { handle(err, res); });
+};
+const theme =  (color, light) => {
+  let newTheme = 2;
+  data = fs.readFileSync("./json/themes.json");
+  const theme = JSON.parse(data)[color];
+  newTheme = {
+    light: theme.gradientLight,
+    dark: theme.gradientDark,
+    headTxt: theme.headTextColor,
+    color: color
+  };
+  if (light === "dark") {
+    newTheme.bg = theme.offBlack;
+    newTheme.txt = theme.headTextColor;
+  }
+  else {
+    newTheme.bg = theme.offWhite;
+    newTheme.txt = theme.offBlack;
+  }
+  console.log("inner newTheme = " + newTheme);
+  return newTheme;
 };
 const getAll = (req, res) => {
   pool.query("SELECT * FROM users")
@@ -135,28 +154,17 @@ const create = (req, res) => {
               const code = uuid();
               pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email])
                 .then(() => {
-                  fs.readFile("./json/themes.json", (err, data) => {
-                    if (err) handle(err);
-                    else {
+                  const site = path(req);
+                  mail("../views/emails/confirm.ejs", "Confirm Email for " + site.hostname, email, {
+                    ...theme(color, light),
+                    username,
+                    code,
+                    site: `${site.protocol}//${site.host}`
+                  })
+                    .then(() => {
                       newUser(req, res, id, username, hash, null, color, light);
-                      const theme = JSON.parse(data)[color];
-                      const newTheme = {
-                        light: theme.gradientLight,
-                        dark: theme.gradientDark,
-                        headTxt: theme.headTextColor,
-                        color: color
-                      };
-                      if (light === "dark") {
-                        newTheme.bg = theme.offBlack;
-                        newTheme.txt = theme.headTextColor;
-                      }
-                      else {
-                        newTheme.bg = theme.offWhite;
-                        newTheme.txt = theme.offBlack;
-                      }
-                      mail.confirm(res, email, username, newTheme, code, path(req));
-                    }
-                  });
+                    });
+                  //mail.confirm(res, email, username, newTheme, code, path(req));
                 })
                 .catch(err => { handle(err, res); });
             }
@@ -200,27 +208,17 @@ const update = (req, res) => {
       const code = uuid();
       pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value])
         .then(() => {
-          fs.readFile("./json/themes.json", (err, data) => {
-            if (err) handle(err);
-            else {
-              const theme = JSON.parse(data)[color];
-              const newTheme = {
-                light: theme.gradientLight,
-                dark: theme.gradientDark,
-                headTxt: theme.headTextColor,
-                color: color
-              };
-              if (light === "dark") {
-                newTheme.bg = theme.offBlack;
-                newTheme.txt = theme.headTextColor;
-              }
-              else {
-                newTheme.bg = theme.offWhite;
-                newTheme.txt = theme.offBlack;
-              }
-              mail.update(res, value, username, newTheme, code, path(req));
-            }
-          });
+          const site = path(req);
+          mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, email, {
+            ...theme(color, light),
+            username,
+            code,
+            site: `${site.protocol}//${site.host}`
+          })
+            .then(() => {
+              res.status(201).end();
+            });
+          //mail.update(res, value, username, newTheme, code, path(req));
         })
         .catch(err => { handle(err, res); });
     }
@@ -264,27 +262,17 @@ sendRecoveryCode = (req, res) => {
         pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code])
           .then(() => {
             const { email, light, color } = data;
-            fs.readFile("./json/themes.json", (err, data) => {
-              if (err) handle(err);
-              else {
-                const theme = JSON.parse(data)[color];
-                const newTheme = {
-                  light: theme.gradientLight,
-                  dark: theme.gradientDark,
-                  headTxt: theme.headTextColor,
-                  color: color
-                };
-                if (light === "dark") {
-                  newTheme.bg = theme.offBlack;
-                  newTheme.txt = theme.headTextColor;
-                }
-                else {
-                  newTheme.bg = theme.offWhite;
-                  newTheme.txt = theme.offBlack;
-                }
-                mail.recover(res, email, username, newTheme, code, path(req));
-              }
-            });
+            const site = path(req);
+            mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, email, {
+              ...theme(color, light),
+              username,
+              code,
+              site: `${site.protocol}//${site.host}`
+            })
+              .then(() => {
+                res.status(201).end();
+              });
+            //mail.recover(res, email, username, newTheme, code, path(req));
           });
       }
     })
@@ -337,23 +325,9 @@ secure = async (req, res) => {
   }
 };
 hasEmail = (req, res) => {
-  /*//console.log("checked email");
-  const id = req.user.id;
-  pool.query("SELECT email FROM users WHERE id = $1", [id])
-    .then(data => {
-      if (data.rows[0] ? data.rows[0].email : false) res.status(204).end();
-      else res.status(404).end();
-    })
-    .catch(err => { handle(err, res); });*/
-  //res.write("\n");
   event.on("email-confirmed", id => {
-    console.log(id);
-    console.log(req.user.id);
     if (id === req.user.id) {
       res.status(200).end();
-    }
-    else {
-      console.log("different");
     }
   });
 };
