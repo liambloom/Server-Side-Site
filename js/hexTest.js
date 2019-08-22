@@ -1,5 +1,5 @@
 import * as polygons from "/lib/shapes.js";
-window.Shape = polygons.default;
+window.Shape = polygons.Shape;
 window.HexGrid = polygons.HexGrid;
 Shape.test = (increment, start, config, axis) => {
   if (!increment) increment = 1;
