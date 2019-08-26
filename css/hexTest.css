@@ -24,13 +24,16 @@ input[type = "number"]:focus {
   width: calc(100% - 316px);
   display: grid;
   grid-template-columns: 32px 1fr 130px 1fr;
+#tabScrollHide {
+  width: 28px;
+  overflow: hidden;
 }
 #menuTabs {
   width: min-content;
   display: flex;
   flex-direction: column;
   height: 100%;
-  grid-column-start: 1;
+  overflow: scroll;
 }
 #mainMenu {
   padding: 5px;
