@@ -38,16 +38,13 @@ input[type = "number"]:focus {
   overflow: scroll;
 }
 #mainMenu {
-  padding: 5px;
-  grid-column-start: 2;
+  padding: 5px 0px;
 }
 #color {
-  padding: 5px;
-  grid-column-start: 3;
+  padding: 5px 0px;
 }
 #spinMenu {
-  padding: 5px;
-  grid-column-start: 4;
+  padding: 5px 0px;
   color: var(--light);
   font-size: 24px;
   line-height: 26px;
@@ -88,8 +85,40 @@ input[type = "number"]:focus {
 #mainMenu {
   position: relative;
 }
+#mainMenu .property {
+  display: grid;
+  grid-template-columns: min-content 1fr;
+  grid-auto-columns: min-content;
+  grid-auto-flow: column;
+  grid-gap: 5px;
+}
+#mainMenu .descrete {
+  width: 100% !important;
+  text-align: left;
+}
 #mainMenu input[type = "range"] {
   padding: 0px;
+  margin: 3px 0px;
+  width: 100%;
+  max-width: 200px;
+  -webkit-appearance: none;
+  height: 7.5px;
+  background: var(--txt);
+  outline: none;
+  border: none;
+  border-radius: 2.5px;
+}
+#mainMenu input[type = "range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+}
+#mainMenu input[type = "range"]::-webkit-slider-thumb, #mainMenu input[type = "range"]::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  background: var(--light);
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 }
 #bottom {
   position: absolute;
@@ -101,11 +130,10 @@ input[type = "number"]:focus {
   border-radius: 2px;
   padding: 0px;
   width: 30px !important;
-  background-color: transparent;
+  background-color: transparent !important;
   margin: 0px !important;
-}
-.descrete:invalid {
-  background-color: transparent;
+  font-size: 1em;
+  color: var(--txt) !important;
 }
 #colorHSL {
   display: flex;
@@ -182,10 +210,10 @@ input[type = "number"]:focus {
   border-left-color: #ffffff;
 }
 #colorHash {
-  /*position: absolute;*/
+  position: absolute;
   display: block;
   cursor: auto;
-  width: 100%;
+  width: 120px;
 }
 #colorHash::before {
   position: absolute;

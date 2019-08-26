@@ -16,19 +16,23 @@ let mousePosition = event => {
 let redraw = () => {
   ctx.clearRect(0, 0, 300, 300);
   for (let i = shapes.length - 1; i >= 0; i--) {
-    shapes[i].draw(shapes[i].rotations);
+    shapes[i].draw(...shapes[i].rotations);
   }
 };
 window.select = id => {
   let old = document.querySelector(".menuTab.selected");
   if (old) old.classList.remove("selected");
-  console.log(id);
   document.getElementById("tab" + id).classList.add("selected");
   selected = shapes.find(shape => shape.id === id);
   selected.draw(...selected.rotations);
   shapes.unshift(shapes.splice(shapes.indexOf(selected), 1)[0]);
   document.getElementById("x").value = selected.x;
   document.getElementById("y").value = selected.y;
+  document.getElementById("widthT").value = document.getElementById("widthS").value = selected.width;
+  document.getElementById("x-axis-rotation").value = document.getElementById("x-axis-rotation-slider").value = Math.round(selected.rotations[0]);
+  document.getElementById("x-deg-radio").checked = true;
+  document.getElementById("x-axis-rotation").max = document.getElementById("x-axis-rotation-slider").max = 360;
+  document.getElementById("x-axis-rotation").step = document.getElementById("x-axis-rotation-slider").step = 1;
   document.getElementById("hexColor").value = selected.color.replace("#", "");
   document.getElementById("hexColor").dispatchEvent(new Event("input"));
 };
@@ -52,7 +56,6 @@ window.newShape = (sides, config) => {
   tab.appendChild(icon);
   selected.icon = new Shape(shape.sides, {canvas: icon, width: 20, center: "vertical", color: shape.color});
   shape.icon.draw();
-  console.log(shapes);
 };
 let syncColorHSL = (event, element) => {
   document.getElementById(element).value = event.target.value;
@@ -75,8 +78,9 @@ let syncColorHSL = (event, element) => {
   selected.icon.color = hex;
 };
 let init = () => {
-  newShape(6);
-  newShape(3, {color: "#ff0000"});
+  newShape(6, {x: 100, y: 105});
+  newShape(3, {x: 200, y: 221, color: "#ff0000"});
+  select(0);
 };
 let mousedown = e => {
   for (let shape of shapes) {
@@ -121,11 +125,63 @@ document.getElementById("newShape").addEventListener("click", () => {
   modal.open("#shapeCreationMenu");
 });
 document.getElementById("x").addEventListener("input", event => {
-  selected.x = parseFloat(event.target.value);
-  redraw();
+  if (event.target.validity.valid) {
+    let x = parseFloat(event.target.value);
+    selected.x = x;
+    redraw();
+  }
 });
 document.getElementById("y").addEventListener("input", event => {
-  selected.y = parseFloat(event.target.value);
+  if (event.target.validity.valid) {
+    let y = parseFloat(event.target.value);
+    selected.y = y;
+    redraw();
+  }
+});
+document.getElementById("widthT").addEventListener("input", event => {
+  if (event.target.validity.valid) {
+    let width = parseFloat(event.target.value);
+    document.getElementById("widthS").value = width;
+    selected.width = width;
+    redraw();
+  }
+});
+document.getElementById("widthS").addEventListener("input", event => {
+  let width = event.target.value;
+  document.getElementById("widthT").value = width;
+  selected.width = width;
+  redraw();
+});
+document.getElementById("x-axis-rotation").addEventListener("input", event => {
+  if (event.target.validity.valid) {
+    let value = event.target.value;
+    document.getElementById("x-axis-rotation-slider").value = value;
+    selected.draw(value + document.getRadio("x-axis-rotation-unit").value, selected.rotations[1], selected.rotations[2]);
+    redraw();
+  }
+});
+[...document.getElementsByName("x-axis-rotation-unit")].forEach(e => e.addEventListener("input", () => {
+  let input = document.getElementById("x-axis-rotation");
+  let slider = document.getElementById("x-axis-rotation-slider");
+  if (selected.show && input.validity.valid) {
+    if (e.value === "deg") {
+      input.value = slider.value = Math.round(parseFloat(input.value) * 180 / Math.PI);
+      input.max = slider.max = 360;
+      input.step = slider.step = 1;
+    }
+    else {
+      input.value = slider.value = Math.round(parseFloat(input.value) * Math.PI * 10000 / 180) / 10000;
+      input.max = slider.max = 2 * Math.PI;
+      input.step = slider.step = 0.0001;
+    }
+    selected.draw(input.value + e.value, selected.rotations[1], selected.rotations[2]);
+    redraw();
+  }
+}));
+document.getElementById("x-axis-rotation-slider").addEventListener("input", event => {
+  let value = event.target.value;
+  document.getElementById("x-axis-rotation").value = value;
+  selected.draw(value + document.getRadio("x-axis-rotation-unit").value, selected.rotations[1], selected.rotations[2]);
   redraw();
 });
 document.getElementById("delete").addEventListener("click", () => {

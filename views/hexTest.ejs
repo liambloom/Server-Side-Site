@@ -19,11 +19,27 @@
         </div>
       </div>
       <div id="mainMenu">
-        x: <input id="x" type="text" pattern="\d*" class="descrete"><br>
-        y: <input id="y" type="text" pattern="\d*" class="descrete"><br>
-        <!--width: <input id="width" type="range" min="0" max="300"><br>-->
+        Position:
+        <div class="indent">
+          <div class="property">x: <input id="x" type="number" step required class="descrete"></div>
+          <div class="property">y: <input id="y" type="number" required class="descrete"></div>
+        </div>
+        <div class="property">Width: <input id="widthT" type="number" required class="descrete" min="0" max="300"></div>
+        <div class="indent">
+          <input id="widthS" type="range" min="0" max="300">
+        </div>
+        Rotations:
+        <div class="indent">
+          <div class="property">
+            2D: 
+            <input id="x-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+            <div class="radio"><input id="x-deg-radio" type="radio" name="x-axis-rotation-unit" value="deg">Degrees</div>
+            <div class="radio"><input type="radio" name="x-axis-rotation-unit" value="rad">Radians</div>
+          </div>
+          <input id="x-axis-rotation-slider" type="range" step="1" min="0" max="360">
+        </div>
         <div id="bottom">
-          <input type="button" id="delete" value="Discard Shape">
+          <input type="button" id="delete" class="no" value="Discard Shape">
         </div>
       </div>
       <div class="seperator"></div>
@@ -31,20 +47,20 @@
         Color:
         <div id="colorHSL">
           <div id="h" class="hslGrid">
-            <input id="ht" class="descrete t" value="360"
+            <input id="ht" type="number" required  class="descrete t" value="360"
               pattern="^(?:36[0]|3[0-5][0-9]|[12][0-9][0-9]|[1-9]?[0-9])?$">
             <div id="h-key" class="s">
               <input id="hs" type="range" orient="vertical" value="0" min="0" max="360">
             </div>
           </div>
           <div id="s" class="hslGrid">
-            <input id="st" class="descrete t" value="100" pattern="^[0-9][0-9]?$|^100$">
+            <input id="st" type="number" required  class="descrete t" value="100" pattern="^[0-9][0-9]?$|^100$">
             <div id="s-key" class="s">
               <input id="ss" type="range" orient="vertical" value="100" min="0" max="100">
             </div>
           </div>
           <div id="l" class="hslGrid">
-            <input id="lt" class="descrete t" value="50" pattern="^[0-9][0-9]?$|^100$">
+            <input id="lt" type="number" required  class="descrete t" value="50" pattern="^[0-9][0-9]?$|^100$">
             <div id="l-key" class="s">
               <input id="ls" type="range" orient="vertical" value="50" min="0" max="100">
             </div>
