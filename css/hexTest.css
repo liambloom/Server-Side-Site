@@ -98,15 +98,17 @@ input[type = "number"]:focus {
 }
 #mainMenu input[type = "range"] {
   padding: 0px;
-  margin: 3px 0px;
+  margin: 4px 0px;
   width: 100%;
-  max-width: 200px;
   -webkit-appearance: none;
   height: 7.5px;
   background: var(--txt);
   outline: none;
   border: none;
   border-radius: 2.5px;
+}
+#mainMenu input[type = "range"].indent {
+  width: calc(100% - 15px);
 }
 #mainMenu input[type = "range"]::-webkit-slider-thumb {
   -webkit-appearance: none;

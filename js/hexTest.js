@@ -4,6 +4,7 @@ window.Shape = Shape;
 let held, selected, xOffset, yOffset;
 let deleted = 0;
 let shapes = [];
+let axes = ["x", "y", "z"];
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
 let bcr = () => c.getBoundingClientRect();
@@ -29,10 +30,12 @@ window.select = id => {
   document.getElementById("x").value = selected.x;
   document.getElementById("y").value = selected.y;
   document.getElementById("widthT").value = document.getElementById("widthS").value = selected.width;
-  document.getElementById("x-axis-rotation").value = document.getElementById("x-axis-rotation-slider").value = Math.round(selected.rotations[0]);
-  document.getElementById("x-deg-radio").checked = true;
-  document.getElementById("x-axis-rotation").max = document.getElementById("x-axis-rotation-slider").max = 360;
-  document.getElementById("x-axis-rotation").step = document.getElementById("x-axis-rotation-slider").step = 1;
+  for (let axis of axes) {
+    document.getElementById(axis + "-axis-rotation").value = document.getElementById(axis + "-axis-rotation-slider").value = Math.round(selected.rotations[axes.indexOf(axis)]);
+    document.getElementById(axis + "-deg-radio").checked = true;
+    document.getElementById(axis + "-axis-rotation").max = document.getElementById(axis + "-axis-rotation-slider").max = 360;
+    document.getElementById(axis + "-axis-rotation").step = document.getElementById(axis + "-axis-rotation-slider").step = 1;
+  }
   document.getElementById("hexColor").value = selected.color.replace("#", "");
   document.getElementById("hexColor").dispatchEvent(new Event("input"));
 };
@@ -152,38 +155,46 @@ document.getElementById("widthS").addEventListener("input", event => {
   selected.width = width;
   redraw();
 });
-document.getElementById("x-axis-rotation").addEventListener("input", event => {
-  if (event.target.validity.valid) {
+for (let axis of axes) {
+  document.getElementById(axis + "-axis-rotation").addEventListener("input", event => {
+    if (event.target.validity.valid) {
+      let value = event.target.value;
+      let rotations = selected.rotations;
+      document.getElementById(axis + "-axis-rotation-slider").value = value;
+      rotations[axes.indexOf(axis)] = value + document.getRadio(axis + "-axis-rotation-unit").value;
+      selected.draw(...rotations);
+      redraw();
+    }
+  });
+  [...document.getElementsByName(axis + "-axis-rotation-unit")].forEach(e => e.addEventListener("input", () => {
+    let input = document.getElementById(axis + "-axis-rotation");
+    let slider = document.getElementById(axis + "-axis-rotation-slider");
+    let rotations = selected.rotations;
+    if (selected.show && input.validity.valid) {
+      if (e.value === "deg") {
+        input.step = slider.step = 1;
+        input.max = slider.max = 360;
+        input.value = slider.value = Math.round(parseFloat(input.value) * 180 / Math.PI);
+      }
+      else {
+        input.step = slider.step = 0.0001;
+        input.max = slider.max = 2 * Math.PI;
+        input.value = slider.value = Math.round(parseFloat(input.value) * Math.PI * 10000 / 180) / 10000;
+      }
+      rotations[axes.indexOf(axis)] = input.value + e.value;
+      selected.draw(...rotations);
+      redraw();
+    }
+  }));
+  document.getElementById(axis + "-axis-rotation-slider").addEventListener("input", event => {
     let value = event.target.value;
-    document.getElementById("x-axis-rotation-slider").value = value;
-    selected.draw(value + document.getRadio("x-axis-rotation-unit").value, selected.rotations[1], selected.rotations[2]);
+    let rotations = selected.rotations;
+    document.getElementById(axis + "-axis-rotation").value = value;
+    rotations[axes.indexOf(axis)] = value + document.getRadio(axis + "-axis-rotation-unit").value;
+    selected.draw(...rotations);
     redraw();
-  }
-});
-[...document.getElementsByName("x-axis-rotation-unit")].forEach(e => e.addEventListener("input", () => {
-  let input = document.getElementById("x-axis-rotation");
-  let slider = document.getElementById("x-axis-rotation-slider");
-  if (selected.show && input.validity.valid) {
-    if (e.value === "deg") {
-      input.value = slider.value = Math.round(parseFloat(input.value) * 180 / Math.PI);
-      input.max = slider.max = 360;
-      input.step = slider.step = 1;
-    }
-    else {
-      input.value = slider.value = Math.round(parseFloat(input.value) * Math.PI * 10000 / 180) / 10000;
-      input.max = slider.max = 2 * Math.PI;
-      input.step = slider.step = 0.0001;
-    }
-    selected.draw(input.value + e.value, selected.rotations[1], selected.rotations[2]);
-    redraw();
-  }
-}));
-document.getElementById("x-axis-rotation-slider").addEventListener("input", event => {
-  let value = event.target.value;
-  document.getElementById("x-axis-rotation").value = value;
-  selected.draw(value + document.getRadio("x-axis-rotation-unit").value, selected.rotations[1], selected.rotations[2]);
-  redraw();
-});
+  });
+}
 document.getElementById("delete").addEventListener("click", () => {
   selected.clear();
   document.getElementById("tab" + selected.id).delete();
