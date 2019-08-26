@@ -23,7 +23,9 @@ input[type = "number"]:focus {
   height: 300px;
   width: calc(100% - 316px);
   display: grid;
-  grid-template-columns: 32px 1fr 130px 1fr;
+  grid-template-columns: 27px 230px 0px 130px 0px 1fr;
+  grid-gap: 12px;
+}
 #tabScrollHide {
   width: 28px;
   overflow: hidden;
@@ -50,6 +52,11 @@ input[type = "number"]:focus {
   font-size: 24px;
   line-height: 26px;
   font-family: 'Times New Roman', Times, serif;
+}
+.seperator {
+  width: 0px;
+  margin: 10px 0px;
+  border-right: 1px solid var(--txt);
 }
 .menuTab {
   height: 20px;
