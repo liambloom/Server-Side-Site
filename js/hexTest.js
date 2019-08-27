@@ -1,9 +1,10 @@
 import { Shape } from "/lib/shapes.js";
 import pip from "/js/point-in-polygon.js";
 window.Shape = Shape;
-let held, selected, xOffset, yOffset;
+let held, selected, xOffset, yOffset, loop;
 let deleted = 0;
 let shapes = [];
+let spinning = [];
 let axes = ["x", "y", "z"];
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
@@ -40,6 +41,10 @@ window.select = id => {
   if (selected.show === (showButton.value === "Show")) showButton.dispatchEvent(new Event("click"));
   document.getElementById("hexColor").value = selected.color.replace("#", "");
   document.getElementById("hexColor").dispatchEvent(new Event("input"));
+  document.getElementById("spin-axis").value = selected.axis || "x";
+  document.getElementById("rpm").value = (selected.dpms * 60000 / 360) || 20;
+  let spinButton = document.getElementById("spin");
+  if (spinning.includes(selected) === (spinButton.value === "GO!")) spinButton.dispatchEvent(new Event("click"));
 };
 window.newShape = (sides, config) => {
   let shape = new Shape(sides, config);
@@ -81,6 +86,18 @@ let syncColorHSL = (event, element) => {
   document.getElementById("hexColor").value = hex.replace("#", "");
   selected.color = hex;
   selected.icon.color = hex;
+};
+let spin = () => {
+  loop = setInterval(() => {
+    let now = performance.now();
+    spinning.forEach(shape => {
+      shape.rotationTemplate.push(shape.dpms * (now - shape.start));
+      shape.rotations = [...shape.rotationTemplate];
+      if (shape === selected) document.getElementById(selected.axis + "-axis-rotation").value = Math.round(shape.rotationTemplate.pop() % 360);
+      else shape.rotationTemplate.pop();
+    });
+    redraw();
+  }, 1000 / 144);
 };
 let init = () => {
   newShape(6, {x: 100, y: 105});
@@ -204,13 +221,18 @@ document.getElementById("delete").addEventListener("click", () => {
   document.getElementById("tab" + selected.id).delete();
   deleted++;
   shapes.shift();
-  select(shapes[0].id);
-  redraw();
+  if (shapes.length > 0) {
+    select(shapes[0].id);
+    redraw();
+  }
 });
 document.getElementById("visibilityToggle").addEventListener("click", event => {
   let e = event.target;
   if (e.value === "Hide") {
     e.value = "Show";
+    if (spinning.includes(selected)) {
+      document.getElementById("spin").dispatchEvent(new Event("click"));
+    }
     if (selected.show) selected.saveRotations = selected.rotations;
     selected.clear();
     document.querySelectorAll("#menu input:not(#delete):not(#visibilityToggle)").forEach(e => { e.disabled = true; });
@@ -268,6 +290,55 @@ document.getElementById("hexColor").addEventListener("input", event => {
     );
     document.getElementById("s-key").style.setProperty("background-image", `linear-gradient(${hSync}, #888888)`);
     document.getElementById("l-key").style.setProperty("background-image", `linear-gradient(#ffffff, ${hSync}, #000000)`);
+  }
+});
+document.getElementById("spin").addEventListener("click", event => {
+  let e = event.target;
+  if (e.value === "GO!") {
+    e.value = "STOP!";
+    e.className = "no";
+    if (!spinning.includes(selected)) {
+      selected.axis = document.getElementById("spin-axis").value;
+      switch (selected.axis) {
+        case "x":
+          selected.rotationTemplate = [];
+          break;
+        case "y":
+          selected.rotationTemplate = [0];
+          break;
+        case "z":
+          selected.rotationTemplate = [0, 0];
+          break;
+      }
+      for (let axis of axes) {
+        document.getElementById(axis + "-axis-rotation").value = 0;
+        document.getElementById(axis + "-axis-rotation-slider").value = 0;
+      }
+      let degRadio = document.getElementById(selected.axis + "-deg-radio");
+      degRadio.checked = true;
+      degRadio.dispatchEvent(new Event("input"));
+      selected.dpms = document.getElementById("rpm").value * 360 / 60000;
+      selected.start = performance.now();
+      spinning.push(selected);
+      if (spinning.length === 1) spin();
+    }
+    document.querySelectorAll("#rotations input, #spinMenuNoButton input, #spin-axis").forEach(e => { e.disabled = true; });
+    for (let e of ["rotations", "spinMenuNoButton"]) {
+      document.getElementById(e).style.opacity = 0.5;
+    }
+  }
+  else {
+    e.value = "GO!";
+    e.className = "yes";
+    if (spinning.includes(selected)) {
+      spinning.splice(spinning.indexOf(selected), 1);
+      if (spinning.length === 0) clearInterval(loop);
+      document.getElementById(selected.axis + "-axis-rotation-slider").value = document.getElementById(selected.axis + "-axis-rotation").value;
+    }
+    document.querySelectorAll("#rotations input, #spinMenuNoButton input, #spin-axis").forEach(e => { e.disabled = false; });
+    for (let e of ["rotations", "spinMenuNoButton"]) {
+      document.getElementById(e).style.opacity = 1;
+    }
   }
 });
 if (window.themeReady) init();

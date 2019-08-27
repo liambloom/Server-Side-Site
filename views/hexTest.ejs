@@ -29,29 +29,31 @@
           <div class="indent">
             <input id="widthS" type="range" min="0" max="300">
           </div>
-          Rotations:
-          <div class="indent">
-            <div class="property">
-              x: 
-              <input id="x-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-              <div class="radio"><input id="x-deg-radio" type="radio" name="x-axis-rotation-unit" value="deg">Degrees</div>
-              <div class="radio"><input type="radio" name="x-axis-rotation-unit" value="rad">Radians</div>
+          <div id="rotations">
+            Rotations:
+            <div class="indent">
+              <div class="property">
+                x: 
+                <input id="x-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+                <div class="radio"><input id="x-deg-radio" type="radio" name="x-axis-rotation-unit" value="deg"><label for="x-deg-radio">Degrees</label></div>
+                <div class="radio"><input id="x-rad-radio" type="radio" name="x-axis-rotation-unit" value="rad"><label for="x-rad-radio">Radians</label></div>
+              </div>
+              <input id="x-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
+              <div class="property">
+                y:
+                <input id="y-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+                <div class="radio"><input id="y-deg-radio" type="radio" name="y-axis-rotation-unit" value="deg"><label for="y-deg-radio">Degrees</label></div>
+                <div class="radio"><input id="y-rad-radio" type="radio" name="y-axis-rotation-unit" value="rad"><label for="y-rad-radio">Radians</label></div>
+              </div>
+              <input id="y-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
+              <div class="property">
+                z:
+                <input id="z-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+                <div class="radio"><input id="z-deg-radio" type="radio" name="z-axis-rotation-unit" value="deg"><label for="z-deg-radio">Degrees</label></div>
+                <div class="radio"><input id="z-rad-radio" type="radio" name="z-axis-rotation-unit" value="rad"><label for="z-rad-radio">Radians</label></div>
+              </div>
+              <input id="z-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
             </div>
-            <input id="x-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
-            <div class="property">
-              y:
-              <input id="y-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-              <div class="radio"><input id="y-deg-radio" type="radio" name="y-axis-rotation-unit" value="deg">Degrees</div>
-              <div class="radio"><input type="radio" name="y-axis-rotation-unit" value="rad">Radians</div>
-            </div>
-            <input id="y-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
-            <div class="property">
-              z:
-              <input id="z-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-              <div class="radio"><input id="z-deg-radio" type="radio" name="z-axis-rotation-unit" value="deg">Degrees</div>
-              <div class="radio"><input type="radio" name="z-axis-rotation-unit" value="rad">Radians</div>
-            </div>
-            <input id="z-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
           </div>
         </div>
         <div id="bottom">
@@ -89,7 +91,24 @@
       </div>
       <div class="seperator"></div>
       <div id="spinMenu">
-        More features coming soon!!!
+        <div id="spinMenuNoButton">
+          Spin:<br>
+          <div class="indent">
+            <div>
+              Axis:
+              <select id="spin-axis">
+                <option>x</option>
+                <option>y</option>
+                <option>z</option>
+              </select>
+            </div>
+            <div class="property">
+              Speed (rotations/minute): <input id="rpm" type="number" class="descrete">
+            </div>
+          </div>
+          <br>
+        </div>
+        <input type="button" id="spin" class="yes" value="GO!">
       </div>
     </div>
   </div>
