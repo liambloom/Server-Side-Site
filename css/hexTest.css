@@ -36,7 +36,7 @@ input[type = "number"]:focus {
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 #mainMenu {
   padding: 5px 5px 5px 0px;
@@ -111,11 +111,17 @@ input[type = "number"]:focus {
 #mainMenu input[type = "range"].indent {
   width: calc(100% - 15px);
 }
-#mainMenu input[type = "range"]::-webkit-slider-thumb {
+#mainMenu input[type = "range"]::-webkit-slider-thumb { /* this all needs to be together and not with the firefox one */
   -webkit-appearance: none;
   appearance: none;
+  width: 15px;
+  height: 15px;
+  background: var(--light);
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
 }
-#mainMenu input[type = "range"]::-webkit-slider-thumb, #mainMenu input[type = "range"]::-moz-range-thumb {
+#mainMenu input[type = "range"]::-moz-range-thumb {
   width: 15px;
   height: 15px;
   background: var(--light);
