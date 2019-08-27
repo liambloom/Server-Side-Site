@@ -19,45 +19,48 @@
         </div>
       </div>
       <div id="mainMenu">
-        Position:
-        <div class="indent">
-          <div class="property">x: <input id="x" type="number" step required class="descrete"></div>
-          <div class="property">y: <input id="y" type="number" required class="descrete"></div>
-        </div>
-        <div class="property">Width: <input id="widthT" type="number" required class="descrete" min="0" max="300"></div>
-        <div class="indent">
-          <input id="widthS" type="range" min="0" max="300">
-        </div>
-        Rotations:
-        <div class="indent">
-          <div class="property">
-            x: 
-            <input id="x-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-            <div class="radio"><input id="x-deg-radio" type="radio" name="x-axis-rotation-unit" value="deg">Degrees</div>
-            <div class="radio"><input type="radio" name="x-axis-rotation-unit" value="rad">Radians</div>
+        <div id="mainMenuOptions">
+          Position:
+          <div class="indent">
+            <div class="property">x: <input id="x" type="number" step required class="descrete"></div>
+            <div class="property">y: <input id="y" type="number" required class="descrete"></div>
           </div>
-          <input id="x-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
-          <div class="property">
-            y:
-            <input id="y-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-            <div class="radio"><input id="y-deg-radio" type="radio" name="y-axis-rotation-unit" value="deg">Degrees</div>
-            <div class="radio"><input type="radio" name="y-axis-rotation-unit" value="rad">Radians</div>
+          <div class="property">Width: <input id="widthT" type="number" required class="descrete" min="0" max="300"></div>
+          <div class="indent">
+            <input id="widthS" type="range" min="0" max="300">
           </div>
-          <input id="y-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
-          <div class="property">
-            z:
-            <input id="z-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
-            <div class="radio"><input id="z-deg-radio" type="radio" name="z-axis-rotation-unit" value="deg">Degrees</div>
-            <div class="radio"><input type="radio" name="z-axis-rotation-unit" value="rad">Radians</div>
+          Rotations:
+          <div class="indent">
+            <div class="property">
+              x: 
+              <input id="x-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+              <div class="radio"><input id="x-deg-radio" type="radio" name="x-axis-rotation-unit" value="deg">Degrees</div>
+              <div class="radio"><input type="radio" name="x-axis-rotation-unit" value="rad">Radians</div>
+            </div>
+            <input id="x-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
+            <div class="property">
+              y:
+              <input id="y-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+              <div class="radio"><input id="y-deg-radio" type="radio" name="y-axis-rotation-unit" value="deg">Degrees</div>
+              <div class="radio"><input type="radio" name="y-axis-rotation-unit" value="rad">Radians</div>
+            </div>
+            <input id="y-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
+            <div class="property">
+              z:
+              <input id="z-axis-rotation" type="number" step="1" class="descrete text" required min="0" max="360">
+              <div class="radio"><input id="z-deg-radio" type="radio" name="z-axis-rotation-unit" value="deg">Degrees</div>
+              <div class="radio"><input type="radio" name="z-axis-rotation-unit" value="rad">Radians</div>
+            </div>
+            <input id="z-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
           </div>
-          <input id="z-axis-rotation-slider" class="indent" type="range" step="1" min="0" max="360">
         </div>
         <div id="bottom">
-          <input type="button" id="delete" class="no" value="Discard Shape">
+          <input type="button" id="delete" class="no" value="Discard">
+          <input type="button" id="visibilityToggle" value="Hide">
         </div>
       </div>
       <div class="seperator"></div>
-      <div id="color">
+      <div id="colorMenu">
         Color:
         <div id="colorHSL">
           <div id="h" class="hslGrid">

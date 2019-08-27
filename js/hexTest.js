@@ -17,7 +17,7 @@ let mousePosition = event => {
 let redraw = () => {
   ctx.clearRect(0, 0, 300, 300);
   for (let i = shapes.length - 1; i >= 0; i--) {
-    shapes[i].draw(...shapes[i].rotations);
+    if (shapes[i].show) shapes[i].draw(...shapes[i].rotations);
   }
 };
 window.select = id => {
@@ -25,17 +25,19 @@ window.select = id => {
   if (old) old.classList.remove("selected");
   document.getElementById("tab" + id).classList.add("selected");
   selected = shapes.find(shape => shape.id === id);
-  selected.draw(...selected.rotations);
+  if (selected.show) selected.draw(...selected.rotations);
   shapes.unshift(shapes.splice(shapes.indexOf(selected), 1)[0]);
   document.getElementById("x").value = selected.x;
   document.getElementById("y").value = selected.y;
   document.getElementById("widthT").value = document.getElementById("widthS").value = selected.width;
   for (let axis of axes) {
-    document.getElementById(axis + "-axis-rotation").value = document.getElementById(axis + "-axis-rotation-slider").value = Math.round(selected.rotations[axes.indexOf(axis)]);
+    document.getElementById(axis + "-axis-rotation").value = document.getElementById(axis + "-axis-rotation-slider").value = Math.round(selected.show ? selected.rotations[axes.indexOf(axis)] : selected.saveRotations[axes.indexOf(axis)]);
     document.getElementById(axis + "-deg-radio").checked = true;
     document.getElementById(axis + "-axis-rotation").max = document.getElementById(axis + "-axis-rotation-slider").max = 360;
     document.getElementById(axis + "-axis-rotation").step = document.getElementById(axis + "-axis-rotation-slider").step = 1;
   }
+  let showButton = document.getElementById("visibilityToggle");
+  if (selected.show === (showButton.value === "Show")) showButton.dispatchEvent(new Event("click"));
   document.getElementById("hexColor").value = selected.color.replace("#", "");
   document.getElementById("hexColor").dispatchEvent(new Event("input"));
 };
@@ -87,6 +89,7 @@ let init = () => {
 };
 let mousedown = e => {
   for (let shape of shapes) {
+    if (!shape.show) continue;
     let mousePos = mousePosition(e);
     if (pip(mousePos, shape.points)) {
       select(shape.id);
@@ -111,6 +114,7 @@ let mousemove = e => {
     redraw();
   }
   for (let shape of shapes) {
+    if (!shape.show) continue;
     if (pip(mousePos, shape.points)) {
       c.classList.add("move");
       break;
@@ -202,6 +206,27 @@ document.getElementById("delete").addEventListener("click", () => {
   shapes.shift();
   select(shapes[0].id);
   redraw();
+});
+document.getElementById("visibilityToggle").addEventListener("click", event => {
+  let e = event.target;
+  if (e.value === "Hide") {
+    e.value = "Show";
+    if (selected.show) selected.saveRotations = selected.rotations;
+    selected.clear();
+    document.querySelectorAll("#menu input:not(#delete):not(#visibilityToggle)").forEach(e => { e.disabled = true; });
+    for (let e of ["mainMenuOptions", "colorMenu", "spinMenu", `icon${selected.id}`]) {
+      document.getElementById(e).style.opacity = 0.5;
+    }
+    redraw();
+  }
+  else {
+    e.value = "Hide";
+    if (!selected.show) selected.draw(...selected.saveRotations);
+    document.querySelectorAll("#menu input").forEach(e => { e.disabled = false; });
+    for (let e of ["mainMenuOptions", "colorMenu", "spinMenu", `icon${selected.id}`]) {
+      document.getElementById(e).style.opacity = 1;
+    }
+  }
 });
 document.getElementById("ht").addEventListener("input", event => {
   syncColorHSL(event, "hs");
