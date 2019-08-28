@@ -1,10 +1,9 @@
 import { Shape } from "/lib/shapes.js";
 import pip from "/js/point-in-polygon.js";
 window.Shape = Shape;
-let held, selected, xOffset, yOffset, loop;
+let held, selected, xOffset, yOffset;
 let deleted = 0;
 let shapes = [];
-let spinning = [];
 let axes = ["x", "y", "z"];
 let c = document.getElementById("canvas");
 let ctx = c.getContext("2d");
@@ -18,7 +17,7 @@ let mousePosition = event => {
 let redraw = () => {
   ctx.clearRect(0, 0, 300, 300);
   for (let i = shapes.length - 1; i >= 0; i--) {
-    if (shapes[i].show) shapes[i].draw(...shapes[i].rotations);
+    shapes[i].refresh();
   }
 };
 window.select = id => {
@@ -26,7 +25,8 @@ window.select = id => {
   if (old) old.classList.remove("selected");
   document.getElementById("tab" + id).classList.add("selected");
   selected = shapes.find(shape => shape.id === id);
-  if (selected.show) selected.draw(...selected.rotations);
+  if (selected.show && !selected.spinning) selected.draw(...selected.rotations);
+  else if (selected.spinning) selected.toFront();
   shapes.unshift(shapes.splice(shapes.indexOf(selected), 1)[0]);
   document.getElementById("x").value = selected.x;
   document.getElementById("y").value = selected.y;
@@ -44,14 +44,17 @@ window.select = id => {
   document.getElementById("spin-axis").value = selected.axis || "x";
   document.getElementById("rpm").value = (selected.dpms * 60000 / 360) || 20;
   let spinButton = document.getElementById("spin");
-  if (spinning.includes(selected) === (spinButton.value === "GO!")) spinButton.dispatchEvent(new Event("click"));
+  if (selected.spinning === (spinButton.value === "GO!")) spinButton.dispatchEvent(new Event("click"));
 };
-window.newShape = (sides, config) => {
+window.newShape = (sides, config = {}) => {
+  config.onframe = function(deg) {
+    if (this === selected) document.getElementById(selected.axis + "-axis-rotation").value = Math.round(deg);
+    redraw();
+  };
   let shape = new Shape(sides, config);
   shape.draw();
   shape.id = shapes.length + deleted;
   shapes.unshift(shape);
-  selected = shape;
   let old = document.querySelector(".menuTab.selected");
   if (old) old.classList.remove("selected");
   let tab = document.createElement("div");
@@ -64,8 +67,9 @@ window.newShape = (sides, config) => {
   icon.height = 20;
   icon.width = 20;
   tab.appendChild(icon);
-  selected.icon = new Shape(shape.sides, {canvas: icon, width: 20, center: "vertical", color: shape.color});
+  shape.icon = new Shape(shape.sides, {canvas: icon, width: 20, center: "vertical", color: shape.color});
   shape.icon.draw();
+  select(shape.id);
 };
 let syncColorHSL = (event, element) => {
   document.getElementById(element).value = event.target.value;
@@ -86,18 +90,6 @@ let syncColorHSL = (event, element) => {
   document.getElementById("hexColor").value = hex.replace("#", "");
   selected.color = hex;
   selected.icon.color = hex;
-};
-let spin = () => {
-  loop = setInterval(() => {
-    let now = performance.now();
-    spinning.forEach(shape => {
-      shape.rotationTemplate.push(shape.dpms * (now - shape.start));
-      shape.rotations = [...shape.rotationTemplate];
-      if (shape === selected) document.getElementById(selected.axis + "-axis-rotation").value = Math.round(shape.rotationTemplate.pop() % 360);
-      else shape.rotationTemplate.pop();
-    });
-    redraw();
-  }, 1000 / 144);
 };
 let init = () => {
   newShape(6, {x: 100, y: 105});
@@ -230,7 +222,7 @@ document.getElementById("visibilityToggle").addEventListener("click", event => {
   let e = event.target;
   if (e.value === "Hide") {
     e.value = "Show";
-    if (spinning.includes(selected)) {
+    if (selected.spinning) {
       document.getElementById("spin").dispatchEvent(new Event("click"));
     }
     if (selected.show) selected.saveRotations = selected.rotations;
@@ -297,30 +289,15 @@ document.getElementById("spin").addEventListener("click", event => {
   if (e.value === "GO!") {
     e.value = "STOP!";
     e.className = "no";
-    if (!spinning.includes(selected)) {
-      selected.axis = document.getElementById("spin-axis").value;
-      switch (selected.axis) {
-        case "x":
-          selected.rotationTemplate = [];
-          break;
-        case "y":
-          selected.rotationTemplate = [0];
-          break;
-        case "z":
-          selected.rotationTemplate = [0, 0];
-          break;
-      }
-      for (let axis of axes) {
-        document.getElementById(axis + "-axis-rotation").value = 0;
-        document.getElementById(axis + "-axis-rotation-slider").value = 0;
-      }
-      let degRadio = document.getElementById(selected.axis + "-deg-radio");
+    if (!selected.spinning) {
+      let axis = document.getElementById("spin-axis").value;
+      let degRadio = document.getElementById(axis + "-deg-radio");
       degRadio.checked = true;
       degRadio.dispatchEvent(new Event("input"));
-      selected.dpms = document.getElementById("rpm").value * 360 / 60000;
-      selected.start = performance.now();
-      spinning.push(selected);
-      if (spinning.length === 1) spin();
+      document.getElementById(axis + "-axis-rotation").value = 0;
+      document.getElementById(axis + "-axis-rotation-slider").value = 0;
+      selected.axis = axis;
+      selected.spin(axis, document.getElementById("rpm").value + "rpm", "infinitely", "0deg");
     }
     document.querySelectorAll("#rotations input, #spinMenuNoButton input, #spin-axis").forEach(e => { e.disabled = true; });
     for (let e of ["rotations", "spinMenuNoButton"]) {
@@ -330,9 +307,8 @@ document.getElementById("spin").addEventListener("click", event => {
   else {
     e.value = "GO!";
     e.className = "yes";
-    if (spinning.includes(selected)) {
-      spinning.splice(spinning.indexOf(selected), 1);
-      if (spinning.length === 0) clearInterval(loop);
+    if (selected.spinning) {
+      selected.stop();
       document.getElementById(selected.axis + "-axis-rotation-slider").value = document.getElementById(selected.axis + "-axis-rotation").value;
     }
     document.querySelectorAll("#rotations input, #spinMenuNoButton input, #spin-axis").forEach(e => { e.disabled = false; });
