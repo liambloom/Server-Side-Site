@@ -60,8 +60,9 @@ header nav ul li ul {
   transform: translate(0px, 0px);
   overflow: auto;
 }
-header nav ul li:hover ul {
+header nav ul li:hover ul, header nav ul li:focus ul {
   height: max-content;
+  opacity: 1;
 }
 header nav ul li.right ul {
   right: 0px;
@@ -102,7 +103,4 @@ header nav ul li a.beta::after {
 header nav > ul > li:not(.hide):hover::after {
   height: 5px;
   bottom: 5px;
-}
-header nav ul li:hover ul, header nav ul li:focus ul {
-  opacity: 1;
 }
