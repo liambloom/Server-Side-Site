@@ -9,7 +9,7 @@
   /*height: max-content/*202.2px*/;
   padding: 50px;
   padding-bottom: 40px;
-  background-color: #00000080;
+  background-color: /*#00000080;*/rgba(0, 0, 0, 128);
   border-radius: 20px;
   display: block;
 }

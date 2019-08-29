@@ -73,7 +73,7 @@ modal {
   left: 0px;
   right: 0px;
   text-align: right;
-  background-color: #0000007f;
+  background-color: /*#0000007f;*/rgba(0, 0, 0, 128);
   padding: 10px;
   border-radius: 0px 0px 10px 10px;
 }
