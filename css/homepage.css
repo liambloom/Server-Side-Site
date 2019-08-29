@@ -3,7 +3,6 @@ body {
   height: 100vh;
 }
 header {
-  grid-template-rows: 0px max-content;
   background-color: var(--bg);
   background-image: none;
 }

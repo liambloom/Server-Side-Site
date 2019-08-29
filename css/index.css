@@ -27,16 +27,6 @@ body {
   color: var(--bg);
   background-color: var(--txt)
 }
-/*#fixed {
-	display: grid;
-	position: sticky;
-	grid-template-rows: max-content 0px;
-	grid-template-columns: 100%;
-	grid-template-areas: 
-		"header"
-		"main";
-	top: var(--size);
-}*/
 #content {
   font-size: 14px;
   line-height: 1.35em;
@@ -52,7 +42,6 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  height: max-content;
   text-align: center;
 }
 .center {
@@ -76,7 +65,6 @@ a {
 	top: 6.5px;
 	right: 6.5px;
 	height: calc(1.15em + 15px);
-	width: max-content;
 }
 #visibility #Capa_1 {
 	height: calc(1.15em + 6px);
@@ -114,7 +102,6 @@ a {
 }
 header {
 	display: grid;
-	grid-template-rows: max-content max-content;
 	grid-template-columns: 117px calc(100% - 117px);
 	grid-template-areas:
 		"logo title"
@@ -147,7 +134,6 @@ header h1 {
 	margin: 0px;
 	margin-bottom: 5px;
   line-height: 113.2px;
-  width: max-content;
   position: relative;
   top: 5px;
   font-family: 'Anurati-Coustom';
@@ -174,9 +160,6 @@ td, th {
 }
 .underlined {
   text-decoration: underline;
-}
-.radio {
-  width: max-content;
 }
 input, button:not(.tab), select, .button {
 	text-align: center;
@@ -335,7 +318,42 @@ textarea.wide {
 .circle.low span {
   transform: translateY(-7px);
 }
-/*@keyframes spin {
-	from {transform: rotate(0deg);}
-	to {transform: rotate(360deg);}
-}*/
+@supports (width: max-content) {
+  #topRight, header h1, .radio {
+    width: max-content;
+  }
+  header {
+    grid-template-rows: repeat(2, max-content);
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  #topRight, header h1, .radio {
+    width: -webkit-max-content;
+  }
+  header {
+    grid-template-rows: repeat(2, -webkit-max-content);
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  #topRight, header h1, .radio {
+    width: initial;
+  }
+  header {
+    grid-template-rows: 121px 46px;
+  }
+}
+@supports (height: max-content) {
+  #context.box {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  #context.box {
+    height: -webkit-max-content;
+  }
+}
+@supports not ((height: max-content) or (height: -webkit-max-content)) {
+  #context.box {
+    height: initial;
+  }
+}

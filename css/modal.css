@@ -60,18 +60,15 @@ modal {
 .modal-container-inner {
   margin: 30px;
   width: calc(100% - 60px);
-  height: max-content;
   min-height: calc(100% - 60px);
 }
 .modal-content {
   margin: 0px;
   margin-top: 30px;
   width: 100%;
-  height: max-content;
 }
 .modal-bottom {
   position: absolute;
-  height: max-content;
   bottom: 0px;
   left: 0px;
   right: 0px;
@@ -87,7 +84,7 @@ modal {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0000007f;
+  background-color: /*#0000007f;*/rgba(0, 0, 0, 128);
 }
 @supports (backdrop-filter: blur(5px)) {
   .modal-overlay {
@@ -113,4 +110,19 @@ modal {
   background-color: #440000 !important;
   border-color: #cc0000 !important;
   color: #cc0000 !important;
+}
+@supports (height: max-content) {
+  .modal-container-inner, .modal-content, .modal-bottom {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  .modal-container-inner, .modal-content, .modal-bottom {
+    height: -webkit-max-content;
+  }
+}
+@supports not ((height: max-content) or (height: -webkit-max-content)) {
+  .modal-container-inner, .modal-content, .modal-bottom {
+    height: initial;
+  }
 }

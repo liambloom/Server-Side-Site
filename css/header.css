@@ -43,8 +43,20 @@ header nav ul li a {
   text-decoration: none;
   height: 18.4px;
 }
-header nav > ul > li > a {
-  width: min-content;
+@supports (width: min-content) {
+  header nav > ul > li > a {
+    width: min-content;
+  }
+}
+@supports (width: -webkit-min-content) and (not (width: min-content)) {
+  header nav > ul > li > a {
+    width: -webkit-min-content;
+  }
+}
+@supports not ((width: min-content) or (width: -webkit-min-content)) {
+  header nav > ul > li > a {
+    width: initial;
+  }
 }
 header nav ul li ul li a:hover, header nav ul li ul li a:focus {
 	background-color: #0000005d;
@@ -61,8 +73,22 @@ header nav ul li ul {
   overflow: auto;
 }
 header nav ul li:hover ul, header nav ul li:focus ul {
-  height: max-content;
   opacity: 1;
+}
+@supports (height: max-content) {
+  header nav ul li:hover ul, header nav ul li:focus ul {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  header nav ul li:hover ul, header nav ul li:focus ul {
+    height: -webkit-max-content;
+  }
+}
+@supports not (height: max-content) {
+  header nav ul li:hover ul, header nav ul li:focus ul {
+    height: initial;
+  }
 }
 header nav ul li.right ul {
   right: 0px;

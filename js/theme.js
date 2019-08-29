@@ -13,7 +13,7 @@ window.onresize = () => {
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
   if (window.innerWidth <= document.querySelector("header h1").clientWidth + 117) {
     //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "max-content");
-    document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px max-content");
+    document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px " + CSS.supports("width: max-content") ? "max-content" : "initial");
   }
   else {
     //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "100%");
@@ -156,7 +156,7 @@ window.onload = () => {
     }
     catch(err) {
     }
-    document.querySelector(`#${id(e)} ul`).style.setProperty("height", "max-content");
+    document.querySelector(`#${id(e)} ul`).style.setProperty("height", CSS.supports("width: max-content") ? "max-content" : "initial");
   };
   for (let e of document.querySelectorAll("header nav > ul > li")) {
     e.addEventListener("mouseleave", e => {elementHide(e);});
@@ -231,7 +231,7 @@ window.onload = () => {
       browser = "Internet Explorer";// IE will throw hundreds of errors before it gets this far
     }
     else if (/Edge/i.test(ua)) {
-      browser = "Edge";
+      browser = "older versions of Edge";
     }
     else if (/(?:iPhone|iPad)[^]+Safari/.test(ua)) {
       browser = "Safari for iOS";

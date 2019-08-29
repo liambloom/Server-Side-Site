@@ -8,6 +8,20 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 300px;
-  height: max-content;
   text-align: center;
+}
+@supports (height: max-content) {
+  #content {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  #content {
+    height: -webkit-max-content;
+  }
+}
+@supports not ((height: max-content) or (height: -webkit-max-content)) {
+  #context {
+    height: initial;
+  }
 }

@@ -6,7 +6,7 @@
 }
 #box {
   width: calc(45vw + 34px);
-  height: max-content/*202.2px*/;
+  /*height: max-content/*202.2px*/;
   padding: 50px;
   padding-bottom: 40px;
   background-color: #00000080;
@@ -55,7 +55,6 @@
   height: 24px;
 }
 #showPass {
-  width: max-content;
   transform: translateX(-100%);
   opacity: 0.5
 }
@@ -71,4 +70,34 @@
 #content.box {
   width: 350px;
   display: block;
+}
+@supports (width: max-content) {
+  #showPass {
+    width: max-content;
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  #showPass {
+    width: -webkit-max-content;
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  #showPass {
+    width: 24px;
+  }
+}
+@supports (height: max-content) {
+  #box {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  #box {
+    height: -webkit-max-content;
+  }
+}
+@supports not ((height: max-content) or (height: -webkit-max-content)) {
+  #box {
+    height: initial;
+  }
 }

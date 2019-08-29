@@ -7,7 +7,7 @@
 #topRight :hover .arrowBox {
   display: inline-block;
 }
-@supports (not (width: max-content)) {
+@supports not (width: max-content) {
   .arrowBox:not(.required) {
     display: none !important;
   }

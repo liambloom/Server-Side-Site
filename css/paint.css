@@ -159,7 +159,6 @@ body {
 }
 .rgbGrid, .hslGrid {
   display: grid !important;
-  grid-template-rows: repeat(2, max-content);
   grid-template-columns: 40px;
   grid-template-areas: 
   "t"
@@ -223,4 +222,19 @@ body {
 }
 #rgbAdd, #hslAdd {
   margin: 0px !important;
+}
+@supports (grid-template-rows: max-content) {
+  .rgbGrid, .hslGrid {
+    grid-template-rows: repeat(2, max-content);
+  }
+}
+@supports (grid-template-rows: -webkit-max-content) and (not (grid-template-rows: max-content)) {
+  .rgbGrid, .hslGrid {
+    grid-template-rows: repeat(2, -webkit-max-content);
+  }
+}
+@supports not ((grid-template-rows: -webkit-max-content) or (grid-template-rows: max-content)) {
+  .rgbGrid, .hslGrid {
+    grid-template-rows: repeat(2, initial);
+  }
 }

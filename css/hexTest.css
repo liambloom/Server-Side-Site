@@ -32,7 +32,6 @@ input[type = "number"]:focus {
   overflow: hidden;
 }
 #menuTabs {
-  width: min-content;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -87,8 +86,6 @@ input[type = "number"]:focus {
 }
 #menu .property {
   display: grid;
-  grid-template-columns: min-content 1fr;
-  grid-auto-columns: min-content;
   grid-auto-flow: column;
   grid-gap: 5px;
   white-space: nowrap;
@@ -167,7 +164,6 @@ input[type = "number"]:focus {
 }
 .hslGrid {
   display: grid !important;
-  grid-template-rows: repeat(2, max-content);
   grid-template-columns: 40px;
   grid-template-areas: 
   "t"
@@ -249,4 +245,46 @@ input[type = "number"]:focus {
 }
 #spin {
   float: right;
+}
+@supports (width: min-content) {
+  #menuTabs {
+    width: min-content;
+  }
+  #menu .property {
+    grid-template-columns: min-content 1fr;
+    grid-auto-columns: min-content;
+  }
+}
+@supports (width: -webkit-min-content) and (not (width: min-content)) {
+  #menuTabs {
+    width: -webkit-min-content;
+  }
+  #menu .property {
+    grid-template-columns: -webkit-min-content 1fr;
+    grid-auto-columns: -webkit-min-content;
+  }
+}
+@supports not ((width: -webkit-min-content) or (width: min-content)) {
+  #menuTabs {
+    width: 45px;
+  }
+  #menu .property {
+    grid-template-columns: initial 1fr;
+    grid-auto-columns: initial;
+  }
+}
+@supports (grid-template-rows: max-content) {
+  .hslGrid {
+    grid-template-rows: repeat(2, max-content);
+  }
+}
+@supports (grid-template-rows: -webkit-max-content) and (not (grid-template-rows: max-content)) {
+  .hslGrid {
+    grid-template-rows: repeat(2, -webkit-max-content);
+  }
+}
+@supports not ((grid-template-rows: -webkit-max-content) or (grid-template-rows: max-content)) {
+  .hslGrid {
+    grid-template-rows: repeat(2, initial);
+  }
 }
