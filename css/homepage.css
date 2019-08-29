@@ -68,6 +68,9 @@ h2 {
   clip-path: polygon(50% 0%, 50% 0%, 50% 100%, 50% 100%);
   transition: clip-path 1.5s ease-out, opacity 2s;
 }
+_:-ms-lang(x), h2 { /* only pre-chromium Edge will understand this rule, so other browsers can't apply it */
+  justify-content: space-around;
+}
 h2.reveal {
   opacity: 1;
   clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
