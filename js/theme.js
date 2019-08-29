@@ -224,7 +224,7 @@ window.onload = () => {
       catch (err) {}
     }
   }
-  else {
+  /*else {
     let ua = navigator.userAgent;
     let browser;
     if (/MSIE|Trident/i.test(ua)) {
@@ -243,7 +243,7 @@ window.onload = () => {
       browser = "your browser";
     }
     alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
-  }
+  }*/
 };
 window.onscroll = () => {
   /*if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
