@@ -99,6 +99,21 @@ h2.reveal #svgLogo {
 #path2Settings {
   fill: var(--txt) !important;
 }
+@supports (grid-template-rows: max-content) {
+  header {
+    grid-template-rows: 0px max-content;
+  }
+}
+@supports (grid-template-rows: -webkit-max-content) and (not (grid-template-rows: max-content)) {
+  header {
+    grid-template-rows: 0px -webkit-max-content;
+  }
+}
+@supports not ((grid-template-rows: -webkit-max-content) or (grid-template-rows: max-content)) {
+  header {
+    grid-template-rows: 0px 46.4px;
+  }
+}
 @keyframes glow {
   0% { text-shadow: 0 0 10px var(--light); }
   50% { text-shadow: 0 0 20px var(--light); }
