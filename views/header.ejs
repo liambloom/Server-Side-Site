@@ -142,6 +142,15 @@
 					<li><a href="https://scratch.mit.edu/projects/221553121/">Prometheus Cartoon</a></li>
 				</ul>
       </li>
+      <% if (user ? user.type === "ADMIN" : false) { %>
+        <li>
+          <a>Admin</a>
+          <ul>
+            <li><a href="/admin/users">Users</a></li>
+            <li><a href="/admin/sugestions">Sugestions</a></li>
+          </ul>
+        </li>
+      <% } %>
       <li class="right">
         <a>About</a>
         <ul>
