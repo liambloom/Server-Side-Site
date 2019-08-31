@@ -388,18 +388,18 @@ const newSugestions = () => {
   pool.query("SELECT type FROM sugestions WHERE DATE_PART('day', now() - created) < 1")
     .then(data => {
       if (data.rowCount > 0) {
-        let string;
-        const keyString = (key) => key + " new " + counter.find(key).toLowerCase() + (key >= 2) ? "s" : "";
+        let string = "";
         const counter = {
           Sugestion: 0,
           Issue: 0,
           Question: 0,
           Other: 0
         };
-        data.rows.forEach(type => {
-          counter[type]++;
+        const keyString = (key) => key[1] + " new " + key[0].toLowerCase() + ((key >= 2) ? "s" : "");
+        data.rows.forEach(row => {
+          counter[row.type]++;
         });
-        const keys = Object.keys(counter).filter(e => e > 0);
+        const keys = Object.entries(counter).filter(e => e[1] > 0);
         const length = keys.length;
         if (length === 1) string = keyString(keys[0]);
         else if (length === 2) string = keyString(keys[0]) + " and " + keyString(keys[1]);
@@ -419,9 +419,10 @@ const newSugestions = () => {
           })
           .then(data => {
             mail("sugestions", "New sugestions for your site", data.emails, {
-              ...theme(data.rows.color, data.rows.light),
+              ...theme(data.rows[0].color, data.rows[0].light),
               username: (data.emails.length > 1) ? "Admins" : data.rows[0].username,
-              info: string
+              info: string,
+              site: "https://liambloom.herokuapp.com"
             });
           })
           .catch(err => { console.error(err); });
