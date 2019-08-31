@@ -26,7 +26,7 @@
           <% console.log(data[i]) %>
           <td><%= data[i].username %></td>
           <td>
-            <% let email = data[i].email %>
+            <% let email = data[i].email || "" %>
             <%= email.slice(0, 5) %><span class="censored" data-filler="<%= email.split('@')[0].slice(5).replace(/./g, '*') %>" data-content="<%= email.split('@')[0].slice(5) %>"></span><%= email.split("@")[1] %>
           </td>
           <td><%= data[i].light + " " + data[i].color %></td>
