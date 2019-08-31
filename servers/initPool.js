@@ -1,4 +1,4 @@
-//jshint esversion:6
+"use strict";
 const os = require("os");
 const bcrypt = require("bcrypt");
 const uuid = require("uuid/v4");
@@ -16,7 +16,7 @@ global.handle = (err, res) => {
   console.error(err);
   try {
     res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-    console.log("wrotehead")
+    console.log("wrotehead");
   }
   catch (err) {console.error(err);}
   res.write(JSON.stringify({ error: err }));

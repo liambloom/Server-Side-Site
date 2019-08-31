@@ -1,3 +1,4 @@
+"use strict";
 const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
@@ -57,13 +58,14 @@ const newUser = (req, res, id, username, password, email, color, light) => {
   pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
     .then(() => {
       login(req, res, id)
-        .then(() => { res.status(201).end(); });
+        .then(() => { res.status(201).end(); })
+        .catch(err => { handle(err, res); });
     })
     .catch(err => { handle(err, res); });
 };
 const theme =  (color, light) => {
   let newTheme = 2;
-  data = fs.readFileSync("./json/themes.json");
+  let data = fs.readFileSync("./json/themes.json");
   const theme = JSON.parse(data)[color];
   newTheme = {
     light: theme.gradientLight,
@@ -155,7 +157,7 @@ const create = (req, res) => {
               pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email])
                 .then(() => {
                   const site = path(req);
-                  mail("../views/emails/confirm.ejs", "Confirm Email for " + site.hostname, email, {
+                  mail("confirm", "Confirm Email for " + site.hostname, email, {
                     ...theme(color, light),
                     username,
                     code,
@@ -163,7 +165,8 @@ const create = (req, res) => {
                   })
                     .then(() => {
                       newUser(req, res, id, username, hash, null, color, light);
-                    });
+                    })
+                    .catch(err => { handle(err, res); });
                   //mail.confirm(res, email, username, newTheme, code, path(req));
                 })
                 .catch(err => { handle(err, res); });
@@ -196,10 +199,12 @@ const update = (req, res) => {
               bcrypt.hash(value, 10)
                 .then(hash => {
                   func(hash);
-                });
+                })
+                .catch(err => { handle(err, res); });
             }
             else res.status(403).end();
-          });
+          })
+          .catch(err => { handle(err, res); });
         })
         .catch(err => { handle(err, res); });
       
@@ -209,7 +214,7 @@ const update = (req, res) => {
       pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value])
         .then(() => {
           const site = path(req);
-          mail("../views/emails/update.ejs", "Confirm Email for " + site.hostname, value, {
+          mail("update", "Confirm Email for " + site.hostname, value, {
             ...theme(color, light),
             username,
             code,
@@ -237,7 +242,7 @@ update.fromEmailConfirm = (req, res) => {
             }
             else {
               let id = data.rows[0].userid;
-              event.emit("email-confirmed", id);
+              global.event.emit("email-confirmed", id);
               login(req, res, id)
                 .then(() => { res.redirect(303, "/"); })
                 .catch(err => { handle(err, res); });
@@ -249,7 +254,7 @@ update.fromEmailConfirm = (req, res) => {
     })
     .catch(err => { handle(err, res); });
 };
-sendRecoveryCode = (req, res) => {
+let sendRecoveryCode = (req, res) => {
   const { username } = req.params;
   const code = randomKey(7, 62);
 
@@ -263,7 +268,7 @@ sendRecoveryCode = (req, res) => {
           .then(() => {
             const { email, light, color } = data;
             const site = path(req);
-            mail("../views/emails/recovery.ejs", "Recover Account for " + site.hostname, email, {
+            mail("recovery", "Recover Account for " + site.hostname, email, {
               ...theme(color, light),
               username,
               code,
@@ -271,14 +276,16 @@ sendRecoveryCode = (req, res) => {
             })
               .then(() => {
                 res.status(201).end();
-              });
+              })
+              .catch(err => { handle(err, res); });
             //mail.recover(res, email, username, newTheme, code, path(req));
-          });
+          })
+          .catch(err => { handle(err, res); });
       }
     })
     .catch(err => { handle(err, res); });
 };
-getRecoveryCode = (req, res) => {
+const getRecoveryCode = (req, res) => {
   const { username, code } = req.body;
 
   pool.query("(SELECT id FROM users WHERE username = $1) INTERSECT (SELECT userid FROM recovery WHERE code = $2)", [username, code])
@@ -296,12 +303,13 @@ update.fromPasswordRecovery = (req, res) => {
         .then(data => {
           login(req, res, data.rows[0].id)
             .then(() => { res.status(204).end(); });
-        });
+        })
+        .catch(err => { handle(err, res); });
       
     })
     .catch(err => { handle(err, res); });
 };
-secure = async (req, res) => {
+const secure = async (req, res) => {
   try {
     const data = await Promise.all([
       pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
@@ -324,8 +332,8 @@ secure = async (req, res) => {
     res.end();
   }
 };
-hasEmail = (req, res) => {
-  event.on("email-confirmed", id => {
+const hasEmail = (req, res) => {
+  global.event.on("email-confirmed", id => {
     if (id === req.user.id) {
       res.status(200).end();
     }
@@ -376,6 +384,51 @@ const getSugestions = (req, res) => {
     })
     .catch(err => { handle(err, res); });
 };
+const newSugestions = () => {
+  pool.query("SELECT type FROM sugestions WHERE DATE_PART('day', now() - created) < 1")
+    .then(data => {
+      if (data.rowCount > 0) {
+        let string;
+        const keyString = (key) => key + " new " + counter.find(key).toLowerCase() + (key >= 2) ? "s" : "";
+        const counter = {
+          Sugestion: 0,
+          Issue: 0,
+          Question: 0,
+          Other: 0
+        };
+        data.rows.forEach(type => {
+          counter[type]++;
+        });
+        const keys = Object.keys(counter).filter(e => e > 0);
+        const length = keys.length;
+        if (length === 1) string = keyString(keys[0]);
+        else if (length === 2) string = keyString(keys[0]) + " and " + keyString(keys[1]);
+        else {
+          keys.forEach(key => {
+            string += keyString(key) + ", ";
+          });
+          string = string.replace(/, $/, "").replace(/,(?=[^,]+$)/, ", and");
+        }
+        pool.query("SELECT * FROM users WHERE type = 'ADMIN'")
+          .then(data => {
+            data.emails = [];
+            data.rows.forEach(e => {
+              data.emails.push(e.email);
+            });
+            return data;
+          })
+          .then(data => {
+            mail("sugestions", "New sugestions for your site", data.emails, {
+              ...theme(data.rows.color, data.rows.light),
+              username: (data.emails.length > 1) ? "Admins" : data.rows[0].username,
+              info: string
+            });
+          })
+          .catch(err => { console.error(err); });
+      }
+    })
+    .catch(err => { console.error(err); });
+};
 const getSession = (sessionId, callback) => {
   pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {
     if (err) {
@@ -410,7 +463,8 @@ module.exports = {
   },
   sugestions: {
     add,
-    get: getSugestions
+    get: getSugestions,
+    getNew: newSugestions
   },
   session: {
     get: getSession

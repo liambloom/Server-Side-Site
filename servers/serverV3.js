@@ -1,3 +1,4 @@
+"use strict";
 const { app, DB, requireLogin, port, icons, site, admin, api } = require("./init");
 const serve = require("./servePage");
 

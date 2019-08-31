@@ -1,4 +1,4 @@
-//jshint esversion:9
+"use strict";
 const invalidBase = (base) => {
   console.warn(base + " is not a valid base. Using base 10");
   return 10;

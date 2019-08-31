@@ -1,3 +1,4 @@
+"use strict";
 const express = require("express");
 const os = require("os");
 const url = require("url");
@@ -53,7 +54,7 @@ const testingOnly = (req, res, next) => {
   if (testing) next();
   else {
     res.writeHead(404, { "Content-Type": "text/html" });
-    res.write(`The page ${path(req).href} could not be found<br>${err}`);
+    res.write(`The page ${path(req).href} could not be found`);
     res.end();
   }
 };

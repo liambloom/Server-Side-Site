@@ -1,4 +1,4 @@
-//jshint esversion:9
+"use strict";
 const { fs, mime, filetype, url } = require("./init");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
