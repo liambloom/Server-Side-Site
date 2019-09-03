@@ -43,19 +43,25 @@ const createTable = () => {
     )
   `);
 };
-const login = async(req, userid) => {
-  const id = await uuid();
-  pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid]);
-  req.session.user = id;
-  return;
+const login = (req, res, userid) => {
+  return new Promise((resolve, reject) => {
+    const id = uuid();
+    pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid])
+      .then(() => {
+        req.session.user = id;
+      })
+      .then(resolve)
+      .catch(reject);
+  });
 };
-const newUser = async(req, res, id, username, password, email, color, light) => {
-  try {
-    pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
-    await login(req, id);
-    res.status(201).end();
-  }
-  catch (err) { handle(err, res); }
+const newUser = (req, res, id, username, password, email, color, light) => {
+  pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
+    .then(() => {
+      login(req, res, id)
+        .then(() => { res.status(201).end(); })
+        .catch(err => { handle(err, res); });
+    })
+    .catch(err => { handle(err, res); });
 };
 const theme =  (color, light) => {
   let newTheme = 2;
@@ -75,54 +81,66 @@ const theme =  (color, light) => {
     newTheme.bg = theme.offWhite;
     newTheme.txt = theme.offBlack;
   }
+  console.log("inner newTheme = " + newTheme);
   return newTheme;
 };
-const getAll = async(req, res) => {
-  try {
-    let data = await pool.query("SELECT * FROM users");
-    for (let row of data.rows) {
-      delete row.id;
-      delete row.password;
-    }
-    if (data.rowCount) {
-      res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
-        if (err) handle(err);
-        else {
-          res.writeHead(200, { "Content-Type": "text/html" });
-          res.write(html);
-          res.end();
-        }
-      });
-    }
-    else throw "No Users";
-  }
-  catch (err) { handle(err, res); }
+const getAll = (req, res) => {
+  pool.query("SELECT * FROM users")
+    .then(data => {
+      for (let row of data.rows) {
+        delete row.id;
+        delete row.password;
+      }
+      return data;
+    })
+    .then(data => {
+      if (data.rowCount) {
+        res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+          if (err) handle(err);
+          else {
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(html);
+            res.end();
+          }
+        });
+      }
+      else throw "No Sugestions";
+    })
+    .catch(err => { handle(err, res); });
 };
-const get = async(id) => {
-  try {
-    let res = await (await pool.query("SELECT * FROM users WHERE id = $1", [id])).rows[0];
-    delete res.password;
-    return res;
-  }
-  catch (err) { console.error(err); }
+const get = (id, callback) => {
+  //const id = parseInt(req.params.id);
+
+  pool.query("SELECT * FROM users WHERE id = $1", [id])
+    .then(res => res.rows[0])
+    .then(res => {
+      delete res.password;
+      return res;
+    })
+    .then(callback)
+    .catch(() => callback(undefined));
 };
-const confirm = async (req, res) => {
+const confirm = (req, res) => {
   const {username, password} = req.body;
 
-  const  data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username])
-  try {
-    if (data.rows.length > 0) {
-      const user = data.rows[0];
-      const result = await bcrypt.compare(password, user.password);
-      if (result) {
-        await login(req, user.id);
-        res.status(204).end();
+  pool.query("SELECT id, password FROM users WHERE username=$1", [username])
+    .then(data => {
+      if (data.rows.length > 0) {
+        const user = data.rows[0];
+        bcrypt.compare(password, user.password)
+          .then(async(result) => {
+            if (result) {
+              login(req, res, user.id)
+                .then(() => { res.status(204).end(); })
+                .catch(err => { handle(err, res); });
+            }
+            else res.status(403).end();
+          })
+          .catch(err => { handle(err, res); });
       }
-      else res.status(403).end();
-    }
-    else res.status(401).end();
-  }
-  catch (err) { handle(err, res); }
+      else res.status(401).end();
+    })
+    .catch(err => { handle(err, res); });
 };
 const create = (req, res) => {
   const { username, password, email, color, light } = req.body;
