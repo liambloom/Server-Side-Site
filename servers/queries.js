@@ -1,4 +1,4 @@
-"use strict"; // change at some point to use async/await
+"use strict";
 const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
