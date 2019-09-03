@@ -12,9 +12,11 @@ window.onresize = () => {
 	root.style.setProperty("--size", -document.getElementsByTagName("h1")[0].clientHeight - 5 + "px");
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
   if (window.innerWidth <= document.querySelector("header h1").clientWidth + 117) {
+    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "max-content");
     document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px " + CSS.supports("width: max-content") ? "max-content" : "initial");
   }
   else {
+    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "100%");
     document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
@@ -36,6 +38,8 @@ document.head.appendChild(newStyle);
 window.arrowFix = newStyle.sheet;
 window.onload = () => {
   window.onresize();
+  //if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
+  //if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
   fetch("/api/json/themes.json")
     .then(res => {
@@ -45,12 +49,10 @@ window.onload = () => {
     .then(res => window.themes = res)
     .then(res => {
       if (res.user) {
-        console.log(`res.user.color = ${res.user.color}`);
         theme.color = res.user.color;
         theme.mode = res.user.mode;
       }
       else {
-        console.log(`theme.default.color = ${theme.default.color}`);
         theme.color = theme.default.color;
         theme.mode = theme.default.mode;
       }
@@ -65,6 +67,8 @@ window.onload = () => {
     document.getElementById("settings").onclick = () => {
       if (document.getElementById("settings").className === "") {
         document.getElementById("settings").className = "spin";
+        /*document.getElementById("choose").classList.add("grow");
+        document.getElementById("choose").classList.remove("shrink");*/
         document.getElementById("choose").classList.replace("shrink", "grow");
         document.getElementById("arrow").classList.remove("gone");
         document.getElementById("chooseTooltip").classList.add("noTooltip");
@@ -120,6 +124,17 @@ window.onload = () => {
     }
   };
 
+  /*document.getElementById("lightArea").coords = `0, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
+  document.getElementById("lightArea").addEventListener("click", e => {
+    e.preventDefault();
+    theme.mode = "light";
+  });
+  document.getElementById("darkArea").coords = `${document.getElementById("lightdark").clientWidth}, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
+  document.getElementById("darkArea").addEventListener("click", e => {
+    e.preventDefault();
+    theme.mode = "dark";
+  });*/
+
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
   const elementHide = e => {
@@ -166,10 +181,10 @@ window.onload = () => {
     });
   }
 
+  //console.log(...[localStorage.getItem("cookie"), document.getElementById("loggedIn")]);
   if (!localStorage.getItem("cookie") && !document.getElementById("loggedIn")) document.getElementsByTagName("footer")[0].classList.remove("hidden");
   document.getElementById("yesCookie").addEventListener("click", () => {
     localStorage.setItem("cookie", "true");
-    console.log(`theme.color = ${theme.color}`);
     theme.color = theme.color;
     theme.mode = theme.mode;
     document.getElementsByTagName("footer")[0].classList.add("hidden");
@@ -209,8 +224,34 @@ window.onload = () => {
       catch (err) {}
     }
   }
+  /*else {
+    let ua = navigator.userAgent;
+    let browser;
+    if (/MSIE|Trident/i.test(ua)) {
+      browser = "Internet Explorer";// IE will throw hundreds of errors before it gets this far
+    }
+    else if (/Edge/i.test(ua)) {
+      browser = "older versions of Edge";
+    }
+    else if (/(?:iPhone|iPad)[^]+Safari/.test(ua)) {
+      browser = "Safari for iOS";
+    }
+    else if (/Firefox/im.test(ua)) {
+      browser = "old versions of Firefox";
+    }
+    else {
+      browser = "your browser";
+    }
+    alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
+  }*/
 };
 window.onscroll = () => {
+  /*if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
+    document.querySelector("header nav ul li.right").classList.remove("hide");
+  }
+  else {
+    document.querySelector("header nav ul li.right").classList.add("hide");
+  }*/
   document.querySelector("header nav ul li.right").classList.toggle("hide", !(window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)));
 };
 window.theme = {
@@ -223,6 +264,8 @@ window.theme = {
 			root.style.setProperty("--light", themes[name].gradientLight);
 			root.style.setProperty("--dark", themes[name].gradientDark);
 			root.style.setProperty("--headTxt", themes[name].headTextColor);
+			//document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
+			//document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
 			if (this.mode === "dark") {
 				root.style.setProperty("--bg", themes[name].offBlack);
 				root.style.setProperty("--txt", themes[name].headTextColor);
@@ -231,6 +274,7 @@ window.theme = {
 				root.style.setProperty("--bg", themes[name].offWhite);
 				root.style.setProperty("--txt", themes[name].offBlack);
 			}
+      //localStorage.setItem("color", name);
       fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
@@ -295,6 +339,7 @@ window.theme = {
 					}
 				}
 			}
+      //localStorage.setItem("mode", name);
       fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
@@ -328,6 +373,8 @@ window.theme = {
 	}
 };
 var closeMenu = () => {
+  /*document.getElementById("choose").classList.add("shrink");
+  document.getElementById("choose").classList.remove("grow");*/
   document.getElementById("choose").classList.replace("grow", "shrink");
   document.getElementById("settings").className = "";
   setTimeout(() => {
@@ -368,5 +415,7 @@ window.switchTab = (e, name, big) => {
   document.querySelector(".tab.active").classList.remove("active");
   document.getElementById(name).classList.remove("hidden");
   e.target.classList.add("active");
+  /*if (big) document.getElementById("choose").classList.add("big");
+  else document.getElementById("choose").classList.remove("big");*/
   document.getElementById("choose").classList.toggle("big", big || false);
 };

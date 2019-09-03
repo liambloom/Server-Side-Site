@@ -43,7 +43,7 @@ const createTable = () => {
     )
   `);
 };
-const login = async (req, userid) => {
+const login = async(req, userid) => {
   const id = await uuid();
   pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid]);
   req.session.user = id;
@@ -98,7 +98,7 @@ const getAll = async(req, res) => {
   }
   catch (err) { handle(err, res); }
 };
-const get = async (id) => {
+const get = async(id) => {
   try {
     let res = await (await pool.query("SELECT * FROM users WHERE id = $1", [id])).rows[0];
     delete res.password;
@@ -124,32 +124,40 @@ const confirm = async (req, res) => {
   }
   catch (err) { handle(err, res); }
 };
-const create = async (req, res) => {
-  try {
-    const { username, password, email, color, light } = await req.body;
-    const { hash, id, user } = await Promise.all({
-      hash: bcrypt.hash(password, 10), 
-      id: uuid(), 
-      user: pool.query("SELECT id FROM users WHERE username = $1", [username])
-    });
-    if (user.rows[0]) res.status(409).end();
-    else {
-      if (!email) newUser(req, res, id, username, hash, email, color, light);
-      else {
-        const code = await uuid();
-        await pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email]);
-        const site = path(req);
-        mail("confirm", "Confirm Email for " + site.hostname, email, {
-          ...theme(color, light),
-          username,
-          code,
-          site: `${site.protocol}//${site.host}`
-        });
-        newUser(req, res, id, username, hash, null, color, light);
-      }
-    }
-  }
-  catch (err) { handle(err, res); }
+const create = (req, res) => {
+  const { username, password, email, color, light } = req.body;
+  bcrypt.hash(password, 10)
+    .then(hash => {
+      const id = uuid();
+      pool.query("SELECT id FROM users WHERE username = $1", [username])
+        .then(user => {
+          if (user.rows[0]) res.status(409).end();
+          else {
+            if (!email) newUser(req, res, id, username, hash, email, color, light);
+            else {
+              const code = uuid();
+              pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email])
+                .then(() => {
+                  const site = path(req);
+                  mail("confirm", "Confirm Email for " + site.hostname, email, {
+                    ...theme(color, light),
+                    username,
+                    code,
+                    site: `${site.protocol}//${site.host}`
+                  })
+                    .then(() => {
+                      newUser(req, res, id, username, hash, null, color, light);
+                    })
+                    .catch(err => { handle(err, res); });
+                  //mail.confirm(res, email, username, newTheme, code, path(req));
+                })
+                .catch(err => { handle(err, res); });
+            }
+          }
+        })
+        .catch(err => { handle(err, res); });
+    })
+    .catch(err => { handle(err, res); });
 };
 const update = (req, res) => {
   const { id, username, color, light } = req.user;
@@ -410,7 +418,7 @@ const getSession = (sessionId, callback) => {
       callback(false);
       console.error(err);
     }
-    else if (data.rowsCount) {
+    else if (data.rows) {
       callback(data.rows[0].userid);
     }
     else callback(false);
