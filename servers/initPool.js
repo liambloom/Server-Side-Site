@@ -8,6 +8,7 @@ const mail = require("./mail");
 const randomKey = require("./randomKey");
 const EventEmitter = require("events");
 const { Pool } = require("pg");
+require("./NodeJSplus")();
 
 global.event = new EventEmitter();
 global.path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
