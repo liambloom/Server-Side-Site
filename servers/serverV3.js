@@ -26,5 +26,5 @@ site.get("/update/:category", requireLogin, serve.update);
 app.listen(port, () => { 
   DB.createTable();
   icons();
-  console.debug(`[Server] [${new Date().toString()}]: Server running on port ${port}.`);
+  console.log(`[Server] [${new Date().toString()}]: Server running on port ${port}.`);
 });
