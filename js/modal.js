@@ -43,19 +43,21 @@ window.modal = {
         document.querySelector(`#${e.id} .modal-box`).classList.add(size);
         document.querySelector(`#${e.id} .modal-content`).innerHTML = content;
         fetch(`/views/modal/${type}.html`)
-        .then(res => {
-          if (res.ok) return res.text();
-          else if (type === null) throw `$:document.querySelector("#${e.id} .modal-bottom").style.display = "none";`;
-          else throw type + " is not a valid type    modal.js 47:16";
-        })
-        .then(res => res.replace("confirmFunction", confirm))
-        .then(res => {
-          document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
-        })
-        .catch(error => {
-          if (/^\$:/.test(error)) eval(error.replace("$:", ""));
-          else throw error;
-        });
+          .then(res => {
+            if (res.ok) return res.text();
+            else if (type === null) {
+              document.querySelector(`#${e.id} .modal-bottom`).style.display = "none";
+              return "";
+            }
+            else throw type + " is not a valid type";
+          })
+          .then(res => res.replace("confirmFunction", confirm))
+          .then(res => {
+            if (res) document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
+          })
+          .catch(error => {
+            throw error;
+          });
       }
     })
     .then(() => {
