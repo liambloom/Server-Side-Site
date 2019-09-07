@@ -40,24 +40,21 @@ let loadFunc = () => {
     event.preventDefault();
     document.getElementById("button").parentNode.removeAttribute("data-err");
     let {username, password, email, wait} = confirmInit();
-    //console.log(username);
-    if (wait) document.getElementById("emailWarning").addEventListener("closed", () => { login(username, password, email); });
+    if (wait) {
+      const modalClosingCb = () => {
+        login(username, password, email);
+        document.getElementById("emailWarning").removeEventListener("closed", modalClosingCb);
+      };
+      document.getElementById("emailWarning").addEventListener("closed", modalClosingCb);
+    }
     else login(username, password, email);
-    /*for (let e of [...event.target.children]) {
-      let match = [...e.children].filter(i => i.tagName === "INPUT")[0];
-      if (match) match.setAttribute("required", "required");
-      if (!/\S/.test(match.value)) match.error = "Field Required";
-    }*/
-    
   };
 };
 let login = (username, password, email) => {
   if (!document.querySelector("#box :invalid")) {
     document.getElementById("button").parentNode.removeAttribute("data-err");
     modal.open("#loadingModal");
-    //document.getElementById("loadingContainer").style.setProperty("display", "initial");
     window.activateLoading();
-    //console.log(username);
     fetch("/api/users/create", {
       method: "POST",
       body: JSON.stringify({
@@ -72,7 +69,6 @@ let login = (username, password, email) => {
       }
     })
       .then(res => {
-        console.log(res);
         if (res.status === 201 && !email) location.assign(new URLSearchParams(location.search).get("u"));
         else if (res.status === 201 && email) return true;
         else if (res.status === 409) errMsg(document.getElementById("username"), "Username Taken");

@@ -78,13 +78,14 @@ app.use((req, res, next) => {
       //console.log(userId);
       if (userId) {
         //console.log(userId);
-        let data = DB.user.get(userId);
-        if (data) {
-          req.user = data;
-          req.session.user = req.session.user;
-          res.locals.user = data;
-        }
-        next();
+        DB.user.get(userId, data => {
+          if (data) {
+            req.user = data;
+            req.session.user = req.session.user;
+            res.locals.user = data;
+          }
+          next();
+        });
       }
       else next();
     });

@@ -59,7 +59,7 @@ header nav ul li a {
   }
 }
 header nav ul li ul li a:hover, header nav ul li ul li a:focus {
-  background-color: /*#0000005d;*/rgba(0, 0, 0, 93);
+  background-color: /*#0000005d;*/rgba(0, 0, 0, 0.36);
 }
 header nav ul li ul {
   background-color: var(--dark);
