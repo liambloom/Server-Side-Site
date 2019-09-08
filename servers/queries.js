@@ -51,7 +51,7 @@ const login = async (req, userid) => {
 };
 const newUser = async(req, res, id, username, password, email, color, light) => {
   try {
-    pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
+    pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"]);
     login(req, id);
     res.status(201).end();
   }
@@ -109,7 +109,7 @@ const get = async (id) => {
 const confirm = async (req, res) => {
   const {username, password} = req.body;
 
-  const  data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username])
+  const  data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username]);
   try {
     if (data.rows.length > 0) {
       const user = data.rows[0];
@@ -224,7 +224,7 @@ let sendRecoveryCode = async (req, res) => {
     else if (data.rows[0].email === "") res.status(410).end();
     else {
       data = data.rows[0];
-      pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code])
+      pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code]);
       const { email, light, color } = data;
       const site = path(req);
       mail("recovery", "Recover Account for " + site.hostname, email, {
