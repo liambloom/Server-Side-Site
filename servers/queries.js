@@ -354,6 +354,13 @@ const remove = (req, res) => {
     .catch(err => { handle(err, res); });
 };
 const logout = (req, res) => {
+  /* why doesn't this work?
+  Promise.all([
+    pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
+    pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
+    pool.query("DELETE FROM confirm WHERE userid = $1", [req.user.id])
+  ]);
+  */
   req.session.reset();
   res.redirect(path(req).query.u);
 };
