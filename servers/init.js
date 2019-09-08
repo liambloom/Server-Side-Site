@@ -71,23 +71,19 @@ app.use(session({
   secure: !testing,// I should probably get an ssl certificate
   ephemeral: true// This means delete the cookie when the browser is closed
 }));
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   if ((req.session) ? req.session.user : false) {
-    //console.log(req.session.user);
-    DB.session.get(req.session.user, userId => {
-      //console.log(userId);
-      if (userId) {
-        //console.log(userId);
-        let data = DB.user.get(userId);
-        if (data) {
-          req.user = data;
-          req.session.user = req.session.user;
-          res.locals.user = data;
-        }
-        next();
+    const userId = await DB.session.get(req.session.user);
+    if (userId) {
+      let data = DB.user.get(userId);
+      if (data) {
+        req.user = data;
+        req.session.user = req.session.user;
+        res.locals.user = data;
       }
-      else next();
-    });
+      next();
+    }
+    else next();
   }
   else next();
 });
