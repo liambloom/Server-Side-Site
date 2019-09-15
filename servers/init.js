@@ -75,7 +75,7 @@ app.use(async (req, res, next) => {
   if ((req.session) ? req.session.user : false) {
     const userId = await DB.session.get(req.session.user);
     if (userId) {
-      let data = DB.user.get(userId);
+      let data = await DB.user.get(userId);
       if (data) {
         req.user = data;
         req.session.user = req.session.user;

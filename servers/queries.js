@@ -44,7 +44,7 @@ const createTable = () => {
   `);
 };
 const login = async (req, userid) => {
-  const id = await uuid();
+  const id = uuid();
   pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid]);
   req.session.user = id;
   return;
@@ -109,9 +109,9 @@ const get = async (id) => {
 const confirm = async (req, res) => {
   const {username, password} = req.body;
 
-  const  data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username]);
+  const data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username]);
   try {
-    if (data.rows.length > 0) {
+    if (data.rowCount > 0) {
       const user = data.rows[0];
       const result = await bcrypt.compare(password, user.password);
       if (result) {
@@ -206,7 +206,7 @@ update.fromEmailConfirm = async (req, res) => {
       else {
         const id = data.rows[0].userid;
         global.event.emit("email-confirmed", id);
-        login(req, res, id);
+        login(req, id);
         res.redirect(303, "/");
       }
     }
@@ -252,7 +252,7 @@ update.fromPasswordRecovery = async (req, res) => {
     const { username, password, code } = req.body;
     const hash = await bcrypt.hash(password, 10);
     const data = await pool.query("UPDATE users SET password = $1 WHERE id = ((SELECT id FROM users WHERE username = $2) INTERSECT (SELECT userid FROM recovery WHERE code = $3)) RETURNING id", [hash, username, code]);
-    login(req, res, data.rows[0].id);
+    login(req, data.rows[0].id);
     res.status(204).end();
   }
   catch (err) { handle(err, res); }
@@ -301,6 +301,11 @@ const remove = (req, res) => {
   catch (err) { handle(err, res); }
 };
 const logout = (req, res) => {
+  Promise.all([
+    pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
+    pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
+    pool.query("DELETE FROM confirm WHERE userid = $1", [req.user.id])
+  ]);
   req.session.reset();
   res.redirect(path(req).query.u);
 };
@@ -372,10 +377,10 @@ const newSugestions = async () => {
 const getSession = async (sessionId) => {
   try {
     const data = await pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId]);
-    if (data.rowsCount) {
+    if (data.rowCount) {
       return data.rows[0].userid;
     }
-    return false;
+    else return false;
   }
   catch (err) {
     console.error(err);
@@ -392,7 +397,6 @@ module.exports = {
     create,
     update,
     removeEmail,
-    //remove,
     logout,
     hasEmail,
     secure,
