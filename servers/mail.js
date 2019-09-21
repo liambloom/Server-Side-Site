@@ -9,12 +9,13 @@ module.exports = (path, subject, to, renderOptions) => {
       if (err) { reject(err); console.err("err" + err);}
       else {
         try {
-          sendGrid.send({
+          const email = {
             to,
             from: "liambloom@liambloom.herokuapp.com",
             subject,
             html
-          });
+          };
+          sendGrid.send(email);
           resolve();
         }
         catch (err) {

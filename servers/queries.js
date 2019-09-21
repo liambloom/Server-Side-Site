@@ -52,7 +52,7 @@ const login = async (req, userid) => {
 const newUser = async(req, res, id, username, password, email, color, light) => {
   try {
     pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"]);
-    login(req, id);
+    await login(req, id);
     res.status(201).end();
   }
   catch (err) { handle(err, res); }
@@ -84,7 +84,9 @@ const getAll = async(req, res) => {
       delete row.id;
       delete row.password;
     }
+    //console.log(data.rowCount);
     if (data.rowCount) {
+      console.log(data.rows.last());
       res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
         if (err) handle(err);
         else {
@@ -221,11 +223,12 @@ let sendRecoveryCode = async (req, res) => {
 
     let data = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
     if (data.rowCount < 1) res.status(404).end();
-    else if (data.rows[0].email === "") res.status(410).end();
+    else if (data.rows[0].email === null) res.status(410).end();
     else {
       data = data.rows[0];
       pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code]);
       const { email, light, color } = data;
+      console.log(data);
       const site = path(req);
       mail("recovery", "Recover Account for " + site.hostname, email, {
         ...theme(color, light),
@@ -300,10 +303,10 @@ const remove = (req, res) => {
   }
   catch (err) { handle(err, res); }
 };
-const logout = (req, res) => {
-  Promise.all([
+const logout = async (req, res) => {
+  await Promise.all([
     pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
-    pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
+    //pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
     pool.query("DELETE FROM confirm WHERE userid = $1", [req.user.id])
   ]);
   req.session.reset();

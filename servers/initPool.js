@@ -17,7 +17,6 @@ global.handle = (err, res) => {
   console.error(err);
   try {
     res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-    console.log("wrotehead");
   }
   catch (err) {console.error(err);}
   res.write(JSON.stringify({ error: err }));
