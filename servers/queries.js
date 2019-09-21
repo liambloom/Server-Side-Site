@@ -1,4 +1,4 @@
-"use strict";
+"use strict"; // change at some point to use async/await
 const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
@@ -43,25 +43,19 @@ const createTable = () => {
     )
   `);
 };
-const login = (req, res, userid) => {
-  return new Promise((resolve, reject) => {
-    const id = uuid();
-    pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid])
-      .then(() => {
-        req.session.user = id;
-      })
-      .then(resolve)
-      .catch(reject);
-  });
+const login = async (req, userid) => {
+  const id = uuid();
+  pool.query("INSERT INTO sessions (sessionid, userid) VALUES ($1, $2)", [id, userid]);
+  req.session.user = id;
+  return;
 };
-const newUser = (req, res, id, username, password, email, color, light) => {
-  pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"])
-    .then(() => {
-      login(req, res, id)
-        .then(() => { res.status(201).end(); })
-        .catch(err => { handle(err, res); });
-    })
-    .catch(err => { handle(err, res); });
+const newUser = async(req, res, id, username, password, email, color, light) => {
+  try {
+    pool.query("INSERT INTO users (id, username, password, email, color, light, type, since) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)", [id, username, password, email, color, light, "USER", "today"]);
+    await login(req, id);
+    res.status(201).end();
+  }
+  catch (err) { handle(err, res); }
 };
 const theme =  (color, light) => {
   let newTheme = 2;
@@ -81,233 +75,190 @@ const theme =  (color, light) => {
     newTheme.bg = theme.offWhite;
     newTheme.txt = theme.offBlack;
   }
-  console.log("inner newTheme = " + newTheme);
   return newTheme;
 };
-const getAll = (req, res) => {
-  pool.query("SELECT * FROM users")
-    .then(data => {
-      for (let row of data.rows) {
-        delete row.id;
-        delete row.password;
-      }
-      return data;
-    })
-    .then(data => {
-      if (data.rowCount) {
-        res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
-          if (err) handle(err);
-          else {
-            res.writeHead(200, { "Content-Type": "text/html" });
-            res.write(html);
-            res.end();
-          }
-        });
-      }
-      else throw "No Sugestions";
-    })
-    .catch(err => { handle(err, res); });
+const getAll = async(req, res) => {
+  try {
+    let data = await pool.query("SELECT * FROM users");
+    for (let row of data.rows) {
+      delete row.id;
+      delete row.password;
+    }
+    //console.log(data.rowCount);
+    if (data.rowCount) {
+      console.log(data.rows.last());
+      res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+        if (err) handle(err);
+        else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.write(html);
+          res.end();
+        }
+      });
+    }
+    else throw "No Users";
+  }
+  catch (err) { handle(err, res); }
 };
-const get = (id, callback) => {
-  //const id = parseInt(req.params.id);
-
-  pool.query("SELECT * FROM users WHERE id = $1", [id])
-    .then(res => res.rows[0])
-    .then(res => {
-      delete res.password;
-      return res;
-    })
-    .then(callback)
-    .catch(() => callback(undefined));
+const get = async (id) => {
+  try {
+    let res = await (await pool.query("SELECT * FROM users WHERE id = $1", [id])).rows[0];
+    delete res.password;
+    return res;
+  }
+  catch (err) { console.error(err); }
 };
-const confirm = (req, res) => {
+const confirm = async (req, res) => {
   const {username, password} = req.body;
 
-  pool.query("SELECT id, password FROM users WHERE username=$1", [username])
-    .then(data => {
-      if (data.rows.length > 0) {
-        const user = data.rows[0];
-        bcrypt.compare(password, user.password)
-          .then(async(result) => {
-            if (result) {
-              login(req, res, user.id)
-                .then(() => { res.status(204).end(); })
-                .catch(err => { handle(err, res); });
-            }
-            else res.status(403).end();
-          })
-          .catch(err => { handle(err, res); });
+  const data = await pool.query("SELECT id, password FROM users WHERE username=$1", [username]);
+  try {
+    if (data.rowCount > 0) {
+      const user = data.rows[0];
+      const result = await bcrypt.compare(password, user.password);
+      if (result) {
+        login(req, user.id);
+        res.status(204).end();
       }
-      else res.status(401).end();
-    })
-    .catch(err => { handle(err, res); });
+      else res.status(403).end();
+    }
+    else res.status(401).end();
+  }
+  catch (err) { handle(err, res); }
 };
-const create = (req, res) => {
-  const { username, password, email, color, light } = req.body;
-  bcrypt.hash(password, 10)
-    .then(hash => {
-      const id = uuid();
-      pool.query("SELECT id FROM users WHERE username = $1", [username])
-        .then(user => {
-          if (user.rows[0]) res.status(409).end();
-          else {
-            if (!email) newUser(req, res, id, username, hash, email, color, light);
-            else {
-              const code = uuid();
-              pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email])
-                .then(() => {
-                  const site = path(req);
-                  mail("confirm", "Confirm Email for " + site.hostname, email, {
-                    ...theme(color, light),
-                    username,
-                    code,
-                    site: `${site.protocol}//${site.host}`
-                  })
-                    .then(() => {
-                      newUser(req, res, id, username, hash, null, color, light);
-                    })
-                    .catch(err => { handle(err, res); });
-                  //mail.confirm(res, email, username, newTheme, code, path(req));
-                })
-                .catch(err => { handle(err, res); });
-            }
-          }
-        })
-        .catch(err => { handle(err, res); });
-    })
-    .catch(err => { handle(err, res); });
+const create = async (req, res) => {
+  try {
+    const { username, password, email, color, light } = await req.body;
+    const { hash, id, user } = await Promise.all({
+      hash: bcrypt.hash(password, 10), 
+      id: uuid(), 
+      user: pool.query("SELECT id FROM users WHERE username = $1", [username])
+    });
+    if (user.rows[0]) res.status(409).end();
+    else {
+      if (!email) newUser(req, res, id, username, hash, email, color, light);
+      else {
+        const code = uuid();
+        pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, email]);
+        const site = path(req);
+        mail("confirm", "Confirm Email for " + site.hostname, email, {
+          ...theme(color, light),
+          username,
+          code,
+          site: `${site.protocol}//${site.host}`
+        });
+        newUser(req, res, id, username, hash, null, color, light);
+      }
+    }
+  }
+  catch (err) { handle(err, res); }
 };
-const update = (req, res) => {
+const update = async (req, res) => {
   const { id, username, color, light } = req.user;
   const { password, category, value } = req.body;
   if (/id|username|since/.test(category)) res.status(405).send("These categories cannot be updated").end();
   else if (category === "type" && req.user.type !== "ADMIN") res.status(403).send("This is an admin only action").end();
   else {
-    let func = (override) => {
-      pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [override || value, id])
-        .then(() => {
-          res.status(204).end();
-        })
-        .catch(err => { handle(err, res); });
+    let func = async (override) => {
+      try {
+        pool.query(`UPDATE users SET ${category} = $1 WHERE id = $2`, [override || value, id]);
+        res.status(204).end();
+      }
+      catch (err) { handle(err, res); }
     };
     if (category === "password") {
-      pool.query("SELECT password FROM users WHERE id = $1", [id])
-        .then(data => {
-          bcrypt.compare(password, data.rows[0].password)
-          .then((result) => {
-            if (result) {
-              bcrypt.hash(value, 10)
-                .then(hash => {
-                  func(hash);
-                })
-                .catch(err => { handle(err, res); });
-            }
-            else res.status(403).end();
-          })
-          .catch(err => { handle(err, res); });
-        })
-        .catch(err => { handle(err, res); });
-      
+      try {
+        const data = await pool.query("SELECT password FROM users WHERE id = $1", [id]);
+        const result = await bcrypt.compare(password, data.rows[0].password);
+        if (result) {
+          const hash = await bcrypt.hash(value, 10);
+          func(hash);
+        }       
+        else res.status(403).end();
+      }
+      catch (err) { handle(err, res); }
     }
     else if (category === "email") {
-      const code = uuid();
-      pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value])
-        .then(() => {
-          const site = path(req);
-          mail("update", "Confirm Email for " + site.hostname, value, {
-            ...theme(color, light),
-            username,
-            code,
-            site: `${site.protocol}//${site.host}`
-          })
-            .then(() => {
-              res.status(201).end();
-            });
-          //mail.update(res, value, username, newTheme, code, path(req));
-        })
-        .catch(err => { handle(err, res); });
+      try {
+        const code = uuid();
+        pool.query("INSERT INTO confirm (userid, code, email) VALUES ($1, $2, $3)", [id, code, value]);
+        const site = path(req);
+        mail("update", "Confirm Email for " + site.hostname, value, {
+          ...theme(color, light),
+          username,
+          code,
+          site: `${site.protocol}//${site.host}`
+        });
+        res.status(201).end();
+      }
+      catch (err) { handle(err, res); }
     }
     else func(null);
   }
 };
-update.fromEmailConfirm = (req, res) => {
-  const id = req.params.addId;
-  pool.query("UPDATE users SET email = (SELECT email FROM confirm WHERE code = $1) WHERE id = (SELECT userid FROM confirm WHERE code = $1)", [id])
-    .then(data => {
-      if (data.rowCount >= 1) {
-        pool.query("DELETE FROM confirm WHERE code = $1 RETURNING userid", [id])
-          .then(data => {
-            if (data.rows[0] ? !data.rows[0].userid : true) {
-              throw "No user id found";
-            }
-            else {
-              let id = data.rows[0].userid;
-              global.event.emit("email-confirmed", id);
-              login(req, res, id)
-                .then(() => { res.redirect(303, "/"); })
-                .catch(err => { handle(err, res); });
-            }
-          })
-          .catch(err => { handle(err, res); });
+update.fromEmailConfirm = async (req, res) => {
+  try {
+    const id = req.params.addId;
+    let data = await pool.query("UPDATE users SET email = (SELECT email FROM confirm WHERE code = $1) WHERE id = (SELECT userid FROM confirm WHERE code = $1)", [id]);
+    if (data.rowCount >= 1) {
+      data = await pool.query("DELETE FROM confirm WHERE code = $1 RETURNING userid", [id]);
+      if (data.rows[0] ? !data.rows[0].userid : true) {
+        throw "No user id found";
       }
-      else { res.status(404).end(); }
-    })
-    .catch(err => { handle(err, res); });
-};
-let sendRecoveryCode = (req, res) => {
-  const { username } = req.params;
-  const code = randomKey(7, 62);
-
-  pool.query("SELECT * FROM users WHERE username = $1", [username])
-    .then(data => {
-      if (data.rowCount < 1) res.status(404).end();
-      else if (data.rows[0].email === "") res.status(410).end();
       else {
-        data = data.rows[0];
-        pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code])
-          .then(() => {
-            const { email, light, color } = data;
-            const site = path(req);
-            mail("recovery", "Recover Account for " + site.hostname, email, {
-              ...theme(color, light),
-              username,
-              code,
-              site: `${site.protocol}//${site.host}`
-            })
-              .then(() => {
-                res.status(201).end();
-              })
-              .catch(err => { handle(err, res); });
-            //mail.recover(res, email, username, newTheme, code, path(req));
-          })
-          .catch(err => { handle(err, res); });
+        const id = data.rows[0].userid;
+        global.event.emit("email-confirmed", id);
+        login(req, id);
+        res.redirect(303, "/");
       }
-    })
-    .catch(err => { handle(err, res); });
+    }
+    else { res.status(404).end(); }
+  }
+  catch (err) { handle(err, res); }
 };
-const getRecoveryCode = (req, res) => {
-  const { username, code } = req.body;
+let sendRecoveryCode = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const code = randomKey(7, 62);
 
-  pool.query("(SELECT id FROM users WHERE username = $1) INTERSECT (SELECT userid FROM recovery WHERE code = $2)", [username, code])
-    .then(data => {
-      if (data.rowCount > 0) res.status(204).end();
-      else res.status(401).end();
-    })
-    .catch(err => { handle(err, res); });
+    let data = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+    if (data.rowCount < 1) res.status(404).end();
+    else if (data.rows[0].email === null) res.status(410).end();
+    else {
+      data = data.rows[0];
+      pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code]);
+      const { email, light, color } = data;
+      console.log(data);
+      const site = path(req);
+      mail("recovery", "Recover Account for " + site.hostname, email, {
+        ...theme(color, light),
+        username,
+        code,
+        site: `${site.protocol}//${site.host}`
+      });
+      res.status(201).end();
+    }
+  }
+  catch (err) { handle(err, res); }
 };
-update.fromPasswordRecovery = (req, res) => {
-  const { username, password, code } = req.body;
-  bcrypt.hash(password, 10)
-    .then(hash => {
-      pool.query("UPDATE users SET password = $1 WHERE id = ((SELECT id FROM users WHERE username = $2) INTERSECT (SELECT userid FROM recovery WHERE code = $3)) RETURNING id", [hash, username, code])
-        .then(data => {
-          login(req, res, data.rows[0].id)
-            .then(() => { res.status(204).end(); });
-        })
-        .catch(err => { handle(err, res); });
-      
-    })
-    .catch(err => { handle(err, res); });
+const getRecoveryCode = async (req, res) => {
+  try {
+    const { username, code } = req.body;
+    const data = await pool.query("(SELECT id FROM users WHERE username = $1) INTERSECT (SELECT userid FROM recovery WHERE code = $2)", [username, code]);
+    if (data.rowCount > 0) res.status(204).end();
+    else res.status(401).end();
+  }
+  catch (err) { handle(err, res); }
+};
+update.fromPasswordRecovery = async (req, res) => {
+  try {
+    const { username, password, code } = req.body;
+    const hash = await bcrypt.hash(password, 10);
+    const data = await pool.query("UPDATE users SET password = $1 WHERE id = ((SELECT id FROM users WHERE username = $2) INTERSECT (SELECT userid FROM recovery WHERE code = $3)) RETURNING id", [hash, username, code]);
+    login(req, data.rows[0].id);
+    res.status(204).end();
+  }
+  catch (err) { handle(err, res); }
 };
 const secure = async (req, res) => {
   try {
@@ -334,120 +285,110 @@ const secure = async (req, res) => {
 };
 const hasEmail = (req, res) => {
   global.event.on("email-confirmed", id => {
-    if (id === req.user.id) {
-      res.status(200).end();
-    }
+    if (id === req.user.id) res.status(200).end();
   });
 };
 const removeEmail = (req, res) => {
-  pool.query("UPDATE users SET email = NULL WHERE id = $1", [req.user.id])
-    .then(res.status(204).end())
-    .catch(err => { handle(err, res); });
+  try {
+    pool.query("UPDATE users SET email = NULL WHERE id = $1", [req.user.id]);
+    res.status(204).end();
+  }
+  catch (err) { handle(err, res); }
 };
 const remove = (req, res) => {
-  const id = parseInt(req.params.id);
-
-  pool.query("DELETE FROM users WHERE id = $1", [id])
-    .then(() => {
-      res.status(204).end();
-    })
-    .catch(err => { handle(err, res); });
+  try {
+    const id = parseInt(req.params.id);
+    pool.query("DELETE FROM users WHERE id = $1", [id]);
+    res.status(204).end();
+  }
+  catch (err) { handle(err, res); }
 };
-const logout = (req, res) => {
-  /* why doesn't this work?
-  Promise.all([
+const logout = async (req, res) => {
+  await Promise.all([
     pool.query("DELETE FROM recovery WHERE userid = $1", [req.user.id]),
-    pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
+    //pool.query("DELETE FROM sessions WHERE userid = $1 AND NOT sessionid = $2", [req.user.id, req.session.user]),
     pool.query("DELETE FROM confirm WHERE userid = $1", [req.user.id])
   ]);
-  */
   req.session.reset();
   res.redirect(path(req).query.u);
 };
 const add = (req, res) => {
-  const { content, type } = req.body;
-  //const d = new Date();
-
-  pool.query("INSERT INTO sugestions (content, type, by, created) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"])
-    .then(() => {
-      res.status(201).end();
-    })
-    .catch(err => { handle(err, res); });
+  try {
+    const { content, type } = req.body;
+    pool.query("INSERT INTO sugestions (content, type, by, created) VALUES ($1, $2, $3, $4)", [content, type, (req.user) ? req.user.username : null, "now"]);
+    res.status(201).end();
+  }
+  catch (err) { handle(err, res); }
 };
-const getSugestions = (req, res) => {
-  pool.query("SELECT * FROM sugestions")
-    .then(data => {
-      if (data.rowCount) {
-        res.render("./admin/sugestions", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
-          if (err) handle(err);
-          else {
-            res.writeHead(200, { "Content-Type": "text/html" });
-            res.write(html);
-            res.end();
-          }
-        });
-      }
-      else throw "No Sugestions";
-    })
-    .catch(err => { handle(err, res); });
-};
-const newSugestions = () => {
-  pool.query("SELECT type FROM sugestions WHERE DATE_PART('day', now() - created) < 1")
-    .then(data => {
-      if (data.rowCount > 0) {
-        let string = "";
-        const counter = {
-          Sugestion: 0,
-          Issue: 0,
-          Question: 0,
-          Other: 0
-        };
-        const keyString = (key) => key[1] + " new " + key[0].toLowerCase() + ((key >= 2) ? "s" : "");
-        data.rows.forEach(row => {
-          counter[row.type]++;
-        });
-        const keys = Object.entries(counter).filter(e => e[1] > 0);
-        const length = keys.length;
-        if (length === 1) string = keyString(keys[0]);
-        else if (length === 2) string = keyString(keys[0]) + " and " + keyString(keys[1]);
+const getSugestions = async (req, res) => {
+  try {
+    const data = await pool.query("SELECT * FROM sugestions");
+    if (data.rowCount) {
+      res.render("./admin/sugestions", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
+        if (err) handle(err);
         else {
-          keys.forEach(key => {
-            string += keyString(key) + ", ";
-          });
-          string = string.replace(/, $/, "").replace(/,(?=[^,]+$)/, ", and");
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.write(html);
+          res.end();
         }
-        pool.query("SELECT * FROM users WHERE type = 'ADMIN'")
-          .then(data => {
-            data.emails = [];
-            data.rows.forEach(e => {
-              data.emails.push(e.email);
-            });
-            return data;
-          })
-          .then(data => {
-            mail("sugestions", "New sugestions for your site", data.emails, {
-              ...theme(data.rows[0].color, data.rows[0].light),
-              username: (data.emails.length > 1) ? "Admins" : data.rows[0].username,
-              info: string,
-              site: "https://liambloom.herokuapp.com"
-            });
-          })
-          .catch(err => { console.error(err); });
-      }
-    })
-    .catch(err => { console.error(err); });
+      });
+    }
+    else throw "No Sugestions";
+  }
+  catch (err) { handle(err, res); }
 };
-const getSession = (sessionId, callback) => {
-  pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId], (err, data) => {
-    if (err) {
-      callback(false);
-      console.error(err);
+const newSugestions = async () => {
+  try {
+    let data = await pool.query("SELECT type FROM sugestions WHERE DATE_PART('day', now() - created) < 1");
+    if (data.rowCount > 0) {
+      let string = "";
+      const counter = {
+        Sugestion: 0,
+        Issue: 0,
+        Question: 0,
+        Other: 0
+      };
+      const keyString = (key) => key[1] + " new " + key[0].toLowerCase() + ((key >= 2) ? "s" : "");
+      data.rows.forEach(row => {
+        counter[row.type]++;
+      });
+      const keys = Object.entries(counter).filter(e => e[1] > 0);
+      const length = keys.length;
+      if (length === 1) string = keyString(keys[0]);
+      else if (length === 2) string = keyString(keys[0]) + " and " + keyString(keys[1]);
+      else {
+        keys.forEach(key => {
+          string += keyString(key) + ", ";
+        });
+        string = string.replace(/, $/, "").replace(/,(?=[^,]+$)/, ", and");
+      }
+      data = await pool.query("SELECT * FROM users WHERE type = 'ADMIN'");
+      data.emails = [];
+      data.rows.forEach(e => {
+        data.emails.push(e.email);
+      });
+      mail("sugestions", "New sugestions for your site", data.emails, {
+        ...theme(data.rows[0].color, data.rows[0].light),
+        username: (data.emails.length > 1) ? "Admins" : data.rows[0].username,
+        info: string,
+        site: "https://liambloom.herokuapp.com"
+      });
     }
-    else if (data.rows) {
-      callback(data.rows[0].userid);
+  }
+  catch (err) { console.error(err); }
+};
+const getSession = async (sessionId) => {
+  try {
+    const data = await pool.query("SELECT userid FROM sessions WHERE sessionid = $1", [sessionId]);
+    if (data.rowCount) {
+      return data.rows[0].userid;
     }
-    else callback(false);
-  });
+    else return false;
+  }
+  catch (err) {
+    console.error(err);
+    return false;
+  }
 };
 
 module.exports = {
@@ -459,7 +400,6 @@ module.exports = {
     create,
     update,
     removeEmail,
-    //remove,
     logout,
     hasEmail,
     secure,
