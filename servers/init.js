@@ -8,6 +8,7 @@ const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
 const DB = require("./queries");
+const countApi = require("./countdown");
 
 const app = express();
 
@@ -91,10 +92,12 @@ app.use(async (req, res, next) => {
 const site = express.Router();
 const admin = express.Router();
 const api = express.Router();
+const countdown = express.Router();
 admin.use(adminOnly);
 app.use("/admin", admin);
 app.use("/api", api);
-app.use(/^(?!\/(?:api|admin))/, site);
+app.use("/countdown", countdown);
+app.use(/^(?!\/(?:api|admin|countdown))/, site);
 
 module.exports = {
   app,
@@ -112,5 +115,7 @@ module.exports = {
   icons,
   site, 
   admin,
-  api
+  api,
+  countdown,
+  countApi
 };
