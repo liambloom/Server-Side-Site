@@ -1,5 +1,5 @@
 "use strict";
-const { app, DB, requireLogin, port, icons, site, admin, api, countdown, countApi } = require("./init");
+const { app, DB, requireLogin, adminOnly, port, icons, site, admin, api, countdown, count } = require("./init");
 const serve = require("./servePage");
 
 api.get("/logout", DB.user.logout);
@@ -19,11 +19,12 @@ admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 
-countdown.get("/new", countApi.new);
-countdown.get("/my", requireLogin, countApi.my);
-countdown.get("/my/:name", requireLogin, countApi.my1);
-countdown.get("/:id", countApi.id);
-countdown.get(/.*/, countApi.r404);
+countdown.get(/\/(?:list)/, adminOnly, serve);
+countdown.get("/new", count.new);
+countdown.get("/my", requireLogin, count.my);
+countdown.get("/my/:name", requireLogin, count.my1);
+countdown.get("/:id", count.id);
+countdown.get(/.*/, count.r404);
 
 site.get(/^(?!\/(?:secure|update))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
