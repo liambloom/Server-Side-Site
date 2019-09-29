@@ -4,42 +4,40 @@
   <%- include("../head", {beta: false, modal: false}) %>
   <title>New Countdown</title>
   <link href="/css/countdown.css" rel="stylesheet">
+  <script src="/js/countdownV4/list.js" defer></script>
 </head>
 <body>
   <%- include("../header", {title: "Countdown List", choice: true}) %>
   <div id="list">
-    <div id="listMenu">
+    <div id="list-head">
       <div id="listTabs">
         <input type="button" id="preset" value="Preset Countdowns">
-        <input type="button" id="coustom" value="Coustom Countdowns">
+        <input type="button" id="custom" value="Custom Countdowns">
       </div>
       <div id="listLayout">
+        <button id="rows" class="layoutOption active"><img src="/img/list.svg"></button><!--Make the active display stored in a cookie-->
         <button id="grid" class="layoutOption"><img src="/img/grid.svg"></button>
-        <button id="rows" class="layoutOption"><img src="/img/list.svg"></button>
       </div>
     </div>
-    <div id="presets-list">
-      <table>
-        <tr>
-          <th>Event Name</th>
-          <th>Next Occurance</th>
-          <th>Time Left</th>
-        </tr>
-        <!--I the future, these rows will be created using ejs the same as the coustom countdowns. Until I set up server side code for this however, they will
-        remain manually typed-->
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-      </table>
+    <div id="presets-list" class="list-menu list">
+      <div id="list-title" class="list-item">
+        <div class="name">Name</div>
+        <div class="date">Next occurrence</div>
+        <div class="calendar">Calendar</div>
+      </div>
+      <!--In the final version, this list will be created on the server-->
+      <a class="list-item" href="/countdown/New_Years">
+        <img src="/img/fireworks-gold.svg">
+        <div class="name">New Year</div>
+        <div class="date">1/1/2020</div>
+        <div class="calendar">Georgian</div>
+      </a>
+      <a class="list-item" href="/countdown/Christmas">
+        <img src="/img/christmas-tree.svg">
+        <div class="name">Christmas</div>
+        <div class="date">12/25/2019</div>
+        <div class="calendar">Georgian</div>
+      </a>
     </div>
   </div>
 </body>
