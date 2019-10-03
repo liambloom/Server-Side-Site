@@ -23,6 +23,7 @@
   "homepage": "https://github.com/liambloom/Server-Side-Site",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "aws-sdk": "^2.541.0",
     "bcrypt": "^3.0.6",
     "client-sessions": "^0.8.0",
     "ejs": "^2.6.2",

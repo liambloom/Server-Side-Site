@@ -19,7 +19,7 @@ admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 
-countdown.get(/\/(?:list)/, adminOnly, serve);
+countdown.get(/\/(?:list)/, adminOnly, count.render.list);
 countdown.get("/new", count.new);
 countdown.get("/my", requireLogin, count.my);
 countdown.get("/my/:name", requireLogin, count.my1);

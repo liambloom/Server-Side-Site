@@ -1,5 +1,6 @@
 const DB = require("./queries");
 const url = require("url");
+const aws = require("./aws");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 const r404 = (req, res) => {
@@ -55,6 +56,31 @@ module.exports = {
         res.end();
       }
     });
+  },
+  render: {
+    list: async function (req, res) {
+      //const page = "." + path(req).pathname.replace(/\/$/, "/index");
+      try {
+        const firework = await aws.getObject("countdown/fireworks-gold.svg");
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.write(firework.Body);
+        res.end();
+      }
+      catch (err) {
+        res.write(err.toString());
+        res.end();
+      }
+      /*res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
+        if (html) {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.write(html);
+          res.end();
+        }
+        else {
+          serve.return404(req, res);
+        }
+      });*/
+    }
   },
   api: {
     
