@@ -1,5 +1,5 @@
 const aws = require("aws-sdk");
-const path = require("path");
+//const path = require("path");
 
 aws.config = new aws.Config({
   region: "us-east-1",
@@ -8,37 +8,29 @@ aws.config = new aws.Config({
 });
 
 module.exports = {
-  getObject: async function (file) {
-    const data = await this.getObjects([file]);
-    console.log(data);
-    return data[file];
+  getObject: async function (file, cb) {
+    this.getObjects([file], (data, err) => {
+      if (data) cb(data[file]);
+      else cb(data, err);
+    });
   },
-  getObjects: async function (files) {
+  getObjects: async function (files, cb) {
     const returnObject = {};
-    await (async () => {
-      for (let file of files) {
-        new aws.S3().getObject({
-          Bucket: "liambloom",
-          Key: file/*.match(/^.*(?=\.[^.]*$)/),
-        ContentType: file.match(/(?<=\.)[^.]*$/)*/
-        }, (err, data) => {
-          if (err) { console.error("There was an error\n" + error); throw err; }
-          else { console.log(data); returnObject[file] = data; console.log(returnObject)};
-        });
-      }
-    })();
-    return returnObject;
-    for (let file of files) {
+    let cbHasRun = false;
+    for (let i = 0; i < files.length; i++) {
+      if (cbHasRun) break;
       new aws.S3().getObject({
         Bucket: "liambloom",
-        Key: file/*.match(/^.*(?=\.[^.]*$)/),
-        ContentType: file.match(/(?<=\.)[^.]*$/)*/
+        Key: files[i]
       }, (err, data) => {
-        if (err) { console.error("There was an error\n" + error); throw err; }
-        else { console.log(data); returnObject[file] = data; }
+        if (err) {
+          cb(undefined, err);
+          cbHasRun = true;
+        }
+        else returnObject[files[i]] = data;
+        if (i + 1 === files.length) cb(returnObject);
       });
+      
     }
-    console.log(returnObject);
-    return Promise.resolve(returnObject);
   }
 };

@@ -58,18 +58,30 @@ module.exports = {
     });
   },
   render: {
-    list: async function (req, res) {
-      //const page = "." + path(req).pathname.replace(/\/$/, "/index");
-      try {
-        const firework = await aws.getObject("countdown/fireworks-gold.svg");
-        res.writeHead(200, { "Content-Type": "text/html" });
-        res.write(firework.Body);
-        res.end();
-      }
-      catch (err) {
-        res.write(err.toString());
-        res.end();
-      }
+    list (req, res) {
+      const page = "." + path(req).pathname.replace(/\/$/, "/index");
+      //console.log("hello");
+      aws.getObject("countdown/fireworks-gold.png", (data, err) => {
+        if (data) {
+          res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, fireworks: data.Body.toString("base64")}, (error, html) => {
+            if (html) {
+              res.writeHead(200, { "Content-Type": "text/html" });
+              res.write(html);
+              res.end();
+            }
+            else {
+              serve.return404(req, res);
+            }
+          });
+          /*res.write(data.Body.toString("base64"));
+          res.end();*/
+        }
+        else {
+          console.error(err);
+          res.write(err.toString());
+          res.end();
+        }
+      });
       /*res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
         if (html) {
           res.writeHead(200, { "Content-Type": "text/html" });
