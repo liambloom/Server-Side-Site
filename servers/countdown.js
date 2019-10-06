@@ -1,6 +1,6 @@
-const DB = require("./queries");
 const url = require("url");
 const aws = require("./aws");
+const {pool} = require("./initPool");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
@@ -57,10 +57,12 @@ module.exports = {
     });
   },
   render: {
-    list (req, res) {
+    list: async function (req, res) {
       const page = "." + path(req).pathname.replace(/\/$/, "/index");
-      //console.log("hello");
-      aws.getObject("countdown/fireworks-gold.png", (data, err) => {
+      let preset = pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
+      preset = preset.rows;
+      aws.getObjects(preset.map(e => `countdown/${e.icon}.png`), (data, err) => {
+        // This has not been changed and will probably break
         if (data) {
           res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, fireworks: data.Body.toString("base64")}, (error, html) => {
             if (html) {
