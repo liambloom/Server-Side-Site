@@ -2,7 +2,6 @@
 const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
-  //pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp";`);
   pool.query(`
     CREATE TABLE IF NOT EXISTS users (
       id uuid NOT NULL,

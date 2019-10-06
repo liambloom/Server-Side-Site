@@ -3,21 +3,6 @@ const url = require("url");
 const aws = require("./aws");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
-const r404 = (req, res) => {
-  res.render("./404", { target: path(req).href }, (error404, html404) => {
-    if (html404) {
-      res.writeHead(404, { "Content-Type": "text/html" });
-      res.write(html404);
-      res.end();
-    }
-    else {
-      // If 404 is broken, serve 500
-      res.writeHead(500, { "Content-Type": "text/html" });
-      res.write(`The page ${path(req).href} could not be found <br>${error404}`);
-      res.end();
-    }
-  });
-};
 
 module.exports = {
   new (req, res) {
@@ -41,18 +26,32 @@ module.exports = {
     res.end();*/
     next();
   },
-  r404 (req, res) {
-    console.log("r404 ran");
-    res.render("./404", { target: path(req).href }, (error, html) => {
+  listTest: function (req, res) {
+    console.log("this works");
+    res.render("./countdown/listTest", { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
-        res.writeHead(404, { "Content-Type": "text/html" });
+        // On success, serve page
+        res.writeHead(200, { "Content-Type": "text/html" });
         res.write(html);
+        res.end();
+      }
+      else {
+        // On failure, serve 404
+        module.exports.r404(req, res);
+      }
+    });
+  },
+  r404 (req, res) {
+    res.render("./404", { target: path(req).href }, (error404, html404) => {
+      if (html404) {
+        res.writeHead(404, { "Content-Type": "text/html" });
+        res.write(html404);
         res.end();
       }
       else {
         // If 404 is broken, serve 500
         res.writeHead(500, { "Content-Type": "text/html" });
-        res.write(`The page ${path(req).href} could not be found <br>${error}`);
+        res.write(`The page ${path(req).href} could not be found <br>${error404}`);
         res.end();
       }
     });
@@ -73,8 +72,6 @@ module.exports = {
               serve.return404(req, res);
             }
           });
-          /*res.write(data.Body.toString("base64"));
-          res.end();*/
         }
         else {
           console.error(err);
@@ -82,16 +79,6 @@ module.exports = {
           res.end();
         }
       });
-      /*res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
-        if (html) {
-          res.writeHead(200, { "Content-Type": "text/html" });
-          res.write(html);
-          res.end();
-        }
-        else {
-          serve.return404(req, res);
-        }
-      });*/
     }
   },
   api: {

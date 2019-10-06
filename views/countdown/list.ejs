@@ -1,44 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <%- include("../head", {beta: false, modal: false}) %>
-  <title>New Countdown</title>
-  <link href="/css/countdown.css" rel="stylesheet">
-  <script src="/js/countdownV4/list.js" defer></script>
-</head>
-<body>
-  <%- include("../header", {title: "Countdown List", choice: true}) %>
-  <div id="list">
-    <div id="list-head">
-      <div id="listTabs">
-        <input type="button" id="preset" value="Preset Countdowns">
-        <input type="button" id="custom" value="Custom Countdowns">
-      </div>
-      <div id="listLayout">
-        <button id="rows" class="active"><img src="/img/list.svg"></button><!--Make the active display stored in a cookie-->
-        <button id="grid"><img src="/img/grid.svg"></button>
-      </div>
-    </div>
-    <div id="presets-list" class="list-menu list">
-      <div id="list-title" class="list-item">
-        <div class="name">Name</div>
-        <div class="date">Next occurrence</div>
-        <div class="calendar">Calendar</div>
-      </div>
-      <!--In the final version, this list will be created on the server-->
-      <a class="list-item" href="/countdown/New_Years">
-        <img src="data:image/svg;base64,<%= fireworks %>">
-        <div class="name">New Year</div>
-        <div class="date">1/1/2020</div>
-        <div class="calendar">Georgian</div>
-      </a>
-      <a class="list-item" href="/countdown/Christmas">
-        <img src="/img/christmas-tree.svg">
-        <div class="name">Christmas</div>
-        <div class="date">12/25/2019</div>
-        <div class="calendar">Georgian</div>
-      </a>
-    </div>
+<div id="list-head">
+  <div id="listTabs">
+    <input type="button" id="preset" value="Preset Countdowns">
+    <input type="button" id="custom" value="Custom Countdowns">
   </div>
-</body>
-</html>
+  <div id="listLayout">
+    <button id="rows" class="active"><img src="/img/list.svg"></button><!--Make the active display stored in a cookie-->
+    <button id="grid"><img src="/img/grid.svg"></button>
+  </div>
+</div>
+<div id="presets-list" class="list-menu list">
+  <div id="list-title" class="list-item">
+    <div class="name">Name</div>
+    <div class="date">Next occurrence</div>
+    <div class="calendar">Calendar</div>
+  </div>
+  <!--In the final version, this list will be created on the server-->
+  <a class="list-item" href="/countdown/New_Years">
+    <img src="data:image/png;base64,<%= fireworks %>">
+    <div class="name">New Year</div>
+    <div class="date">1/1/2020</div>
+    <div class="calendar">Georgian</div>
+  </a>
+  <a class="list-item" href="/countdown/Christmas">
+    <img src="/img/christmas-tree.svg">
+    <div class="name">Christmas</div>
+    <div class="date">12/25/2019</div>
+    <div class="calendar">Georgian</div>
+  </a>
+</div>
