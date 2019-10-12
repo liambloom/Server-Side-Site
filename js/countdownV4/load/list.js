@@ -1,6 +1,9 @@
 const list = document.getElementById("list");
 fetch("/countdown/list", {
   method: "POST",
+  headers: {
+    "Content-Type": "application/json; charset=utf-8"
+  },
   body: JSON.stringify({
     time: new Date().getTime()
   })

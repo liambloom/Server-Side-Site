@@ -1,4 +1,5 @@
 const aws = require("aws-sdk");
+const { pool } = require("./initPool");
 //const path = require("path");
 
 aws.config = new aws.Config({
@@ -14,23 +15,21 @@ module.exports = {
       else cb(data, err);
     });
   },
-  getObjects: async function (files, cb) {
-    const returnObject = {};
-    let cbHasRun = false;
-    for (let i = 0; i < files.length; i++) {
-      if (cbHasRun) break;
-      new aws.S3().getObject({
+  getObjects: async function (files) {
+    const promises = {};
+    for (let file of files) {
+      promises[file] = new aws.S3().getObject({
         Bucket: "liambloom",
-        Key: files[i]
-      }, (err, data) => {
-        if (err) {
-          cb(undefined, err);
-          cbHasRun = true;
-        }
-        else returnObject[files[i]] = data;
-        if (i + 1 === files.length) cb(returnObject);
-      });
-      
+        Key: file
+      }).promise();
     }
-  }
+    try {
+      return await Promise.all(promises);
+    }
+    catch (err) {
+      console.error(err);
+      return Promise.reject(err);
+    }
+  },
+  pool
 };
