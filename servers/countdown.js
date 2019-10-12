@@ -83,6 +83,7 @@ module.exports = {
           aws.getObjects(preset.map(e => `countdown/${e.icon}.png`)),
           preset.forEach(e => { // This just edits the preset object while the requests are being sent to aws
             e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
+            e.calendar = e.calendar.titleCase();
           })
         ]))[0];
         preset.forEach(e => {
@@ -91,11 +92,12 @@ module.exports = {
         preset.sort((a, b) => a.timing.getTime() - b.timing.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         console.log(
           preset.map(e => {
-            e.icon = e.icon.length;
-            return e;
+            clone = JSON.parse(JSON.stringify(e));
+            clone.icon = "icon here";
+            return clone;
           })
         );
-        res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, fireworks: data[`countdown/${preset[1].icon}.png`].Body.toString("base64")}, (error, html) => {
+        res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, preset: JSON.stringify(preset)}, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
             res.write(html);

@@ -14,17 +14,13 @@
     <div class="date">Next occurrence</div>
     <div class="calendar">Calendar</div>
   </div>
-  <!--In the final version, this list will be created on the server-->
-  <a class="list-item" href="/countdown/New_Years">
-    <img src="data:image/png;base64,<%= fireworks %>">
-    <div class="name">New Year</div>
-    <div class="date">1/1/2020</div>
-    <div class="calendar">Georgian</div>
-  </a>
-  <a class="list-item" href="/countdown/Christmas">
-    <img src="/img/christmas-tree.svg">
-    <div class="name">Christmas</div>
-    <div class="date">12/25/2019</div>
-    <div class="calendar">Georgian</div>
-  </a>
+  <% preset = JSON.parse(preset) %>
+  <% for (let i of preset) { %>
+    <a class="list-item" href="/countdown/<%= i.id %>">
+      <img src="data:image/png;base64,<%= i.icon %>">
+      <div class="name"><%= i.name %></div>
+      <div class="date"><%= i.timing %></div>
+      <div class="calendar"><%= i.calendar %></div>
+    </a>
+  <% } %>
 </div>

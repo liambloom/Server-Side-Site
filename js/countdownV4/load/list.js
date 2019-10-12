@@ -13,6 +13,11 @@ fetch("/countdown/list", {
     list.innerHTML = res;
   })
   .then(() => {
+    for (let e of document.querySelectorAll(":not(#list-title) > .date")) {
+      e.innerHTML = new Date(e.innerHTML).toLocaleDateString();
+    }
+  })
+  .then(() => {
     const e = document.createElement("script");
     e.src = "/js/countdownV4/list.js";
     list.appendChild(e);
