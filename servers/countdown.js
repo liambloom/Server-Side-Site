@@ -83,6 +83,8 @@ module.exports = {
         }
       };
       let next = getNth(now.getFullYear());
+      next.setHours(timeObj.hour);
+      next.setMinutes(timeObj.minute);
       if (next.getTime() > now.getTime()) return next;
       else return getNth(now.getFullYear() + 1);
     }
