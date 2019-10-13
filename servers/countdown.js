@@ -82,16 +82,10 @@ module.exports = {
         preset.forEach(e => {
           e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
           e.calendar = e.calendar.titleCase();
-          e.icon = `/aws/countdown/${e.icon}.png`;//data[`countdown/${e.icon}.png`].Body.toString("base64");
+          e.icon = `/aws/countdown/${e.icon}`;
         });
         preset.sort((a, b) => a.timing.getTime() - b.timing.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
-        console.log(
-          preset/*.map(e => {
-            clone = JSON.parse(JSON.stringify(e));
-            clone.icon = "icon here";
-            return clone;
-          })*/
-        );
+        //console.log(preset);
         res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, preset: JSON.stringify(preset)}, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
