@@ -79,23 +79,18 @@ module.exports = {
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
       try {
-        const data = await (await Promise.all([
-          aws.getObjects(preset.map(e => `countdown/${e.icon}.png`)),
-          preset.forEach(e => { // This just edits the preset object while the requests are being sent to aws
-            e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
-            e.calendar = e.calendar.titleCase();
-          })
-        ]))[0];
         preset.forEach(e => {
-          e.icon = data[`countdown/${e.icon}.png`].Body.toString("base64");
+          e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
+          e.calendar = e.calendar.titleCase();
+          e.icon = `/aws/countdown/${e.icon}.png`;//data[`countdown/${e.icon}.png`].Body.toString("base64");
         });
         preset.sort((a, b) => a.timing.getTime() - b.timing.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         console.log(
-          preset.map(e => {
+          preset/*.map(e => {
             clone = JSON.parse(JSON.stringify(e));
             clone.icon = "icon here";
             return clone;
-          })
+          })*/
         );
         res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, preset: JSON.stringify(preset)}, (error, html) => {
           if (html) {

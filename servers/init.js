@@ -3,12 +3,13 @@ const express = require("express");
 const os = require("os");
 const url = require("url");
 const fs = require("fs");
-const mime = require("mime-types");
 const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
 const DB = require("./queries");
 const count = require("./countdown");
+const aws = require("./aws");
+const { mime } = aws;
 
 const app = express();
 
@@ -117,5 +118,6 @@ module.exports = {
   admin,
   api,
   countdown,
-  count
+  count,
+  aws
 };

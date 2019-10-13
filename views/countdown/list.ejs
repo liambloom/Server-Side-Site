@@ -17,7 +17,7 @@
   <% preset = JSON.parse(preset) %>
   <% for (let i of preset) { %>
     <a class="list-item" href="/countdown/<%= i.id %>">
-      <img src="data:image/png;base64,<%= i.icon %>">
+      <img src="<%= i.icon %>">
       <div class="name"><%= i.name %></div>
       <div class="date"><%= i.timing %></div>
       <div class="calendar"><%= i.calendar %></div>
