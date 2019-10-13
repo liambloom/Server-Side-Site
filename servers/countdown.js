@@ -72,6 +72,20 @@ module.exports = {
           return this.V3.findYear(new Date(now.getFullYear(), timeObj.month, timeObj.day, timeObj.hour, timeObj.minute, 0), now);
       }
     }
+    else if (timing.includes("of")) {
+      timeObj.month = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"].indexOf(timing.match(/(?<=of ).*$/)[0].toLowerCase());
+      timeObj.weekDay = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(timing.match(/\b\S{3}(?= of)/)[0].toLowerCase());
+      const getNth = (year) => {
+        if (timing.includes("last")) return this.V3.findLast(year, timeObj.month, timeObj.weekDay);
+        else {
+          timeObj.nth = parseInt(timing.match(/\b\d(?=st|nd|rd|th)/)[0]);
+          return this.V3.findDay(year, timeObj.month, timeObj.weekDay, timeObj.nth);
+        }
+      };
+      let next = getNth(now.getFullYear());
+      if (next.getTime() > now.getTime()) return next;
+      else return getNth(now.getFullYear() + 1);
+    }
   },
   render: {
     list: async function (req, res) {
@@ -117,6 +131,16 @@ module.exports = {
       else {
         return event;
       }
+    },
+    findDay (year, month, dayToFind, nth) {
+      const finder = new Date(year, month, nth * 7 - 6);
+      while (finder.getDay() !== dayToFind) {
+        finder.setDate(finder.getDate() + 1);
+      }
+      return finder;
+    },
+    findLast (year, month, dayToFind) {
+      return this.findDay(year, month + 1, dayToFind, 0);
     }
   }
 };
