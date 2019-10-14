@@ -28,6 +28,7 @@ const serve = (req, res) => {
     }
     //if ejs
     else {
+      console.log(page);
       res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
         if (html) {
           // On success, serve page

@@ -19,13 +19,10 @@ admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 
-countdown.get("/listTest", adminOnly, count.listTest);
-countdown.get("/new", count.new);
-countdown.get("/my", requireLogin, count.my);
-countdown.get("/my/:name", requireLogin, count.my1);
-countdown.get("/:id", count.id);
-countdown.get(/.*/, count.r404);
-countdown.post("/list", count.render.list);
+countdown.get(/^(?!\/(?:test))/, count.serve);
+countdown.get("/test", adminOnly, count.test);
+countdown.post("/pieces/list", count.render.list);
+countdown.post(/\/pieces\/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/, count.render.countdown);
 
 site.get(/^(?!\/(?:secure|update|aws))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);

@@ -5,29 +5,10 @@ const { pool } = aws;
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
 module.exports = {
-  new (req, res) {
-    console.log("new ran");
-    res.write("new ran");
-    res.end();
-  },
-  my (req, res) {
-    console.log("my ran");
-    res.write("my ran");
-    res.end();
-  },
-  my1 (req, res) {
-    console.log("my1 ran");
-    res.write("my1 ran");
-    res.end();
-  },
-  id (req, res, next) {
-    console.log("id ran");
-    /*res.write("id ran");
-    res.end();*/
-    next();
-  },
-  listTest: function (req, res) {
-    res.render("./countdown/listTest", { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
+  serve (req, res) {
+    let reqUrl = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
+    if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/.test(reqUrl)) reqUrl = "countdown";
+    res.render("./countdown/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
         // On success, serve page
         res.writeHead(200, { "Content-Type": "text/html" });
@@ -35,7 +16,8 @@ module.exports = {
         res.end();
       }
       else {
-        // On failure, serve 404
+        // On failure, serve 404d
+        console.error(error);
         module.exports.r404(req, res);
       }
     });
@@ -89,6 +71,9 @@ module.exports = {
       else return getNth(now.getFullYear() + 1);
     }
   },
+  test (req, res) {
+
+  },
   render: {
     list: async function (req, res) {
       const page = "." + path(req).pathname.replace(/\/$/, "/index");
@@ -102,15 +87,15 @@ module.exports = {
         });
         preset.sort((a, b) => a.timing.getTime() - b.timing.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         //console.log(preset);
-        res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl, preset: JSON.stringify(preset)}, (error, html) => {
+        res.render(page, { preset }, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
             res.write(html);
             res.end();
           }
           else {
-            console.error(err);
-            serve.return404(req, res);
+            console.error(error);
+            module.exports.r404(req, res);
           }
         });
       }
@@ -118,6 +103,28 @@ module.exports = {
         console.error(err);
         res.write(err.toString());
         res.end();
+      }
+    },
+    countdown: async function (req, res) {
+      try {
+        const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
+        info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+        res.render("./countdown/pieces/countdown", info, (error, html) => {
+          if (html) {
+            // On success, serve page
+            res.writeHead(200, { "Content-Type": "text/html" });
+            res.write(html);
+            res.end();
+          }
+          else {
+            // On failure, serve 404d
+            console.error(error);
+            module.exports.r404(req, res);
+          }
+        });
+      }
+      catch (err) {
+        module.exports.r404(req, res);
       }
     }
   },

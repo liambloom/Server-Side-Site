@@ -14,7 +14,6 @@
     <div class="date">Next occurrence</div>
     <div class="calendar">Calendar</div>
   </div>
-  <% preset = JSON.parse(preset) %>
   <% for (let i of preset) { %>
     <a class="list-item" href="/countdown/<%= i.id %>">
       <img src="<%= i.icon %>">

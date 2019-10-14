@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 #list {
   width: 60%;
   margin: 10px 20%;
@@ -73,8 +77,8 @@
   display: none;
 }
 #list .list-menu.grid .list-item {
-  grid-template-rows: repeat(min-content, 2);
-  grid-template-columns: 60px;
+  grid-template-rows: repeat(2, min-content);
+  grid-template-columns: 65px;
   grid-row-gap: 5px;
   font-size: 0.75rem;
   margin: 5px;
@@ -82,7 +86,7 @@
 #list .list-menu.grid .list-item img {
   grid-row: 1;
   margin: 5px;
-  height: 50px;
+  height: 55px;
 }
 #list .list-menu.grid .list-item .name {
   grid-row: 2;
@@ -117,6 +121,43 @@
 }
 #list .list-menu.list .list-item .calendar {
   grid-column: 4;
+}
+
+#countdown {
+  margin: 50px;
+  /*height: calc(100vh + ((var(--size) - 46.4px) * 2) - 100px);
+  display: flex;
+  justify-content: center;
+  align-items: center;*/
+  position: absolute;
+  top: calc((100vh + var(--size) - 46.4px) / 2);
+  transform: translateY(-50%);
+  width: calc(100% - 100px);
+  font-size: 50px;
+  line-height: 60px;
+  text-align: center;
+}
+#countdown div {
+  display: inline;
+}
+#countdown #until {
+  font-size: 35px;
+}
+#countdown .number {
+  font-variant-numeric: tabular-nums;
+  font-size: 75px;
+}
+#countdown .label {
+  font-size: 25px;
+}
+#countdown #done {
+  display: none;
+}
+#countdown.done #counters {
+  display: none;
+}
+#countdown.done #done {
+  display: initial;
 }
 
 @supports (width: max-content) {

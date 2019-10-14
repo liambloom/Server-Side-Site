@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("../../head", {beta: false, modal: false}) %>
+  <title></title>
+  <link href="/css/countdown.css" rel="stylesheet">
+</head>
+<body>
+  <%- include("../../header", {title: "", choice: true}) %>
+  <div id="countdown">
+    <script src="/js/countdownV4/load.js"></script>
+    <script defer>
+      load(window.location.pathname.split("/").last());
+    </script>
+  </div>
+</body>
+</html>
