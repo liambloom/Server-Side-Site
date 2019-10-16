@@ -43,7 +43,7 @@ header nav ul li a {
   text-decoration: none;
   height: 18.4px;
 }
-/*@supports (width: min-content) {
+@supports (width: min-content) {
   header nav > ul > li > a {
     width: min-content;
   }
@@ -57,7 +57,7 @@ header nav ul li a {
   header nav > ul > li > a {
     width: initial;
   }
-}*/
+}
 header nav ul li ul li a:hover, header nav ul li ul li a:focus {
   background-color: /*#0000005d;*/rgba(0, 0, 0, 0.36);
 }

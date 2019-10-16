@@ -1,7 +1,7 @@
 #content {
 	font-size: 20px;
 }
-:root {
+/*:root {
 	--primary: #EE2277;
 	--secondary: #a7145d;
 	--tertiary: #0d1532;
@@ -119,7 +119,7 @@ select {
 select:focus {
 	border: 3px solid var(--primary);
 	color: var(--primary);
-}
+}*/
 #content img {
 	margin-top: 2px;
 	margin-bottom: -17px;
@@ -131,7 +131,7 @@ select:focus {
 #content a {
 	line-height: 1.15em;
 }
-
+/*
 button.warning {
 	border-radius: 4px;
 }
@@ -145,4 +145,4 @@ button.warning:hover a {
 .submit:hover {
 	color: var(--tertiary);
 	background-color: var(--secondary);
-}
+}*/

@@ -3,13 +3,11 @@ const express = require("express");
 const os = require("os");
 const url = require("url");
 const fs = require("fs");
+const mime = require("mime-types");
 const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
 const DB = require("./queries");
-const count = require("./countdown");
-const aws = require("./aws");
-const { mime } = aws;
 
 const app = express();
 
@@ -93,12 +91,10 @@ app.use(async (req, res, next) => {
 const site = express.Router();
 const admin = express.Router();
 const api = express.Router();
-const countdown = express.Router();
 admin.use(adminOnly);
 app.use("/admin", admin);
 app.use("/api", api);
-app.use("/countdown", countdown);
-app.use(/^(?!\/(?:api|admin|countdown))/, site);
+app.use(/^(?!\/(?:api|admin))/, site);
 
 module.exports = {
   app,
@@ -116,8 +112,5 @@ module.exports = {
   icons,
   site, 
   admin,
-  api,
-  countdown,
-  count,
-  aws
+  api
 };
