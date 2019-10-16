@@ -23,12 +23,12 @@
   "homepage": "https://github.com/liambloom/Server-Side-Site",
   "dependencies": {
     "@sendgrid/mail": "^6.4.0",
+    "aws-sdk": "^2.541.0",
     "bcrypt": "^3.0.6",
     "client-sessions": "^0.8.0",
     "ejs": "^2.6.2",
     "express": "^4.17.1",
     "mime-types": "^2.1.24",
-    "nodemailer": "^6.2.1",
     "nodemon": "^1.19.1",
     "pg": "^7.11.0",
     "uuid": "^3.3.2"

@@ -1,21 +1,13 @@
-//jshint esversion:6
-
 const init = () => {
-	//console.log("init ran");
-	hash();
-  window.onhashchange = hash;
-  document.addEventListener("themeReady", () => {theme.mode = "dark";});
 	if (location.search == "") {
 		destroy("main");
 		if (check("datetime-local")) {
 			destroy("dateTimeSeperate");
 			destroy("dateTimeDropdown");
-			//destroy("betaWarning");
 		}
 		else if (check("date") && check("time")) {
 			destroy("dateTimeTogether");
 			destroy("dateTimeDropdown");
-			//destroy("betaWarning");
 		}
 		else {
 			destroy("dateTimeSeperate");
