@@ -1,5 +1,5 @@
 "use strict";
-const { app, DB, requireLogin, adminOnly, port, icons, site, admin, api, countdown, count, aws } = require("./init");
+const { app, DB, requireLogin, port, icons, site, admin, api } = require("./init");
 const serve = require("./servePage");
 
 api.get("/logout", DB.user.logout);
@@ -19,16 +19,9 @@ admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 
-countdown.get(/^\/index/, serve);
-countdown.get(/^\/beta(?!\/(?:test))/, count.serve);
-countdown.get("/beta/test", adminOnly, count.test);
-countdown.post("/pieces/list", count.render.list);
-countdown.post(/\/pieces\/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/, count.render.countdown);
-
-site.get(/^(?!\/(?:secure|update|aws))/, serve);
+site.get(/^(?!\/(?:secure|update))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
 site.get("/update/:category", requireLogin, serve.update);
-site.get(/^\/aws/, aws.getRequest);
 
 app.listen(port, () => { 
   DB.createTable();

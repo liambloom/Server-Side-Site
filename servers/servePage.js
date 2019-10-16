@@ -3,6 +3,7 @@ const { fs, mime, filetype, url } = require("./init");
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
+
 const serve = (req, res) => {
   try {
     const page = "." + path(req).pathname.replace(/\/$/, "/index");
@@ -28,7 +29,6 @@ const serve = (req, res) => {
     }
     //if ejs
     else {
-      console.log(page);
       res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
         if (html) {
           // On success, serve page
@@ -38,8 +38,19 @@ const serve = (req, res) => {
         }
         else {
           // On failure, serve 404
-          console.error(error);
-          serve.return404(req, res);
+          res.render("./404", { target: path(req).href }, (error404, html404) => {
+            if (html404) {
+              res.writeHead(404, { "Content-Type": "text/html" });
+              res.write(html404);
+              res.end();
+            }
+            else {
+              // If 404 is broken, serve 500
+              res.writeHead(500, { "Content-Type": "text/html" });
+              res.write(`The page ${path(req).href} could not be found <br>${error404}`);
+              res.end();
+            }
+          });
         }
       });
     }
@@ -85,22 +96,6 @@ serve.update = (req, res) => {
       res.end();
     }
     else {
-      res.writeHead(500, { "Content-Type": "text/html" });
-      res.write(`The page ${path(req).href} could not be found <br>${error}`);
-      res.end();
-    }
-  });
-};
-serve.return404 = (req, res) => {
-  console.log("return404 ran");
-  res.render("./404", { target: path(req).href }, (error, html) => {
-    if (html) {
-      res.writeHead(404, { "Content-Type": "text/html" });
-      res.write(html);
-      res.end();
-    }
-    else {
-      // If 404 is broken, serve 500
       res.writeHead(500, { "Content-Type": "text/html" });
       res.write(`The page ${path(req).href} could not be found <br>${error}`);
       res.end();

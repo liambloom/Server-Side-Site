@@ -16,5 +16,3 @@ const hash = () => {
 		}
 	}
 };
-window.addEventListener("hashchange", hash);
-hash();
