@@ -38,6 +38,7 @@ const serve = (req, res) => {
         }
         else {
           // On failure, serve 404
+          console.error(error);
           serve.return404(req, res);
         }
       });

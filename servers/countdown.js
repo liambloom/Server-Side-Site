@@ -8,7 +8,7 @@ module.exports = {
   serve (req, res) {
     let reqUrl = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
     if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/.test(reqUrl)) reqUrl = "countdown";
-    res.render("./countdown/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
+    res.render("./countdown_beta/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
         // On success, serve page
         res.writeHead(200, { "Content-Type": "text/html" });
@@ -76,7 +76,7 @@ module.exports = {
   },
   render: {
     list: async function (req, res) {
-      const page = "." + path(req).pathname.replace(/\/$/, "/index");
+      const page = "." + path(req).pathname.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
       try {
@@ -109,7 +109,7 @@ module.exports = {
       try {
         const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
         info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
-        res.render("./countdown/pieces/countdown", info, (error, html) => {
+        res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
           if (html) {
             // On success, serve page
             res.writeHead(200, { "Content-Type": "text/html" });
