@@ -25,3 +25,8 @@ countdownTimingSpec.txt
 *.map
 *.scss
 servers/countdowns.sql
+lib/highlightjs/*
+!lib/highlightjs/styles
+lib/highlightjs/styles/*
+!lib/highlightjs/styles/monokai-sublime.css
+!lib/highlightjs/highlight.pack.js

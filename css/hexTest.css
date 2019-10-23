@@ -246,6 +246,9 @@ input[type = "number"]:focus {
 #spin {
   float: right;
 }
+#documentation {
+  margin: 0px 50px 50px;
+}
 @supports (width: min-content) {
   #menuTabs {
     width: min-content;

@@ -4,8 +4,12 @@
   <%- include("head", {beta: false, modal: false})%>
   <title>Shapes</title>
   <link rel="stylesheet" href="/css/hexTest.css">
+  <link rel="stylesheet" href="/lib/highlightjs/styles/monokai-sublime.css">
   <script src="/js/color.js"></script>
+  <script src="/lib/highlightjs/highlight.pack.js"></script>
   <script src="/js/hexTest.js" defer type="module"></script>
+  <!--<script src="/lib/highlightjs/lib/languages/htmlbars.js"></script>
+  <script src="/lib/highlightjs/lib/languages/javascript.js"></script>-->
 </head>
 <body>
   <%- include("header", {title: "Shapes", choice: true}) %>
@@ -115,5 +119,13 @@
   <modal id="shapeCreationMenu" data-escape="okCancel" data-confirm="window.newShape(parseInt(document.getElementById('sidesInput').value))">
     Sides: <input type="number" id="sidesInput" min="3" step="1" value="4" required>
   </modal>
+  <div id="documentation">
+    <h2>How it works.</h2>
+    This section explains the code that makes this work, and how you can use it in your own programs. If you are interested in this, you should keep reading. If, on the other hand, you don't care about the code, then you will probably find this uninteresting. So, with that out of the way, let's begin
+    <h3></h3>
+    <pre><code class="js">
+      import { Shape } from "/lib/shapes.js";
+    </code></pre>
+  </div>
 </body>
 </html>
