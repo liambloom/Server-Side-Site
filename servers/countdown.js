@@ -38,6 +38,7 @@ module.exports = {
     });
   },
   nextOccurrence (timing, now, offset) {
+    let next;
     now = new Date(now);
     timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
@@ -51,7 +52,7 @@ module.exports = {
           timeObj.dateArr = timeObj.date.split("/");
           timeObj.month = parseInt(timeObj.dateArr[0]) - 1;
           timeObj.day = parseInt(timeObj.dateArr[1]);
-          return this.V3.findYear(new Date(now.getFullYear(), timeObj.month, timeObj.day, timeObj.hour, timeObj.minute, 0), now);
+          next = this.V3.findYear(new Date(now.getFullYear(), timeObj.month, timeObj.day, timeObj.hour, timeObj.minute, 0), now);
       }
     }
     else if (timing.includes("of")) {
@@ -64,13 +65,17 @@ module.exports = {
           return this.V3.findDay(year, timeObj.month, timeObj.weekDay, timeObj.nth);
         }
       };
-      let next = getNth(now.getFullYear());
+      next = getNth(now.getFullYear());
       next.setHours(timeObj.hour);
       next.setMinutes(timeObj.minute);
       if (!(next.getTime() > now.getTime())) next = getNth(now.getFullYear() + 1);
-      next = new Date(next.getTime() - ((offset - next.getTimezoneOffset()) * 60000));
-      return next;
     }
+    console.log(next.toLocaleDateString());
+    console.log("Total offset", (offset - next.getTimezoneOffset()) * 60000);
+    console.log("Server offset", next.getTimezoneOffset());
+    console.log("Client offset", offset);
+    next = new Date(next.getTime() + ((offset - next.getTimezoneOffset()) * 60000));
+    return next;
   },
   test (req, res) {
 
