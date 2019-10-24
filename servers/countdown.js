@@ -67,8 +67,9 @@ module.exports = {
       let next = getNth(now.getFullYear());
       next.setHours(timeObj.hour);
       next.setMinutes(timeObj.minute);
-      if (next.getTime() > now.getTime()) return next;
-      else return getNth(now.getFullYear() + 1);
+      if (!(next.getTime() > now.getTime())) next = getNth(now.getFullYear() + 1);
+      next = new Date(next.getTime() - ((now.getTimezoneOffset() - next.getTimezoneOffset()) * 60000));
+      return next;
     }
   },
   test (req, res) {
