@@ -37,7 +37,7 @@ module.exports = {
       }
     });
   },
-  nextOccurrence (timing, now) {
+  nextOccurrence (timing, now, offset) {
     now = new Date(now);
     timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
@@ -68,7 +68,7 @@ module.exports = {
       next.setHours(timeObj.hour);
       next.setMinutes(timeObj.minute);
       if (!(next.getTime() > now.getTime())) next = getNth(now.getFullYear() + 1);
-      next = new Date(next.getTime() - ((now.getTimezoneOffset() - next.getTimezoneOffset()) * 60000));
+      next = new Date(next.getTime() - ((offset - next.getTimezoneOffset()) * 60000));
       return next;
     }
   },
@@ -82,7 +82,7 @@ module.exports = {
       preset = preset.rows;
       try {
         preset.forEach(e => {
-          e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
+          e.timing = module.exports.nextOccurrence(e.timing, req.body.time, req.body.offset);
           e.calendar = e.calendar.titleCase();
           e.icon = `/aws/countdown/${e.icon}`;
         });
@@ -109,7 +109,7 @@ module.exports = {
     countdown: async function (req, res) {
       try {
         const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
-        info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+        info.timing = module.exports.nextOccurrence(info.timing, req.body.time, req.body.offset);
         res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
           if (html) {
             // On success, serve page
