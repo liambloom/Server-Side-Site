@@ -74,7 +74,6 @@ module.exports = {
     console.log("Total offset", (offset - next.getTimezoneOffset()) * 60000);
     console.log("Server offset", next.getTimezoneOffset());
     console.log("Client offset", offset);
-    // Don't send a date object, send the date and time of the event and have the client figure it out, since the client can account for daylight savings
     next = new Date(next.getTime() + ((offset - next.getTimezoneOffset()) * 60000));
     return next;
   },
