@@ -11,6 +11,7 @@ aws.config = new aws.Config({
 
 module.exports = {
   getRequest: async function (req, res) {
+    console.log("this ran");
     try {
       const path = req.originalUrl.replace("/aws/", "");
       const file = await module.exports.getObject(path);
