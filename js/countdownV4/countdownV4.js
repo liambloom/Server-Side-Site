@@ -1,4 +1,4 @@
-let eventTime = parseInt(document.getElementById("event_time").value);
+let eventTime = new Date(...JSON.parse(document.getElementById("event_time").value)).getTime();
 const set = (bool, number, name) => {
   if (bool) {
     document.querySelector(`#${name} .number`).innerHTML = number.toString();

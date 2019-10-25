@@ -19,7 +19,7 @@ window.load = (piece) => {
     .then(() => {
       if (piece === "list") {
         for (let e of document.querySelectorAll(":not(#list-title) > .date")) {
-          e.innerHTML = new Date(e.innerHTML).toLocaleDateString();
+          e.innerHTML = new Date(...JSON.parse(e.innerHTML)).toLocaleDateString();
         }
       }
       else if (countdown) {

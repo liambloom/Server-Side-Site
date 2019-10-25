@@ -42,16 +42,25 @@ module.exports = {
     timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
     timeObj.timeArr = timeObj.time.split(":");
-    timeObj.hour = timeObj.timeArr[0];
-    timeObj.minute = timeObj.timeArr[1];
+    timeObj.hour = parseInt(timeObj.timeArr[0]);
+    timeObj.minute = parseInt(timeObj.timeArr[1]);
     if (timing.includes("every")) {
       switch (timing.match(/(?<=every ).*$/)[0]) {
         case "year":
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];
           timeObj.dateArr = timeObj.date.split("/");
-          timeObj.month = parseInt(timeObj.dateArr[0]) - 1;
-          timeObj.day = parseInt(timeObj.dateArr[1]);
-          return this.V3.findYear(new Date(now.getFullYear(), timeObj.month, timeObj.day, timeObj.hour, timeObj.minute, 0), now);
+          timeObj.params = [
+            now.getFullYear(),
+            parseInt(timeObj.dateArr[0]) - 1, // Month
+            parseInt(timeObj.dateArr[1]), // Day
+            timeObj.hour,
+            timeObj.minute,
+            0
+          ];
+          return {
+            date: this.V3.findYear(new Date(...timeObj.params), now),
+            params: JSON.stringify(timeObj.params)
+          };
       }
     }
     else if (timing.includes("of")) {
@@ -67,8 +76,18 @@ module.exports = {
       let next = getNth(now.getFullYear());
       next.setHours(timeObj.hour);
       next.setMinutes(timeObj.minute);
-      if (next.getTime() > now.getTime()) return next;
-      else return getNth(now.getFullYear() + 1);
+      if (!(next.getTime() > now.getTime())) next = getNth(now.getFullYear() + 1);
+      return {
+        date: next,
+        params: JSON.stringify([
+          next.getFullYear(),
+          next.getMonth(),
+          next.getDate(),
+          next.getHours(),
+          next.getMinutes(),
+          0
+        ])
+      };
     }
   },
   test (req, res) {
@@ -85,7 +104,7 @@ module.exports = {
           e.calendar = e.calendar.titleCase();
           e.icon = `/aws/countdown/${e.icon}`;
         });
-        preset.sort((a, b) => a.timing.getTime() - b.timing.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
+        preset.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         //console.log(preset);
         res.render(page, { preset }, (error, html) => {
           if (html) {
@@ -108,7 +127,7 @@ module.exports = {
     countdown: async function (req, res) {
       try {
         const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
-        info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+        info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time)).params;
         res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
           if (html) {
             // On success, serve page
