@@ -69,7 +69,7 @@ module.exports = {
       next.setHours(timeObj.hour);
       next.setMinutes(timeObj.minute);
       if (!(next.getTime() > now.getTime())) next = getNth(now.getFullYear() + 1);
-    }
+    }//
     console.log(next.toLocaleDateString());
     console.log("Total offset", (offset - next.getTimezoneOffset()) * 60000);
     console.log("Server offset", next.getTimezoneOffset());
