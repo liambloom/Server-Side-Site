@@ -122,10 +122,18 @@
   <div id="documentation">
     <h2>How it works.</h2>
     This section explains the code that makes this work, and how you can use it in your own programs. If you are interested in this, you should keep reading. If, on the other hand, you don't care about the code, then you will probably find this uninteresting. So, with that out of the way, let's begin
-    <h3></h3>
+    <h3>Importing Shapes.js</h3>
+    This first section explains how to import the shapes class so you can use these shapes in your code. The easiest way to do it is with the ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import statement</a>.
     <pre><code class="js">
-      import { Shape } from "/lib/shapes.js";
+      import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";
     </code></pre>
+    Be aware that the import statement is only avalable in javascript <i>modules</i>, meaning that your code will be in strict mode by default and that it must be imported like this:
+    <pre><code class="html">
+      &lt;srcipt src="/my/javascript.js" type="module">
+    </code></pre>
+    There is a way to import it without these downsides, using the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports">dynamic import</a>, but I don't recommend using this, as it is not as well supported.
+    <h3>Making a shape</h3>
+    Now that you have the shape constructor, creating a shape is as simple as calling the function. There are two parameters for the constructor. The first is sides, which is an integer that represents how many sides the shape should have, and config, which is an object which has all other information about the shape.
   </div>
 </body>
 </html>
