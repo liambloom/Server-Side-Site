@@ -1,5 +1,7 @@
 import { Shape } from "/lib/shapes.js";
 
+const c = document.getElementById("example-2");
+const ctx = c.getContext("2d");
 function example (number, sides, config, code) {
   const c = document.getElementById("example-" + number);
   config.canvas = c;
@@ -7,31 +9,28 @@ function example (number, sides, config, code) {
   code(shape);
   return shape;
 }
-const ex2 = event => {
-  const c = document.getElementById("example-2");
-  const ctx = c.getContext("2d");
+window.ex2 = e => {
+  const sides = document.getElementById("sides-interact");
+  const color = document.getElementById("color-interact");
+  const width = document.getElementById("width-interact");
+  const x = document.getElementById("x-interact");
+  const y = document.getElementById("y-interact");
+  const center = document.getElementById("center-interact");
   ctx.clearRect(0, 0, c.width, c.height);
   example(2, parseInt(sides.value), {
     color: color.value,
     width: parseInt(width.value),
     x: parseInt(x.value),
-    y: parseInt(y.value)
+    y: parseInt(y.value),
+    center: /vertical|origin/.test(center.value) ? center.value : "origin"
   }, shape => {
     shape.draw();
   });
-  event.target.style.width = Math.max(event.target.value.length, 1) + "ch";
+  e.style.width = Math.max(e.value.length, 1) + "ch";
 };
-
+for (let e of document.getElementsByClassName("interact")) {
+  ex2(e);
+}
 example(1, 4, { color: "blue" }, shape => {
   shape.draw();
 });
-
-const sides = document.getElementById("sides-interact");
-const color = document.getElementById("color-interact");
-const width = document.getElementById("width-interact");
-const x = document.getElementById("x-interact");
-const y = document.getElementById("y-interact");
-for (let i of [sides, color, width, x, y]) {
-  ex2({target: i});
-  i.addEventListener("input", ex2); // Why does this do literally nothing at all?
-}

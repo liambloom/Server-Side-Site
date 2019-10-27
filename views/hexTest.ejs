@@ -128,11 +128,11 @@
     <h3>Importing Shapes.js</h3>
     <section>
       This first section explains how to import the shapes class so you can use these shapes in your code. The easiest way to do it is with the ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import statement</a>.
-      <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";</span></code></pre>
+      <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.github.io/lib/shapes.js";</span></code></pre>
       Be aware that the import statement is only avalable in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">javascript <i>modules</i></a>, meaning that your code will be in strict mode by default and that it must be imported like this:
       <pre><code class="html"><span class="line">&lt;srcipt src="my_javascript.js" type="module"></span></code></pre>
       There is a way to import it without a module, using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports">dynamic import</a>, and here is what that looks like:
-      <pre><code class="js"><span class="line">import("https://liambloom.herokuapp.com/lib/shapes.js")</span>
+      <pre><code class="js"><span class="line">import("https://liambloom.github.io/lib/shapes.js")</span>
 <span class="line">  .then(shapes => shapes.Shape)</span>
 <span class="line">  .then(Shape => {</span>
 <span class="line">    // Your code goes here</span>
@@ -174,7 +174,7 @@
           </dd>
           <dt>center</dt>
           <dd>
-            The center property tells the shape what to center around. The two posable values are "origin" and "vertical", and they are case sensitive. Origin makes the x and y coordinates the exact center of the shape. This means that every vertex of the shape is the same distance from the shapes (x, y) coordinates. Vertical makes it so the highest point in the shape is the same distance from the (x, y) coordinates as the lowest point in the shape. <a href="sorry i dont have anything here">Here</a> is an example of the two side by side. Keep in mind that this has no affect on shapes with an even number of sides, because the two centers are the same.  The default is "origin".
+            The center property tells the shape what to center around. The two posable values are "origin" and "vertical", and they are case sensitive. Origin makes the x and y coordinates the exact center of the shape. This means that every vertex of the shape is the same distance from the shapes (x, y) coordinates. Vertical makes it so the highest point in the shape is the same distance from the (x, y) coordinates as the lowest point in the shape. <a href="#ex2">Here</a> is an interactive example for you to look at. Keep in mind that this has no affect on shapes with an even number of sides, because the two centers are the same.  The default is "origin".
           </dd>
           <dt>fps</dt>
           <dd>
@@ -194,14 +194,16 @@
 <span class="line">myFirstShape.draw();</span></code></pre>
         <canvas id="example-1" width="300" height="300"></canvas>
       </div>
-      Congratulations, you made a shape! That was the hardest part, the first time you were using shapes.js. Now, lets mess around with the different properties.
-      <div class="example">
+      Congratulations, you made a shape! That was the hardest part, the first time you were using shapes.js. Here's an interactive example for you to test out the different properties. Click on the underlined properties to edit them.
+      <div id="ex2" class="example">
         <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";</span>
-<span class="line">const myFirstShape = new Shape(<input id="sides-interact" type="number" class="interact number" min="3" step="1" value="4">, {</span>
-<span class="line">  color: "<input id="color-interact" type="text" class="interact string" value="blue">",</span>
-<span class="line">  width: <input id="width-interact" type="number" class="interact number" min="0" max="300" step="1" value="200">,</span>
-<span class="line">  x: <input id="x-interact" type="number" class="interact number" min="0" max="300" step="1" value="150">,</span>
-<span class="line">  y: <input id="y-interact" type="number" class="interact number" min="0" max="300" step="1" value="150"></span>
+<span class="line">const myFirstShape = new Shape(<input id="sides-interact" type="number" oninput="ex2(this)" class="interact number" min="3" step="1" value="4">, {</span>
+<span class="line">  color: "<input id="color-interact" type="text" oninput="ex2(this)" class="interact string" value="blue">",</span>
+<span class="line">  width: <input id="width-interact" type="number" oninput="ex2(this)" class="interact number" min="0" max="300" step="1" value="200">,</span>
+<span class="line">  x: <input id="x-interact" type="number" oninput="ex2(this)" class="interact number" min="0" max="300" step="1" value="150">,</span>
+<span class="line">  y: <input id="y-interact" type="number" oninput="ex2(this)" class="interact number" min="0" max="300" step="1" value="150">,</span>
+<span class="line">  center: "<input id="center-interact" type="text" oninput="ex2(this)" class="interact string" value="vertical">"</span>
+
 <span class="line">});</span>
 <span class="line">myFirstShape.draw();</span></code></pre>
         <canvas id="example-2" width="300" height="300"></canvas>

@@ -266,14 +266,12 @@ input[type = "number"]:focus {
 .example {
   display: grid;
   grid-template-rows: 300px;
-  grid-template-columns: 1fr 300px;
-  grid-template-areas: "code output";
+  grid-template-columns: calc(100% - 300px) 300px;
   overflow: hidden;
   border-radius: 15px;
   margin: 16px 0px;
 }
 .example pre {
-  grid-area: "code";
   margin: 0px;
   height: 100%;
   width: 100%;
@@ -281,21 +279,22 @@ input[type = "number"]:focus {
 .example pre code {
   overflow: auto;
   border-radius: 0px;
-  height: 100%;
-  width: 100%;
+  height: calc(100% - 24px);
+  width: calc(100% - 24px);
 }
 .example canvas {
-  grid-area: "output";
   background-color: #ffffff;
 }
 .interact {
   border: none !important;
+  border-radius: 0px;
   padding: 0px;
   background-color: transparent;
   margin: 0px !important;
   font-family: "Courier New", Courier, monospace;
   width: initial;
   transition: none !important;
+  border-bottom: 1px solid #75715e !important;
 }
 .interact.number {
   color: #ae81ff !important;
