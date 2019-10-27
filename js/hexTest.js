@@ -11,8 +11,8 @@ let ctx = c.getContext("2d");
 let bcr = () => c.getBoundingClientRect();
 let mousePosition = event => {
   let localbcr = bcr(); 
-  let x = ((event.clientX || event.changedTouches[0].clientX) - localbcr.left - scrollX);
-  let y = ((event.clientY || event.changedTouches[0].clientY) - localbcr.top - scrollY);
+  let x = ((event.clientX || event.changedTouches[0].clientX) - localbcr.left);
+  let y = ((event.clientY || event.changedTouches[0].clientY) - localbcr.top);
   return [x, y];
 };
 let redraw = () => {
