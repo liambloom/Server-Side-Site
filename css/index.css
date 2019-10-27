@@ -193,13 +193,15 @@ pre code {
 pre code .line {
   counter-increment: line;
   display: block;
-  line-height: 1.15em;
+  line-height: 1.25em;
 }
 pre code .line::before {
   content: counter(line);
   display: inline-block;
   color: #75715e;
   margin-right: 15px;
+  width: 2ch;
+  text-align: right;
   /*-webkit-user-select: none;*/
 }
 .wide {
