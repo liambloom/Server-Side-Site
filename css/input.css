@@ -1,0 +1,123 @@
+input, button:not(.tab), select, .button {
+	text-align: center;
+	border-radius: calc(1.15em + 2px);
+	background-color: var(--bg);
+	color: var(--light);
+	font-family: Tahoma, Geneva, sans-serif;
+	border: 1px solid var(--light);
+	margin: 3px;
+	padding: 5px calc((1.15em + 2px) / 2 + 10px);
+}
+input:not([type = "radio"]):focus, select:focus {
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+}
+input[type = "text"], input[type = "username"], input[type = "password"], input[type = "email"], input[type = "number"] {
+  text-align: center;
+  width: 70px;
+  transition: width 500ms ease;
+}
+input[type = "text"]:focus, input[type = "username"]:focus, input[type = "password"]:focus, input[type = "email"]:focus, input[type = "number"]:focus {
+	width: 150px;
+}
+input[type = "number"]::-webkit-outer-spin-button, input[type = "number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}
+input[type = "button"]:hover, input[type = "submit"]:hover, button:not(.tab):hover, .button:hover {
+  cursor: pointer;
+	border: 2px solid var(--headTxt);
+	margin: 2px;
+	color: var(--headTxt);
+}
+.button-3d {
+  cursor: pointer;
+  border-radius: 0px;
+  /*transition: box-shadow 500ms ease, transform 250ms ease;*/
+  transform: translate(0px, 0px);
+  box-shadow: -6px -6px 0px 0px #003388;
+}
+.button-3d:active, .button-3d.active {
+  transform: translate(-6px, -6px);
+}
+.button-3d > span { /* double check meaning of this selector */
+  transform: translate(0px, 0px);
+  display: block;
+}
+.button-3d:active > span, .button-3d.active > span {
+  transform: translate(-6px, -6px);
+}
+.tag.blue, .button-3d.blue {
+  background-color: #0060ce;
+}
+.tag.red, .button-3d.red {
+  background-color: #cc0000;
+}
+.tag.purple, .button-3d.purple {
+  background-color: #671d8c;
+}
+.tag.green, .button-3d.green {
+  background-color: #004700;
+}
+.button-3d.blue {
+  box-shadow: -6px -6px 0px 0px #003388;
+}
+.button-3d.red {
+  box-shadow: -6px -6px 0px 0px #880000;
+}
+.button-3d.purple {
+  box-shadow: -6px -6px 0px 0px #401060;
+}
+.button-3d.green {
+  box-shadow: -6px -6px 0px 0px #002800;
+}
+.button-3d.blue:active,.button-3d.blue.active {
+  box-shadow: -6px -6px 0px 0px #003388 inset;
+}
+.button-3d.red:active,.button-3d.red.active {
+  box-shadow: -6px -6px 0px 0px #880000 inset;
+}
+.button-3d.purple:active,.button-3d.purple.active {
+  box-shadow: -6px -6px 0px 0px #401060 inset;
+}
+.button-3d.green:active,.button-3d.green.active {
+  box-shadow: -6px -6px 0px 0px #002800 inset;
+}
+input:invalid, [data-err] input {
+  background-color: #220000;
+  border-color: #aa0000;
+  color: #aa0000;
+}
+input:invalid:hover, input:invalid:focus, [data-err] input:hover, [data-err] input:focus {
+  background-color: #440000;
+  border-color: #cc0000;
+  color: #cc0000;
+}
+[data-err]::after {
+  vertical-align: text-top;
+  font-size: 0.8em;
+  line-height: 0.8em;
+  color: #ff0000;
+  display: inline;
+  /*float: left;*/
+  content: attr(data-err);
+  /*height: 0px;*/
+}
+textarea {
+	background-color: var(--bg);
+	color: var(--light);
+	border: 1px solid var(--light);
+	border-radius: 10px;
+	padding: 10px;
+}
+textarea:focus {
+	color: var(--txt);
+	border-color: var(--txt);
+}
+textarea.wide {
+  width: calc(100% - 20px);
+}
