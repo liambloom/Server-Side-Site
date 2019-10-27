@@ -137,6 +137,12 @@
 <span class="line">  .then(Shape => {</span>
 <span class="line">    // Your code goes here</span>
 <span class="line">  });</span></code></pre>
+      And, if you'd like, you can replace the promise with async/await, making this:
+      <pre><code class="js"><span class="line">(async function () {</span>
+<span class="line">  const shapejs = await import("https://liambloom.github.io/lib/shapes.js");</span>
+<span class="line">  const Shape = shapejs.Shape;</span>
+<span class="line">  // Your code goes here
+<span class="line">})();</span></code></pre>
       Whichever way you choose, you now have access to the shapes constructor, so now let's make some shapes
     </section>
     <h3>Constructor Syntax</h3>
