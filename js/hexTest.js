@@ -28,8 +28,8 @@ window.select = id => {
   selected = shapes.find(shape => shape.id === id);
   if (selected.show) selected.draw(...selected.rotations);
   shapes.unshift(shapes.splice(shapes.indexOf(selected), 1)[0]);
-  document.getElementById("x").value = selected.x;
-  document.getElementById("y").value = selected.y;
+  document.getElementById("x").value = Math.round(selected.x);
+  document.getElementById("y").value = Math.round(selected.y);
   document.getElementById("widthT").value = document.getElementById("widthS").value = selected.width;
   for (let axis of axes) {
     document.getElementById(axis + "-axis-rotation").value = document.getElementById(axis + "-axis-rotation-slider").value = Math.round(selected.show ? selected.rotations[axes.indexOf(axis)] : selected.saveRotations[axes.indexOf(axis)]);
@@ -100,7 +100,7 @@ let spin = () => {
   }, 1000 / 144);
 };
 let init = () => {
-  newShape(6, {x: 100, y: 105});
+  newShape(6, {x: 100, y: 105, color: "#0066ff"});
   newShape(3, {x: 200, y: 221, color: "#ff0000"});
   select(0);
 };
@@ -117,17 +117,19 @@ let mousedown = e => {
       break;
     }
   }
+  if (e.type === "touchstart") document.body.style.overflow = "hidden";
 };
-let mouseup = () => {
+let mouseup = e => {
   held = undefined;
+  if (e.type === "touchend") document.body.style.overflow = "auto";
 };
 let mousemove = e => {
   let mousePos = mousePosition(e);
   if (held) {
     held.x = mousePos[0] + xOffset;
     held.y = mousePos[1] + yOffset;
-    document.getElementById("x").value = held.x;
-    document.getElementById("y").value = held.y;
+    document.getElementById("x").value = Math.round(held.x);
+    document.getElementById("y").value = Math.round(held.y);
     redraw();
   }
   for (let shape of shapes) {

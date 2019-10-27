@@ -249,6 +249,60 @@ input[type = "number"]:focus {
 #documentation {
   margin: 0px 50px 50px;
 }
+#gray {
+  background-color: #808080;
+  display: inline-block;
+  border-width: 2px;
+  border-style: solid;
+  width: 8px;
+  height: 8px;
+}
+.dark #gray {
+  border-color: #eeeeee;
+}
+.light #gray {
+  border-color: #000000;
+}
+.example {
+  display: grid;
+  grid-template-rows: 300px;
+  grid-template-columns: 1fr 300px;
+  grid-template-areas: "code output";
+  overflow: hidden;
+  border-radius: 15px;
+  margin: 16px 0px;
+}
+.example pre {
+  grid-area: "code";
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+}
+.example pre code {
+  overflow: auto;
+  border-radius: 0px;
+  height: 100%;
+  width: 100%;
+}
+.example canvas {
+  grid-area: "output";
+  background-color: #ffffff;
+}
+.interact {
+  border: none !important;
+  padding: 0px;
+  background-color: transparent;
+  margin: 0px !important;
+  font-family: "Courier New", Courier, monospace;
+  width: initial;
+  transition: none !important;
+}
+.interact.number {
+  color: #ae81ff !important;
+}
+.interact.string {
+  color: #e6db74 !important;
+}
 @supports (width: min-content) {
   #menuTabs {
     width: min-content;

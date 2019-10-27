@@ -10,7 +10,7 @@ let c = document.getElementById("main");
 c.width = window.innerWidth;
 c.height = window.innerHeight;
 let draw = () => {
-  let grid = new HexGrid({width: 35, grid: { allowOverflow: true } });
+  let grid = new HexGrid({ width: 35, color: themes[theme.color].gradientLight, grid: { allowOverflow: true } });
   grid.spin("y", "90deg", "35rpm", "0deg", "(0, 0)", "1.5secs", () => {
     document.getElementById("main").style.display = "none";
     document.getElementById("welcome").className = "reveal";

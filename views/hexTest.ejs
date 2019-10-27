@@ -8,6 +8,7 @@
   <script src="/js/color.js"></script>
   <script src="/lib/highlightjs/highlight.pack.js"></script>
   <script src="/js/hexTest.js" defer type="module"></script>
+  <script src="/js/shapeDocs.js" defer type="module"></script>
   <!--<script src="/lib/highlightjs/lib/languages/htmlbars.js"></script>
   <script src="/lib/highlightjs/lib/languages/javascript.js"></script>-->
 </head>
@@ -119,21 +120,93 @@
   <modal id="shapeCreationMenu" data-escape="okCancel" data-confirm="window.newShape(parseInt(document.getElementById('sidesInput').value))">
     Sides: <input type="number" id="sidesInput" min="3" step="1" value="4" required>
   </modal>
-  <div id="documentation">
-    <h2>How it works.</h2>
-    This section explains the code that makes this work, and how you can use it in your own programs. If you are interested in this, you should keep reading. If, on the other hand, you don't care about the code, then you will probably find this uninteresting. So, with that out of the way, let's begin
+  <article id="documentation">
+    <h2>How to use this in your own code</h2>
+    <section>
+      This section explains the code that makes this work, and how you can use it in your own programs. If you are interested in this, you should keep reading. If, on the other hand, you don't care about the code, then you will probably find this uninteresting. So, with that out of the way, let's begin
+    </section>
     <h3>Importing Shapes.js</h3>
-    This first section explains how to import the shapes class so you can use these shapes in your code. The easiest way to do it is with the ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import statement</a>.
-    <pre><code class="js">
-      import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";
-    </code></pre>
-    Be aware that the import statement is only avalable in javascript <i>modules</i>, meaning that your code will be in strict mode by default and that it must be imported like this:
-    <pre><code class="html">
-      &lt;srcipt src="/my/javascript.js" type="module">
-    </code></pre>
-    There is a way to import it without these downsides, using the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports">dynamic import</a>, but I don't recommend using this, as it is not as well supported.
-    <h3>Making a shape</h3>
-    Now that you have the shape constructor, creating a shape is as simple as calling the function. There are two parameters for the constructor. The first is sides, which is an integer that represents how many sides the shape should have, and config, which is an object which has all other information about the shape.
-  </div>
+    <section>
+      This first section explains how to import the shapes class so you can use these shapes in your code. The easiest way to do it is with the ES6 <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import">import statement</a>.
+      <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";</span></code></pre>
+      Be aware that the import statement is only avalable in <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules">javascript <i>modules</i></a>, meaning that your code will be in strict mode by default and that it must be imported like this:
+      <pre><code class="html"><span class="line">&lt;srcipt src="my_javascript.js" type="module"></span></code></pre>
+      There is a way to import it without a module, using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports">dynamic import</a>, and here is what that looks like:
+      <pre><code class="js"><span class="line">import("https://liambloom.herokuapp.com/lib/shapes.js")</span>
+<span class="line">  .then(shapes => shapes.Shape)</span>
+<span class="line">  .then(Shape => {</span>
+<span class="line">    // Your code goes here</span>
+<span class="line">  });</span></code></pre>
+      Whichever way you choose, you now have access to the shapes constructor, so now let's make some shapes
+    </section>
+    <h3>Constructor Syntax</h3>
+    <section>
+      <pre><code class="js"><span class="line">const myShape = new Shape(sides, config)</span></code></pre>
+      <dl>
+        <dt>sides</dt>
+        <dd>
+          This is an integer that represents the number of sides of the new shape. It must be at least three. The default value is four, making a square.
+        </dd>
+        <dt>config</dt>
+        <dd>
+          This is an object that holds all the other properties of the shape, such as:
+        </dd>
+        <dl>
+          <dt>canvas</dt>
+          <dd>
+            The canvas property will tell the shape what canvas to be drawn on. The value of the canvas property should be a <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">canvas element</a>, <em>not</em> a string with the id of the canvas. It defaults to the first canvas element on the page.
+          </dd>
+          <dt>width</dt>
+          <dd>
+            The width property will tell the shape how wide to be. It is measured in px. The default is 200px wide.
+          </dd>
+          <dt>x</dt>
+          <dd>
+            The x property will tell the shape what x coordinate to be at on the canvas. The default is the center of the canvas.
+          </dd>
+          <dt>y</dt>
+          <dd>
+            The y property will tell the shape what y coordinate to be at on the canvas. The default is the center of the canvas.
+          </dd>
+          <dt>color</dt>
+          <dd>
+            The color property will tell the shape what color to be. Any CSS color value is valid. This includes color names, hex codes, and rgb/rgba values. Putting in a string that is not a valid CSS color will cause it to take on the color of the last shape drawn. The default is <span id="gray"></span>#808080, or gray.
+          </dd>
+          <dt>center</dt>
+          <dd>
+            The center property tells the shape what to center around. The two posable values are "origin" and "vertical", and they are case sensitive. Origin makes the x and y coordinates the exact center of the shape. This means that every vertex of the shape is the same distance from the shapes (x, y) coordinates. Vertical makes it so the highest point in the shape is the same distance from the (x, y) coordinates as the lowest point in the shape. <a href="sorry i dont have anything here">Here</a> is an example of the two side by side. Keep in mind that this has no affect on shapes with an even number of sides, because the two centers are the same.  The default is "origin".
+          </dd>
+          <dt>fps</dt>
+          <dd>
+            The fps property will tell the shape what framerate to spin at. The default is 60.
+          </dd>
+        </dl>
+      </dl>
+    </section>
+    <h3>Drawing a shape</h3>
+    <section>
+      So lets try this out. We'll start simple, with just a blue square.
+      <pre><code class="js"><span class="line">const myFirstShape = new Shape(4, {color: "blue"});</span></code></pre>
+      You now have your square stored in the variable <code>myFirstShape</code>, but it's not showing up on the screen. To make it appear on the screen, you need to call the <code>draw</code> method. So, to recap, here's what we've made so far:
+      <div class="example">
+        <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";</span>
+<span class="line">const myFirstShape = new Shape(4, {color: "blue"});</span>
+<span class="line">myFirstShape.draw();</span></code></pre>
+        <canvas id="example-1" width="300" height="300"></canvas>
+      </div>
+      Congratulations, you made a shape! That was the hardest part, the first time you were using shapes.js. Now, lets mess around with the different properties.
+      <div class="example">
+        <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.herokuapp.com/lib/shapes.js";</span>
+<span class="line">const myFirstShape = new Shape(<input id="sides-interact" type="number" class="interact number" min="3" step="1" value="4">, {</span>
+<span class="line">  color: "<input id="color-interact" type="text" class="interact string" value="blue">",</span>
+<span class="line">  width: <input id="width-interact" type="number" class="interact number" min="0" max="300" step="1" value="200">,</span>
+<span class="line">  x: <input id="x-interact" type="number" class="interact number" min="0" max="300" step="1" value="150">,</span>
+<span class="line">  y: <input id="y-interact" type="number" class="interact number" min="0" max="300" step="1" value="150"></span>
+<span class="line">});</span>
+<span class="line">myFirstShape.draw();</span></code></pre>
+        <canvas id="example-2" width="300" height="300"></canvas>
+      </div>
+    </section>
+  </article>
 </body>
 </html>
