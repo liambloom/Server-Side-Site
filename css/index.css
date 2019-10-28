@@ -141,6 +141,9 @@ header h1 {
 .topFixed {
 	grid-area: main;
 }
+section {
+  margin-left: 10px;
+}
 table {
   border-collapse: collapse;
 }

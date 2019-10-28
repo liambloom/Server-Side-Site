@@ -137,7 +137,7 @@
 <span class="line">  .then(Shape => {</span>
 <span class="line">    // Your code goes here</span>
 <span class="line">  });</span></code></pre>
-      And, if you'd like, you can replace the promise with async/await, making this:
+      Or, if you'd like, you can replace the promise with async/await, making this:
       <pre><code class="js"><span class="line">(async function () {</span>
 <span class="line">  const shapejs = await import("https://liambloom.github.io/lib/shapes.js");</span>
 <span class="line">  const Shape = shapejs.Shape;</span>
@@ -195,9 +195,12 @@
       <pre><code class="js"><span class="line">const myFirstShape = new Shape(4, {color: "blue"});</span></code></pre>
       You now have your square stored in the variable <code>myFirstShape</code>, but it's not showing up on the screen. To make it appear on the screen, you need to call the <code>draw</code> method. So, to recap, here's what we've made so far:
       <div class="example">
-        <pre><code class="js"><span class="line">import { Shape } from "https://liambloom.github.io/lib/shapes.js";</span>
-<span class="line">const myFirstShape = new Shape(4, {color: "blue"});</span>
-<span class="line">myFirstShape.draw();</span></code></pre>
+        <pre><code class="js"><span class="line">&lt;canvas id="myCanvas">&lt;/canvas></span>
+<span class="line">&lt;script type="module"></span>
+<span class="line">  import { Shape } from "https://liambloom.github.io/lib/shapes.js";</span>
+<span class="line">  const myFirstShape = new Shape(4, {color: "blue"});</span>
+<span class="line">  myFirstShape.draw();</span>
+<span class="line">&lt;/script></span></code></pre>
         <canvas id="example-1" width="300" height="300"></canvas>
       </div>
       Congratulations, you made a shape! That was the hardest part, the first time you were using shapes.js. 
@@ -219,8 +222,27 @@
 <span class="line">  });</span>
 <span class="line">  myFirstShape.draw();</span>
 <span class="line">&lt;/script></span></code></pre>
-
         <canvas id="example-2" width="300" height="300"></canvas>
+      </div>
+    </section>
+    <h3>Changing the orientation</h3>
+    <section>
+      The <code>draw</code> method takes three arguments, rotations on the <code>x</code>, <code>y</code>, and <code>z</code> axes. They can be numbers, which represent the rotation in degrees. By default, each is 0. You can also pass in a string. This string contains a number and a label. The number can be a float, and a space between the number and label is allowed but not required. If you want to pass in degrees, the label can be d, deg, degs, degree, or degrees. To pass in radians instead, type r, rad, rads, radian, or radians. The labels are case insensitive. Try changing the rotation values in this interactive example:
+      <div id="ex3" class="example">
+        <pre><code class="html"><span class="line">&lt;canvas id="myCanvas">&lt;/canvas></span>
+<span class="line">&lt;script type="module"></span>
+<span class="line">  import { Shape } from "https://liambloom.github.io/lib/shapes.js";</span>
+<span class="line">  const myFirstShape = new Shape(3, {</span>
+<span class="line">    canvas: document.getElementById("myCanvas"),</span>
+<span class="line">    color: "<span class="light-hex hljs-string"></span>",</span>
+<span class="line">    width: 200,</span>
+<span class="line">    x: 150,</span>
+<span class="line">    y: 150,</span>
+<span class="line">    center: "origin"</span>
+<span class="line">  });</span>
+<span class="line">  myFirstShape.draw(<input id="x-rotation-interact" type="text" oninput="ex3(this)"" class="interact number" value="0"">, <input id="y-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="0"">, <input id="z-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="0"">);</span>
+<span class="line">&lt;/script></span></code></pre>
+        <canvas id="example-3" width="300" height="300"></canvas>
       </div>
     </section>
   </article>
