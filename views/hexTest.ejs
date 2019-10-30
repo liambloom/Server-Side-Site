@@ -227,7 +227,7 @@
     </section>
     <h3>Changing the orientation</h3>
     <section>
-      The <code>draw</code> method takes three arguments, rotations on the <code>x</code>, <code>y</code>, and <code>z</code> axes. They can be numbers, which represent the rotation in degrees. By default, each is 0. You can also pass in a string. This string contains a number and a label. The number can be a float, and a space between the number and label is allowed but not required. If you want to pass in degrees, the label can be d, deg, degs, degree, or degrees. To pass in radians instead, type r, rad, rads, radian, or radians. The labels are case insensitive. Try changing the rotation values in this interactive example:
+      The <code>draw</code> method takes three arguments, rotations on the <code>x</code>, <code>y</code>, and <code>z</code> axes. They can be numbers, which represent the rotation in degrees. By default, each is 0. You can also pass in a string. This string contains a number and a label. The number can be a float, and a space between the number and label is allowed but not required. If you want to pass in degrees, the label can be d, deg, degs, degree, or degrees. To pass in radians instead, type r, rad, rads, radian, or radians. The labels are case insensitive. Try changing the rotation values (numbers and string both work) in this interactive example:
       <div id="ex3" class="example">
         <pre><code class="html"><span class="line">&lt;canvas id="myCanvas">&lt;/canvas></span>
 <span class="line">&lt;script type="module"></span>
@@ -240,7 +240,7 @@
 <span class="line">    y: 150,</span>
 <span class="line">    center: "origin"</span>
 <span class="line">  });</span>
-<span class="line">  myFirstShape.draw(<input id="x-rotation-interact" type="text" oninput="ex3(this)"" class="interact number" value="0"">, <input id="y-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="0"">, <input id="z-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="0"">);</span>
+<span class="line">  myFirstShape.draw(<input id="x-rotation-interact" type="text" oninput="ex3(this)"" class="interact number" value="0"">, <input id="y-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="&quot;0 degrees">, <input id="z-rotation-interact" type="text" oninput="ex3(this)"" class=" interact number" value="0"">);</span>
 <span class="line">&lt;/script></span></code></pre>
         <canvas id="example-3" width="300" height="300"></canvas>
       </div>

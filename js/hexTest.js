@@ -345,4 +345,3 @@ document.getElementById("spin").addEventListener("click", event => {
 });
 if (window.themeReady) init();
 else window.addEventListener("themeReady", init);
-hljs.initHighlightingOnLoad();

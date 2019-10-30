@@ -58,6 +58,7 @@ window.ex3 = e => {
 };
 
 function prepare () {
+  hljs.initHighlightingOnLoad();
   const light = root.style.getPropertyValue("--light");
   document.getElementById("color-interact").value = light;
   example(1, 4, { color: light }, shape => {
@@ -72,6 +73,11 @@ function prepare () {
   for (let e of document.getElementsByClassName("light-hex")) {
     e.innerHTML = light;
   }
+  const yAxisRotation = document.getElementById("y-rotation-interact");
+
+  // To fix bug where hljs deleted the second quote
+  yAxisRotation.value += '"';
+  ex3(yAxisRotation);
 }
 
 if (window.themeReady) prepare();
