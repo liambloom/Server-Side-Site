@@ -27,12 +27,12 @@ body {
   color: var(--bg);
   background-color: var(--txt)
 }
-#content {
+#content, main {
   font-size: 14px;
   line-height: 1.35em;
   margin: 50px;
 }
-#content.box {
+#content.box, main.box {
   font-family: "Consolas", "Courier New", Courier, monospace;
   position: absolute;
   border: 2px solid var(--txt);
@@ -203,7 +203,7 @@ pre code .line::before {
   display: inline-block;
   color: #75715e;
   margin-right: 15px;
-  width: 2ch;
+  width: 3ch;
   text-align: right;
   /*-webkit-user-select: none;*/
 }
@@ -266,17 +266,17 @@ pre code .line::before {
   }
 }
 @supports (height: max-content) {
-  #context.box {
+  #context.box, main.box {
     height: max-content;
   }
 }
 @supports (height: -webkit-max-content) and (not (height: max-content)) {
-  #context.box {
+  #context.box, main.box {
     height: -webkit-max-content;
   }
 }
 @supports not ((height: max-content) or (height: -webkit-max-content)) {
-  #context.box {
+  #context.box, main.box {
     height: initial;
   }
 }

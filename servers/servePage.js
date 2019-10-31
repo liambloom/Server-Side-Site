@@ -102,4 +102,43 @@ serve.update = (req, res) => {
     }
   });
 };
+serve.source = (req, res) => {
+  const page = "." + path(req).pathname.replace("/view-source", "").replace(/\/$/, "/index");
+  let type = filetype(page);
+
+  fs.readFile(page, (err, data) => {
+    if (err) {
+      res.render("./404", { target: path(req).href }, (error404, html404) => {
+        if (html404) {
+          res.writeHead(404, { "Content-Type": "text/html" });
+          res.write(html404);
+          res.end();
+          console.error("err");
+        }
+        else {
+          // If 404 is broken, serve 500
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.write(`The page ${path(req).href} could not be found <br>${error404}`);
+          res.end();
+        }
+      });
+    }
+    else {
+      data = '<span class="line">' + data.toString().replace(/</g, "&lt;").replace(/\n/g, '</span>\n<span class="line">') + '</span>';
+      res.render("./code", { title: page.match(/(?<=\/)[^\/\.]+(?=\.)/)[0], lang: type, code: data, here: page.replace(/(?<=\.)(?=\/)/, "/view-source") }, (error, html) => {
+        if (error) {
+          res.writeHead(500, { "Content-Type": "text/html" });
+          res.write(`Something went wrong:\n${error}`);
+          res.end();
+          console.error(error);
+        }
+        else {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.write(html);
+          res.end();
+        }
+      });
+    }
+  });
+};
 module.exports = serve;

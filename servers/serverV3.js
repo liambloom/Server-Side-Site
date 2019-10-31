@@ -19,9 +19,10 @@ admin.get(/^(?!\/(?:users|sugestions))/, serve);
 admin.get("/users", DB.user.getAll);
 admin.get("/sugestions", DB.sugestions.get);
 
-site.get(/^(?!\/(?:secure|update))/, serve);
+site.get(/^(?!\/(?:secure|update|view-source))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
 site.get("/update/:category", requireLogin, serve.update);
+site.get(/^\/view-source/, serve.source);
 
 app.listen(port, () => { 
   DB.createTable();
