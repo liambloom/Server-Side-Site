@@ -95,48 +95,47 @@
         All icons modified from originals
     </div>
   </div>
-<div id="fixed">
-	<header>
-	<a id="logo" href="/">
-		<%- include("../img/favicon/main/favicon_vector.svg") %>
-	</a>
-	<h1><%= title %></h1>
-	<nav>
-		<ul>
-			<li>
-				<a>Main</a>
-				<ul>
+<header>
+  <a id="logo" href="/">
+    <%- include("../img/favicon/main/favicon_vector.svg") %>
+  </a>
+  <h1><%= title %></h1>
+  <nav>
+    <ul>
+      <li>
+        <a>Main</a>
+        <ul>
           <li><a href="/paint" class="beta">Pixel Editor</a></li>
           <li><a href="/hexTest">Shapes</a></li>
-					<li><a href="/MagicEight">Magic Eight	Ball</a></li>
-					<li><a href="/RandomColor">Random	Color</a></li>
+          <li><a href="/MagicEight">Magic Eight	Ball</a></li>
+          <li><a href="/RandomColor">Random	Color</a></li>
           <li><a href="/GradientColor">Gradient	Color</a></li>
-				</ul>
-			</li>
-			<li>
-				<a>Countdown</a>
-				<ul>
-					<li><a href="/Countdown/index#NewYearsDay">New Years	Day</a></li>
-					<li><a href="/Countdown/index#MLKDay">Martin Luther King Jr. Day</a></li>
-					<li><a href="/Countdown/index#PresidentsDay">George Washington's Birthday</a></li>
-					<li><a href="/Countdown/index#MemorialDay">Memorial Day</a></li>
-					<li><a href="/Countdown/index#IndependenceDay">Independence Day</a></li>
-					<li><a href="/Countdown/index#LaborDay">Labor Day</a></li>
-					<li><a href="/Countdown/index#ColumbusDay">Columbus Day</a></li>
-					<li><a href="/Countdown/index#VeteransDay">Veterans Day</a></li>
-					<li><a href="/Countdown/index#ThanksgivingDay">Thanksgiving Day</a></li>
+        </ul>
+      </li>
+      <li>
+        <a>Countdown</a>
+        <ul>
+          <li><a href="/Countdown/index#NewYearsDay">New Years	Day</a></li>
+          <li><a href="/Countdown/index#MLKDay">Martin Luther King Jr. Day</a></li>
+          <li><a href="/Countdown/index#PresidentsDay">George Washington's Birthday</a></li>
+          <li><a href="/Countdown/index#MemorialDay">Memorial Day</a></li>
+          <li><a href="/Countdown/index#IndependenceDay">Independence Day</a></li>
+          <li><a href="/Countdown/index#LaborDay">Labor Day</a></li>
+          <li><a href="/Countdown/index#ColumbusDay">Columbus Day</a></li>
+          <li><a href="/Countdown/index#VeteransDay">Veterans Day</a></li>
+          <li><a href="/Countdown/index#ThanksgivingDay">Thanksgiving Day</a></li>
           <li><a href="/Countdown/index#ChristmasDay">Christmas Day</a></li>
           <li><a href="/Countdown/index">Coustom Countdown</a></li>
-				</ul>
-			</li>
-			<li>
-				<a>School</a>
-				<ul>
-					<li><a href="/school/SocialStudiesProject">Ancient Egyptian Social Class Project</a></li>
-					<li><a href="/school/ScienceVocab">Science Vocab</a></li>
-					<li><a href="/school/ELAgreekMythologyScript">Greek Mythology Play Script</a></li>
-					<li><a href="https://scratch.mit.edu/projects/221553121/">Prometheus Cartoon</a></li>
-				</ul>
+        </ul>
+      </li>
+      <li>
+        <a>School</a>
+        <ul>
+          <li><a href="/school/SocialStudiesProject">Ancient Egyptian Social Class Project</a></li>
+          <li><a href="/school/ScienceVocab">Science Vocab</a></li>
+          <li><a href="/school/ELAgreekMythologyScript">Greek Mythology Play Script</a></li>
+          <li><a href="https://scratch.mit.edu/projects/221553121/">Prometheus Cartoon</a></li>
+        </ul>
       </li>
       <% if (user ? user.type === "ADMIN" : false) { %>
         <li>
@@ -156,10 +155,9 @@
           <li><a href="https://github.com/liambloom/Server-Side-Site">Github Repo</a></li>
         </ul>
       </li>
-		</ul>
-	</nav>
-  </header>
-</div>
+    </ul>
+  </nav>
+</header>
 <footer class="hidden">
   This site uses cookies. For more information click <a href="/cookiePolicy">here</a>.
   <button id="yesCookie">I accept cookies!</button>
