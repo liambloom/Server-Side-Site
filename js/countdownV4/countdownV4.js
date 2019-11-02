@@ -24,3 +24,4 @@ const countdownV4 = first => {
 };
 countdownV4(true);
 var interval = setInterval(countdownV4, 1000);
+if (typeof newYear === "object") newYear.init(eventTime);

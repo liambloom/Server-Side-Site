@@ -49,17 +49,24 @@ module.exports = {
         case "year":
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];
           timeObj.dateArr = timeObj.date.split("/");
-          timeObj.params = [
+          const next = this.V3.findYear(new Date(
             now.getFullYear(),
             parseInt(timeObj.dateArr[0]) - 1, // Month
             parseInt(timeObj.dateArr[1]), // Day
             timeObj.hour,
             timeObj.minute,
             0
-          ];
+          ), now);
           return {
-            date: this.V3.findYear(new Date(...timeObj.params), now),
-            params: JSON.stringify(timeObj.params)
+            date: next,
+            params: JSON.stringify([
+              next.getFullYear(),
+              next.getMonth(),
+              next.getDate(),
+              next.getHours(),
+              next.getMinutes(),
+              0
+            ])
           };
       }
     }
@@ -102,7 +109,7 @@ module.exports = {
         preset.forEach(e => {
           e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
           e.calendar = e.calendar.titleCase();
-          e.icon = `/aws/countdown/${e.icon}`;
+          e.icon = `/aws/countdown/icons/${e.icon}`;
         });
         preset.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         //console.log(preset);
@@ -127,7 +134,10 @@ module.exports = {
     countdown: async function (req, res) {
       try {
         const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
-        info.timing = module.exports.nextOccurrence(info.timing, new Date(req.body.time)).params;
+        const next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+        console.log(next);
+        info.timing = next.params;
+        if (info.id === "0d70045b-b5af-4daf-84a5-1f8892bed617") info.name = next.date.getFullYear();
         res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
           if (html) {
             // On success, serve page
@@ -143,6 +153,7 @@ module.exports = {
         });
       }
       catch (err) {
+        console.error(err);
         module.exports.r404(req, res);
       }
     }

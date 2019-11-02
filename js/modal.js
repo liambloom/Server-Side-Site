@@ -1,16 +1,22 @@
-//jshint esversion:6
 window.modal = {
-  open: function(e) {
+  open: function(e, callback) {
     for (let c of this.list) {
       if (!document.getElementById(c).classList.contains("hidden")) throw "There is already a modal showing";
     }
     e = document.querySelector(e);
     if (!e) { throw `The element ${e} does not exist`; }
-    e.classList.remove("hidden");
-    this.blurKey = setInterval(() => {
-      let elem = this.focusOutside;
-      if (elem) {elem.blur();}
-    }, 100);
+    else if (e.tagName === "MODAL") this.waiting = [
+      "#" + e.id,
+      callback
+    ];
+    else {
+      e.classList.remove("hidden");
+      this.blurKey = setInterval(() => {
+        let elem = this.focusOutside;
+        if (elem) {elem.blur();}
+      }, 100);
+      callback();
+    }
   },
   close: function (fun) {
     let open = document.querySelector(".modal:not(.hidden)");
@@ -62,6 +68,9 @@ window.modal = {
     })
     .then(() => {
       document.dispatchEvent(new Event("modalsReady"));
+    })
+    .then(() => {
+      if (modal.waiting) modal.open(...modal.waiting);
     });
   },
   get list() {

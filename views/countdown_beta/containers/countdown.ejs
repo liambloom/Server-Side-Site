@@ -4,6 +4,9 @@
   <%- include("../../head", {beta: true, modal: false}) %>
   <title></title>
   <link href="/css/countdown_beta.css" rel="stylesheet">
+  <% if (here.split("/").last() === "0d70045b-b5af-4daf-84a5-1f8892bed617" && user.type === "ADMIN") { %>
+    <script src="/js/countdownV4/newYear.js"></script>
+  <% } %>
 </head>
 <body>
   <%- include("../../header", {title: "", choice: true}) %>
@@ -13,5 +16,11 @@
       load(window.location.pathname.split("/").last());
     </script>
   </div>
+  <% if (here.split("/").last() === "0d70045b-b5af-4daf-84a5-1f8892bed617" && user.type === "ADMIN") { %>
+    <modal id="audioPopup" data-escape="okCancel" data-confirm="newYear.popup();">
+      Please hit the play button.
+      <audio id="audio" src="/aws/countdown/music/This_Is_the_New_Year.mp3" preload="auto" controls></audio>
+    </modal>
+  <% } %>
 </body>
 </html>
