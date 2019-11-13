@@ -313,7 +313,6 @@ window.theme = {
 				root.style.setProperty("--bg", themes[theme.color].offWhite);
 				root.style.setProperty("--txt", themes[theme.color].offBlack);
         document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-        document.getElementById("CBT_credit").setAttribute("src", "/img/CBT_OS-logo_Black-V.svg");
         if (typeof window.forLoadingIcons === "function") {
           window.forLoadingIcons(e => { e.style.setProperty("background-color", "#0000007f"); });
         }
@@ -326,7 +325,6 @@ window.theme = {
 			else {
 				root.style.setProperty("--bg", themes[theme.color].offBlack);
         root.style.setProperty("--txt", themes[theme.color].headTextColor);
-        document.getElementById("CBT_credit").setAttribute("src", "/img/CBT_OS-logo_White-V.svg");
         if (typeof window.forLoadingIcons === "function") {
           window.forLoadingIcons(e => { e.style.setProperty("background-color", "#ffffff7f"); });
         }
