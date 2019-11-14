@@ -15,7 +15,7 @@ window.modal = {
         let elem = this.focusOutside;
         if (elem) {elem.blur();}
       }, 100);
-      callback();
+      if (typeof callback === "function") callback();
     }
   },
   close: function (fun) {
