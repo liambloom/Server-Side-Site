@@ -31,12 +31,12 @@ h1 {
 #arrow:not(.gone) {
   border-top-color: var(--dark);
 }
-#content {
+main {
   margin: 0px;
   height: calc(100% - 46.4px * 2);
   overflow: hidden;
 }
-#content > * {
+main > * {
   scroll-snap-align: center;  
   height: 100%;
 }

@@ -28,12 +28,12 @@ body {
   color: var(--bg);
   background-color: var(--txt)
 }
-#content {
+main {
   font-size: 14px;
   line-height: 1.35em;
   margin: 50px;
 }
-#content.box {
+main.box {
   font-family: "Consolas", "Courier New", Courier, monospace;
   position: absolute;
   border: 2px solid var(--txt);

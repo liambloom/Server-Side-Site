@@ -11,7 +11,7 @@
 </head>
 <body>
   <%- include("header", {title: "Pixel Editor", choice: true}) %>
-  <div id="content">
+  <main>
     <div id="menu">
       <div id="colors" class="menu">
         <div data-color="#ff0000"></div>
@@ -113,7 +113,7 @@
     <div id="hoverShade"></div>
     <canvas id="bg"></canvas>
     <canvas id="canvas"></canvas>
-  </div>
+  </main>
   <modal id="clearConfirm" data-escape="yn" data-confirm="document.getElementById('canvas').dispatchEvent(new Event('clear'))">
     Are you sure you want to clear this and star over?
   </modal>

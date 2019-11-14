@@ -9,7 +9,7 @@
 </head>
 <body>
   <%- include("header", {title: "Shapes", choice: true}) %>
-  <div id="content">
+  <main>
     <canvas id="canvas" width="300" height="300">This program is not supported by your browser</canvas>
     <div id="menu">
       <div id="tabScrollHide">
@@ -111,7 +111,7 @@
         <input type="button" id="spin" class="yes" value="GO!">
       </div>
     </div>
-  </div>
+  </main>
   <modal id="shapeCreationMenu" data-escape="okCancel" data-confirm="window.newShape(parseInt(document.getElementById('sidesInput').value))">
     Sides: <input type="number" id="sidesInput" min="3" step="1" value="4" required>
   </modal>

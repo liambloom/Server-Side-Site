@@ -9,7 +9,7 @@
 </head>
 <body>
   <%- include("header", {title: "Sign Up", choice: true}) %>
-  <div id="content" class="center">
+  <main class="center">
     <form id="box">
       <div id="usernameContainer">
         <input id="username" type="text" placeholder="Username">
@@ -33,7 +33,7 @@
         <input id="button" type="submit" value="Sign Up!">
       </div>
     </form>
-  </div>
+  </main>
   <modal id="emailWarning" data-escape="yn" data-confirm="document.getElementById('emailWarning').dispatchEvent(new Event('closed'));">
     Without providing an email, there is no way to reset your password if you forget it. Are you sure you want to sign up without providing an email?
   </modal>

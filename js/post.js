@@ -26,7 +26,7 @@ const post = () => {
   })
     .then(res => {
       if (res.ok) {
-        document.getElementById("content").innerHTML = "<p>Thank you for your feedback. I will use it to try and make this site better. Reload the page or click <a href='/sugestions'>here</a> to submit another sugestion.</p>";
+        document.getElementsByTagName("main")[0].innerHTML = "<p>Thank you for your feedback. I will use it to try and make this site better. Reload the page or click <a href='/sugestions'>here</a> to submit another sugestion.</p>";
       }
       else {
         document.getElementById("main").style.setProperty("display", "initial");

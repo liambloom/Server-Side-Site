@@ -1,4 +1,4 @@
-#content {
+main {
   font-family: "Consolas", "Courier New", Courier, monospace;
   position: absolute;
   border: 2px solid var(--txt);
@@ -11,12 +11,12 @@
   text-align: center;
 }
 @supports (height: max-content) {
-  #content {
+  main {
     height: max-content;
   }
 }
 @supports (height: -webkit-max-content) and (not (height: max-content)) {
-  #content {
+  main {
     height: -webkit-max-content;
   }
 }
