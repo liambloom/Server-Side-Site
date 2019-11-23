@@ -96,9 +96,14 @@ module.exports = {
         ])
       };
     }
-  },
-  test (req, res) {
-
+    else {
+      timing = timing.split(/:|\s|\//g);
+      const params = [timing[5], timing[3], timing[4], timing[1], timing[2]];
+      return {
+        data: new Date(...params),
+        params: JSON.stringify(params)
+      };
+    }
   },
   render: {
     list: async function (req, res) {
@@ -158,8 +163,19 @@ module.exports = {
       }
     }
   },
-  api: {
-    
+  newCountdown (req, res) {
+    if (req.body.repetition.bool) {
+      switch (req.body.repetition.type) {
+        case "year":
+          // create a countdown that repeats yearly
+          break;
+        case "custom":
+          // create an nth day of month
+      }
+    }
+    else {
+      //pool.query("SELE")
+    }
   },
   V3: {
     findYear (event, n) {

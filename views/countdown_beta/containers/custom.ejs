@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("../../head", {beta: true, modal: false}) %>
+  <title>New Countdown</title>
+  <link href="/css/countdown_beta.css" rel="stylesheet">
+</head>
+<body>
+  <%- include("../../header", {title: "Countdown List Beta", choice: true}) %>
+  <main>
+    <%- include("../../calendar.html") %>
+    <%- include("../../clock.html") %>
+  </main>
+</body>
+</html>
