@@ -122,6 +122,11 @@ body {
 #list .list-menu.list .list-item .calendar {
   grid-column: 4;
 }
+#list .list-menu .list-item div {
+  white-space: nowrap;
+  overflow: hidden;
+  width: calc(100% - 5px);
+}
 
 #countdown {
   margin: 50px;
@@ -176,4 +181,4 @@ body {
   }
 }
 
-/*# sourceMappingURL=countdown.css.map */
+/*# sourceMappingURL=countdown_beta.css.map */

@@ -1,0 +1,27 @@
+.calendar {
+  max-width: 225px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--light);
+}
+.calendar .month-picker {
+  display: grid;
+  grid-template-rows: 1.35em;
+}
+@supports (width: min-content) {
+  .calendar .month-picker {
+    grid-template-columns: min-content 1fr min-content;
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  .calendar .month-picker {
+    grid-template-columns: -webkit-min-content 1fr -webkit-min-content;
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  .calendar .month-picker {
+    width: 1ch 1fr 1ch;
+  }
+}
+
+/*# sourceMappingURL=calendar.css.map */
