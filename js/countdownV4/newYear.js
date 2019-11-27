@@ -2,10 +2,14 @@ window.newYear = {
   init (eventTime) {
     const audio = document.getElementById("audio");
     newYear.play = () => {
-      setTimeout(() => { // This runs despite the timeLeft being about a month and a half
-        console.log("Running at " + eventTime - new Date().getTime() - (2340000 / 77) - 1000);
-        audio.play(); // THIS IS THE BUG. THIS LINE RUNS BEFORE IT SHOULD. I DON'T KNOW WHY.
-      }, eventTime - new Date().getTime() - (2340000 / 77) - 1000);
+      const timeout = eventTime - new Date().getTime() - (2370000 / 77); // Each beat is 30000/77 ms
+      console.log(timeout);
+      console.log(timeout);
+      if (timeout < 2 ** 31) {
+        setTimeout(() => {
+          audio.play();
+        }, timeout);
+      }
     };
     newYear.popup();
   },
