@@ -138,9 +138,35 @@ module.exports = {
     },
     countdown: async function (req, res) {
       try {
-        const info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [path(req).pathname.match(/(?<=\/)[^\/]+$/)[0]])).rows[0];
-        const next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
-        console.log(next);
+        let info, next;
+        const id = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
+        if (id === "test") {
+          const testTime = new Date(req.body.time);
+          testTime.setSeconds(testTime.getSeconds() + 5);
+          console.log(testTime.getTime() - new Date().getTime());
+          info = {
+            bg: "fireworks.gif",
+            name: "test",
+            message: "It Worked!"
+          };
+          next = {
+            date: testTime,
+            params: JSON.stringify([
+              testTime.getFullYear(),
+              testTime.getMonth(),
+              testTime.getDate(),
+              testTime.getHours(),
+              testTime.getMinutes(),
+              testTime.getSeconds(),
+              testTime.getMilliseconds()
+            ])
+          };
+        }
+        else {
+          info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [id])).rows[0];
+          next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+        }
+        //console.log(next);
         info.timing = next.params;
         if (info.id === "0d70045b-b5af-4daf-84a5-1f8892bed617") info.name = next.date.getFullYear();
         res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
