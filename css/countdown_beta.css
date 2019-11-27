@@ -1,5 +1,14 @@
 body {
-  overflow-x: hidden;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+body.done {
+  background-image: url("/img/fireworks.gif");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #list {
@@ -139,10 +148,6 @@ body {
 
 #countdown {
   margin: 50px;
-  /*height: calc(100vh + ((var(--size) - 46.4px) * 2) - 100px);
-  display: flex;
-  justify-content: center;
-  align-items: center;*/
   position: absolute;
   top: calc((100vh + var(--size) - 46.4px) / 2);
   transform: translateY(-50%);
@@ -166,6 +171,8 @@ body {
 }
 #countdown #done {
   display: none;
+  color: var(--dark);
+  background-color: var(--light);
 }
 #countdown.done #counters {
   display: none;

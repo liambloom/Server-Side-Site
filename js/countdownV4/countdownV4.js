@@ -19,6 +19,7 @@ const countdownV4 = first => {
   if (first) set(set(set(set(days > 0, days, "days") || hours > 0, hours, "hours")|| minutes > 0, minutes, "minutes") || seconds > 0, seconds, "seconds");
   else if (!set(seconds > 0 || set(minutes > 0 || set(hours > 0 || set(days > 0, days, "days"), hours, "hours"), minutes, "minutes"), seconds, "seconds")) {
     document.getElementById("countdown").classList.add("done");
+    document.body.classList.add("done");
     clearInterval(interval);
   }
 };
