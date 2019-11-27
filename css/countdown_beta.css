@@ -96,6 +96,12 @@ body {
 #list .list-menu.grid .list-item .date, #list .list-menu.grid .list-item .calendar {
   display: none;
 }
+#list .list-menu.grid .list-item div {
+  max-height: 36.8px;
+  overflow: hidden;
+  width: calc(100% - 5px);
+  text-overflow: ellipsis;
+}
 #list .list-menu.list {
   flex-direction: column;
 }
@@ -122,10 +128,13 @@ body {
 #list .list-menu.list .list-item .calendar {
   grid-column: 4;
 }
-#list .list-menu .list-item div {
+#list .list-menu.list .list-item div {
   white-space: nowrap;
   overflow: hidden;
   width: calc(100% - 5px);
+  color: transparent;
+  background-clip: text;
+  background-image: linear-gradient(to right, var(--txt) 0%, var(--txt) calc(100% - 21.583px), var(--bg) calc(100% - 6.583px), var(--bg) 100%);
 }
 
 #countdown {
