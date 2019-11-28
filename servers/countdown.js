@@ -145,7 +145,8 @@ module.exports = {
           info = {
             bg: "fireworks.gif",
             name: "test",
-            message: "It Worked!"
+            message: "It Worked!",
+            icon: "/img/Countdowns/clock.svg"
           };
           next = {
             date: testTime,
@@ -163,6 +164,7 @@ module.exports = {
         else {
           info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [id])).rows[0];
           next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+          info.icon = "/aws/countdown/icons/" + info.icon;
         }
         info.timing = next.params;
         if (info.id === "0d70045b-b5af-4daf-84a5-1f8892bed617") info.name = next.date.getFullYear();
