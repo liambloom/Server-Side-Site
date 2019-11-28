@@ -25,7 +25,7 @@ window.load = (piece) => {
       else if (countdown) {
         const name = document.getElementById("event_name").innerHTML;
         document.getElementsByTagName("h1")[0].innerHTML = name;
-        document.getElementsByTagName("title")[0].innerHTML = name + "Countdown";
+        document.getElementsByTagName("title")[0].innerHTML = name + " Countdown";
       }
     })
     .then(() => {
