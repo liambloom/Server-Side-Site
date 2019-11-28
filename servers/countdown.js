@@ -117,7 +117,6 @@ module.exports = {
           e.icon = `/aws/countdown/icons/${e.icon}`;
         });
         preset.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
-        //console.log(preset);
         res.render(page, { preset }, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
@@ -143,7 +142,6 @@ module.exports = {
         if (id === "test") {
           const testTime = new Date(req.body.time);
           testTime.setSeconds(testTime.getSeconds() + 5);
-          console.log(testTime.getTime() - new Date().getTime());
           info = {
             bg: "fireworks.gif",
             name: "test",
@@ -166,7 +164,6 @@ module.exports = {
           info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [id])).rows[0];
           next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
         }
-        //console.log(next);
         info.timing = next.params;
         if (info.id === "0d70045b-b5af-4daf-84a5-1f8892bed617") info.name = next.date.getFullYear();
         res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
