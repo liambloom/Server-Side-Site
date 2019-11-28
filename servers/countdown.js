@@ -163,7 +163,9 @@ module.exports = {
         let info, next;
         const id = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
         if (id === "test") {
+          console.log(req.body.time);
           const testTime = new Date(req.body.time);
+          testTime.setHours(testTime.getHours() + 1);
           testTime.setSeconds(testTime.getSeconds() + 5);
           info = {
             bg: "fireworks.gif",
