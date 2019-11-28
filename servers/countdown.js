@@ -39,12 +39,35 @@ module.exports = {
   },
   nextOccurrence (timing, now) {
     now = new Date(now);
-    timeObj = {};
+    const timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
     timeObj.timeArr = timeObj.time.split(":");
     timeObj.hour = parseInt(timeObj.timeArr[0]);
     timeObj.minute = parseInt(timeObj.timeArr[1]);
-    if (timing.includes("every")) {
+    if (timing.includes("after")) {
+      const [after, base] = timing.split(/(?<=\s*after)\s*/);
+      timeObj.nth = parseInt(after.match(/\b\d(?=st|nd|rd|th)/)[0]);
+      timeObj.weekDay = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(after.match(/\b\S{3}(?= after)/)[0].toLowerCase());
+      let relative = new Date(now);
+      relative.setDate(now.getDate() - timeObj.nth * 7);
+      relative = this.nextOccurrence(base, relative).date;
+      relative.setDate(relative.getDate() + timeObj.nth * 7 - 6);
+      while (relative.getDay() !== timeObj.weekDay) {
+        relative.setDate(relative.getDate() + 1);
+      }
+      return {
+        date: relative,
+        params: JSON.stringify([
+          relative.getFullYear(),
+          relative.getMonth(),
+          relative.getDate(),
+          relative.getHours(),
+          relative.getMinutes(),
+          0
+        ])
+      };
+    }
+    else if (timing.includes("every")) {
       switch (timing.match(/(?<=every ).*$/)[0]) {
         case "year":
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];

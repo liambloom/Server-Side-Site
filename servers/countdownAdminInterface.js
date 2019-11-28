@@ -31,7 +31,7 @@ void async function main () {
     const name = await console.input("Event Name", 50);
     const icon = await console.input("Icon Path");
     const iconUUID = uuid() + ".svg";
-    const timing = await console.input("Timing String", 40);
+    const timing = await console.input("Timing String", 50);
     const message = await console.input("Message", 40);
     const query = `
       INSERT INTO countdowns VALUES (
