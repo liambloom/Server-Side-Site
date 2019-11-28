@@ -167,7 +167,7 @@ module.exports = {
           testTime.setSeconds(testTime.getSeconds() + 5);
           info = {
             bg: "fireworks.gif",
-            name: "test",
+            name: "Test",
             message: "It Worked!",
             icon: "/img/Countdowns/clock.svg"
           };
