@@ -7,7 +7,7 @@ const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.origina
 module.exports = {
   serve (req, res) {
     let reqUrl = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
-    if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/.test(reqUrl)) reqUrl = "countdown";
+    if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(reqUrl)) reqUrl = "countdown";
     res.render("./countdown_beta/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
         // On success, serve page

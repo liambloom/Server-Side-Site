@@ -1,6 +1,6 @@
 window.load = (piece) => {
   let countdown;
-  if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/.test(piece)) countdown = true;
+  if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(piece)) countdown = true;
   else countdown = false;
   const element = document.getElementById(countdown ? "countdown" : piece);
   fetch("/countdown/pieces/" + piece, {
