@@ -1,7 +1,5 @@
 const readline = require("readline");
-const { pool } = require("./initPool");
-const uuid = require("uuid/v4");
-const fs = require("fs");
+const { pool, uuid, fs } = require("./initPool");
 
 console.error = error => {
   console.debug("\x1b[31m%s\x1b[0m", error);
