@@ -7,7 +7,6 @@ const serve = (req, res) => {
   try {
     const page = "." + path(req).pathname.replace(/\/$/, "/index");
     let type = filetype(page);
-    //console.log(page, type);
     if (Array.isArray(type)) type = type[0];
     //If not ejs
     if (type) {
@@ -28,7 +27,6 @@ const serve = (req, res) => {
     }
     //if ejs
     else {
-      console.log(page);
       res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
         if (html) {
           // On success, serve page
@@ -92,7 +90,6 @@ serve.update = (req, res) => {
   });
 };
 serve.return404 = (req, res) => {
-  console.log("return404 ran");
   res.render("./404", { target: path(req).href }, (error, html) => {
     if (html) {
       res.writeHead(404, { "Content-Type": "text/html" });

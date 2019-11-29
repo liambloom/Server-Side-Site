@@ -83,9 +83,7 @@ const getAll = async(req, res) => {
       delete row.id;
       delete row.password;
     }
-    //console.log(data.rowCount);
     if (data.rowCount) {
-      console.log(data.rows.last());
       res.render("./admin/users", { data: JSON.stringify(data.rows), here: req.originalUrl }, (err, html) => {
         if (err) handle(err);
         else {
@@ -227,7 +225,6 @@ let sendRecoveryCode = async (req, res) => {
       data = data.rows[0];
       pool.query("INSERT INTO recovery (userid, code) VALUES ($1, $2)", [data.id, code]);
       const { email, light, color } = data;
-      console.log(data);
       const site = path(req);
       mail("recovery", "Recover Account for " + site.hostname, email, {
         ...theme(color, light),
