@@ -7,7 +7,7 @@
 </head>
 <body>
   <%- include("../header", {title: "Sugestions", choice: true}) %>
-  <div id="content">
+  <main>
   <% data = JSON.parse(data) %>
     <table>
       <colgroup>
@@ -66,6 +66,6 @@
         </tr>
       <% } %>
     </table>
-  </div>
+  </main>
 </body>
 </html>
