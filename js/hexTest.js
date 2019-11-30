@@ -100,7 +100,7 @@ let spin = () => {
   }, 1000 / 144);
 };
 let init = () => {
-  newShape(6, {x: 100, y: 105});
+  newShape(6, {x: 100, y: 105, color: themes[theme.color].gradientLight});
   newShape(3, {x: 200, y: 221, color: "#ff0000"});
   select(0);
 };
