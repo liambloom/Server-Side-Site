@@ -54,6 +54,9 @@ main.box {
 .flex {
   display: flex;
 }
+.inline {
+  display: inline;
+}
 .indent {
   margin-left: 15px !important;
 }

@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+input, select {
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-family: 'Source Code Pro', monospace;
+}
+#year {
+  width: 4ch;
+}
+#day, #month, #hour, #minute {
+  width: 2ch;
+}

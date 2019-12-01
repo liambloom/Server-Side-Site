@@ -3,13 +3,15 @@
 <head>
   <%- include("../../head", {beta: true, modal: false}) %>
   <title>New Countdown</title>
-  <link href="/css/countdown_beta.css" rel="stylesheet">
+  <link href="/css/customCountdown.css" rel="stylesheet">
+  <script src="/js/countdownV4/custom.js" defer></script>
 </head>
 <body>
   <%- include("../../header", {title: "Countdown List Beta", choice: true}) %>
-  <main>
-    <%- include("../../calendar.html") %>
-    <%- include("../../clock.html") %>
+  <main class="center">
+    Date: <div id="date" class="inline"></div><br>
+    Time: <div id="time" class="inline"></div><br>
+    Icon: <input type="file"><!-- Not Working -->
   </main>
 </body>
 </html>
