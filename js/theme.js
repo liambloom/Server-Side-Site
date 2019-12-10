@@ -82,7 +82,7 @@ window.onload = () => {
   }
   document.onclick = event => {
     try {
-      if (!event.target.closest("#choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+      if (!event.target.closest("#choose, #settings, .modal-container") && document.getElementById("settings").className !== "" && !modal.isOpen) closeMenu();
     }
     catch (err) {
     }
