@@ -147,9 +147,19 @@ body.done {
   white-space: nowrap;
   overflow: hidden;
   width: calc(100% - 5px);
-  color: transparent;
-  background-clip: text;
-  background-image: linear-gradient(to right, var(--txt) 0%, var(--txt) calc(100% - 21.583px), var(--bg) calc(100% - 6.583px), var(--bg) 100%);
+}
+@supports (background-clip: text) {
+  #list #list-menus.list .list-item div {
+    color: transparent;
+    background-clip: text;
+    background-image: linear-gradient(to right, var(--txt) 0%, var(--txt) calc(100% - 21.583px), var(--bg) calc(100% - 6.583px), var(--bg) 100%);
+  }
+}
+@supports not (background-clip: text) {
+  #list #list-menus.list .list-item div {
+    color: var(--txt);
+    text-overflow: ellipsis;
+  }
 }
 #list #list-menus #custom-list div.popup {
   margin: 60px auto;
