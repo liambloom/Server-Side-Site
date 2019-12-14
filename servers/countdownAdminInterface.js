@@ -28,7 +28,7 @@ void async function main () {
   try {
     const name = await console.input("Event Name", 50);
     const icon = await console.input("Icon Path");
-    const iconUUID = uuid() + ".svg";
+    const iconUUID = /pre:/.test(icon) ? icon.replace("pre:", "") : uuid() + ".svg";
     const timing = await console.input("Timing String", 50);
     const message = await console.input("Message", 40);
     const query = `
@@ -44,8 +44,10 @@ void async function main () {
       );
     `;
     pool.query(query);
-    fs.appendFileSync("./countdowns.sql", query);
-    fs.copyFileSync(`../img/Countdowns/${icon}.svg`, `../img/Countdowns/toName/${iconUUID}`);
+    if (!/pre:/.test(icon)) {
+      fs.appendFileSync("./countdowns.sql", query);
+      fs.copyFileSync(`../img/Countdowns/${icon}.svg`, `../img/Countdowns/toName/${iconUUID}`);
+    }
   }
   catch (err) {
     console.error(err);

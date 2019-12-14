@@ -48,13 +48,7 @@ module.exports = {
       const [after, base] = timing.split(/(?<=\s*after)\s*/);
       timeObj.nth = parseInt(after.match(/\b\d(?=st|nd|rd|th)/)[0]);
       timeObj.weekDay = ["sun", "mon", "tue", "wed", "thu", "fri", "sat"].indexOf(after.match(/\b\S{3}(?= after)/)[0].toLowerCase());
-      let relative = new Date(now);
-      relative.setDate(now.getDate() - timeObj.nth * 7);
-      relative = this.nextOccurrence(base, relative).date;
-      relative.setDate(relative.getDate() + timeObj.nth * 7 - 6);
-      while (relative.getDay() !== timeObj.weekDay) {
-        relative.setDate(relative.getDate() + 1);
-      }
+      const relative = this.after(now, base, timeObj);
       return {
         date: relative,
         params: JSON.stringify([
@@ -127,6 +121,19 @@ module.exports = {
         params: JSON.stringify(params)
       };
     }
+  },
+  after (now, base, timeObj, goBack = true) {
+    let relative = new Date(now);
+    relative.setDate(now.getDate() + (goBack ? (-timeObj.nth * 7) : 0));
+    relative = this.nextOccurrence(base, relative).date;
+    if (!goBack) console.log(relative);
+    relative.setDate(relative.getDate() + timeObj.nth * 7 - 6);
+    while (relative.getDay() !== timeObj.weekDay) {
+      relative.setDate(relative.getDate() + 1);
+    }
+    if (relative.getTime() > now.getTime()) return relative;
+    else if (goBack) return this.after(now, base, timeObj, false);
+    else return "error";
   },
   render: {
     list: async function (req, res) {
