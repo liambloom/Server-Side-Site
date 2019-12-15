@@ -20,6 +20,6 @@ document.getElementById("time").innerHTML = now.toLocaleTimeString()
 for (let e of document.getElementsByTagName("input")) {
   e.addEventListener("input", () => {
     if (e.type === "number") e.value.match(/\D/g, "");
-    if (e.maxLength < e.value.length) e.value = e.value.substr(0, e.maxLength);
+    //if (e.maxLength < e.value.length) e.value = e.value.substr(0, e.maxLength);
   });
 }

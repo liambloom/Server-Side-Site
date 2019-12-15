@@ -9,9 +9,18 @@
 <body>
   <%- include("../../header", {title: "Countdown List Beta", choice: true}) %>
   <main class="center">
-    Date: <div id="date" class="inline"></div><br>
-    Time: <div id="time" class="inline"></div><br>
-    Icon: <input type="file"><!-- Not Working -->
+    <form>
+      Date: <div id="date" class="inline"></div><br>
+      Time: <div id="time" class="inline"></div><br>
+      Icon: <label id="icon-container" class="file-container" for="icon">No File Selected</label><input type="file" id="icon" accept="image/*"><br>
+      Event Name: <input type="text" placeholder="My Event"><br>
+      Message for when countdown is done: <input type="text" placeholder="Hooray!"><br>
+      Repeat: <input type="checkbox">
+      <div id="repeat">
+
+      </div>
+      <input type="submit" value="Submit">
+    </form>
   </main>
 </body>
 </html>

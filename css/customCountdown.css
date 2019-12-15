@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
-input, select {
+input[type], select, .file-container {
   padding: 2px 5px;
   border-radius: 5px;
   font-family: 'Source Code Pro', monospace;
