@@ -204,10 +204,18 @@ window.onload = () => {
     }
   }
   fileNameChange = e => {
-    e.labels[0].innerHTML = e.value.split("\\").last() || "No File Selected";
+    console.log(e.labels[0].children);
+    const preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
+    console.log(preview);
+    e.labels[0].innerHTML = (e.value.split("\\").last() || "No File Selected") + (preview && preview.outerHTML || "");
+    if (preview) {
+      if (!e.files[0].type.startsWith('image/')) { return; }
+      const reader = new FileReader();
+      reader.onload = e => { debugger; preview.src = e.target.result; };
+      reader.readAsDataURL(e.files[0]);
+    }
   };
   for (let e of document.querySelectorAll('input[type = "file"]')) {
-    console.log(e.addEventListener);
     fileNameChange(e);
     e.addEventListener("change", () => { fileNameChange(e); });
   }

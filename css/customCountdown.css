@@ -1,12 +1,30 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Code+Pro&display=swap');
+main {
+  margin: 50px auto;
+}
 input[type], select, .file-container {
   padding: 2px 5px;
   border-radius: 5px;
   font-family: 'Source Code Pro', monospace;
 }
-#year {
-  width: 4ch;
+.year {
+  width: 4ch !important;
 }
-#day, #month, #hour, #minute {
-  width: 2ch;
+.day, .month, #hour, #minute {
+  width: 2ch !important;
+}
+@supports (width: max-content) {
+  main {
+    width: max-content;
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  main {
+    width: -webkit-max-content;
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  main {
+    width: initial;
+  }
 }
