@@ -1,5 +1,5 @@
 const aws = require("aws-sdk");
-const { pool } = require("./initPool");
+const { pool, uuid } = require("./initPool");
 const mime = require("mime-types");
 //const path = require("path");
 
@@ -45,6 +45,14 @@ module.exports = {
       return Promise.reject(err);
     }
   },
+  upload: async function (file, name) {
+    return await new aws.S3().upload({
+      Bucket: "liambloom",
+      Key: name,
+      Body: file
+    }).promise();
+  },
   pool,
+  uuid,
   mime
 };

@@ -1,6 +1,6 @@
 const url = require("url");
 const aws = require("./aws");
-const { pool } = aws;
+const { pool, uuid } = aws;
 
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
@@ -218,18 +218,20 @@ module.exports = {
       }
     }
   },
-  newCountdown (req, res) {
-    if (req.body.repetition.bool) {
-      switch (req.body.repetition.type) {
-        case "year":
-          // create a countdown that repeats yearly
-          break;
-        case "custom":
-          // create an nth day of month
-      }
+  async newCountdown (req, res) {
+    try {
+      const countdownId = uuid();
+      const iconId = uuid();
+      console.log(iconId);
+      console.log(req.body.icon);
+      aws.upload(Buffer.from(req.body.icon), iconId);
+
+      res.writeHead(202, { "Content-Type": "application/json; charset=utf-8" });
+      res.write(JSON.stringify({id: "test"}));
+      res.end();
     }
-    else {
-      //pool.query("SELE")
+    catch (err) {
+      handle(err);
     }
   },
   V3: {
