@@ -149,7 +149,7 @@ module.exports = {
         for (let list of [preset, custom]) {
           for (let e of list) {
             e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
-            if (e.timing.date.getTime() < new Date(req.body.time).getTime()) {
+            if (e.timing.date.getTime() < new Date(req.body.time).getTime()) { // This doesn't quite work, and threw an error when there were multiple past countdowns
               list.splice(list.indexOf(e), 1);
               pool.query("DELETE FROM countdowns WHERE id = $1", [e.id]);
               continue;
@@ -234,9 +234,13 @@ module.exports = {
   async newCountdown (req, res) {
     try {
       const countdownId = uuid();
-      const iconId = `${uuid()}.${req.body.iconType}`;
-      console.log(iconId);
-      await aws.upload(Buffer.from(req.body.icon), `countdown/icons/${iconId}`); // idk if this works
+      let iconId;
+      if (req.body.icon !== "clock.svg") {
+        iconId = `${uuid()}.${req.body.iconType}`;
+        console.log(iconId);
+        await aws.upload(Buffer.from(req.body.icon), `countdown/icons/${iconId}`); // idk if this works
+      }
+      else iconId = "clock.svg";
       await pool.query("INSERT INTO countdowns VALUES ($1, $2, 'gregorian', $3, 'placeholder', $4, $5, $6)", [countdownId, req.body.name, iconId, req.user.id, req.body.timing, req.body.message]);
 
       res.writeHead(202, { "Content-Type": "application/json; charset=utf-8" });
