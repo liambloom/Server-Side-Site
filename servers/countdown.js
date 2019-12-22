@@ -6,7 +6,7 @@ const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.origina
 
 module.exports = {
   serve (req, res) {
-    let reqUrl = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
+    let reqUrl = path(req).pathname.match(/(?<=countdown\/).+$/)[0];
     if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(reqUrl)) reqUrl = "countdown";
     res.render("./countdown/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
@@ -140,9 +140,11 @@ module.exports = {
       const page = "." + path(req).pathname;//.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
-      let custom = await pool.query("SELECT * FROM countdowns WHERE owner = $1", [req.user.id]);
-      console.log(req.user.id);
-      custom = custom.rows;
+      let custom = [];
+      if (req.user) {
+        custom = await pool.query("SELECT * FROM countdowns WHERE owner = $1", [req.user.id]);
+        custom = custom.rows;
+      }
       try {
         for (let list of [preset, custom]) {
           for (let e of list) {
@@ -157,7 +159,8 @@ module.exports = {
           }
           list.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         }
-        res.render(page, { lists: {preset, custom} }, (error, html) => {
+        console.log(!!req.user);
+        res.render(page, { lists: { preset, custom }, user: !!req.user }, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
             res.write(html);

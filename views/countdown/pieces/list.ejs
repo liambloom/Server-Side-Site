@@ -1,3 +1,4 @@
+<% console.log(user) %>
 <div id="list-head">
   <div id="listTabs">
     <input type="button" id="preset" value="Preset Countdowns" class="selected">
@@ -31,9 +32,13 @@
           <div class="name">Create New</div>
         </a>
       <% } %>
-    <% } else { %>
+    <% } else if (user) { %>
       <div class="popup">
         You don't have any custom countdowns yet! Click <a href="./custom">here</a> to create one.
+      </div>
+    <% } else { %>
+      <div class="popup">
+        You must be logged in to create custom countdowns. Click <a href="/login?u=/countdowns/list">here</a> to log in or <a href="/signup?u=/countdowns/list">here</a> to sign up.
       </div>
     <% } %>
     </div>
