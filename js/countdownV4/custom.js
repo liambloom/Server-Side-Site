@@ -32,43 +32,52 @@ for (let e of document.getElementsByTagName("input")) {
 }
 document.getElementById("form").addEventListener("submit", event => {
   event.preventDefault();
+  modal.open("#loadingModal");
+  activateLoading();
   document.getElementById("submit").error.clear();
-  const formObj = {
-    name: document.getElementById("eventName").value,
-    icon: document.getElementById("icon").files[0],
-    timing: `${(parseInt(document.getElementById("hour").value.replace("12", "0")) + parseInt(document.getElementById("ampm").value)).toString().padStart(2, "0")}:${document.getElementById("minute").value.padStart(2, "0")} `,
-    message: document.getElementById("message").value
+  const reader = new FileReader();
+  reader.onload = readEvent => {
+    const formObj = {
+      name: document.getElementById("eventName").value,
+      icon: readEvent.target.result,
+      iconType: document.getElementById("icon").files[0].name.split(/\.(?=[^.]+$)/)[1],
+      timing: `${(parseInt(document.getElementById("hour").value.replace("12", "0")) + parseInt(document.getElementById("ampm").value)).toString().padStart(2, "0")}:${document.getElementById("minute").value.padStart(2, "0")} `,
+      message: document.getElementById("message").value
+    };
+    switch (document.getRadio("timing").id) {
+      case "singleOccurrence":
+        formObj.timing += `${document.getElementsByClassName("month")[0].value.padStart(2, "0")}/${document.getElementsByClassName("day")[0].value.padStart(2, "0")}/${document.getElementsByClassName("year")[0].value.padStart(4, now.getFullYear())}`;
+        break;
+      case "yearlyRepitition":
+        formObj.timing += `${document.getElementsByClassName("month")[1].value}/${document.getElementsByClassName("day")[1].value} every year`;
+        break;
+      case "nthOfMonth":
+        formObj.timing += `${document.getElementById("nth").value} ${document.getElementById("dayOfWeek").value.substring(0, 3).toLowerCase()} of ${document.getElementById("month").value.substring(0, 3).toLowerCase()}`;
+        break;
+      default:
+        document.getElementById("submit").error = "Something is very broken D:";
+    }
+    fetch("/countdown/new", {
+      method: "POST",
+      body: JSON.stringify(formObj),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+    })
+      .then(res => {
+        if (res.ok) return res.json();
+        else throw res.json();
+      })
+      .then(res => {
+        location.assign(res.id);
+      })
+      .catch(res => {
+        document.getElementById("submit").error = res.error; // This makes all input red and the error put onscreen is [object Object]
+      })
+      .finally(() => {
+        modal.close();
+        deactivateLoading();
+      });
   };
-  switch (document.getRadio("timing").id) {
-    case "singleOccurrence":
-      formObj.timing += `${document.getElementsByClassName("month")[0].value.padStart(2, "0")}/${document.getElementsByClassName("day")[0].value.padStart(2, "0")}/${document.getElementsByClassName("year")[0].value.padStart(4, now.getFullYear())}`;
-      break;
-    case "yearlyRepitition":
-      formObj.timing += `${document.getElementsByClassName("month")[1].value}/${document.getElementsByClassName("day")[1].value} every year`;
-      break;
-    case "nthOfMonth":
-      formObj.timing += `${document.getElementById("nth").value} ${document.getElementById("dayOfWeek").value.substring(0, 3).toLowerCase()} of ${document.getElementById("month").value.substring(0, 3).toLowerCase()}`;
-      break;
-    default:
-      document.getElementById("submit").error = "Something is very broken D:";
-  }
-  fetch("/countdown/new", {
-    method: "POST",
-    body: JSON.stringify(formObj),
-    headers: {
-      "Content-Type": "application/json; charset=utf-8"
-    },
-  })
-    .then(res => res.json())
-    .then(res => {
-      console.log(res);
-      if (res.status >= 500) throw res;
-      else return res;
-    })
-    .then(res => {
-      location.assign(res.id);
-    })
-    .catch(res => {
-      document.getElementById("submit").error = res.error;
-    });
+  reader.readAsBinaryString(document.getElementById("icon").files[0]); // Handle if no file
 });

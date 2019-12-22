@@ -46,7 +46,7 @@ module.exports = {
     }
   },
   upload: async function (file, name) {
-    return await new aws.S3().upload({
+    return new aws.S3().upload({
       Bucket: "liambloom",
       Key: name,
       Body: file

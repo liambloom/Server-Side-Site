@@ -8,7 +8,7 @@ module.exports = {
   serve (req, res) {
     let reqUrl = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
     if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(reqUrl)) reqUrl = "countdown";
-    res.render("./countdown_beta/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
+    res.render("./countdown/containers/" + reqUrl, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
       if (html) {
         // On success, serve page
         res.writeHead(200, { "Content-Type": "text/html" });
@@ -115,9 +115,9 @@ module.exports = {
     }
     else {
       timing = timing.split(/:|\s|\//g);
-      const params = [timing[5], timing[3], timing[4], timing[1], timing[2]];
+      const params = [timing[4], parseInt(timing[2]) - 1, timing[3], timing[0], timing[1]];
       return {
-        data: new Date(...params),
+        date: new Date(...params),
         params: JSON.stringify(params)
       };
     }
@@ -137,17 +137,27 @@ module.exports = {
   },
   render: {
     list: async function (req, res) {
-      const page = "." + path(req).pathname.replace(/(?<=countdown)/, "_beta");
+      const page = "." + path(req).pathname;//.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
+      let custom = await pool.query("SELECT * FROM countdowns WHERE owner = $1", [req.user.id]);
+      console.log(req.user.id);
+      custom = custom.rows;
       try {
-        preset.forEach(e => {
-          e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
-          e.calendar = e.calendar.titleCase();
-          e.icon = `/aws/countdown/icons/${e.icon}`;
-        });
-        preset.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
-        res.render(page, { preset }, (error, html) => {
+        for (let list of [preset, custom]) {
+          for (let e of list) {
+            e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
+            if (e.timing.date.getTime() < new Date(req.body.time).getTime()) {
+              list.splice(list.indexOf(e), 1);
+              pool.query("DELETE FROM countdowns WHERE id = $1", [e.id]);
+              continue;
+            }
+            e.calendar = e.calendar.titleCase();
+            e.icon = `/aws/countdown/icons/${e.icon}`;
+          }
+          list.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
+        }
+        res.render(page, { lists: {preset, custom} }, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
             res.write(html);
@@ -198,7 +208,7 @@ module.exports = {
         }
         info.timing = next.params;
         if (info.id === "0d70045b-b5af-4daf-84a5-1f8892bed617") info.name = next.date.getFullYear();
-        res.render("./countdown_beta/pieces/countdown", info, (error, html) => {
+        res.render("./countdown/pieces/countdown", info, (error, html) => {
           if (html) {
             // On success, serve page
             res.writeHead(200, { "Content-Type": "text/html" });
@@ -221,17 +231,17 @@ module.exports = {
   async newCountdown (req, res) {
     try {
       const countdownId = uuid();
-      const iconId = uuid();
+      const iconId = `${uuid()}.${req.body.iconType}`;
       console.log(iconId);
-      console.log(req.body.icon);
-      aws.upload(Buffer.from(req.body.icon), iconId);
+      await aws.upload(Buffer.from(req.body.icon), `countdown/icons/${iconId}`); // idk if this works
+      await pool.query("INSERT INTO countdowns VALUES ($1, $2, 'gregorian', $3, 'placeholder', $4, $5, $6)", [countdownId, req.body.name, iconId, req.user.id, req.body.timing, req.body.message]);
 
       res.writeHead(202, { "Content-Type": "application/json; charset=utf-8" });
-      res.write(JSON.stringify({id: "test"}));
+      res.write(JSON.stringify({id: countdownId}));
       res.end();
     }
     catch (err) {
-      handle(err);
+      handle(err, res);
     }
   },
   V3: {

@@ -41,6 +41,11 @@ input[type = "file"] {
   cursor: pointer;
   border: none;
 }
+.preview {
+  margin-left: 0.5ch;
+  margin-bottom: -0.25em;
+  height: 1.3em;
+}
 .button-3d {
   cursor: pointer;
   border-radius: 0px;

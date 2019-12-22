@@ -204,14 +204,13 @@ window.onload = () => {
     }
   }
   fileNameChange = e => {
-    console.log(e.labels[0].children);
-    const preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
-    console.log(preview);
+    let preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
     e.labels[0].innerHTML = (e.value.split("\\").last() || "No File Selected") + (preview && preview.outerHTML || "");
-    if (preview) {
+    if (preview) preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
+    if (preview && e.files.length) {
       if (!e.files[0].type.startsWith('image/')) { return; }
       const reader = new FileReader();
-      reader.onload = e => { debugger; preview.src = e.target.result; };
+      reader.onload = e => { preview.src = e.target.result; }; // almost works, but preview.src doesn't actually change
       reader.readAsDataURL(e.files[0]);
     }
   };
