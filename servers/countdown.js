@@ -38,7 +38,9 @@ module.exports = {
     });
   },
   nextOccurrence (timing, now) {
+    console.log(now, timing, "countdown.js:41 module.exports.nextOccurrence");
     now = new Date(now);
+    console.log(now, timing, "countdown.js:43 module.exports.nextOccurrence");
     const timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
     timeObj.timeArr = timeObj.time.split(":");
@@ -64,8 +66,10 @@ module.exports = {
     else if (timing.includes("every")) {
       switch (timing.match(/(?<=every ).*$/)[0]) {
         case "year":
+          console.log(now, timing, timeObj, "countdown.js:69 module.exports > nextOccurrence > every > year");
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];
           timeObj.dateArr = timeObj.date.split("/");
+          console.log(now, timing, timeObj, "countdown.js:72 module.exports > nextOccurrence > every > year");
           const next = this.V3.findYear(new Date(
             now.getFullYear(),
             parseInt(timeObj.dateArr[0]) - 1, // Month
@@ -126,7 +130,6 @@ module.exports = {
     let relative = new Date(now);
     relative.setDate(now.getDate() + (goBack ? (-timeObj.nth * 7) : 0));
     relative = this.nextOccurrence(base, relative).date;
-    if (!goBack) console.log(relative);
     relative.setDate(relative.getDate() + timeObj.nth * 7 - 6);
     while (relative.getDay() !== timeObj.weekDay) {
       relative.setDate(relative.getDate() + 1);
@@ -137,6 +140,7 @@ module.exports = {
   },
   render: {
     list: async function (req, res) {
+      console.log(req.body.now, "countdown.js:143 module.exports > list > render");
       const page = "." + path(req).pathname;//.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
@@ -253,6 +257,7 @@ module.exports = {
   },
   V3: {
     findYear (event, n) {
+      console.log(n, event, "countdown.js:260 module.exports > V3 > findYear");
       if (event.getTime() < n.getTime()) {
         event.setFullYear(event.getFullYear() + 1);
         return event;

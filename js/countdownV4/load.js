@@ -3,6 +3,7 @@ window.load = (piece) => {
   if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(piece)) countdown = true;
   else countdown = false;
   const element = document.getElementById(countdown ? "countdown" : piece);
+  console.log(new Date() + " load.js:6");
   fetch("/countdown/pieces/" + piece, {
     method: "POST",
     headers: {
