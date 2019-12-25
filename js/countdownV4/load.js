@@ -3,6 +3,7 @@ window.load = (piece) => {
   if (/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}|test/.test(piece)) countdown = true;
   else countdown = false;
   const element = document.getElementById(countdown ? "countdown" : piece);
+  const now = new Date();
   console.log(new Date() + " load.js:6");
   fetch("/countdown/pieces/" + piece, {
     method: "POST",
@@ -10,7 +11,13 @@ window.load = (piece) => {
       "Content-Type": "application/json; charset=utf-8"
     },
     body: JSON.stringify({
-      time: new Date().getTime()
+      time: JSON.stringify([
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        now.getHours(),
+        now.getMinutes()
+      ])
     })
   })
     .then(res => res.text())

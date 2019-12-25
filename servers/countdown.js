@@ -140,7 +140,7 @@ module.exports = {
   },
   render: {
     list: async function (req, res) {
-      console.log(req.body.now, "countdown.js:143 module.exports > list > render");
+      console.log(req.body.time, "countdown.js:143 module.exports > list > render");
       const page = "." + path(req).pathname;//.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
@@ -152,8 +152,8 @@ module.exports = {
       try {
         for (let list of [preset, custom]) {
           for (let e of list) {
-            e.timing = module.exports.nextOccurrence(e.timing, new Date(req.body.time));
-            if (e.timing.date.getTime() < new Date(req.body.time).getTime()) { // This doesn't quite work, and threw an error when there were multiple past countdowns
+            e.timing = module.exports.nextOccurrence(e.timing, new Date(...JSON.parse(req.body.time)));
+            if (e.timing.date.getTime() < new Date(...JSON.parse(req.body.time)).getTime()) { // This doesn't quite work, and threw an error when there were multiple past countdowns
               list.splice(list.indexOf(e), 1);
               pool.query("DELETE FROM countdowns WHERE id = $1", [e.id]);
               continue;
@@ -187,7 +187,7 @@ module.exports = {
         let info, next;
         const id = path(req).pathname.match(/(?<=\/)[^\/]+$/)[0];
         if (id === "test") {
-          const testTime = new Date(req.body.time);
+          const testTime = new Date(...JSON.parse(req.body.time));
           testTime.setSeconds(testTime.getSeconds() + 5);
           info = {
             bg: "fireworks.gif",
@@ -210,7 +210,7 @@ module.exports = {
         }
         else {
           info = await (await pool.query("SELECT * FROM countdowns WHERE id = $1", [id])).rows[0];
-          next = module.exports.nextOccurrence(info.timing, new Date(req.body.time));
+          next = module.exports.nextOccurrence(info.timing, new Date(...JSON.parse(req.body.time)));
           info.icon = "/aws/countdown/icons/" + info.icon;
         }
         info.timing = next.params;
