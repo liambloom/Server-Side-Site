@@ -38,6 +38,7 @@ module.exports = {
     });
   },
   nextOccurrence (timing, now) {
+    console.log(now, timing, "countdown.js:41 module.exports.nextOccurrence");
     now = new Date(now);
     const timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
@@ -64,6 +65,7 @@ module.exports = {
     else if (timing.includes("every")) {
       switch (timing.match(/(?<=every ).*$/)[0]) {
         case "year":
+          console.log(now, timing, timeObj, "countdown.js:69 module.exports > nextOccurrence > every > year");
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];
           timeObj.dateArr = timeObj.date.split("/");
           const next = this.V3.findYear(new Date(
@@ -250,6 +252,7 @@ module.exports = {
   },
   V3: {
     findYear (event, n) {
+      console.log(n, event, "countdown.js:260 module.exports > V3 > findYear");
       if (event.getTime() < n.getTime()) {
         event.setFullYear(event.getFullYear() + 1);
         return event;
