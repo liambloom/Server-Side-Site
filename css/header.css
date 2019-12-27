@@ -73,12 +73,11 @@ header nav ul li ul li a:hover {
   background-color: rgba(0, 0, 0, 0.36);
 }
 header nav ul li ul {
-  background-color: var(--dark);
+  background-color: transparent;
   position: absolute;
   max-height: calc(100vh + (var(--size) - 46.4px));
   overflow: auto;
   transform: translate(0px, 0px);
-  background-color: transparent;
   /* height changed at bottom with @supports */
 }
 header nav ul li ul li {
