@@ -8,7 +8,6 @@
   --txt: #001215;
   --translucent: ;
 }
-/*@import url('https://fonts.googleapis.com/css?family=Raleway&display=swap');*/
 @font-face {
   font-family: 'Anurati-Coustom';
   src: url(/fonts/Anurati-Coustom.ttf);
@@ -62,85 +61,6 @@ main.box {
 }
 a {
 	color: var(--txt);
-}
-#topRight {
-	position: fixed;
-	z-index: 3;
-	top: 6.5px;
-	right: 6.5px;
-	height: calc(1.15em + 15px);
-}
-#visibility #Capa_1 {
-	height: calc(1.15em + 6px);
-	width: calc(1.15em + 6px);
-	margin: 1.5px;
-	transform: rotate(-90deg);
-}
-#visibility.down #Capa_1 {
-	transform: rotate(90deg);
-}
-#settings #svg6, #user-span #user-icon {
-	height: calc(1.15em + 12px);
-	width: calc(1.15em + 12px);
-	margin: 1.5px;
-}
-#settings #svg6 {
-  transition: 300ms;
-  transform: rotate(0deg);
-}
-#settings.spin #svg6 {
-  transform: rotate(240deg);
-	/*animation: spin 600ms linear 1;*/
-}
-#Layer_1 {
-	height: calc(1.15em + 12px);
-	width: calc((1.15em + 12px) / 1.6);
-	margin: 1.5px;
-}
-#path4 {
-	transform: translate(0px, 0px);
-}
-#topRight span {
-  display: inline-flex;
-  justify-content: center;
-}
-header {
-	display: grid;
-	grid-template-columns: 117px calc(100% - 117px);
-	grid-template-areas:
-		"logo title"
-		"nav nav";
-	/*grid-area: header;*/
-	color: var(--headTxt);
-  background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
-  position: sticky;
-  top: var(--size);
-  z-index: 2;
-}
-#logo {
-	grid-area: logo;
-	margin: 16px;
-}
-#logo svg {
-	width: 85px;
-	height: 85px;
-}
-#logo #stop4538 {
-  stop-color: var(--headTxt) !important;
-}
-#logo #stop4540 {
-  stop-color: var(--light) !important;
-}
-header h1 {
-	grid-area: title;
-	font-size: 85px;
-	padding-left: 2px;
-	margin: 0px;
-	margin-bottom: 5px;
-  line-height: 113.2px;
-  position: relative;
-  top: 5px;
-  font-family: 'Anurati-Coustom';
 }
 .topFixed {
 	grid-area: main;
@@ -198,30 +118,6 @@ td, th {
 }
 .circle.low span {
   transform: translateY(-7px);
-}
-@supports (width: max-content) {
-  #topRight, header h1, .radio {
-    width: max-content;
-  }
-  header {
-    grid-template-rows: repeat(2, max-content);
-  }
-}
-@supports (width: -webkit-max-content) and (not (width: max-content)) {
-  #topRight, header h1, .radio {
-    width: -webkit-max-content;
-  }
-  header {
-    grid-template-rows: repeat(2, -webkit-max-content);
-  }
-}
-@supports not ((width: max-content) or (width: -webkit-max-content)) {
-  #topRight, header h1, .radio {
-    width: initial;
-  }
-  header {
-    grid-template-rows: 121px 46px;
-  }
 }
 @supports (height: max-content) {
   #context.box {

@@ -115,9 +115,7 @@ input:invalid:hover, input:invalid:focus, [data-err] input:hover, [data-err] inp
   line-height: 0.8em;
   color: #ff0000;
   display: inline;
-  /*float: left;*/
   content: attr(data-err);
-  /*height: 0px;*/
 }
 textarea {
 	background-color: var(--bg);
@@ -132,4 +130,19 @@ textarea:focus {
 }
 textarea.wide {
   width: calc(100% - 20px);
+}
+@supports (width: max-content) {
+  .radio {
+    width: max-content;
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  .radio {
+    width: -webkit-max-content;
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  .radio {
+    width: initial;
+  }
 }

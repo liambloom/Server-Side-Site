@@ -1,3 +1,29 @@
+/* This is the general code for the header */
+header {
+	display: grid;
+	grid-template-columns: 117px calc(100% - 117px);
+	grid-template-areas:
+		"logo title"
+		"nav nav";
+	color: var(--headTxt);
+  background-image: linear-gradient(var(--angle), var(--dark), 70%, var(--light));
+  position: sticky;
+  top: var(--size);
+  z-index: 2;
+}
+header h1 {
+	grid-area: title;
+	font-size: 85px;
+	padding-left: 2px;
+	margin: 0px;
+	margin-bottom: 5px;
+  line-height: 113.2px;
+  position: relative;
+  top: 5px;
+  font-family: 'Anurati-Coustom';
+}
+
+/* This is the CSS for the navigation bar */
 header nav {
 	grid-area: nav;
 	width: 100%;
@@ -14,7 +40,7 @@ header nav ul {
 	padding: 0px;
   overflow: hidden;
 }
-header nav ul li {
+header nav > ul > li {
   float: left;
   height: 46.4px;
 }
@@ -43,23 +69,8 @@ header nav ul li a {
   text-decoration: none;
   height: 18.4px;
 }
-/*@supports (width: min-content) {
-  header nav > ul > li > a {
-    width: min-content;
-  }
-}
-@supports (width: -webkit-min-content) and (not (width: min-content)) {
-  header nav > ul > li > a {
-    width: -webkit-min-content;
-  }
-}
-@supports not ((width: min-content) or (width: -webkit-min-content)) {
-  header nav > ul > li > a {
-    width: initial;
-  }
-}*/
-header nav ul li ul li a:hover, header nav ul li ul li a:focus {
-  background-color: /*#0000005d;*/rgba(0, 0, 0, 0.36);
+header nav ul li ul li a:hover {
+  background-color: rgba(0, 0, 0, 0.36);
 }
 header nav ul li ul {
   background-color: var(--dark);
@@ -75,29 +86,16 @@ header nav ul li ul {
 header nav ul li:hover ul, header nav ul li:focus ul {
   opacity: 1;
 }
-@supports (height: max-content) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: max-content;
-  }
+  background-color: transparent;
+  /* height changed at bottom with @supports */
 }
-@supports (height: -webkit-max-content) and (not (height: max-content)) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: -webkit-max-content;
-  }
 }
-@supports not (height: max-content) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: initial;
-  }
 }
 header nav ul li.right ul {
   right: 0px;
 }
 header nav ul li.right ul li a {
   text-align: left;
-}
-header nav ul li ul li {
-  float: none;
 }
 header nav > ul > li::after {
   content: "\200B";
@@ -129,4 +127,95 @@ header nav ul li a.beta::after {
 header nav > ul > li:not(.hide):hover::after {
   height: 5px;
   bottom: 5px;
+}
+
+/* This is CSS for the top right section (setting icon and header visibility icon) */
+#topRight {
+	position: fixed;
+	z-index: 3;
+	top: 6.5px;
+	right: 6.5px;
+	height: calc(1.15em + 15px);
+}
+#visibility #Capa_1 {
+	height: calc(1.15em + 6px);
+	width: calc(1.15em + 6px);
+	margin: 1.5px;
+	transform: rotate(-90deg);
+}
+#visibility.down #Capa_1 {
+	transform: rotate(90deg);
+}
+#settings #svg6, #user-span #user-icon {
+	height: calc(1.15em + 12px);
+	width: calc(1.15em + 12px);
+	margin: 1.5px;
+}
+#settings #svg6 {
+  transition: 300ms;
+  transform: rotate(0deg);
+}
+#settings.spin #svg6 {
+  transform: rotate(240deg);
+}
+#topRight span {
+  display: inline-flex;
+  justify-content: center;
+}
+
+/* This is the CSS for the logo */
+#logo {
+	grid-area: logo;
+	margin: 16px;
+}
+#logo svg {
+	width: 85px;
+	height: 85px;
+}
+#logo #stop4538 {
+  stop-color: var(--headTxt) !important;
+}
+#logo #stop4540 {
+  stop-color: var(--light) !important;
+}
+
+/* All the @supports queries because I'm too lazy to type out a query more than once */
+@supports (width: max-content) {
+  #topRight, header h1 {
+    width: max-content;
+  }
+  header {
+    grid-template-rows: repeat(2, max-content);
+  }
+}
+@supports (width: -webkit-max-content) and (not (width: max-content)) {
+  #topRight, header h1 {
+    width: -webkit-max-content;
+  }
+  header {
+    grid-template-rows: repeat(2, -webkit-max-content);
+  }
+}
+@supports not ((width: max-content) or (width: -webkit-max-content)) {
+  #topRight, header h1 {
+    width: initial;
+  }
+  header {
+    grid-template-rows: 121px 46px;
+  }
+}
+@supports (height: max-content) {
+  header nav ul li:hover ul {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  header nav ul li:hover ul {
+    height: -webkit-max-content;
+  }
+}
+@supports not (height: max-content) {
+  header nav ul li:hover ul {
+    height: initial;
+  }
 }
