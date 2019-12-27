@@ -14,7 +14,7 @@ header nav ul {
 	padding: 0px;
   overflow: hidden;
 }
-header nav ul li {
+header nav > ul > li {
   float: left;
   height: 46.4px;
 }
@@ -43,61 +43,33 @@ header nav ul li a {
   text-decoration: none;
   height: 18.4px;
 }
-/*@supports (width: min-content) {
-  header nav > ul > li > a {
-    width: min-content;
-  }
-}
-@supports (width: -webkit-min-content) and (not (width: min-content)) {
-  header nav > ul > li > a {
-    width: -webkit-min-content;
-  }
-}
-@supports not ((width: min-content) or (width: -webkit-min-content)) {
-  header nav > ul > li > a {
-    width: initial;
-  }
-}*/
-header nav ul li ul li a:hover, header nav ul li ul li a:focus {
-  background-color: /*#0000005d;*/rgba(0, 0, 0, 0.36);
+header nav ul li ul li a:hover {
+  background-color: rgba(0, 0, 0, 0.36);
 }
 header nav ul li ul {
-  background-color: var(--dark);
-  transition: opacity 400ms ease-in;
-	opacity: 0;
+  background-color: transparent;
   position: absolute;
-  height: 0px;
   max-height: calc(100vh + (var(--size) - 46.4px));
   overflow: auto;
   transform: translate(0px, 0px);
-  overflow: auto;
+  /* height changed at bottom with @supports */
 }
-header nav ul li:hover ul, header nav ul li:focus ul {
+header nav ul li ul li {
+  transition: opacity 400ms ease-in, height 0ms 400ms;
+  height: 0px;
+  opacity: 0;
+  background-color: var(--dark);
+}
+header nav ul li:hover ul li {
+  transition: opacity 400ms ease-in, height 0ms;
+  height: 46.4px;
   opacity: 1;
-}
-@supports (height: max-content) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: max-content;
-  }
-}
-@supports (height: -webkit-max-content) and (not (height: max-content)) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: -webkit-max-content;
-  }
-}
-@supports not (height: max-content) {
-  header nav ul li:hover ul, header nav ul li:focus ul {
-    height: initial;
-  }
 }
 header nav ul li.right ul {
   right: 0px;
 }
 header nav ul li.right ul li a {
   text-align: left;
-}
-header nav ul li ul li {
-  float: none;
 }
 header nav > ul > li::after {
   content: "\200B";
@@ -129,4 +101,19 @@ header nav ul li a.beta::after {
 header nav > ul > li:not(.hide):hover::after {
   height: 5px;
   bottom: 5px;
+}
+@supports (height: max-content) {
+  header nav ul li:hover ul {
+    height: max-content;
+  }
+}
+@supports (height: -webkit-max-content) and (not (height: max-content)) {
+  header nav ul li:hover ul {
+    height: -webkit-max-content;
+  }
+}
+@supports not (height: max-content) {
+  header nav ul li:hover ul {
+    height: initial;
+  }
 }

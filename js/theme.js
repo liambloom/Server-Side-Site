@@ -116,7 +116,7 @@ window.onload = () => {
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
-  const elementHide = e => {
+  /*const elementHide = e => {
     e = e.target;
     if (window.timeout[id(e)] === undefined) window.timeout[e.id] = [];
     let opacity = parseFloat(window.getComputedStyle(document.querySelector(`#${e.id} ul`)).opacity);
@@ -144,7 +144,7 @@ window.onload = () => {
   for (let e of document.querySelectorAll("header nav > ul > li")) {
     e.addEventListener("mouseenter", e => { elementShow(e); });
     e.addEventListener("focus", e => { elementShow(e); });
-  }
+  }*/
 
   let buttonFunc = e => {
     e.parentNode.dispatchEvent(new Event(e.id));
