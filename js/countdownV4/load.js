@@ -4,7 +4,6 @@ window.load = (piece) => {
   else countdown = false;
   const element = document.getElementById(countdown ? "countdown" : piece);
   const now = new Date();
-  console.log(new Date() + " load.js:6");
   fetch("/countdown/pieces/" + piece, {
     method: "POST",
     headers: {

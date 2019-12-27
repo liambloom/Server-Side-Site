@@ -40,7 +40,6 @@ module.exports = {
   nextOccurrence (timing, now) {
     console.log(now, timing, "countdown.js:41 module.exports.nextOccurrence");
     now = new Date(now);
-    console.log(now, timing, "countdown.js:43 module.exports.nextOccurrence");
     const timeObj = {};
     timeObj.time = timing.match(/^\S+/)[0];
     timeObj.timeArr = timeObj.time.split(":");
@@ -69,7 +68,6 @@ module.exports = {
           console.log(now, timing, timeObj, "countdown.js:69 module.exports > nextOccurrence > every > year");
           timeObj.date = timing.match(/(?<=\s)\d{2}\/\d{2}/)[0];
           timeObj.dateArr = timeObj.date.split("/");
-          console.log(now, timing, timeObj, "countdown.js:72 module.exports > nextOccurrence > every > year");
           const next = this.V3.findYear(new Date(
             now.getFullYear(),
             parseInt(timeObj.dateArr[0]) - 1, // Month
@@ -140,7 +138,6 @@ module.exports = {
   },
   render: {
     list: async function (req, res) {
-      console.log(req.body.time, "countdown.js:143 module.exports > list > render");
       const page = "." + path(req).pathname;//.replace(/(?<=countdown)/, "_beta");
       let preset = await pool.query("SELECT * FROM countdowns WHERE owner = '00000000-0000-0000-0000-000000000000'");
       preset = preset.rows;
@@ -163,7 +160,6 @@ module.exports = {
           }
           list.sort((a, b) => a.timing.date.getTime() - b.timing.date.getTime());//if a > b (a happens later), this will be positive and b will be moved before a, and vice versa
         }
-        console.log(!!req.user);
         res.render(page, { lists: { preset, custom }, user: !!req.user }, (error, html) => {
           if (html) {
             res.writeHead(200, { "Content-Type": "text/html" });
@@ -241,7 +237,6 @@ module.exports = {
       let iconId;
       if (req.body.icon !== "clock.svg") {
         iconId = `${uuid()}.${req.body.iconType}`;
-        console.log(iconId);
         await aws.upload(Buffer.from(req.body.icon), `countdown/icons/${iconId}`); // idk if this works
       }
       else iconId = "clock.svg";

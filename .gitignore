@@ -28,3 +28,4 @@ countdownTimingSpec.txt
 servers/countdowns.sql
 img/Countdowns/
 servers/flowchart.png
+*.map
