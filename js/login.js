@@ -34,9 +34,9 @@ let loadFunc = () => {
     }
   };
   document.getElementById("passwordRecovery").addEventListener("click", () => {
-    document.getElementById("content").classList.add("box");
-    //document.getElementById("content").style.display = "block";
-    document.getElementById("content").innerHTML = 'Enter your username: <br><div><input id="usernamePassRecover" type="text"></div>';
+    document.getElementsByTagName("main")[0].classList.add("box");
+    //document.getElementsByTagName("main")[0].style.display = "block";
+    document.getElementsByTagName("main")[0].innerHTML = 'Enter your username: <br><div><input id="usernamePassRecover" type="text"></div>';
     document.getElementById("usernamePassRecover").onenter = event => {
       let username = event.target.value;
       if (/^[\w\-.]{1,50}$/.test(username)) {
@@ -52,7 +52,7 @@ let loadFunc = () => {
             }
           })
             .then(res => {
-              if (res.ok) document.getElementById("content").innerHTML = 'You were emailed a recovery code: <div><input id="recoveryCode" type="text"></div><br><button id="resend">Resend</button>';
+              if (res.ok) document.getElementsByTagName("main")[0].innerHTML = 'You were emailed a recovery code: <div><input id="recoveryCode" type="text"></div><br><button id="resend">Resend</button>';
               else throw res.status; 
             })
             .then(() => {
@@ -76,7 +76,7 @@ let loadFunc = () => {
                     }
                   })
                     .then(res => {
-                      if (res.ok) document.getElementById("content").innerHTML = 'New Password: <span><input id="newPassword" type="password"></span><br>Retype Password: <span><input id="passwordCheck" type="password"></span>';
+                      if (res.ok) document.getElementsByTagName("main")[0].innerHTML = 'New Password: <span><input id="newPassword" type="password"></span><br>Retype Password: <span><input id="passwordCheck" type="password"></span>';
                       else throw res;
                     })
                     .then(() => {
@@ -104,7 +104,7 @@ let loadFunc = () => {
                         else if (e.value !== document.getElementById("newPassword").value) e.error = "Must match password";
                         else e.error = "";
                       });
-                      document.getElementById("content").addEventListener("enter", () => {
+                      document.getElementsByTagName("main")[0].addEventListener("enter", () => {
                         document.getElementById("newPassword").setAttribute("required", "required");
                         document.getElementById("passwordCheck").setAttribute("required", "required");
                         if (!document.querySelector("#content :invalid")) {

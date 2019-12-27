@@ -1,10 +1,4 @@
 //jshint esversion:7
-String.prototype.change = function () {
-	if (this.toString() === theme.mode) {
-		if (theme.mode === "dark") theme.mode = "light";
-		else theme.mode = "dark";
-	}
-};
 window.eventToElement = (event, e) => [...event.target.parentNode.children].find(event => event.tagName === e.toString().toUpperCase());
 window.timeout = {};
 window.root = document.documentElement;//imposible to not get this first
@@ -12,11 +6,9 @@ window.onresize = () => {
 	root.style.setProperty("--size", -document.getElementsByTagName("h1")[0].clientHeight - 5 + "px");
 	root.style.setProperty("--angle", Math.atan(document.getElementsByTagName("header")[0].clientHeight/window.innerWidth) + "rad");
   if (window.innerWidth <= document.querySelector("header h1").clientWidth + 117) {
-    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "max-content");
     document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px " + CSS.supports("width: max-content") ? "max-content" : "initial");
   }
   else {
-    //document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "100%");
     document.getElementsByTagName("header")[0].style.setProperty("grid-template-columns", "117px calc(100% - 117px)");
   }
 };
@@ -38,8 +30,6 @@ document.head.appendChild(newStyle);
 window.arrowFix = newStyle.sheet;
 window.onload = () => {
   window.onresize();
-  //if (localStorage.getItem("color") !== null) theme.default.color = localStorage.getItem("color");
-  //if (localStorage.getItem("mode") !== null) theme.default.mode = localStorage.getItem("mode");
   
   fetch("/api/json/themes.json")
     .then(res => {
@@ -82,7 +72,7 @@ window.onload = () => {
   }
   document.onclick = event => {
     try {
-      if (!event.target.closest("#choose, #settings") && document.getElementById("settings").className !== "") closeMenu();
+      if (!event.target.closest("#choose, #settings, .modal-container") && document.getElementById("settings").className !== "" && !modal.isOpen) closeMenu();
     }
     catch (err) {
     }
@@ -123,17 +113,6 @@ window.onload = () => {
       arrowPosition(tooltip, tooltipProps, pointerX);
     }
   };
-
-  /*document.getElementById("lightArea").coords = `0, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
-  document.getElementById("lightArea").addEventListener("click", e => {
-    e.preventDefault();
-    theme.mode = "light";
-  });
-  document.getElementById("darkArea").coords = `${document.getElementById("lightdark").clientWidth}, 0, ${document.getElementById("lightdark").clientWidth / 2}, ${document.getElementById("lightdark").clientHeight}`;
-  document.getElementById("darkArea").addEventListener("click", e => {
-    e.preventDefault();
-    theme.mode = "dark";
-  });*/
 
   document.querySelector("#logo svg").removeChild(document.querySelector("#logo svg title"));
 
@@ -224,36 +203,34 @@ window.onload = () => {
       catch (err) {}
     }
   }
-  /*else {
-    let ua = navigator.userAgent;
-    let browser;
-    if (/MSIE|Trident/i.test(ua)) {
-      browser = "Internet Explorer";// IE will throw hundreds of errors before it gets this far
+  fileNameChange = e => {
+    let preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
+    e.labels[0].innerHTML = (e.value.split("\\").last() || "No File Selected") + (preview && preview.outerHTML || "");
+    if (preview) preview = [...e.labels[0].children].find(child => child.classList.contains("preview"));
+    if (preview && e.files.length) {
+      if (!e.files[0].type.startsWith('image/')) { return; }
+      const reader = new FileReader();
+      reader.onload = e => { preview.src = e.target.result; }; // almost works, but preview.src doesn't actually change
+      reader.readAsDataURL(e.files[0]);
     }
-    else if (/Edge/i.test(ua)) {
-      browser = "older versions of Edge";
-    }
-    else if (/(?:iPhone|iPad)[^]+Safari/.test(ua)) {
-      browser = "Safari for iOS";
-    }
-    else if (/Firefox/im.test(ua)) {
-      browser = "old versions of Firefox";
-    }
-    else {
-      browser = "your browser";
-    }
-    alert(`Some of the styling might be messed up in ${browser}. Most of the site should still work though.`);
-  }*/
+  };
+  for (let e of document.querySelectorAll('input[type = "file"]')) {
+    fileNameChange(e);
+    e.addEventListener("change", () => { fileNameChange(e); });
+  }
 };
 window.onscroll = () => {
-  /*if (window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)) {
-    document.querySelector("header nav ul li.right").classList.remove("hide");
-  }
-  else {
-    document.querySelector("header nav ul li.right").classList.add("hide");
-  }*/
   document.querySelector("header nav ul li.right").classList.toggle("hide", !(window.scrollY < document.getElementsByTagName("header")[0].clientHeight - (document.querySelector("header nav ul li.right").clientHeight + document.getElementById("topRight").clientHeight + 13)));
 };
+class ThemeMode extends String {
+  constructor (...args) {
+    super(...args);
+  }
+  change () {
+    if (theme.mode === "dark") theme.mode = "light";
+    else theme.mode = "dark";
+  }
+}
 window.theme = {
 	get color() {
 		return this.default.color;
@@ -264,8 +241,6 @@ window.theme = {
 			root.style.setProperty("--light", themes[name].gradientLight);
 			root.style.setProperty("--dark", themes[name].gradientDark);
 			root.style.setProperty("--headTxt", themes[name].headTextColor);
-			//document.getElementById("stop4538").style = `stop-color:${themes[name].headTextColor};stop-opacity:1`;//Left
-			//document.getElementById("stop4540").style = `stop-color:${themes[name].gradientLight};stop-opacity:1`;//Right
 			if (this.mode === "dark") {
 				root.style.setProperty("--bg", themes[name].offBlack);
 				root.style.setProperty("--txt", themes[name].headTextColor);
@@ -274,7 +249,6 @@ window.theme = {
 				root.style.setProperty("--bg", themes[name].offWhite);
 				root.style.setProperty("--txt", themes[name].offBlack);
 			}
-      //localStorage.setItem("color", name);
       fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
@@ -304,7 +278,7 @@ window.theme = {
 		}
 	},
 	get mode() {
-		return this.default.mode;
+		return new ThemeMode(this.default.mode);
 	},
 	set mode(name) {
 		name = name.toLowerCase();
@@ -313,7 +287,6 @@ window.theme = {
 				root.style.setProperty("--bg", themes[theme.color].offWhite);
 				root.style.setProperty("--txt", themes[theme.color].offBlack);
         document.getElementById("path2Arrow").style.setProperty("fill", "#000000");
-        document.getElementById("CBT_credit").setAttribute("src", "/img/CBT_OS-logo_Black-V.svg");
         if (typeof window.forLoadingIcons === "function") {
           window.forLoadingIcons(e => { e.style.setProperty("background-color", "#0000007f"); });
         }
@@ -326,7 +299,6 @@ window.theme = {
 			else {
 				root.style.setProperty("--bg", themes[theme.color].offBlack);
         root.style.setProperty("--txt", themes[theme.color].headTextColor);
-        document.getElementById("CBT_credit").setAttribute("src", "/img/CBT_OS-logo_White-V.svg");
         if (typeof window.forLoadingIcons === "function") {
           window.forLoadingIcons(e => { e.style.setProperty("background-color", "#ffffff7f"); });
         }
@@ -339,7 +311,6 @@ window.theme = {
 					}
 				}
 			}
-      //localStorage.setItem("mode", name);
       fetch("/api/users", {
         method: "PUT",
         body: JSON.stringify({
@@ -359,7 +330,7 @@ window.theme = {
         });
 			Object.defineProperty(this, "mode", {
 				get: function () {
-					return name;
+					return new ThemeMode(name);
 				}
 			});
 		}
@@ -373,8 +344,6 @@ window.theme = {
 	}
 };
 var closeMenu = () => {
-  /*document.getElementById("choose").classList.add("shrink");
-  document.getElementById("choose").classList.remove("grow");*/
   document.getElementById("choose").classList.replace("grow", "shrink");
   document.getElementById("settings").className = "";
   setTimeout(() => {
@@ -415,7 +384,5 @@ window.switchTab = (e, name, big) => {
   document.querySelector(".tab.active").classList.remove("active");
   document.getElementById(name).classList.remove("hidden");
   e.target.classList.add("active");
-  /*if (big) document.getElementById("choose").classList.add("big");
-  else document.getElementById("choose").classList.remove("big");*/
   document.getElementById("choose").classList.toggle("big", big || false);
 };

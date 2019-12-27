@@ -3,16 +3,18 @@ const express = require("express");
 const os = require("os");
 const url = require("url");
 const fs = require("fs");
-const mime = require("mime-types");
 const session = require("client-sessions");
 const { mail } = require("./mail");
 const icons = require("./makeIcons");
 const DB = require("./queries");
+const count = require("./countdown");
+const aws = require("./aws");
+const { mime } = aws;
 
 const app = express();
 
 const testing = os.hostname().includes("DESKTOP");
-const port = process.env.PORT || (process.env.SENDGRID_API_KEY ? 8090 : 8080);
+const port = process.env.PORT || 8080;
 const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
 const redirect401 = (req, res) => {
   res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "401 Unauthorized", msg: `Please <a href="/login?u=${req.originalUrl}">log in</a> or <a href="/signup?u=${req.originalUrl}">sign up</a> to view this content` }, (err, html) => {
@@ -91,10 +93,12 @@ app.use(async (req, res, next) => {
 const site = express.Router();
 const admin = express.Router();
 const api = express.Router();
+const countdown = express.Router();
 admin.use(adminOnly);
 app.use("/admin", admin);
 app.use("/api", api);
-app.use(/^(?!\/(?:api|admin))/, site);
+app.use("/countdown", countdown);
+app.use(/^(?!\/(?:api|admin|countdown))/, site);
 
 module.exports = {
   app,
@@ -112,5 +116,8 @@ module.exports = {
   icons,
   site, 
   admin,
-  api
+  api,
+  countdown,
+  count,
+  aws
 };

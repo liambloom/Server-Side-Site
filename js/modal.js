@@ -1,26 +1,30 @@
-//jshint esversion:6
+const inputBlocker = event => {
+  if (modal.isOpen && !event.target.classList.contains("modal")) event.target.blur();
+};
 window.modal = {
-  open: function(e) {
-    for (let c of this.list) {
-      if (!document.getElementById(c).classList.contains("hidden")) throw "There is already a modal showing";
+  open: function (e, callback) {
+    if (modal.isOpen) throw new Error("There is already a modal showing");
+    if (typeof e === "string") e = document.querySelector(e);
+    if (!e)  throw `No such element exists element does not exist`; 
+    else if (e.tagName === "MODAL") this.waiting = this.waiting.concat([[
+      "#" + e.id,
+      callback
+    ]]);
+    else {
+      e.classList.remove("hidden");
+      document.body.classList.add("blur");
+      document.addEventListener("focusin", inputBlocker);
+      scroll.lock();
+      if (typeof callback === "function") callback();
     }
-    e = document.querySelector(e);
-    if (!e) { throw `The element ${e} does not exist`; }
-    e.classList.remove("hidden");
-    this.blurKey = setInterval(() => {
-      let elem = this.focusOutside;
-      if (elem) {elem.blur();}
-    }, 100);
   },
-  close: function (fun) {
-    let open = document.querySelector(".modal:not(.hidden)");
+  close: function (callback) {
     if (!document.querySelector(".modal:not(.hidden) :invalid")) {
-      /*for (let e of this.list) {
-        document.getElementById(e).classList.add("hidden");
-      }*/
-      open.classList.add("hidden");
-      clearInterval(this.blurKey);
-      if (typeof fun === "function") fun();
+      modal.isOpen.classList.add("hidden");
+      removeEventListener("focusin", inputBlocker);
+      document.body.classList.remove("blur");
+      scroll.unlock();
+      if (typeof fun === "function") callback();
     }
   },
   init: function () {
@@ -35,25 +39,30 @@ window.modal = {
         let confirm = e.getAttribute("data-confirm") || "";
         let size = e.getAttribute("data-size") || "small";
         let newEl = document.createElement("div");
-        newEl.id = id(e);
-        newEl.classList = "center hidden modal";
+        newEl.id = e.id || "modal" + modal.list.length;
+        newEl.classList = "hidden modal-container";
         newEl.innerHTML = res;
         e.parentNode.replaceChild(newEl, e);
         e = document.getElementById(newEl.id);
-        document.querySelector(`#${e.id} .modal-box`).classList.add(size);
-        document.querySelector(`#${e.id} .modal-content`).innerHTML = content;
+        e.addEventListener("click", event => {
+          if (event.target === e) {
+            modal.close();
+          }
+        });
+        document.querySelector(`#${e.id} .modal-content`).classList.add(size);
+        document.querySelector(`#${e.id} .modal-body`).innerHTML = content;
+        if (type === null) {
+          document.querySelector(`#${e.id} .modal-bottom`).style.display = "none";
+          continue;
+        }
         fetch(`/views/modal/${type}.html`)
           .then(res => {
             if (res.ok) return res.text();
-            else if (type === null) {
-              document.querySelector(`#${e.id} .modal-bottom`).style.display = "none";
-              return "";
-            }
-            else throw type + " is not a valid type";
+            else throw type + " is not a valid modal type";
           })
           .then(res => res.replace("confirmFunction", confirm))
           .then(res => {
-            if (res) document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
+            document.querySelector(`#${e.id} .modal-bottom`).innerHTML = res;
           })
           .catch(error => {
             throw error;
@@ -62,19 +71,17 @@ window.modal = {
     })
     .then(() => {
       document.dispatchEvent(new Event("modalsReady"));
+    })
+    .then(() => {
+      if (modal.waiting.length) modal.waiting.forEach(options => modal.open(...options));
     });
   },
+  waiting: [],
   get list() {
-    return id(document.getElementsByClassName("modal"));
+    return document.getElementsByClassName("modal-container");
   },
-  get focusOutside() {
-    return document.querySelector(id([...document.querySelectorAll("*")].filter(v => {
-      while (v.parentNode !== document.querySelector("html").parentNode) {
-        if (v.parentNode.classList.contains("modal")) return false;
-        else v = v.parentNode;
-      }
-      return true;
-    })).toString().replace(/^/, "#").replace(/,/g, ",#").replace(/#[^a-z][^,]*/gi, "").replace(/^,|,$/g, "").replace(/,+/g, ":focus,").replace(/$/, ":focus"));
+  get isOpen () {
+    return document.querySelector(".modal-container:not(.hidden)");
   },
   blurKey: undefined
 };

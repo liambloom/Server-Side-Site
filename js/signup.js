@@ -77,7 +77,7 @@ let login = (username, password, email) => {
       .then(wait => {
         //console.log(wait);
         if (wait) {
-          document.getElementById("content").innerHTML = "Waiting for email conformation, please check your email";
+          document.getElementsByTagName("main")[0].innerHTML = "Waiting for email conformation, please check your email";
           const css = document.createElement("link");
           css.setAttribute("rel", "stylesheet");
           css.setAttribute("href", "/css/blocked.css");
@@ -85,7 +85,7 @@ let login = (username, password, email) => {
           fetch("/api/users/email")
             .then(res => {
               if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
-              else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
+              else if (res.status === 500) document.getElementsByTagName("main")[0].innerHTML = "Something went wrong on the server";
             });
           /*new EventSource(`/api/users/email`).onmessage = () => {
             console.log("foo");
@@ -99,7 +99,7 @@ let login = (username, password, email) => {
               .then(res => {
                 //console.log(res.status);
                 if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
-                else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
+                else if (res.status === 500) document.getElementsByTagName("main")[0].innerHTML = "Something went wrong on the server";
               });
           }, 1000);*/
         }

@@ -21,5 +21,11 @@ fonts/fonty.TXT
 fonts/fonty.TXT
 fonts/SIMPLIFICA.zip
 /.vscode
-countdownTimingSpec.txt
+css/countdown.css.map
 *.scss
+countdownTimingSpec
+countdownTimingSpec.txt
+servers/countdowns.sql
+img/Countdowns/
+servers/flowchart.png
+*.map

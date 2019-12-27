@@ -18,7 +18,7 @@ document.getElementById("box").onsubmit = event => {
     })
       .then(res => {
         if (res.ok) {
-          document.getElementById("content").innerHTML = 'Waiting for email conformation, please check your email<br><button id="resend">Resend</button>';
+          document.getElementsByTagName("main")[0].innerHTML = 'Waiting for email conformation, please check your email<br><button id="resend">Resend</button>';
           document.getElementById("resend").addEventListener("click", request);
           const css = document.createElement("link");
           css.setAttribute("rel", "stylesheet");
@@ -27,7 +27,7 @@ document.getElementById("box").onsubmit = event => {
           fetch("/api/users/email")
             .then(res => {
               if (res.ok) location.assign(new URLSearchParams(location.search).get("u"));
-              else if (res.status === 500) document.getElementById("content").innerHTML = "Something went wrong on the server";
+              else if (res.status === 500) document.getElementsByTagName("main")[0].innerHTML = "Something went wrong on the server";
             });
         }
         else updateElement.parentNode.setAttribute("data-err", "Something went wrong");

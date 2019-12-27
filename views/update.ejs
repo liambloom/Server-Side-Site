@@ -17,7 +17,7 @@
 </head>
 <body>
   <%- include("header", {title: "Update Account", choice: true}) %>
-  <div id="content" class="center">
+  <main class="center">
     <form id="box">
       <% if (category === "password") { %>
         <div>
@@ -47,6 +47,6 @@
         <input id="button" type="submit" value="Update">
       </div>
     </form>
-  </div>
+  </main>
 </body>
 </html>
