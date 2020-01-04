@@ -3,8 +3,13 @@ module.exports = () => {
   String.prototype.titleCase = function () { // arrow functions have a different use of "this" property
     return this.charAt(0).toUpperCase() + this.slice(1);
   };
-  Object.defineProperty(Array.prototype, "last", {
-    value: function() { return this[this.length - 1]; }
+  Object.defineProperties(Array.prototype, {
+    last: {
+      value: function () { return this[this.length - 1]; }
+    },
+    shuffle: {
+      value: function () { return this.sort(() => Math.random() - 0.5); }
+    }
   });
   Object.iterable = obj => typeof obj[Symbol.iterator] === 'function';
   const promiseAllApi = Promise.all.bind(Promise);

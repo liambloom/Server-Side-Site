@@ -4,10 +4,11 @@ const os = require("os");
 const url = require("url");
 const fs = require("fs");
 const session = require("client-sessions");
-const { mail } = require("./mail");
+const serve = require("./servePage");
 const icons = require("./makeIcons");
 const DB = require("./queries");
 const count = require("./countdown");
+const forbiddenApi = require("./forbidden");
 const aws = require("./aws");
 const { mime } = aws;
 
@@ -15,7 +16,6 @@ const app = express();
 
 const testing = os.hostname().includes("DESKTOP");
 const port = process.env.PORT || 8080;
-const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
 const redirect401 = (req, res) => {
   res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "401 Unauthorized", msg: `Please <a href="/login?u=${req.originalUrl}">log in</a> or <a href="/signup?u=${req.originalUrl}">sign up</a> to view this content` }, (err, html) => {
     if (html) {
@@ -94,30 +94,33 @@ const site = express.Router();
 const admin = express.Router();
 const api = express.Router();
 const countdown = express.Router();
+const forbidden = express.Router();
 admin.use(adminOnly);
 app.use("/admin", admin);
 app.use("/api", api);
 app.use("/countdown", countdown);
-app.use(/^(?!\/(?:api|admin|countdown))/, site);
+app.use("/forbidden", forbidden);
+app.use(/^(?!\/(?:api|admin|countdown|forbidden))/, site);
 
 module.exports = {
   app,
+  serve,
   port,
   testing,
   requireLogin,
   adminOnly,
   testingOnly,
   DB,
-  filetype,
   fs,
   mime,
   url,
-  mail,
   icons,
   site, 
   admin,
   api,
   countdown,
+  forbidden,
   count,
+  forbiddenApi,
   aws
 };
