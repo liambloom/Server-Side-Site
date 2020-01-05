@@ -3,6 +3,18 @@ module.exports = () => {
   String.prototype.titleCase = function () { // arrow functions have a different use of "this" property
     return this.charAt(0).toUpperCase() + this.slice(1);
   };
+  Object.defineProperties(Object.prototype, {
+    random: {
+      get: function () {
+        if (this && typeof this === "object") return function () { // Works for objects or arrays
+          const keys = Object.keys(this);
+          const key = keys[Math.floor(Math.random() * keys.length)];
+          if (!Array.isArray(this) && this.name === undefined) this[key].name = key;
+          return this[key];
+        };
+      }
+    }
+  });
   Object.defineProperties(Array.prototype, {
     last: {
       value: function () { return this[this.length - 1]; }

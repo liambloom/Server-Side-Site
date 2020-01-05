@@ -1,0 +1,118 @@
+body {
+  display: grid;
+  height: calc(100vh - 4vmin);
+  width: calc(100vw - 4vmin);
+  margin: 2vmin;
+  background-color: #88ccff;
+  font-size: 1.6vmin;
+  line-height: 1.6vmin;
+  font-variant: small-caps;
+}
+body #board {
+  display: grid;
+  height: 96vmin;
+  width: 96vmin;
+  grid-area: board;
+  grid-gap: 1vmin;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-areas: ".   .   n1  n2  .   ." ".   n3  n4  n5  n6  ." "n7  n8  n9  n10 n11 n12" "n13 n14 n15 n16 n17 n18" ".   n19 n20 n21 n22 ." ".   .   n23 n24 .   .";
+}
+body #board .tile {
+  position: relative;
+  background-color: white;
+  border-radius: 3%;
+  text-align: center;
+  overflow: hidden;
+}
+body #board .tile .label {
+  background-color: #ffeecc;
+  position: absolute;
+  bottom: 0px;
+  width: calc(100% - 0.2em);
+  max-height: 2em;
+  padding: 0.2em;
+}
+body #board .tile .label.end {
+  color: white;
+  background-color: red;
+}
+body #board .tile .label .treasure {
+  display: block;
+  position: relative;
+  width: 3em;
+  height: 3em;
+  margin: 0.15em;
+  background-color: white;
+  float: left;
+  bottom: 1.5em;
+  border-radius: 50%;
+  border-width: 0.2em;
+  border-style: solid;
+}
+body #board .tile .label .treasure.The_Crystal_of_Fire {
+  border-color: red;
+}
+body #board .tile .label .treasure.The_Earth_Stone {
+  border-color: #bb88ff;
+}
+body #board .tile .label .treasure.The_Oceans_Chalice {
+  border-color: teal;
+}
+body #board .tile .label .treasure.The_Statue_of_the_Wind {
+  border-color: yellow;
+}
+body #hand {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  grid-area: hand;
+}
+body #hand #player {
+  position: relative;
+  height: 25%;
+  width: 100%;
+  background-color: #e2c178;
+}
+body #hand #player #name {
+  font-size: 2em;
+  font-weight: bold;
+  text-shadow: -0.025em 0.025em 0.05em black;
+}
+body #hand #player ellipse:not([fill]) {
+  fill: var(--playerPrimary);
+}
+body #hand #player #ability {
+  position: absolute;
+  width: calc(100% - 10em);
+  min-height: 3em;
+  padding: 0.5em 5em;
+  background-color: var(--playerSecondary);
+  bottom: 0em;
+}
+
+@media (orientation: landscape) {
+  body {
+    grid-template-columns: 96vmin 1fr;
+    grid-template-areas: "board hand";
+  }
+  body #hand {
+    flex-direction: column;
+  }
+  body #hand #player {
+    height: 25%;
+    width: 100%;
+  }
+}
+@media (orientation: portrait) {
+  body {
+    grid-template-rows: 96vmin 1fr;
+    grid-template-areas: "board" "hand";
+  }
+  body #hand #player {
+    height: 100%;
+    width: 25%;
+  }
+}
+
+/*# sourceMappingURL=forbidden.css.map */

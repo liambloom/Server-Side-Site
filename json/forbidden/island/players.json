@@ -1,0 +1,64 @@
+{
+  "Diver": {
+    "color": {
+      "main": "#000000",
+      "piece": "#000000",
+      "explanation": "#888888"
+    },
+    "ability": {
+      "english": "Move through 1 or more adjacent flooded and/or missing tiles for 1 action. (Must end your turn on a tile.)"
+    }
+  },
+  "Engineer": {
+    "color": {
+      "main": "#ff4400",
+      "piece": "#ff0000",
+      "explanation": "#880000"
+    },
+    "ability": {
+      "english": "Shore up 2 tiles for 1 action."
+    }
+  },
+  "Explorer": {
+    "color": {
+      "main": "#00ff00",
+      "piece": "#00aa44",
+      "explanation": "#008822"
+    },
+    "ability": {
+      "english": "Move and/or shore up diagonally."
+    }
+  },
+  "Messenger": {
+    "color":{
+      "main": "#dddddd",
+      "piece": "#aaaabb",
+      "explanation": "#a0a0a0",
+      "darkText": true
+    },
+    "ability": {
+      "english": "Give Treasure cards to a player anywhere on the island for 1 action per card."
+    }
+  },
+  "Navigator": {
+    "color": {
+      "main": "#ffff00",
+      "piece": "#ffff00",
+      "explanation": "#888800",
+      "darkText": true
+    },
+    "ability": {
+      "english": "Move another player up to 2 adjacent tiles for 1 action."
+    }
+  },
+  "Pilot": {
+    "color": {
+      "main": "#8888ff",
+      "piece": "#0000ff",
+      "explanation": "#110088"
+    },
+    "ability": {
+      "english": "Once per turn, fly into any tile on the island for 1 action."
+    }
+  }
+}

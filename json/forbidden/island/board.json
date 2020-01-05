@@ -1,0 +1,55 @@
+{
+  "Fools' Landing": {
+    "startingPlayer": "Pilot",
+    "end": true
+  },
+  "Bronze Gate": {
+    "startingPlayer": "Engineer"
+  },
+  "Copper Gate": {
+    "startingPlayer": "Explorer"
+  },
+  "Gold Gate": {
+    "startingPlayer": "Navigator"
+  },
+  "Iron Gate": {
+    "startingPlayer": "Diver"
+  },
+  "Silver Gate": {
+    "startingPlayer": "Messenger"
+  },
+  "Cave of Embers": {
+    "treasure": "The Crystal of Fire"
+  },
+  "Cave of Shadows": {
+    "treasure": "The Crystal of Fire"
+  },
+  "Temple of the Moon": {
+    "treasure": "The Earth Stone"
+  },
+  "Temple of the Sun": {
+    "treasure":"The Earth Stone"
+  },
+  "Coral Palace": {
+    "treasure": "The Ocean's Chalice"
+  },
+  "Tidal Palace": {
+    "treasure":"The Ocean's Chalice"
+  },
+  "Howling Garden": {
+    "treasure": "The Statue of the Wind"
+  },
+  "Whispering Garden": {
+    "treasure": "The Statue of the Wind"
+  },
+  "Breakers Bridge": {},
+  "Cliffs of Abandon": {},
+  "Crimson Forest": {},
+  "Dunes of Deception": {},
+  "Lost Lagoon": {},
+  "Misty Marsh": {},
+  "Observatory": {},
+  "Phantom Rock": {},
+  "Twilight Hollow": {},
+  "Watchtower": {}
+}
