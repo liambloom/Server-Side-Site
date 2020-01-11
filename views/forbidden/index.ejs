@@ -13,6 +13,7 @@
   <link rel="stylesheet" href="/css/forbidden.css">
   <script src="/lib/JSplus.js" type="application/javascript"></script>
   <script src="/js/forbidden/init/<%= game %>.js" type="application/javascript" defer></script>
+  <script src="/js/forbidden/layout.js" type="application/javascript" defer></script>
   <script type="application/javascript">
     window.player = JSON.parse("<%- JSON.stringify(player).replace(/"/g, "\\\"") %>");
     window.board = JSON.parse("<%- JSON.stringify(board).replace(/"/g, "\\\"") %>");
@@ -20,29 +21,42 @@
   <title>Forbidden <%= game.titleCase() %></title>
 </head>
 <body>
-  <div id="board">
-    <% const boardArr = Object.keys(board).shuffle(); %>
-    <% for (let i in boardArr) { %>
-      <% const piece = boardArr[i]; %>
-      <div id="<%= piece.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>" class="tile" style="grid-area: n<%= parseInt(i) + 1 %>;">
-        <div class="label <%= board[piece].end ? "end" : ""%>">
-          <% if (board[piece].treasure) { %>
-            <div class="treasure <%= board[piece].treasure.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>"></div>
-          <% } %>
-          <div class="name"><%= piece %></div>
+  <div>
+    <main>
+      <div id="board">
+        <% const boardArr = Object.keys(board).shuffle(); %>
+        <% for (let i in boardArr) { %>
+        <% const piece = boardArr[i]; %>
+        <div id="<%= piece.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>"
+          class="tile" style="grid-area: n<%= parseInt(i) + 1 %>;">
+          <div class="label <%= board[piece].end ? "end" : ""%>">
+            <% if (board[piece].treasure) { %>
+            <div
+              class="treasure <%= board[piece].treasure.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>">
+            </div>
+            <% } %>
+            <div class="name"><%= piece %></div>
+          </div>
+        </div>
+        <% } %>
+      </div>
+      <div id="hand">
+        <div id="arrow"></div>
+        <div id="in-hand">
+          <div id="player"></div>
+          <!--<svg id="player" viewBox="0, 0, 100, 100">
+                    <!--need to get viewbox to work, as I can't rotate a percentage-->
+          <!--<ellipse cx="0" cy="50" rx="23.125" ry="100" fill="white"></ellipse>
+                    <ellipse cx="0" cy="50" rx="25" ry="92.5"></ellipse>
+                    <g transform="rotate(-90 12.5 50)">
+                      <text id="name" text-anchor="middle" x="12.5" y="50"
+                        fill=<%- player.color.darkText ? "black" : "white" %>><%= player.name %></text>
+                    </g>
+                    <!--<div id="ability"><%= player.ability.english %></div>-->
+          <!--</svg>-->
         </div>
       </div>
-    <% } %>
-  </div>
-  <div id="hand">
-    <svg id="player" viewBox="0, 0, 100, 100"> <!--need to get viewbox to work, as I can't rotate a percentage-->
-      <ellipse cx="0" cy="50" rx="23.125" ry="100" fill="white"></ellipse>
-      <ellipse cx="0" cy="50" rx="25" ry="92.5"></ellipse>
-      <g transform="rotate(-90 12.5 50)">
-        <text id="name" text-anchor="middle" x="12.5" y="50" fill=<%- player.color.darkText ? "black" : "white" %>><%= player.name %></text>
-      </g>
-      <!--<div id="ability"><%= player.ability.english %></div>-->
-    </svg>
+    </main>
   </div>
 </body>
 </html>

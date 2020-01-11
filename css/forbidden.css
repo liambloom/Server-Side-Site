@@ -1,14 +1,24 @@
+@import url("/fonts/import/timesNewRoman.css");
 body {
-  display: grid;
   height: calc(100vh - 4vmin);
   width: calc(100vw - 4vmin);
   margin: 2vmin;
   background-color: #88ccff;
   font-size: 1.6vmin;
+  font-family: "Times New Roman";
   line-height: 1.6vmin;
   font-variant: small-caps;
+  overflow: hidden;
 }
-body #board {
+body > div {
+  height: calc(100vh - 4vmin);
+  width: calc(100vw - 4vmin);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body > div main #board {
+  position: relative;
   display: grid;
   height: 96vmin;
   width: 96vmin;
@@ -18,14 +28,14 @@ body #board {
   grid-template-columns: repeat(6, 1fr);
   grid-template-areas: ".   .   n1  n2  .   ." ".   n3  n4  n5  n6  ." "n7  n8  n9  n10 n11 n12" "n13 n14 n15 n16 n17 n18" ".   n19 n20 n21 n22 ." ".   .   n23 n24 .   .";
 }
-body #board .tile {
+body > div main #board .tile {
   position: relative;
   background-color: white;
   border-radius: 3%;
   text-align: center;
   overflow: hidden;
 }
-body #board .tile .label {
+body > div main #board .tile .label {
   background-color: #ffeecc;
   position: absolute;
   bottom: 0px;
@@ -33,11 +43,15 @@ body #board .tile .label {
   max-height: 2em;
   padding: 0.2em;
 }
-body #board .tile .label.end {
+body > div main #board .tile .label.end {
   color: white;
   background-color: red;
 }
-body #board .tile .label .treasure {
+body > div main #board .tile .label .name {
+  max-height: 1.8em;
+  width: calc(100% - 0.2em);
+}
+body > div main #board .tile .label .treasure {
   display: block;
   position: relative;
   width: 3em;
@@ -50,66 +64,127 @@ body #board .tile .label .treasure {
   border-width: 0.2em;
   border-style: solid;
 }
-body #board .tile .label .treasure.The_Crystal_of_Fire {
+body > div main #board .tile .label .treasure.The_Crystal_of_Fire {
   border-color: red;
 }
-body #board .tile .label .treasure.The_Earth_Stone {
+body > div main #board .tile .label .treasure.The_Earth_Stone {
   border-color: #bb88ff;
 }
-body #board .tile .label .treasure.The_Oceans_Chalice {
+body > div main #board .tile .label .treasure.The_Oceans_Chalice {
   border-color: teal;
 }
-body #board .tile .label .treasure.The_Statue_of_the_Wind {
+body > div main #board .tile .label .treasure.The_Statue_of_the_Wind {
   border-color: yellow;
 }
-body #hand {
+body > div main #hand #in-hand {
   display: flex;
-  width: 100%;
-  height: 100%;
-  grid-area: hand;
 }
-body #hand #player {
+body > div main #hand #in-hand #player {
   position: relative;
-  height: 25%;
-  width: 100%;
   background-color: #e2c178;
 }
-body #hand #player #name {
+body > div main #hand #in-hand #player #name {
   font-size: 2em;
   font-weight: bold;
   text-shadow: -0.025em 0.025em 0.05em black;
 }
-body #hand #player ellipse:not([fill]) {
+body > div main #hand #in-hand #player ellipse:not([fill]) {
   fill: var(--playerPrimary);
 }
-body #hand #player #ability {
+body > div main #hand #in-hand #player #ability {
   position: absolute;
   width: calc(100% - 10em);
   min-height: 3em;
   padding: 0.5em 5em;
   background-color: var(--playerSecondary);
-  bottom: 0em;
+  bottom: 0px;
 }
 
-@media (orientation: landscape) {
-  body {
+@media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
+  main {
+    margin: auto;
+    display: grid;
+    width: 100%;
+    height: 100%;
+    max-width: 144vmin;
+    max-height: 144vmin;
+    grid-gap: 2vmin;
+  }
+  main #hand {
+    width: 100%;
+    height: 100%;
+    grid-area: hand;
+  }
+  main #hand #arrow {
+    display: none;
+  }
+  main #hand #in-hand {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (min-aspect-ratio: 3/2) {
+  /* wide */
+  main {
     grid-template-columns: 96vmin 1fr;
     grid-template-areas: "board hand";
   }
-  body #hand {
+  main #hand {
     flex-direction: column;
   }
-  body #hand #player {
+  main #hand #player {
     height: 25%;
     width: 100%;
   }
 }
-@media (orientation: portrait) {
-  body {
+@media (max-aspect-ratio: 2/3) {
+  /* tall */
+  main {
     grid-template-rows: 96vmin 1fr;
     grid-template-areas: "board" "hand";
   }
-  body #hand #player {
+}
+@media (min-aspect-ratio: 2/3) and (max-aspect-ratio: 3/2) {
+  /* square-ish */
+  #hand {
+    position: fixed;
+    bottom: 0px;
+    left: 5vw;
+    width: 90vw;
+    height: calc(45vw + 1.5vh);
+    max-height: calc(100vh - 5vw);
+    border-radius: 1em 1em 0px 0px;
+    transform: translateY(calc(100% - 1.5vh));
+    background-color: #b19352;
+    transition: transform 500ms;
+  }
+  #hand.open {
+    transform: translateY(0px);
+  }
+  #hand.open #arrow {
+    transform: rotate(180deg);
+  }
+  #hand #arrow {
+    position: absolute;
+    top: -0.75vh;
+    left: calc(45vw - 0.577vh);
+    height: 0px;
+    width: 0px;
+    border-width: 1vh 0.577vh;
+    border-style: solid;
+    border-color: transparent transparent #442200 transparent;
+    transform: rotate(0deg);
+    transform-origin: center 1.5vh;
+    transition: transform 500ms;
+  }
+  #hand #in-hand {
+    height: calc(100% - 3.5vmin);
+    width: calc(100% - 2vmin);
+    margin: 2.5vmin 1vmin 1vmin 1vmin;
+  }
+}
+@media not all and (min-aspect-ratio: 3/2) {
+  #player {
     height: 100%;
     width: 25%;
   }
