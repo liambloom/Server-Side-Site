@@ -184,10 +184,16 @@ body > div main #hand #in-hand #player #name {
     transform: translateY(0px);
   }
   #hand.open #arrow {
-    transform: rotate(180deg);
+    transform: rotate(180deg) !important;
   }
-  #hand #arrow {
+  #hand #arrow-hitbox {
     position: absolute;
+    width: 100%;
+    height: 1.5em;
+    top: 0px;
+  }
+  #hand #arrow-hitbox #arrow {
+    position: relative;
     top: -0.75vh;
     left: calc(45vw - 0.577vh);
     height: 0px;

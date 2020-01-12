@@ -9,9 +9,8 @@ function closeHand (event) {
     document.body.removeEventListener("click", closeHand);
   }
 }
-hand.addEventListener("click", event => {
-  const clickPos = event.clientY - hand.getBoundingClientRect().y;
-  if (clickPos < window.innerHeight * 0.015 && clickPos > 0) hand.classList.toggle("open");
+document.getElementById("arrow-hitbox").addEventListener("click", event => {
+  hand.classList.toggle("open");
   if (hand.classList.contains("open")) document.body.addEventListener("click", closeHand);
   else document.body.removeEventListener("click", closeHand);
 });
