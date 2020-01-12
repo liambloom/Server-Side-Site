@@ -43,17 +43,24 @@
       <div id="hand">
         <div id="arrow"></div>
         <div id="in-hand">
-          <div id="player"></div>
-          <!--<svg id="player" viewBox="0, 0, 100, 100">
-                    <!--need to get viewbox to work, as I can't rotate a percentage-->
-          <!--<ellipse cx="0" cy="50" rx="23.125" ry="100" fill="white"></ellipse>
-                    <ellipse cx="0" cy="50" rx="25" ry="92.5"></ellipse>
-                    <g transform="rotate(-90 12.5 50)">
-                      <text id="name" text-anchor="middle" x="12.5" y="50"
-                        fill=<%- player.color.darkText ? "black" : "white" %>><%= player.name %></text>
-                    </g>
-                    <!--<div id="ability"><%= player.ability.english %></div>-->
-          <!--</svg>-->
+          <div id="player">
+            <div id="ability-container">
+              <div id="ability">
+                <%= player.ability.english %>
+              </div>
+            </div>
+            <svg id="name">
+              <ellipse cx="50%" cy="0" rx="100%" ry="100%" fill="white"></ellipse>
+              <ellipse cx="50%" cy="0" rx="110%" ry="94%" fill="<%= player.color.main %>"></ellipse>
+              <text text-anchor="middle" x="50%" y="50%" fill="<%= player.color.darkText ? "black" : "white" %>"><%= player.name %></text>
+            </svg>
+          </div>
+          <div id="treasures">
+
+          </div>
+          <div id="items">
+            
+          </div>
         </div>
       </div>
     </main>

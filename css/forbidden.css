@@ -77,27 +77,18 @@ body > div main #board .tile .label .treasure.The_Statue_of_the_Wind {
   border-color: yellow;
 }
 body > div main #hand #in-hand {
-  display: flex;
+  display: grid;
 }
 body > div main #hand #in-hand #player {
   position: relative;
   background-color: #e2c178;
+  border-radius: 0.5em;
+  overflow: hidden;
 }
 body > div main #hand #in-hand #player #name {
-  font-size: 2em;
+  font-size: 2.5em;
   font-weight: bold;
   text-shadow: -0.025em 0.025em 0.05em black;
-}
-body > div main #hand #in-hand #player ellipse:not([fill]) {
-  fill: var(--playerPrimary);
-}
-body > div main #hand #in-hand #player #ability {
-  position: absolute;
-  width: calc(100% - 10em);
-  min-height: 3em;
-  padding: 0.5em 5em;
-  background-color: var(--playerSecondary);
-  bottom: 0px;
 }
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
@@ -129,14 +120,46 @@ body > div main #hand #in-hand #player #ability {
     grid-template-columns: 96vmin 1fr;
     grid-template-areas: "board hand";
   }
-  main #hand {
-    flex-direction: column;
+  main #hand #in-hand {
+    grid-template-rows: 24vmin 2fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 2vmin;
   }
-  main #hand #player {
-    height: 25%;
+  main #hand #in-hand #player {
+    height: 100%;
     width: 100%;
   }
+  main #hand #in-hand #player #name {
+    width: 24vh;
+    height: 11.5vh;
+    transform: rotate(-90deg) translateX(-100%);
+    transform-origin: top left;
+    font-variant: small-caps;
+  }
+  main #hand #in-hand #player #ability-container {
+    position: absolute;
+    width: calc(75% - 4em);
+    height: 25%;
+    padding: 0px 2em 0px calc(2em + 25%);
+    background-color: var(--playerSecondary);
+    bottom: 0px;
+  }
+  main #hand #in-hand #player #ability-container #ability {
+    position: relative;
+    width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    text-align: center;
+  }
 }
+.card, #player {
+  transform: translate(0px 0px);
+  transform-origin: top left;
+  transition: transform 500ms;
+  font-variant: none;
+}
+
 @media (max-aspect-ratio: 2/3) {
   /* tall */
   main {
@@ -184,9 +207,37 @@ body > div main #hand #in-hand #player #ability {
   }
 }
 @media not all and (min-aspect-ratio: 3/2) {
-  #player {
+  /* wide hand (portrait or square-ish) */
+  #in-hand {
+    grid-template-rows: 1fr;
+    grid-template-columns: 24vmin 2fr 1fr;
+    gap: 2vmin;
+  }
+  #in-hand #player {
     height: 100%;
-    width: 25%;
+    width: 100%;
+  }
+  #in-hand #player #name {
+    position: absolute;
+    width: 100%;
+    height: 25%;
+    top: 0px;
+  }
+  #in-hand #player #ability-container {
+    position: relative;
+    height: calc(75% - 2em);
+    width: calc(100% - 2em);
+    padding: 1em;
+    top: 25%;
+  }
+  #in-hand #player #ability-container #ability {
+    display: block;
+    margin-left: 1em;
+  }
+  #in-hand #player #ability-container #ability::before {
+    content: "Ability:\a";
+    white-space: pre;
+    margin-left: -1em;
   }
 }
 
