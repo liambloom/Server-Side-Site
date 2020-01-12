@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+<% const player = players.random(); %>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.65">
@@ -11,12 +12,13 @@
   <link rel="icon" href="/img/favicon/main/favicon_144.png">
   <link rel="icon" href="/img/favicon/main/favicon_vector.svg">
   <link rel="stylesheet" href="/css/forbidden.css">
+  <script src="/js/forbidden/init.js" type="module"></script>
   <script src="/lib/JSplus.js" type="application/javascript"></script>
-  <script src="/js/forbidden/init/<%= game %>.js" type="application/javascript" defer></script>
   <script src="/js/forbidden/layout.js" type="application/javascript" defer></script>
   <script type="application/javascript">
-    window.player = JSON.parse("<%- JSON.stringify(player).replace(/"/g, "\\\"") %>");
+    window.players = JSON.parse("<%- JSON.stringify(players).replace(/"/g, "\\\"") %>");
     window.board = JSON.parse("<%- JSON.stringify(board).replace(/"/g, "\\\"") %>");
+    window.player = JSON.parse("<%- JSON.stringify(player).replace(/"/g, "\\\"") %>");
   </script>
   <title>Forbidden <%= game.titleCase() %></title>
 </head>
@@ -27,12 +29,12 @@
         <% const boardArr = Object.keys(board).shuffle(); %>
         <% for (let i in boardArr) { %>
         <% const piece = boardArr[i]; %>
-        <div id="<%= piece.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>"
+        <div id="<%= piece.replace(/\s/g, "_").cssSafe() %>"
           class="tile" style="grid-area: n<%= parseInt(i) + 1 %>;">
           <div class="label <%= board[piece].end ? "end" : ""%>">
             <% if (board[piece].treasure) { %>
             <div
-              class="treasure <%= board[piece].treasure.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "") %>">
+              class="treasure <%= board[piece].treasure.cssSafe() %>">
             </div>
             <% } %>
             <div class="name"><%= piece %></div>
@@ -58,7 +60,10 @@
             </svg>
           </div>
           <div id="treasures">
-
+            <div id="The_Crystal_of_Fire"></div>
+            <div id="The_Earth_Stone"></div>
+            <div id="The_Oceans_Chalice"></div>
+            <div id="The_Statue_of_the_Wind"></div>
           </div>
           <div id="items">
 

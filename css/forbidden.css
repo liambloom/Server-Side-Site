@@ -90,6 +90,31 @@ body > div main #hand #in-hand #player #name {
   font-weight: bold;
   text-shadow: -0.025em 0.025em 0.05em black;
 }
+body > div main #hand #in-hand #treasures {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "The_Crystal_of_Fire The_Earth_Stone" "The_Oceans_Chalice The_Statue_of_the_Wind";
+  grid-gap: 1vmin;
+}
+body > div main #hand #in-hand #treasures #The_Crystal_of_Fire {
+  grid-area: The_Crystal_of_Fire;
+}
+body > div main #hand #in-hand #treasures #The_Earth_Stone {
+  grid-area: The_Earth_Stone;
+}
+body > div main #hand #in-hand #treasures #The_Oceans_Chalice {
+  grid-area: The_Oceans_Chalice;
+}
+body > div main #hand #in-hand #treasures #The_Statue_of_the_Wind {
+  grid-area: The_Statue_of_the_Wind;
+}
+body .piece {
+  position: fixed;
+  width: 3.75vmin;
+  height: 6vmin;
+  transform: translate(-66%, -50%);
+}
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
   main {
@@ -123,7 +148,7 @@ body > div main #hand #in-hand #player #name {
   main #hand #in-hand {
     grid-template-rows: 24vmin 2fr 1fr;
     grid-template-columns: 1fr;
-    gap: 2vmin;
+    grid-gap: 2vmin;
   }
   main #hand #in-hand #player {
     height: 100%;
@@ -215,8 +240,8 @@ body > div main #hand #in-hand #player #name {
   /* wide hand (portrait or square-ish) */
   #in-hand {
     grid-template-rows: 1fr;
-    grid-template-columns: 24vmin 2fr 1fr;
-    gap: 2vmin;
+    grid-template-columns: 24vw 2fr 1fr;
+    grid-gap: 2vmin;
   }
   #in-hand #player {
     height: 100%;
