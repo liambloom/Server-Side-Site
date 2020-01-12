@@ -8,7 +8,7 @@ module.exports = {
     serve.custom(req, res, "./forbidden/index", {
       game,
       board: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/board.json`)),
-      player: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/players.json`)).random()
+      players: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/players.json`))
     });
   }
 };

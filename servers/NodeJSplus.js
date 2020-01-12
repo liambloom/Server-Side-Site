@@ -1,8 +1,5 @@
 "use strict";
 module.exports = () => {
-  String.prototype.titleCase = function () { // arrow functions have a different use of "this" property
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  };
   Object.defineProperties(Object.prototype, {
     random: {
       get: function () {
@@ -21,6 +18,18 @@ module.exports = () => {
     },
     shuffle: {
       value: function () { return this.sort(() => Math.random() - 0.5); }
+    }
+  });
+  Object.defineProperties(String.prototype, {
+    titleCase: {
+      value: function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+    },
+    cssSafe: {
+      value: function () {
+        return this.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "");
+      }
     }
   });
   Object.iterable = obj => typeof obj[Symbol.iterator] === 'function';
