@@ -154,7 +154,6 @@ body > div main #hand #in-hand #player #name {
   }
 }
 .card, #player {
-  transform: translate(0px 0px);
   transform-origin: top left;
   transition: transform 500ms;
   font-variant: none;
