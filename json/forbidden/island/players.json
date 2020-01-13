@@ -43,7 +43,7 @@
   "Navigator": {
     "color": {
       "main": "#ffff00",
-      "piece": "#ffff00",
+      "piece": "#e8e800",
       "explanation": "#888800",
       "darkText": true
     },
@@ -53,8 +53,8 @@
   },
   "Pilot": {
     "color": {
-      "main": "#8888ff",
-      "piece": "#0000ff",
+      "main": "#699bdb",
+      "piece": "#196be6",
       "explanation": "#110088"
     },
     "ability": {

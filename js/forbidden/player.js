@@ -3,17 +3,17 @@ export default class Player {
     for (let key of Object.keys(data)) {
       this[key] = data[key];
     }
-    const svgNS = "http://www.w3.org/2000/svg";
+    //const svgNS = "http://www.w3.org/2000/svg";
     const startingTile = Object.values(board).find(tile => tile.startingPlayer === this.name);
-    this.element = document.createElementNS(svgNS, "svg");
+    /*this.element = document.createElementNS(svgNS, "svg");
     this.element.id = this.name;
     this.element.classList.add("piece");
     this.element.setAttribute("viewBox", "0 0 15 24");
-    document.body.appendChild(this.element);
+    document.body.appendChild(this.element);*/
     this.element = document.getElementById(this.name);
     this.element.style.setProperty("top", `${startingTile.bcr.y + startingTile.bcr.height / 2}px`);
     this.element.style.setProperty("left", `${startingTile.bcr.x + startingTile.bcr.width / 2}px`);
-    const head = document.createElementNS(svgNS, "circle");
+    /*const head = document.createElementNS(svgNS, "circle");
     head.setAttribute("cx", "10");
     head.setAttribute("cy", "3.5");
     head.setAttribute("r", "3.5");

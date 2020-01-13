@@ -114,6 +114,10 @@ body .piece {
   width: 3.75vmin;
   height: 6vmin;
   transform: translate(-66%, -50%);
+  z-index: 2;
+}
+body .piece .shadow {
+  filter: brightness(0.75);
 }
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
