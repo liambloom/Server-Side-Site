@@ -241,7 +241,7 @@ window.theme = {
 			root.style.setProperty("--light", themes[name].gradientLight);
 			root.style.setProperty("--dark", themes[name].gradientDark);
 			root.style.setProperty("--headTxt", themes[name].headTextColor);
-			if (this.mode === "dark") {
+			if (this.mode.toString() === "dark") {
 				root.style.setProperty("--bg", themes[name].offBlack);
 				root.style.setProperty("--txt", themes[name].headTextColor);
 			}
