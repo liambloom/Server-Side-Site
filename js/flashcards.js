@@ -8,7 +8,8 @@ function flip () {
   frontCard.classList.toggle("flip");
 }
 function toBack () {
-  if (Boolean.random()) flip();
+  //if (Boolean.random()) flip();
+  frontCard.classList.remove("flip");
   document.getElementsByTagName("main")[0].appendChild(frontCard);
 }
 for (let e of document.getElementsByClassName("card")) {

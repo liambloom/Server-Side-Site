@@ -9,7 +9,7 @@
 <body>
   <%- include("header", {title: name, choice: true}) %>
   <main>
-    <% for (let card of cards.shuffle()) { %>
+    <% for (let card of cards/*.shuffle()*/) { %>
       <div class="card-container">
         <div class="card">
           <div class="term">
@@ -26,8 +26,8 @@
     INSTRUCTIONS:<br>
     To flip the card press space<br>
     To move the card to the back of the pile press enter<br>
-    To remove the card from the pile press backspace<br>
-    Sorry they controls are so lacking, I make this last night
+    To remove the card from the pile press zero (not on the number pad)<br>
+    Sorry they controls are so lacking, I make this last night.
   </modal>
 </body>
 </html>
