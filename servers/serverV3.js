@@ -1,6 +1,5 @@
 "use strict";
-const { app, DB, requireLogin, adminOnly, port, icons, site, admin, api, countdown, count, aws } = require("./init");
-const serve = require("./servePage");
+const { app, serve, DB, requireLogin, adminOnly, port, icons, site, admin, api, countdown, count, aws } = require("./init");
 
 api.get("/logout", DB.user.logout);
 api.get("/confirm-email/:addId", DB.user.update.fromEmailConfirm);
@@ -27,9 +26,10 @@ countdown.post("/pieces/test", adminOnly, count.render.countdown);
 countdown.post(/\/pieces\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, count.render.countdown);
 countdown.post("/new", requireLogin, count.newCountdown);
 
-site.get(/^(?!\/(?:secure|update|aws))/, serve);
+site.get(/^(?!\/(?:secure|update|aws|flashcards))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
 site.get("/update/:category", requireLogin, serve.update);
+site.get(/\/flashcards\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, serve.flashcards.view);
 site.get(/^\/aws/, aws.getRequest);
 
 app.listen(port, () => { 

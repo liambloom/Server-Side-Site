@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false})%>
+  <title><%= name %></title>
+  <link rel="stylesheet" href="/css/flashcards.css">
+  <script src="/js/flashcards.js" type="application/javascript" defer></script>
+</head>
+<body>
+  <%- include("header", {title: name, choice: true}) %>
+  <main>
+    <% for (let card of cards.shuffle()) { %>
+      <div class="card-container">
+        <div class="card">
+          <div class="term">
+            <div><%= card.term %></div> 
+          </div>
+          <div class="definition">
+            <div><%= card.deff %></div> <!-- I apparently don't know how to spell definition -->
+          </div>
+        </div>
+      </div>
+  <% } %>
+  </main>
+  <modal id="instructions" data-size="large" data-escape="ok">
+    INSTRUCTIONS:<br>
+    To flip the card press space<br>
+    To move the card to the back of the pile press enter<br>
+    To remove the card from the pile press backspace<br>
+    Sorry they controls are so lacking, I make this last night
+  </modal>
+</body>
+</html>

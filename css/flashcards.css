@@ -1,0 +1,35 @@
+.card-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60vw;
+  height: 60vh;
+  color: var(--bg);
+  perspective: 3000px;
+}
+.card-container:not(:first-child) {
+  display: none;
+}
+.card {
+  transform: rotateY(0deg);
+  transition: transform 1s;
+  width: 100%;
+  height: 100%;
+  background-color: var(--light);
+  transform-style: preserve-3d;
+}
+.flip .card {
+  transform: rotateY(180deg);
+}
+.card div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 6vh;
+  transform: translate(-50%, -50%);
+  backface-visibility: hidden;
+}
+.card .definition {
+  transform: translate(-50%, -50%) rotateY(180deg);
+}

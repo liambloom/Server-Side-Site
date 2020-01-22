@@ -41,6 +41,23 @@ const createTable = () => {
       code varchar(7) NOT NULL
     )
   `);
+  pool.query(`
+    CREATE TABLE IF NOT EXISTS sets (
+      setid uuid NOT NULL,
+      userid uuid NOT NULL,
+      term VARCHAR(20),
+      deff VARCHAR(20),
+      private boolean,
+      name VARCHAR(50)
+    )
+  `);
+  pool.query(`
+    CREATE TABLE IF NOT EXISTS cards (
+      setid uuid,
+      term VARCHAR(100),
+      deff VARCHAR(100)
+    )
+  `);
 };
 const login = async (req, userid) => {
   const id = uuid();

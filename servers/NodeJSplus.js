@@ -1,10 +1,36 @@
 "use strict";
 module.exports = () => {
-  String.prototype.titleCase = function () { // arrow functions have a different use of "this" property
-    return this.charAt(0).toUpperCase() + this.slice(1);
-  };
-  Object.defineProperty(Array.prototype, "last", {
-    value: function() { return this[this.length - 1]; }
+  Object.defineProperties(Object.prototype, {
+    random: {
+      get: function () {
+        if (this && typeof this === "object") return function () { // Works for objects or arrays
+          const keys = Object.keys(this);
+          const key = keys[Math.floor(Math.random() * keys.length)];
+          if (!Array.isArray(this) && this.name === undefined) this[key].name = key;
+          return this[key];
+        };
+      }
+    }
+  });
+  Object.defineProperties(Array.prototype, {
+    last: {
+      value: function () { return this[this.length - 1]; }
+    },
+    shuffle: {
+      value: function () { return this.sort(() => Math.random() - 0.5); }
+    }
+  });
+  Object.defineProperties(String.prototype, {
+    titleCase: {
+      value: function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+      }
+    },
+    cssSafe: {
+      value: function () {
+        return this.replace(/\s/g, "_").replace(/(?:^-(?![_a-zA-Z]))|(?:^[^_a-zA-Z])|[^_a-zA-Z0-9-]/, "");
+      }
+    }
   });
   Object.iterable = obj => typeof obj[Symbol.iterator] === 'function';
   const promiseAllApi = Promise.all.bind(Promise);
@@ -35,4 +61,9 @@ module.exports = () => {
   };
   Math.avg = (...array) => array.reduce((a, b) => a + b) / array.length;
   Math.distance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+  Object.defineProperty(Boolean, "random", { // For some reason, node insists that Boolean.random is a getter only property and cannot be set
+    value: function () {
+      return !Math.round(Math.random());
+    }
+  });
 };

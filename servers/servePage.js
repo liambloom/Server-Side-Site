@@ -1,6 +1,10 @@
 "use strict";
-const { fs, mime, filetype, url } = require("./init");
+const url = require("url");
+const mime = require("mime-types");
+const fs = require("fs");
+const { pool } = require("./aws");
 
+const filetype = req => req.match(/(?<=\.)[^.\/]+$/);
 const path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 
 const serve = (req, res) => {
@@ -27,7 +31,7 @@ const serve = (req, res) => {
     }
     //if ejs
     else {
-      res.render(page, { user: (req.user) ? req.user : false, here: req.originalUrl }, (error, html) => {
+      res.render(page, { user: req.user || false, here: req.originalUrl }, (error, html) => {
         if (html) {
           // On success, serve page
           res.writeHead(200, { "Content-Type": "text/html" });
@@ -50,6 +54,32 @@ const serve = (req, res) => {
     res.write(`Uh Oh! Something Broke :( <br>${err}`);
     res.end();
     console.error(err);
+  }
+};
+serve.custom = (req, res, path, options) => {
+  try {
+    res.render(path, Object.assign({ user: req.user || false, here: req.originalUrl }, options), (error, html) => {
+      if (html) {
+        // On success, serve page
+        res.writeHead(200, { "Content-Type": "text/html" });
+        res.write(html);
+        res.end();
+      }
+      else {
+        // On failure, serve 404
+        console.error(error);
+        serve.return404(req, res);
+      }
+    });
+  }
+  catch (err) {
+    console.error(err);
+    try {
+      res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+    }
+    catch (err) { console.error(err); }
+    res.write(JSON.stringify({ error: err }));
+    res.end();
   }
 };
 serve.themes = (req, res) => {
@@ -88,6 +118,14 @@ serve.update = (req, res) => {
       res.end();
     }
   });
+};
+serve.flashcards = {
+  view: async function (req, res) {
+    const setid = path(req).pathname.match(/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/i)[0];
+    if (await pool.query("SELECT NOT private OR userid = $1 FROM sets WHERE setid = $2", [req.user ? req.user.id : "00000000-0000-0000-0000-000000000000", setid])) {
+      serve.custom(req, res, "flashcards", { name: (await pool.query("SELECT name FROM sets WHERE setid = $1", [setid])).rows[0].name, cards: await (await pool.query("SELECT * FROM cards WHERE setid = $1", [setid])).rows});
+    }
+  }
 };
 serve.return404 = (req, res) => {
   res.render("./404", { target: path(req).href }, (error, html) => {
