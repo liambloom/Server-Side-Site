@@ -1,5 +1,5 @@
 "use strict";
-const { app, serve, DB, requireLogin, adminOnly, port, icons, site, admin, api, countdown, count, aws } = require("./init");
+const { app, serve, DB, requireLogin, adminOnly, port, site, admin, api, countdown, count, aws } = require("./init");
 
 api.get("/logout", DB.user.logout);
 api.get("/confirm-email/:addId", DB.user.update.fromEmailConfirm);
@@ -23,17 +23,13 @@ countdown.get("/custom", requireLogin, count.serve);
 countdown.get("/test", adminOnly, count.serve);
 countdown.post("/pieces/list", count.render.list);
 countdown.post("/pieces/test", adminOnly, count.render.countdown);
-countdown.post(/\/pieces\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, count.render.countdown);
+countdown.post(/\/pieces\//.concat(UUID_REGEX), count.render.countdown);
 countdown.post("/new", requireLogin, count.newCountdown);
 
 site.get(/^(?!\/(?:secure|update|aws|flashcards))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
 site.get("/update/:category", requireLogin, serve.update);
-site.get(/\/flashcards\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, serve.flashcards.view);
+site.get(/\/flashcards\//.concat(UUID_REGEX), serve.flashcards.view);
 site.get(/^\/aws/, aws.getRequest);
 
-app.listen(port, () => { 
-  DB.createTable();
-  icons();
-  console.debug(`[Server] [${new Date().toString()}]: Server running on port ${port}.`);
-});
+app.listen(port, () => { if (testing) console.debug(`[Server] [${new Date().toString()}]: Server running on port ${port}.`); });

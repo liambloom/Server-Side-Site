@@ -121,7 +121,7 @@ serve.update = (req, res) => {
 };
 serve.flashcards = {
   view: async function (req, res) {
-    const setid = path(req).pathname.match(/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}/i)[0];
+    const setid = path(req).pathname.match(UUID_REGEX)[0];
     if (await pool.query("SELECT NOT private OR userid = $1 FROM sets WHERE setid = $2", [req.user ? req.user.id : "00000000-0000-0000-0000-000000000000", setid])) {
       serve.custom(req, res, "flashcards", { name: (await pool.query("SELECT name FROM sets WHERE setid = $1", [setid])).rows[0].name, cards: await (await pool.query("SELECT * FROM cards WHERE setid = $1", [setid])).rows});
     }

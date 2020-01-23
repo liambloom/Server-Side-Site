@@ -2,62 +2,10 @@
 const { bcrypt, uuid, pool, path, handle, fs, randomKey, mail } = require("./initPool");
 
 const createTable = () => {
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id uuid NOT NULL,
-      username varchar(100) UNIQUE NOT NULL,
-      password varchar(100) NOT NULL,
-      email varchar(50),
-      color varchar(15),
-      light varchar(5),
-      type varchar(12) NOT NULL,
-      since date NOT NULL
-    );
-  `);// I don't know if I actually need to make the id unique, since uuids have a very low chance of being the same (1/32^16 = 1/1,208,925,820,000,000,000,000,000 = 0.00000000000000000000008%)
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS sugestions (
-      content varchar(500) NOT NULL,
-      type varchar(10) NOT NULL,
-      by varchar(100),
-      created timestamptz NOT NULL
-    );
-  `);
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS sessions (
-      sessionid uuid NOT NULL,
-      userid uuid NOT NULL
-    );
-  `);
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS confirm (
-      userid uuid NOT NULL,
-      code uuid NOT NULL,
-      email varchar(50) NOT NULL
-    );
-  `);
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS recovery (
-      userid uuid NOT NULL,
-      code varchar(7) NOT NULL
-    )
-  `);
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS sets (
-      setid uuid NOT NULL,
-      userid uuid NOT NULL,
-      term VARCHAR(20),
-      deff VARCHAR(20),
-      private boolean,
-      name VARCHAR(50)
-    )
-  `);
-  pool.query(`
-    CREATE TABLE IF NOT EXISTS cards (
-      setid uuid,
-      term VARCHAR(100),
-      deff VARCHAR(100)
-    )
-  `);
+  pool.query(fs.readFileSync("./sql/createTables.sql").toString())
+    .catch(error => {
+      console.error(error);
+    });
 };
 const login = async (req, userid) => {
   const id = uuid();

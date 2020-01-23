@@ -5,7 +5,6 @@ const url = require("url");
 const fs = require("fs");
 const session = require("client-sessions");
 const serve = require("./servePage");
-const icons = require("./makeIcons");
 const DB = require("./queries");
 const count = require("./countdown");
 const aws = require("./aws");
@@ -13,7 +12,6 @@ const { mime } = aws;
 
 const app = express();
 
-const testing = os.hostname().includes("DESKTOP");
 const port = process.env.PORT || 8080;
 const redirect401 = (req, res) => {
   res.render("./blocked", { user: (req.user) ? req.user : false, here: req.originalUrl, title: "401 Unauthorized", msg: `Please <a href="/login?u=${req.originalUrl}">log in</a> or <a href="/signup?u=${req.originalUrl}">sign up</a> to view this content` }, (err, html) => {
@@ -111,7 +109,6 @@ module.exports = {
   fs,
   mime,
   url,
-  icons,
   site, 
   admin,
   api,

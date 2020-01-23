@@ -66,4 +66,7 @@ module.exports = () => {
       return !Math.round(Math.random());
     }
   });
+  RegExp.prototype.concat = function (regex) {
+    return new RegExp(this.source + regex.source, (this.flags + regex.flags).replace(/(.)(?=.*\1)/g, ""));
+  };
 };
