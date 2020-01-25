@@ -29,3 +29,5 @@ servers/countdowns.sql
 img/Countdowns/
 servers/flowchart.png
 *.map
+json/jsf.json
+sql/ignore
