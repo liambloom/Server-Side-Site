@@ -61,7 +61,7 @@ module.exports = () => {
   };
   Math.avg = (...array) => array.reduce((a, b) => a + b) / array.length;
   Math.distance = (x1, y1, x2, y2) => Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
-  Object.defineProperty(Boolean, "random", { // For some reason, node insists that Boolean.random is a getter only property and cannot be set
+  Object.defineProperty(Boolean, "random", { // For some reason, node insists that Boolean.random is a getter only property and cannot be set, so I need to use Object.defineProperty
     value: function () {
       return !Math.round(Math.random());
     }
