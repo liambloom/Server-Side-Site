@@ -6,7 +6,8 @@
       "explanation": "#888888"
     },
     "ability": {
-      "english": "Move through 1 or more adjacent flooded and/or missing tiles for 1 action. (Must end your turn on a tile.)"
+      "english": "Move through 1 or more adjacent flooded and/or missing tiles for 1 action. (Must end your turn on a tile.)",
+      "moveOnBlocked": true
     }
   },
   "Engineer": {
@@ -26,7 +27,8 @@
       "explanation": "#008822"
     },
     "ability": {
-      "english": "Move and/or shore up diagonally."
+      "english": "Move and/or shore up diagonally.",
+      "diagonalMovement": true
     }
   },
   "Messenger": {
@@ -48,7 +50,9 @@
       "darkText": true
     },
     "ability": {
-      "english": "Move another player up to 2 adjacent tiles for 1 action."
+      "english": "Move another player up to 2 adjacent tiles for 1 action.",
+      "moveOthers": true,
+      "moveOtherDistance": 2
     }
   },
   "Pilot": {

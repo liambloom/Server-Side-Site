@@ -76,6 +76,9 @@ body > div main #board .tile .label .treasure.The_Oceans_Chalice {
 body > div main #board .tile .label .treasure.The_Statue_of_the_Wind {
   border-color: yellow;
 }
+body > div main #hand {
+  z-index: 3;
+}
 body > div main #hand #in-hand {
   display: grid;
 }
@@ -114,7 +117,13 @@ body .piece {
   width: 3.75vmin;
   height: 6vmin;
   transform: translate(-66%, -50%);
+  transition-property: left, top;
+  transition-duration: 500ms;
+  transition-timing-function: ease-in-out;
   z-index: 2;
+}
+body .piece.selected {
+  filter: drop-shadow(0em 0em 1em yellow);
 }
 body .piece .shadow {
   filter: brightness(0.75);

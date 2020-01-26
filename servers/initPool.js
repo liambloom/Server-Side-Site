@@ -12,7 +12,7 @@ require("./NodeJSplus")();
 
 global.event = new EventEmitter();
 global.path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
-global.testing = os.hostname().includes("DESKTOP");
+global.testing = os.hostname().match(/DESKTOP|bloompc/);
 global.handle = (err, res) => {
   console.error(err);
   try {
