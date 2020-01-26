@@ -1,7 +1,7 @@
 "use strict";
 module.exports = () => {
   Object.defineProperties(Object.prototype, {
-    random: {
+    randomProperty: {
       get: function () {
         if (this && typeof this === "object") return function () { // Works for objects or arrays
           const keys = Object.keys(this);
