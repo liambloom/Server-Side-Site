@@ -5,8 +5,8 @@ export class Tile {
     }
     this.element = document.getElementById(name.cssSafe());
     this.element.addEventListener("click", () => {
-      const selected = Object.values(players).find(player => player.selected);
-      if (selected && selected.legalMove(this, selected !== player && player.ability.moveOtherDistance || 1)) selected.move(this); 
+      const selected = player.constructor.selected;
+      if (selected && selected.legalMove(this)) selected.move(this); 
     });
   }
   get bcr () {

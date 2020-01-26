@@ -5,13 +5,16 @@ export default class Player {
     }
     this.toggleGlow = this.toggleGlow.bind(this);
     this.removeGlow = this.removeGlow.bind(this);
+    this.setLocation = this.setLocation.bind(this);
     this.selected = false;
     this.startingTile = Object.values(board).find(tile => tile.startingPlayer === this.name);
     this.tile = this.startingTile;
     this.element = document.getElementById(this.name);
     this.setLocation();
     window.addEventListener("resize", this.setLocation);
-    this.element.addEventListener("click", this.toggleGlow);
+    this.element.addEventListener("click", event => {
+      this.tile.element.dispatchEvent(new Event("click"));
+    });
     document.addEventListener("click", (event => {
       if (this.selected && !(this.element.contains(event.target) || this.tile.element.contains(event.target))) this.removeGlow();
     }).bind(this));
@@ -37,17 +40,21 @@ export default class Player {
     this.setLocation();
     if (this.selected) this.removeGlow();
   }
-  legalMove (tile, maxDistance = 1) {
+  legalMove (tile) {
+    const maxDistance = Player.selected !== player && player.ability.moveOtherDistance || 1;
     return (tile !== this.tile) && (!tile.blocked || this.ability.moveOnBlocked) && (this.ability.diagonalMovement ? this.x <= tile.x + maxDistance && this.x >= tile.x - maxDistance && this.y <= tile.y + maxDistance && this.y >= tile.y - maxDistance : Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y) <= maxDistance);
   }
   get bcr () {
     return this.element.getBoundingClientRect();
   }
   get x () {
-    return Math.floor((this.bcr.x - board.bcr.x) / (Math.min(window.innerWidth, window.innerHeight) * 91 / 600));
+    return Math.floor((this.bcr.x - board.bcr.x) / this.tile.bcr.width);
   }
   get y () {
-    return Math.floor((this.bcr.y - board.bcr.y) / (Math.min(window.innerWidth, window.innerHeight) * 91 / 600));
+    return Math.floor((this.bcr.y - board.bcr.y) / this.tile.bcr.height);
+  }
+  static get selected () {
+    return Object.values(players).find(player => player.selected);
   }
 }
 
