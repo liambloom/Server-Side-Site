@@ -13,7 +13,7 @@ require("./NodeJSplus")();
 global.event = new EventEmitter();
 global.path = req => url.parse(`${req.protocol}://${req.get("host")}${req.originalUrl}`, true);
 global.testing = os.hostname().match(/DESKTOP|bloompc/);
-global.UUID_REGEX = /(?:[0-9a-fA-F]{8}-(?:[0-9a-fA-F]{4}-){3}[0-9a-fA-F]{12})/;
+global.UUID_REGEX = /(?:[0-9a-fA-F]{8}(-)?(?:[0-9a-fA-F]{4}\1){3}[0-9a-fA-F]{12})/;
 global.handle = (err, res) => {
   console.error(err);
   try {
