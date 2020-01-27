@@ -11,7 +11,11 @@ export default class Player {
     this.tile = this.startingTile;
     this.element = document.getElementById(this.name);
     this.setLocation();
-    window.addEventListener("resize", this.setLocation);
+    window.addEventListener("resize", () => {
+      this.element.style.setProperty("transition", "none");
+      this.setLocation();
+      this.element.style.setProperty("transition", "");
+    });
     this.element.addEventListener("click", event => {
       this.tile.element.dispatchEvent(new Event("click"));
     });
