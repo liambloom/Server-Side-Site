@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css?family=Cousine&display=swap');
+
+body {
+  background-color: #eeeeee;
+  font-family:'Cousine', monospace;
+  overflow: hidden;
+  width: 100vw;
+  height: 100vh;
+  font-size: 24px;
+  margin: 0px;
+}
+main {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+#cursor {
+  width: 1px;
+  height: 1em;
+  background-color: black;
+  position: absolute;
+  top: calc(50% - 0.5em);
+}
+#cursor.hide {
+  display: none;
+}

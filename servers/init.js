@@ -72,7 +72,15 @@ app.use(session({
   secure: !testing,// I should probably get an ssl certificate
   ephemeral: true// This means delete the cookie when the browser is closed
 }));
+app.use(session({
+  cookieName: "forbiddenKey",
+  secret: process.env.FORBIDDEN_SECRET || "3vGrBQnlKBLPHurm98a3yqn0RFIWBUIY",
+  duration: 10 * 365 * 24 * 60 * 60 * 1000,
+  httpOnly: !testing,
+  ephemeral: false
+}));
 app.use(async (req, res, next) => {
+  console.log("req");
   if ((req.session) ? req.session.user : false) {
     const userId = await DB.session.get(req.session.user);
     if (userId) {
@@ -99,7 +107,14 @@ app.use("/admin", admin);
 app.use("/api", api);
 app.use("/countdown", countdown);
 app.use("/forbidden", forbidden);
-app.use(/^(?!\/(?:api|admin|countdown|forbidden))/, site);
+app.use(/^(?!\/(?:api|admin|countdown|forbidden)\/)/, site);
+app.use(() => {console.log("app")});
+
+forbidden.use(async (req, res, next) => {
+  console.log("bar");
+  if (await DB.user.forbiddenProtection(req)) next();
+  else res.redirect(303, "/forbiddenGamePermission?u=" + req.originalUrl);
+});
 
 module.exports = {
   app,

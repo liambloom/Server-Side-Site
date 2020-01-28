@@ -386,6 +386,18 @@ const getSession = async (sessionId) => {
     return false;
   }
 };
+const forbiddenProtection = async (req) => {
+  try {
+    console.log(req.forbiddenKey.key);
+    if (req.user && req.user.forbidden_permission) return true;
+    else if (req.forbiddenKey && req.forbiddenKey.key) return await (await pool.query("SELECT * FROM forbidden_keys WHERE key = $1", [req.forbiddenKey.key])).rowCount;
+    else return false;
+  }
+  catch (err) {
+    console.error(err);
+    return false;
+  }
+};
 
 module.exports = {
   createTable,
@@ -403,7 +415,8 @@ module.exports = {
     recover: {
       get: getRecoveryCode,
       send: sendRecoveryCode
-    }
+    },
+    forbiddenProtection
   },
   sugestions: {
     add,

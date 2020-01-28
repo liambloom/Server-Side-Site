@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.65">
+  <link rel="icon" href="/img/favicon/main/favicon.ico">
+  <link rel="icon" href="/img/favicon/main/favicon_32.png">
+  <link rel="icon" href="/img/favicon/main/favicon_48.png">
+  <link rel="icon" href="/img/favicon/main/favicon_96.png">
+  <link rel="icon" href="/img/favicon/main/favicon_144.png">
+  <link rel="icon" href="/img/favicon/main/favicon_vector.svg">
+  <link rel="stylesheet" href="/css/forbiddenPermision.css">
+  <script src="/js/forbidden/permission.js" defer></script>
+</head>
+<body>
+  <main>
+    <% for (let i = 0; i < 8; i++) { %>
+      <span class="character">#</span>
+    <% } %>
+    <span class="dash">-</span>
+    <% for (let i = 0; i < 3; i++) { %>
+      <% for (let j = 0; j < 4; j++) { %>
+        <span class="character">#</span>
+      <% } %>
+      <span class="dash">-</span>
+    <% } %>
+    <% for (let i = 0; i < 12; i++) { %>
+      <span class="character">#</span>
+    <% } %>
+  </main>
+  <div id="cursor"></div>
+</body>
+</html>

@@ -27,11 +27,13 @@ countdown.post(/\/pieces\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, coun
 countdown.post("/new", requireLogin, count.newCountdown);
 
 forbidden.get("/:game", forbiddenApi.serve);
+forbidden.get("GamePermission", () => {console.log("foo")});
 
-site.get(/^(?!\/(?:secure|update|aws))/, serve);
+site.get(/^(?!\/(?:secure|update|aws|forbiddenGamePermission))/, serve);
 site.get("/secure", requireLogin, DB.user.secure);
 site.get("/update/:category", requireLogin, serve.update);
 site.get(/^\/aws/, aws.getRequest);
+site.get("/forbiddenGamePermission", forbiddenApi.permission);
 
 app.listen(port, () => { 
   DB.createTable();

@@ -14,5 +14,10 @@ module.exports = {
       board: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/board.json`)),
       players: players
     });
+  },
+  permission (req, res) {
+    console.log("foo");
+    if (req.forbiddenKey && req.forbiddenKey.key) res.redirect(303, url.parse(req.originalUrl).query.u);
+    else serve(req, res);
   }
 };
