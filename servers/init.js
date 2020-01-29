@@ -80,7 +80,6 @@ app.use(session({
   ephemeral: false
 }));
 app.use(async (req, res, next) => {
-  console.log("req");
   if ((req.session) ? req.session.user : false) {
     const userId = await DB.session.get(req.session.user);
     if (userId) {
@@ -108,12 +107,10 @@ app.use("/api", api);
 app.use("/countdown", countdown);
 app.use("/forbidden", forbidden);
 app.use(/^(?!\/(?:api|admin|countdown|forbidden)\/)/, site);
-app.use(() => {console.log("app")});
 
 forbidden.use(async (req, res, next) => {
-  console.log("bar");
-  if (await DB.user.forbiddenProtection(req)) next();
-  else res.redirect(303, "/forbiddenGamePermission?u=" + req.originalUrl);
+  if (/^\/forbidden\/permission(?:\?.*)?$/.test(req.originalUrl) || await DB.user.forbiddenProtection(req)) next();
+  else res.redirect(303, "/forbidden/permission?u=" + req.originalUrl);
 });
 
 module.exports = {

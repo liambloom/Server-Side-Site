@@ -1,5 +1,6 @@
 "use strict"; // does not work on mobile
 const cursor = document.getElementById("cursor");
+const input = document.getElementById("input");
 const digits = [];
 let currentDigit;
 for (let e of document.getElementsByClassName("character")) {
@@ -13,21 +14,31 @@ function cursorToDigit (digit) {
   else if (digit > 32) return --currentDigit;
   else {
     currentDigit = digit;
-    const bcr = digits[digit].getBoundingClientRect();
-    if (digit === 32) cursor.style.setProperty("left", `calc(${bcr.left + bcr.width}px + 0.1em)`);
-    else cursor.style.setProperty("left", `calc(${bcr.left}px - 0.1em)`);
+    const bcr = digits[digit === 32 ? 31 : digit].getBoundingClientRect();
+    let left;
+    cursor.style.setProperty("top", `${bcr.top}px`);
+    input.style.setProperty("top", `${bcr.top + bcr.height / 2}px`);
+    if (digit === 32) left = `calc(${bcr.left + bcr.width}px + 0.1em)`;
+    else left = `calc(${bcr.left}px - 0.1em)`;
+    cursor.style.setProperty("left", left);
+    input.style.setProperty("left", left);
   }
-}
-function dist (x1, y1, x2, y2) {
-  return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 }
 if (document.readyState === "complete") cursorToDigit(0);
 else window.addEventListener("load", () => { cursorToDigit(0); });
+window.addEventListener("resize", () => {
+  if (currentDigit !== undefined) cursorToDigit(currentDigit);
+});
 
+function verify () {
+  
+}
 document.addEventListener("keydown", event => {
   if (/^[0-9a-fA-F]$/.test(event.key)) {
-    digits[currentDigit].innerHTML = event.key.toUpperCase();
-    cursorToDigit(++currentDigit);
+    if (!(currentDigit >= 32 || currentDigit < 0)) {
+      digits[currentDigit].innerHTML = event.key.toUpperCase();
+      cursorToDigit(++currentDigit);
+    }
   }
   else {
     switch (event.keyCode) {
@@ -51,15 +62,16 @@ document.addEventListener("keydown", event => {
       case 46: // delete
         digits[currentDigit].innerHTML = "#";
         break;
+      case 13: // enter
+        verify();
     }
   }
 });
 document.addEventListener("click", event => {
-  const clickDist = (x, y) => dist(event.clientX, event.clientY, x, y);
   const distances = digits.map(e => {
     const bcr = e.getBoundingClientRect();
-    return Math.min(clickDist(bcr.x, bcr.y));
+    return Math.sqrt(Math.pow(event.clientX - (bcr.x - 2.4), 2) + Math.pow(event.clientY - (bcr.y + bcr.height / 2), 2));
   });
-  console.log(distances.indexOf(Math.min(...distances)));
   cursorToDigit(distances.indexOf(Math.min(...distances)));
+  input.focus();
 });
