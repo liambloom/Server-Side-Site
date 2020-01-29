@@ -2,11 +2,9 @@
 
 body {
   background-color: #eeeeee;
-  font-family:'Cousine', monospace;
   overflow: hidden;
   width: 100vw;
   height: 100vh;
-  font-size: 24px;
   margin: 0px;
 }
 main {
@@ -19,14 +17,16 @@ main {
   flex-wrap: wrap;
   max-width: calc(100vw - 1em);
   max-height: 100%;
-  margin: 0.5em;
+  margin: 0.5em 0px;
+  font-family:'Cousine', monospace;
+  font-size: 24px;
 }
 main span {
   margin: 0px 0.1em;
 }
 #cursor {
   width: 1px;
-  height: 1em;
+  height: 24px;
   background-color: black;
   position: absolute;
 }
@@ -38,6 +38,12 @@ main span {
   width: 0px;
   height: 0px;
   border: none;
+}
+#instructions, #alternate, #error {
+  position: fixed;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
 }
 #error {
   color: red;

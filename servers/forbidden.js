@@ -16,8 +16,8 @@ module.exports = {
     });
   },
   permission (req, res) {
-    console.log("foo");
-    if (req.forbiddenKey && req.forbiddenKey.key) res.redirect(303, url.parse(req.originalUrl).query.u);
+    console.log(url.parse(req.originalUrl));
+    if (req.forbiddenKey && req.forbiddenKey.key || req.user && req.user.forbidden_permission) res.redirect(303, url.parse(req.originalUrl).query.match(/(?<=u=)[^&](?=&?.*)$/)[0]);
     else serve(req, res);
   }
 };

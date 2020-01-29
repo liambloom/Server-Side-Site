@@ -26,7 +26,7 @@ countdown.post("/pieces/test", adminOnly, count.render.countdown);
 countdown.post(/\/pieces\/(?:[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/, count.render.countdown);
 countdown.post("/new", requireLogin, count.newCountdown);
 
-forbidden.get("/permission", serve);
+forbidden.get("/permission", forbiddenApi.permission);
 forbidden.get("/:game", forbiddenApi.serve);
 
 site.get(/^(?!\/(?:secure|update|aws))/, serve);

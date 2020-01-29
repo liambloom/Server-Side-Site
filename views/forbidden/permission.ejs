@@ -13,7 +13,9 @@
   <script src="/js/forbidden/permission.js" defer></script>
 </head>
 <body>
-  <input id="input" type="text">
+  <div id="instructions">
+    Since I unfortunately don&rsquo;t own the rights to the game Forbidden Island&trade;, I can&rsquo;t just make it publicly available. Please enter a valid key or <a href="/login?u=<%= here %>">log in</a> with an account that has access.
+  </div>
   <main>
     <% for (let i = 0; i < 8; i++) { %>
       <span class="character">#</span>
@@ -29,7 +31,8 @@
       <span class="character">#</span>
     <% } %>
   </main>
-  <div id="error"></div>
+  <div id="alternate">If this doesn&rsquo;t work for you, click <a href="javascript:verify(prompt('Please enter your key here'))">here</a></div>
+  <div id="error">Error2</div>
   <div id="cursor"></div>
 </body>
 </html>
