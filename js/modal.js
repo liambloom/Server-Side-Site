@@ -20,11 +20,16 @@ window.modal = {
   },
   close: function (callback) {
     if (!document.querySelector(".modal:not(.hidden) :invalid")) {
-      modal.isOpen.classList.add("hidden");
-      removeEventListener("focusin", inputBlocker);
-      document.body.classList.remove("blur");
-      scroll.unlock();
-      if (typeof fun === "function") callback();
+      new Promise((resolve, reject) => {
+        modal.isOpen.dispatchEvent(new Event("closed"));
+        resolve(modal.isOpen.classList.add("hidden"));
+        removeEventListener("focusin", inputBlocker);
+        document.body.classList.remove("blur");
+        scroll.unlock();
+      })
+        .then(() => {
+          if (typeof fun === "function") callback();
+        });
     }
   },
   init: function () {

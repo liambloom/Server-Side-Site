@@ -16,8 +16,9 @@ module.exports = {
     });
   },
   permission (req, res) {
-    console.log(url.parse(req.originalUrl));
-    if (req.forbiddenKey && req.forbiddenKey.key || req.user && req.user.forbidden_permission) res.redirect(303, url.parse(req.originalUrl).query.match(/(?<=u=)[^&](?=&?.*)$/)[0]);
-    else serve(req, res);
+    let game = req.originalUrl.match(/(?<=[^\?]*\?[^\?]*u=.*\/)[^&\/#\?]*(?=[&\?#].*)?$/);
+    game = game ? game[0].replace(/^(.)/, $1 => $1.toUpperCase()) : "Island";
+    if (req.forbiddenKey && req.forbiddenKey.key || req.user && req.user.forbidden_permission) res.redirect(303, req.originalUrl.match(/(?<=[^\?]*\?[^\?]*u=)[^&]*(?=&.*)?$/)[0]);
+    else serve.custom(req, res, "./forbidden/permission", { game });
   }
 };

@@ -308,6 +308,26 @@ const logout = async (req, res) => {
   req.session.reset();
   res.redirect(path(req).query.u);
 };
+const forbiddenVerify = async (req, res) => {
+  try {
+    if (!UUID_REGEX.test(req.body.key)) {
+      res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+      res.write(JSON.stringify({error: "Invalid Key"}));
+      res.end();
+    }
+    else if ((await pool.query("UPDATE forbidden_keys SET users = users + 1 WHERE key = $1", [req.body.key])).rowCount) {
+      req.forbiddenKey.key = req.body.key;
+      res.status(204).end();
+      if (req.user) pool.query("UPDATE users SET forbidden_permission = TRUE WHERE id = $1", [req.user.id]);
+    }
+    else {
+      res.writeHead(401, { "Content-Type": "application/json; charset=utf-8" });
+      res.write(JSON.stringify({error: "Key rejected"}));
+      res.end();
+    }
+  }
+  catch (err) { handle(err, res); }
+};
 const add = (req, res) => {
   try {
     const { content, type } = req.body;
@@ -388,7 +408,6 @@ const getSession = async (sessionId) => {
 };
 const forbiddenProtection = async (req) => {
   try {
-    console.log(req.forbiddenKey.key);
     if (req.user && req.user.forbidden_permission) return true;
     else if (req.forbiddenKey && req.forbiddenKey.key) return await (await pool.query("SELECT * FROM forbidden_keys WHERE key = $1", [req.forbiddenKey.key])).rowCount;
     else return false;
@@ -415,8 +434,7 @@ module.exports = {
     recover: {
       get: getRecoveryCode,
       send: sendRecoveryCode
-    },
-    forbiddenProtection
+    }
   },
   sugestions: {
     add,
@@ -425,5 +443,9 @@ module.exports = {
   },
   session: {
     get: getSession
+  },
+  forbidden: {
+    protection: forbiddenProtection,
+    verify: forbiddenVerify
   }
 };

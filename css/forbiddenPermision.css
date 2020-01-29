@@ -7,39 +7,23 @@ body {
   height: 100vh;
   margin: 0px;
 }
-main {
+#key {
   position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  display: flex;
-  flex-wrap: wrap;
-  max-width: calc(100vw - 1em);
-  max-height: 100%;
+  width: 36ch;
   margin: 0.5em 0px;
   font-family:'Cousine', monospace;
   font-size: 24px;
+  border: none;
+  background-color: transparent;
 }
-main span {
+#key span {
   margin: 0px 0.1em;
 }
-#cursor {
-  width: 1px;
-  height: 24px;
-  background-color: black;
-  position: absolute;
-}
-#cursor.hide {
-  display: none;
-}
-#input {
-  position: fixed;
-  width: 0px;
-  height: 0px;
-  border: none;
-}
-#instructions, #alternate, #error {
+#instructions, #error {
   position: fixed;
   text-align: center;
   left: 50%;

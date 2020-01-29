@@ -7,6 +7,7 @@ api.get("/json/themes.json", serve.themes);
 api.get("/users/email", requireLogin, DB.user.hasEmail);
 api.post("/users/create", DB.user.create);
 api.post("/users/confirm", DB.user.confirm);
+api.post("/forbiddenKeyConfirm", DB.forbidden.verify);
 api.post("/sugestion", DB.sugestions.add);
 api.post("/recover", DB.user.recover.get);
 api.post("/recover/:username", DB.user.recover.send);

@@ -38,6 +38,7 @@ let loadFunc = () => {
   });
   document.getElementById("box").onsubmit = event => {
     event.preventDefault();
+    console.log("foo");
     document.getElementById("button").parentNode.removeAttribute("data-err");
     let {username, password, email, wait} = confirmInit();
     if (wait) {
@@ -53,7 +54,7 @@ let loadFunc = () => {
 let login = (username, password, email) => {
   if (!document.querySelector("#box :invalid")) {
     document.getElementById("button").parentNode.removeAttribute("data-err");
-    modal.open("#loadingModal");
+    try { modal.open("#loadingModal"); } catch (err) {}
     window.activateLoading();
     fetch("/api/users/create", {
       method: "POST",
