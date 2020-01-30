@@ -95,6 +95,11 @@ app.use(async (req, res, next) => {
   }
   else next();
 });
+app.use((req, res, next) => {
+  const n = new Date();
+  if (n.getMonth() === 3 && n.getDate() === 1) res.redirect(303, "https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+  else next();
+});
 
 const site = express.Router();
 const admin = express.Router();
