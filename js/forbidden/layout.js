@@ -11,8 +11,14 @@ function closeHand (event) {
 }
 document.getElementById("arrow-hitbox").addEventListener("click", event => {
   hand.classList.toggle("open");
-  if (hand.classList.contains("open")) document.body.addEventListener("click", closeHand);
-  else document.body.removeEventListener("click", closeHand);
+  if (hand.classList.contains("open")) {
+    document.body.addEventListener("click", closeHand);
+    document.body.addEventListener("touchstart", closeHand);
+  }
+  else {
+    document.body.removeEventListener("click", closeHand);
+    document.body.removeEventListener("touchstart", closeHand);
+  }
 });
 
 function shrinkCard (e) {

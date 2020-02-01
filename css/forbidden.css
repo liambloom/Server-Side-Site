@@ -111,7 +111,7 @@ body > div main #hand #in-hand #treasures #The_Statue_of_the_Wind {
   grid-area: The_Statue_of_the_Wind;
 }
 body .piece {
-  position: fixed;
+  position: absolute;
   width: 3.75vmin;
   height: 6vmin;
   transform: translate(-66%, -50%);
@@ -124,7 +124,6 @@ body .piece.selected {
   filter: drop-shadow(0em 0em 1em yellow);
 }
 body .piece .shadow {
-  filter: brightness(0.75);
 }
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {

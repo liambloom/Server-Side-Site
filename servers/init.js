@@ -114,7 +114,7 @@ app.use("/forbidden", forbidden);
 app.use(/^(?!\/(?:api|admin|countdown|forbidden)\/)/, site);
 
 forbidden.use(async (req, res, next) => {
-  if (/^\/forbidden\/permission(?:\?.*)?$/.test(req.originalUrl) || await DB.forbidden.protection(req)) next();
+  if (testing || /^\/forbidden\/permission(?:\?.*)?$/.test(req.originalUrl) || await DB.forbidden.protection(req)) next();
   else res.redirect(303, "/forbidden/permission?u=" + req.originalUrl);
 });
 
