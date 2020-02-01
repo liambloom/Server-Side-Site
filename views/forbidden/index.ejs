@@ -24,40 +24,12 @@
 </head>
 <body>
   <% for (let playerName in players) { %>
-    <svg id="<%= playerName %>" class="piece" viewbox="0 0 15 32" width="3.75vmin" height="8vmin" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="darken">
-          <feComponentTransfer in="SourceGraphic">
-            <feFuncR type="linear" slope="0.5"></feFuncR>
-            <feFuncG type="linear" slope="0.5"></feFuncG>
-            <feFuncB type="linear" slope="0.5"></feFuncB>
-          </feComponentTransfer>
-        </filter>
-        <linearGradient id="shadow" x1="0%" y1="0%" x2="100%" y2="0%"><!--gradientTransform="skewX(90)
-          scale(1, 2)
-          rotate(170 10 21.5)
-          translate(900 12)
-          " id="shadow" -->
-          <stop offset="0%" style="stop-color:rgb(0,0,0);stop-opacity:1;"></stop>
-          <stop offset="100%" style="stop-color:rgb(0,0,0);stop-opacity:0;"></stop>
-        </linearGradient>
-      </defs>
-      <symbol>
+    <svg id="<%= playerName %>" class="piece" viewbox="0 0 15 24" width="3.75vmin" height="6vmin" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <g fill="<%= players[playerName].color.piece %>">
+        <circle cx="10" cy="3.5" r="3.5"></circle>
         <path d=" M 5 21.5
-                a 5 18 0 0 1 10 0
-                a 10 5 0 0 1 -10 0"
-                id="body"></path>
-      </symbol>
-      <g class="shadow" fill="url(#shadow)"><!-- transform="translate(-9 -12)
-        rotate(-170 10 21.5)
-        scale(1 0.5)
-        skewX(-30)"-->
-        <use href="#body"></use>
-      </g>
-      <circle cx="10" cy="3.5" r="3.5" fill="<%= players[playerName].color.piece %>"></circle>
-      <use href="#body" fill="<%= players[playerName].color.piece %>"></use>
-      </g>
-      <g fill="<%= players[playerName].color.piece %>" filter="url(#darken)">
+                  a 5 18 0 0 1 10 0
+                  a 10 5 0 0 1 -10 0"></path>
         <path d=" M 12.5122 5.93698
                   A 3.5 3.5 0 0 1 7.4878 5.93698
                   A 6.31114 2.96849 0 0 0 12.5122 5.93698"></path>
