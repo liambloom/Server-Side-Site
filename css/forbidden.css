@@ -123,7 +123,6 @@ body .piece {
 body .piece.selected {
   filter: drop-shadow(0em 0em 1em yellow);
 }
-body .piece .shadow {
 }
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
