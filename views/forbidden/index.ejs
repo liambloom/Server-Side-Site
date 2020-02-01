@@ -25,18 +25,29 @@
 <body>
   <% for (let playerName in players) { %>
     <svg id="<%= playerName %>" class="piece" viewbox="0 0 15 24" width="3.75vmin" height="6vmin" version="1.1" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="darken">
+          <feComponentTransfer in="SourceGraphic">
+            <feFuncR type="linear" slope="0.5"></feFuncR>
+            <feFuncG type="linear" slope="0.5"></feFuncG>
+            <feFuncB type="linear" slope="0.5"></feFuncB>
+          </feComponentTransfer>
+        </filter>
+      </defs>
       <g fill="<%= players[playerName].color.piece %>">
         <circle cx="10" cy="3.5" r="3.5"></circle>
         <path d=" M 5 21.5
                   a 5 18 0 0 1 10 0
                   a 10 5 0 0 1 -10 0"></path>
-        <path d=" M 12.5122 5.93698
-                  A 3.5 3.5 0 0 1 7.4878 5.93698
-                  A 6.31114 2.96849 0 0 0 12.5122 5.93698"></path>
-        <path d=" M 6.5 8.64542
-                  A 5 18 0 0 0  5 21.5
-                  A 10 5 0 0 1 6.5 21.85361
-                  A 4.0944 12.72676 0 0 1 6.5 8.64542"></path>
+        <g filter="url(#darken)">
+          <path d=" M 12.5122 5.93698
+                    A 3.5 3.5 0 0 1 7.4878 5.93698
+                    A 6.31114 2.96849 0 0 0 12.5122 5.93698"></path>
+          <path d=" M 6.5 8.64542
+                    A 5 18 0 0 0  5 21.5
+                    A 10 5 0 0 1 6.5 21.85361
+                    A 4.0944 12.72676 0 0 1 6.5 8.64542"></path>
+        </g>
       </g>
     </svg>
   <% } %>
