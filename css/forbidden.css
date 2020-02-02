@@ -3,12 +3,29 @@ body {
   height: calc(100vh - 4vmin);
   width: calc(100vw - 4vmin);
   margin: 2vmin;
-  background-color: #88ccff;
+  background-color: #00a9e1;
   font-size: 1.6vmin;
   font-family: "Times New Roman";
   line-height: 1.6vmin;
   font-variant: small-caps;
   overflow: hidden;
+}
+body #filterDefs {
+  /* display: none would cause it to never be compiled */
+  position: fixed;
+  width: 0px;
+  height: 0px;
+}
+body #background {
+  position: absolute;
+  top: -2.5vh;
+  left: -2.5vw;
+  z-index: 0;
+  width: 105vw;
+  height: 105vh;
+  background-image: url("/img/water-FHD.jpg");
+  background-size: 105% 105%;
+  /*filter: url(#waves);*/
 }
 body > div {
   height: calc(100vh - 4vmin);
@@ -33,6 +50,20 @@ body > div main #board .tile {
   text-align: center;
   overflow: hidden;
 }
+body > div main #board .tile.flooded {
+  /*filter: url(#blue);*/
+  background-color: #80aaff;
+  animation: 0.5s linear 5 shake;
+}
+body > div main #board .tile.flooded .label {
+  background-color: #e0e8ff;
+}
+body > div main #board .tile, body > div main #board .tile .label {
+  transition: background-color 2.5s;
+}
+body > div main #board .tile img {
+  width: 100%;
+}
 body > div main #board .tile .label {
   background-color: #ffeecc;
   position: absolute;
@@ -55,7 +86,7 @@ body > div main #board .tile .label .treasure {
   width: 3em;
   height: 3em;
   margin: 0.15em;
-  background-color: white;
+  background-color: #ffffff;
   float: left;
   bottom: 1.5em;
   border-radius: 50%;
@@ -123,6 +154,19 @@ body .piece {
 body .piece.selected {
   filter: drop-shadow(0em 0em 1em yellow);
 }
+body .piece.vibrate {
+  animation: 0.5s linear 0s infinite piece-shake !important;
+}
+
+.card, #player {
+  transform-origin: top left;
+  transition: transform 500ms;
+  font-variant: none;
+}
+
+.vibrate {
+  animation: 0.5s linear 0s infinite shake;
+}
 
 @media (min-aspect-ratio: 3/2), (max-aspect-ratio: 2/3) {
   main {
@@ -186,12 +230,6 @@ body .piece.selected {
     text-align: center;
   }
 }
-.card, #player {
-  transform-origin: top left;
-  transition: transform 500ms;
-  font-variant: none;
-}
-
 @media (max-aspect-ratio: 2/3) {
   /* tall */
   main {
@@ -276,6 +314,77 @@ body .piece.selected {
     content: "Ability:\a";
     white-space: pre;
     margin-left: -1em;
+  }
+}
+@keyframes shake {
+  /* from w3schools.com */
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+@keyframes piece-shake {
+  0% {
+    transform: translate(calc(1px - 66%), calc(1px - 50%)) rotate(0deg);
+  }
+  10% {
+    transform: translate(calc(-1px - 66%), calc(-2px - 50%)) rotate(-1deg);
+  }
+  20% {
+    transform: translate(calc(-3px - 66%), calc(0px - 50%)) rotate(1deg);
+  }
+  30% {
+    transform: translate(calc(3px - 66%), calc(2px - 50%)) rotate(0deg);
+  }
+  40% {
+    transform: translate(calc(1px - 66%), calc(-1px - 50%)) rotate(1deg);
+  }
+  50% {
+    transform: translate(calc(-1px - 66%), calc(2px - 50%)) rotate(-1deg);
+  }
+  60% {
+    transform: translate(calc(-3px - 66%), calc(1px - 50%)) rotate(0deg);
+  }
+  70% {
+    transform: translate(calc(3px - 66%), calc(1px - 50%)) rotate(-1deg);
+  }
+  80% {
+    transform: translate(calc(-1px - 66%), calc(-1px - 50%)) rotate(1deg);
+  }
+  90% {
+    transform: translate(calc(1px - 66%), calc(2px - 50%)) rotate(0deg);
+  }
+  100% {
+    transform: translate(calc(1px - 66%), calc(-2px - 50%)) rotate(-1deg);
   }
 }
 

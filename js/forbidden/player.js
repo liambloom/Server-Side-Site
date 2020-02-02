@@ -10,13 +10,16 @@ export default class Player {
     this.startingTile = Object.values(board).find(tile => tile.startingPlayer === this.name);
     this.tile = this.startingTile;
     this.element = document.getElementById(this.name);
+    this.element.setAttribute("width", (3.75 * window.vmin).toString());
+    this.element.setAttribute("height", (6 * window.vmin).toString());
     this.setLocation();
     window.addEventListener("resize", () => {
       this.element.style.setProperty("transition", "none");
       this.setLocation();
       this.element.style.setProperty("transition", "");
     });
-    this.element.addEventListener("click", event => {
+    this.element.addEventListener("click", () => {
+      if (window.gameData.turns.current !== player) this.vibrate(0.5);
       this.tile.element.dispatchEvent(new Event("click"));
     });
     document.addEventListener("click", (event => {
@@ -30,7 +33,7 @@ export default class Player {
     this.tile.element.addEventListener("click", this.toggleGlow);
   }
   toggleGlow () {
-    if (this.constructor === User || player.ability.moveOthers) {
+    if (window.gameData.turns.current === player && (this.constructor === User || player.ability.moveOthers)) {
       this.selected = !this.selected;
       this.element.classList.toggle("selected");
     }
@@ -40,13 +43,20 @@ export default class Player {
     this.element.classList.remove("selected");
   }
   move (tile) {
+    if (window.gameData.turns.current === player) window.gameData.turns.actionTaken();
     this.tile = tile;
     this.setLocation();
     if (this.selected) this.removeGlow();
   }
   legalMove (tile) {
     const maxDistance = Player.selected !== player && player.ability.moveOtherDistance || 1;
-    return (tile !== this.tile) && (!tile.blocked || this.ability.moveOnBlocked) && (this.ability.diagonalMovement ? this.x <= tile.x + maxDistance && this.x >= tile.x - maxDistance && this.y <= tile.y + maxDistance && this.y >= tile.y - maxDistance : Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y) <= maxDistance);
+    return (window.gameData.turns.current === player) && (tile !== this.tile) && (tile.floodLevel < 2 || this.ability.moveOnBlocked) && (this.ability.diagonalMovement ? this.x <= tile.x + maxDistance && this.x >= tile.x - maxDistance && this.y <= tile.y + maxDistance && this.y >= tile.y - maxDistance : Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y) <= maxDistance);
+  }
+  vibrate (seconds = 2.5) {
+    this.element.classList.add("vibrate");
+    setTimeout(() => {
+      this.element.classList.remove("vibrate");
+    }, seconds * 1000);
   }
   get bcr () {
     return this.element.getBoundingClientRect();

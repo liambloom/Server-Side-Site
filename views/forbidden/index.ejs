@@ -19,21 +19,48 @@
     window.players = JSON.parse("<%- JSON.stringify(players).replace(/"/g, "\\\"") %>");
     window.board = JSON.parse("<%- JSON.stringify(board).replace(/"/g, "\\\"") %>");
     window.player = JSON.parse("<%- JSON.stringify(player).replace(/"/g, "\\\"") %>");
+    window.order = JSON.parse("<%- JSON.stringify(Object.keys(players).shuffle()).replace(/"/g, "\\\"") %>");
+    window.floodDeck = JSON.parse("<%- JSON.stringify(Object.keys(board).shuffle()).replace(/"/g, "\\\"") %>");
+    window.difficulty = "<%- difficulty %>";
   </script>
   <title>Forbidden <%= game.titleCase() %></title>
 </head>
 <body>
+  <svg id="filterDefs" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="darken">
+        <feComponentTransfer in="SourceGraphic">
+          <feFuncR type="linear" slope="0.5"></feFuncR>
+          <feFuncG type="linear" slope="0.5"></feFuncG>
+          <feFuncB type="linear" slope="0.5"></feFuncB>
+        </feComponentTransfer>
+      </filter>
+      <filter id="waves" x="0" y="0" width="100%" height="100%">
+        <feTurbulence id="wave-turbulence" numOctaves="3" seed="2" baseFrequency="0.02 0.05"></feTurbulence>
+        <feDisplacementMap scale="20" in="SourceGraphic"></feDisplacementMap>
+        <animate xlink:href="#wave-turbulence" attributeName="baseFrequency" dur="60s" keyTimes="0;0.5;1" values="0.02 0.06;0.04 0.08;0.02 0.06" repeatCount="indefinite">
+      </filter>
+      <filter id="blue" in="SourceGraphic">
+        <feColorMatrix id="blueMatrix" type="matrix" values="0.0967 0.0967 0.0967 0 0
+                                                             0.1751 0.1751 0.1751 0 0
+                                                             0.3033 0.3033 0.3033 0 0
+                                                             0      0      0      1 0"></feColorMatrix>
+        <animate href="#blueMatrix" attributeName="baseFrequency" dur="2.5s" keyTimes="0;1" values="
+          1 0 0 0 0
+          0 1 0 0 0
+          0 0 1 0 0
+          0 0 0 1 0;
+          0.3333 0.3333 0.3333 0 0
+          0.3333 0.3333 0.3333 0 0
+          0.3333 0.3333 0.3333 0 0
+          0      0      0      1 0
+        " repeatCount="1"></animate>
+      </filter>
+    </defs>
+  </svg>
+  <div id="background"></div>
   <% for (let playerName in players) { %>
-    <svg id="<%= playerName %>" class="piece" viewbox="0 0 15 24" width="3.75vmin" height="6vmin" version="1.1" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <filter id="darken">
-          <feComponentTransfer in="SourceGraphic">
-            <feFuncR type="linear" slope="0.5"></feFuncR>
-            <feFuncG type="linear" slope="0.5"></feFuncG>
-            <feFuncB type="linear" slope="0.5"></feFuncB>
-          </feComponentTransfer>
-        </filter>
-      </defs>
+    <svg id="<%= playerName %>" class="piece" viewbox="0 0 15 24" version="1.1" xmlns="http://www.w3.org/2000/svg">
       <g fill="<%= players[playerName].color.piece %>">
         <circle cx="10" cy="3.5" r="3.5"></circle>
         <path d=" M 5 21.5
@@ -57,13 +84,10 @@
         <% const boardArr = Object.keys(board).shuffle(); %>
         <% for (let i in boardArr) { %>
         <% const piece = boardArr[i]; %>
-        <div id="<%= piece.replace(/\s/g, "_").cssSafe() %>"
-          class="tile" style="grid-area: n<%= parseInt(i) + 1 %>;">
+        <div id="<%= piece.replace(/\s/g, "_").cssSafe() %>" class="tile" style="grid-area: n<%= parseInt(i) + 1 %>;">
           <div class="label <%= board[piece].end ? "end" : ""%>">
             <% if (board[piece].treasure) { %>
-            <div
-              class="treasure <%= board[piece].treasure.cssSafe() %>">
-            </div>
+              <div class="treasure <%= board[piece].treasure.cssSafe() %>"></div>
             <% } %>
             <div class="name"><%= piece %></div>
           </div>

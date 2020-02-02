@@ -17,7 +17,15 @@ module.exports = () => {
       value: function () { return this[this.length - 1]; }
     },
     shuffle: {
-      value: function () { return this.sort(() => Math.random() - 0.5); }
+      value: function () { 
+        for (let i = this.length - 1; i > 0; i--) {
+          const rand = Math.floor((i + 1) * Math.random());
+          const temp = this[rand];
+          this[rand] = this[i];
+          this[i] = temp;
+        }
+        return this;
+      }
     }
   });
   Object.defineProperties(String.prototype, {

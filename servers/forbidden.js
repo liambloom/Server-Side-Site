@@ -6,13 +6,16 @@ module.exports = {
   serve (req, res) {
     const game = req.params.game;//new URLSearchParams(url.parse(req.originalUrl).search).get("game");
     const players = JSON.parse(fs.readFileSync(`./json/forbidden/${game}/players.json`));
+    let difficulty = url.parse(req.originalUrl, true).query.difficulty || "normal";
+    difficulty = difficulty.toLowerCase();
     for (let player in players) {
       players[player].name = player;
     }
     serve.custom(req, res, "./forbidden/index", {
       game,
       board: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/board.json`)),
-      players: players
+      players: players,
+      difficulty 
     });
   },
   permission (req, res) {

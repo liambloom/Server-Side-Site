@@ -70,7 +70,7 @@ app.use(session({
   activeDuration: 10 * 60 * 1000,
   httpOnly: true,
   secure: !testing,// I should probably get an ssl certificate
-  ephemeral: true// This means delete the cookie when the browser is closed
+  ephemeral: false// This means delete the cookie when the browser is closed
 }));
 app.use(session({
   cookieName: "forbiddenKey",
