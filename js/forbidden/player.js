@@ -19,7 +19,7 @@ export default class Player {
       this.element.style.setProperty("transition", "");
     });
     this.element.addEventListener("click", () => {
-      if (window.gameData.turns.current !== player) this.vibrate(0.5);
+      if (window.gameData.turns.current !== player) this.element.vibrate(0.5);
       this.tile.element.dispatchEvent(new Event("click"));
     });
     document.addEventListener("click", (event => {
@@ -37,6 +37,7 @@ export default class Player {
       this.selected = !this.selected;
       this.element.classList.toggle("selected");
     }
+    else this.element.vibrate(0.5);
   }
   removeGlow () {
     this.selected = false;
@@ -51,12 +52,6 @@ export default class Player {
   legalMove (tile) {
     const maxDistance = Player.selected !== player && player.ability.moveOtherDistance || 1;
     return (window.gameData.turns.current === player) && (tile !== this.tile) && (tile.floodLevel < 2 || this.ability.moveOnBlocked) && (this.ability.diagonalMovement ? this.x <= tile.x + maxDistance && this.x >= tile.x - maxDistance && this.y <= tile.y + maxDistance && this.y >= tile.y - maxDistance : Math.abs(this.x - tile.x) + Math.abs(this.y - tile.y) <= maxDistance);
-  }
-  vibrate (seconds = 2.5) {
-    this.element.classList.add("vibrate");
-    setTimeout(() => {
-      this.element.classList.remove("vibrate");
-    }, seconds * 1000);
   }
   get bcr () {
     return this.element.getBoundingClientRect();

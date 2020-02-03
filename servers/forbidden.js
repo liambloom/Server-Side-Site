@@ -6,16 +6,32 @@ module.exports = {
   serve (req, res) {
     const game = req.params.game;//new URLSearchParams(url.parse(req.originalUrl).search).get("game");
     const players = JSON.parse(fs.readFileSync(`./json/forbidden/${game}/players.json`));
-    let difficulty = url.parse(req.originalUrl, true).query.difficulty || "normal";
-    difficulty = difficulty.toLowerCase();
+    const treasureData = JSON.parse(fs.readFileSync(`./json/forbidden/${game}/decks/treasure.json`));
+    const floodData = JSON.parse(fs.readFileSync(`./json/forbidden/${game}/flood.json`));
+    const treasures = [];
+    const flood = [];
+    let difficulty = ["novice", "normal", "elite", "legendary"].indexOf((url.parse(req.originalUrl, true).query.difficulty || "normal").toLowerCase());
+    if (difficulty === -1) difficulty = 1;
     for (let player in players) {
       players[player].name = player;
+    }
+    for (let card in treasureData) {
+      for (let i = 0; i < treasureData[card]; i++) {
+        treasures.push(card);
+      }
+    }
+    for (let level in floodData) {
+      for (let i = 0; i < floodData[level]; i++) {
+        flood.push(Number(level));
+      }
     }
     serve.custom(req, res, "./forbidden/index", {
       game,
       board: JSON.parse(fs.readFileSync(`./json/forbidden/${game}/board.json`)),
-      players: players,
-      difficulty 
+      players,
+      treasures: treasures.shuffle(),
+      difficulty,
+      flood
     });
   },
   permission (req, res) {

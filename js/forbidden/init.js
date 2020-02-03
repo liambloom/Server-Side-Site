@@ -1,6 +1,19 @@
 "use strict";
 import Player, { User } from "./player.js";
 import Board from "./board.js";
+import Deck from "./deck.js";
+
+Object.defineProperty(HTMLElement.prototype, "vibrate", {
+  value: function (time = 2.5) {
+    this.classList.add("vibrate");
+    setTimeout(() => {
+      this.classList.remove("vibrate");
+    }, time * 1000);
+  }
+});
+Object.defineProperty(SVGElement.prototype, "vibrate", {
+  value: HTMLElement.prototype.vibrate
+});
 
 window.testing = new URLSearchParams(location.search).get("testing") === "true";
 window.board = new Board(window.board);
@@ -28,18 +41,43 @@ window.gameData = {
       else {
         this.actionsTaken = 0;
         this.order.push(this.order.shift());
-
+        setTimeout(async () => {
+          await gameData.decks.treasure.draw(2);
+          gameData.decks.flood.draw(gameData.flood.level);
+        }, 500);
       }
     },
     infiniteTurns: false
   },
   decks: {
-    flood: window.floodDeck
-
+    flood: new Deck(window.floodDeck, {
+      postAnimation: async removed => {
+        board[removed].flood();
+      },
+    }),
+    treasure: new Deck(window.treasureDeck)
   },
-  flood: window.floodLevel
+  flood: {
+    notch: window.difficulty,
+    increase: function () {
+      this.notch++;
+      if (this.level === undefined) {
+        // Game over
+        this.cover();
+      }
+      else {
+        this.cover();
+      }
+    },
+    cover: function () {
+      document.getElementById("background").vibrate();
+      document.getElementById("background-cover").style.height = `${window.innerHeight - window.innerHeight * this.notch / (window.floodLevels.length + 2)}px`; // 1 added because that's how dividing works, other is death
+    },
+    get level () {
+      return window.floodLevels[this.notch];
+    }
+  }
 };
-for (let i = 0; i < 6; i++) {
-  board[gameData.decks.flood.shift()].flood();
-}
+gameData.flood.cover();
+gameData.decks.flood.drawSync(6);
 if (testing) window.gameData.turns.order.unshift(window.gameData.turns.order.splice(window.gameData.turns.order.indexOf(window.player), 1)[0]);// Testing only
