@@ -51,10 +51,13 @@ window.gameData = {
   },
   decks: {
     flood: new Deck(window.floodDeck, {
-      postAnimation: removed => new Promise(resolve => {
-        board[removed].flood();
-        setTimeout(resolve, 2500);
-      }),
+      animations: [
+        Deck.drawAnimation,
+        removed => new Promise(resolve => {
+          board[removed].flood();
+          setTimeout(resolve, 2500);
+        }),
+      ]
     }),
     treasure: new Deck(window.treasureDeck)
   },

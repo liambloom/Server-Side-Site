@@ -12,9 +12,8 @@ export default class Deck extends Array {
     this.original = cards;
     data = data || {};
     this.whenOut = data.whenOut || "reshuffle";
-    this.animation = forceAsync(data.animation);
-    this.animation.pre = forceAsync(data.preAnimation, Deck.animation);
-    this.animation.post = forceAsync(data.postAnimation);
+    this.animations = data.animations || [];
+    this.animations = this.animations.map(forceAsync);
   }
   async draw (count = 1) {
     const drawn = [];
@@ -30,12 +29,12 @@ export default class Deck extends Array {
     const removed = this.shift();
     if (this.whenOut === "infinite") this.push(removed);
     if (this.length === 0 && this.whenOut === "reshuffle") this.push(...this.original.shuffle());
-    await this.animation.pre(removed);
-    await this.animation(removed);
-    await this.animation.post(removed);
+    for (let animation of this.animations) {
+      await animation(removed);
+    }
     return removed;
   }
-  static async animation () {
+  static async drawAnimation () {
 
   }
 }
