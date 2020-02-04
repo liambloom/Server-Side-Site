@@ -26,15 +26,15 @@ body #background {
   background-image: url("/img/waves.gif");
   background-size: cover;
   /*filter: url(#waves);*/
-}
-body #background-cover {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  width: 100vw;
-  background-color: white;
-  opacity: 0.5;
-  transition: height 2500ms;
+  /*#background-cover {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 100vw;
+    background-color: white;
+    opacity: 0.5;
+    transition: height 2500ms;
+  }*/
 }
 body > div {
   height: calc(100vh - 4vmin);

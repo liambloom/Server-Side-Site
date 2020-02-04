@@ -72,7 +72,7 @@ window.gameData = {
     },
     cover: function () {
       document.getElementById("background").vibrate();
-      document.getElementById("background-cover").style.height = `${window.innerHeight - window.innerHeight * this.notch / (window.floodLevels.length + 2)}px`; // 1 added because that's how dividing works, other is death
+      //document.getElementById("background-cover").style.height = `${window.innerHeight - window.innerHeight * this.notch / (window.floodLevels.length + 2)}px`; // 1 added because that's how dividing works, other is death
     },
     get level () {
       return window.floodLevels[this.notch];

@@ -43,7 +43,7 @@ export class Tile {
   get piece () {
     return Object.values(players).find(player => player.tile === this);
   }
-  floodLevel = 0
+  floodLevel = 0 // Not supported in safari (bad for mobile)
 }
 export default class Board {
   constructor (data) {
