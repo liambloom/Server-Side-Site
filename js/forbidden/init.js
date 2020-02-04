@@ -51,9 +51,10 @@ window.gameData = {
   },
   decks: {
     flood: new Deck(window.floodDeck, {
-      postAnimation: async removed => {
+      postAnimation: removed => new Promise(resolve => {
         board[removed].flood();
-      },
+        setTimeout(resolve, 2500);
+      }),
     }),
     treasure: new Deck(window.treasureDeck)
   },
@@ -79,5 +80,5 @@ window.gameData = {
   }
 };
 gameData.flood.cover();
-gameData.decks.flood.drawSync(6);
+gameData.decks.flood.drawConcurrent(6);
 if (testing) window.gameData.turns.order.unshift(window.gameData.turns.order.splice(window.gameData.turns.order.indexOf(window.player), 1)[0]);// Testing only
