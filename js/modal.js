@@ -28,7 +28,7 @@ window.modal = {
         scroll.unlock();
       })
         .then(() => {
-          if (typeof fun === "function") callback();
+          if (typeof callback === "function") callback();
         });
     }
   },
