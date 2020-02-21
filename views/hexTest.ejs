@@ -4,7 +4,6 @@
   <%- include("head", {beta: false, modal: false})%>
   <title>Shapes</title>
   <link rel="stylesheet" href="/css/hexTest.css">
-  <script src="/js/color.js"></script>
   <script src="/js/hexTest.js" defer type="module"></script>
 </head>
 <body>
@@ -112,7 +111,7 @@
       </div>
     </div>
   </div>
-  <modal id="shapeCreationMenu" data-escape="okCancel" data-confirm="window.newShape(parseInt(document.getElementById('sidesInput').value))">
+  <modal id="shapeCreationMenu" data-escape="okCancel" data-confirm="/* Create a new shape */">
     Sides: <input type="number" id="sidesInput" min="3" step="1" value="4" required>
   </modal>
 </body>

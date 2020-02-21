@@ -1,5 +1,5 @@
 //jshint esversion:6
-import { HexGrid } from "/lib/shapes.js";
+import { HexGrid } from "/lib/Shapes.js";
 window.HexGrid = HexGrid;
 document.getElementById("Capa_1").style.display = "none";
 document.getElementsByTagName("header")[0].removeChild(document.querySelector("a#logo"));
