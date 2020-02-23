@@ -8,8 +8,9 @@ window.newShape = (sides, config) => {
 };
 
 const init = () => {
-  newShape(6, { x: 100, y: 105, color: "#0044ff", draggable: true, canvasSafe: false });
+  newShape(6, { x: 100, y: 105, color: "#0044ff", draggable: true });// , canvasSafe: false -- Has bugs
   newShape(3, { x: 200, y: 221, color: "#ff2222", draggable: true });
+  Shape.displayFps = true;
   Shape.addInterface("x", document.getElementById("x"), parseInt, Math.round);
   Shape.addInterface("y", document.getElementById("y"), parseInt, Math.round);
   Shape.addInterface("width", document.getElementById("widthT"), parseInt, Math.round);
