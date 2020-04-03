@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <%- include("head", {beta: false, modal: false}) %>
+  <title>Calculator</title>
+  <link rel="stylesheet" href="/css/calculator.css">
+  <script src="/js/calculator/styles.js" type="application/javascript" defer></script>
+  <script src="/js/calculator/draw.js" type="application/javascript" defer></script>
+</head>
+<body>
+  <%- include("header", {title: "Calculator", choice: true}) %>
+  <main>
+    <canvas id="canvas"></canvas>
+  </main>
+</body>
+</html>
