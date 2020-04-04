@@ -15,17 +15,81 @@ const resetTimer = () => {
   timerId = setTimeout(() => {
     timerExpired = true;
     if (!mousedown) onTimerExpired();
-  }, 500);
+  }, 1000);
 };
 const onTimerExpired = () => {
+  let changed = false;
+  /*do {
+    changed = false;
+    if (i++ > 100) throw "foo";
+    for (let path of lines) {
+      for (let node in path) {
+        node = parseInt(node);
+        if (node === 0 || node === path.length - 1 || path[node].crucial) continue;
+        console.log(Math.atan(path[node - 1][1] - path[node][1]) / (path[node - 1][0] - path[node][1]) -
+          Math.atan(path[node][1] - path[node + 1][1]) / (path[node][0] - path[node + 1][1]));
+        if (Math.abs(
+          Math.atan(path[node - 1][1] - path[node][1]) / (path[node - 1][0] - path[node][1]) - 
+          Math.atan(path[node][1] - path[node + 1][1]) / (path[node][0] - path[node + 1][1])) < 120 * Math.PI / 180) {
+            path[node].crucial = true;
+            changed = true;
+          }
+      } 
+    }
+  }
+  while (changed);*/
+  //----------------------------------------------remove densely packed points
+  do {
+    changed = false;
+    for (let path of lines) {
+      for (let node in path) {
+        node = parseInt(node);
+        if (node === 0) continue;
+        //console.log(path[node][0] + path[node - 1][0])
+        console.log(Math.sqrt((path[node][0] - path[node - 1][0]) ** 2 + (path[node][1] - path[node - 1][1]) ** 2));
+        if (Math.sqrt((path[node][0] - path[node - 1][0]) ** 2 + (path[node][1] - path[node - 1][1]) ** 2) < 10) {
+          changed = true;
+          path.splice(node, 1);
+        }
+      }
+    }
+  }
+  while (changed);
+
+  //--------------------------------------------merge points based on angle
+  /*do {
+    changed = false;
+    for (let path of lines) {
+      for (let node in path) {
+        node = parseInt(node);
+        if (node === 0 || node === path.length - 1) continue;
+        const targetAngle = Math.atan((path[node + 1][1] - path[node][1]) / (path[node + 1][0] - path[node][0]));
+        const angle = Math.atan((path[node][1] - path[node - 1][1]) / (path[node + 1][0] - path[node][0]));
+        const marginOfErrorDegrees = 20;
+        const marginOfErrorRadians = marginOfErrorDegrees * Math.PI / 180;
+        if (targetAngle + marginOfErrorRadians > angle && angle > targetAngle - marginOfErrorRadians) {
+          changed = true;
+          path.splice(node, 1);
+        }
+      }
+    }
+  }
+  while (changed);*/
+
   if (document.getElementById("showBox").value) {
     drawBoxes();
+  }
+  else {
+    clear();
+    redrawLines();
   }
 };
 const drawBoxes = force => {
   if (force || prevLines < lines.length) {
+    console.log("foo");
     prevLines = lines.length;
     clear();
+    let changed = false;
     redrawLines();
     let boxes = [];
     for (let path of lines) {
@@ -41,7 +105,6 @@ const drawBoxes = force => {
       }
       boxes.push(Int32Array.of(minX - strokeWeight / 2, minY - strokeWeight / 2, maxX - minX + strokeWeight, maxY - minY + strokeWeight));
     }
-    let changed = false;
     if (search.get("mergeObjects") !== "false") {
       do {
         changed = false;
@@ -95,9 +158,9 @@ const drawBoxes = force => {
       ctx.beginPath();
       ctx.arc(x, y, Math.max(box[2], box[3]) / 2, 0, 2 * Math.PI);
       ctx.stroke();*/
-      ctx.beginPath();
+      /*ctx.beginPath();
       ctx.arc(x, y, Math.sqrt(box[2] ** 2 + box[3] ** 2) / 2, 0, 2 * Math.PI);
-      ctx.stroke();
+      ctx.stroke();*/
       /*ctx.beginPath();
       console.log(parseFloat(document.getElementById("multiplier").value), parseFloat(document.getElementById("baserad").value), Math.sqrt(box[2] ** 2 + box[3] ** 2), parseFloat(document.getElementById("yint").value));
       ctx.arc(x, y, (parseFloat(document.getElementById("multiplier").value) * parseFloat(document.getElementById("baserad").value) ** Math.sqrt(box[2] ** 2 + box[3] ** 2) + parseFloat(document.getElementById("yint").value)) / 2, 0, 2 * Math.PI);
@@ -117,11 +180,16 @@ const redrawLines = () => {
         ctx.fillStyle = color;
         ctx.strokeStyle = color;
       }
+      else if (path[node].crucial) {
+        ctx.fillStyle = "green";
+      }
       ctx.beginPath();
       ctx.moveTo(path[node][0], path[node][1]);
       ctx.lineTo(path[node + 1][0], path[node + 1][1]);
       ctx.stroke();
       pointAt(path[node + 1][0], path[node + 1][1]);
+      ctx.fillStyle = "black";
+      ctx.strokeStyle = "black";
     }
   }
 };

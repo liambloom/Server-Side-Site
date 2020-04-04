@@ -19,9 +19,9 @@
         <img src="/img/arrow.svg">
       </div>
       <div id="devMenuContent">
-        Show segments: <div id="showSegments" class="switch inline <%- search.get("showSegments") ? "on" : "" %>"></div><br>
-        Show points: <div id="showPoints" class="switch inline <%- search.get("showPoints") ? "on" : "" %>"></div><br>
-        Show box: <div id="showBox" class="switch inline <%- search.get("showBox") ? "on" : "" %>"></div><br>
+        Show segments: <div id="showSegments" class="switch inline <%- search.get("showSegments") === "true" ? "on" : "" %>"></div><br>
+        Show points: <div id="showPoints" class="switch inline <%- search.get("showPoints") === "true" ? "on" : "" %>"></div><br>
+        Show box: <div id="showBox" class="switch inline <%- search.get("showBox") === "true" ? "on" : "" %>"></div><br>
         
         <input id="clear" value="clear" type="button">
       </div>
