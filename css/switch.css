@@ -1,0 +1,28 @@
+.switch {
+  display: block;
+  position: relative;
+  height: 1.25em;
+  width: 3em;
+  border-radius: 0.625em;
+  background-color: #cccccc;
+  transition: background-color 300ms ease-out;
+}
+.switch.inline {
+  display: inline-block;
+}
+.switch.on {
+  background-color: var(--light);
+}
+.switch > div {
+  position: relative;
+  height: 1em;
+  width: 1em;
+  border-radius: 50%;
+  top: 0.125em;
+  left: 0.125em;
+  background-color: #f8f8f8;
+  transition: left 300ms ease-out;
+}
+.switch.on > div {
+  left: 1.875em;
+}

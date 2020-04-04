@@ -7,7 +7,7 @@ let loadFun = () => {
   document.getElementsByTagName("main")[0].style.margin = "0px";
   document.getElementById("Capa_1").addEventListener("click", resizeFun);
   resizeFun();
-}
+};
 window.addEventListener("resize", resizeFun);
 if (document.readyState === "complete") loadFun();
 else window.addEventListener("load", loadFun);

@@ -4,13 +4,28 @@
   <%- include("head", {beta: false, modal: false}) %>
   <title>Calculator</title>
   <link rel="stylesheet" href="/css/calculator.css">
+  <script src="/js/fullScreenContent.js" type="application/javascript"></script>
+  <script src="/js/calculator/init.js" type="module" defer></script>
   <script src="/js/calculator/styles.js" type="application/javascript" defer></script>
   <script src="/js/calculator/draw.js" type="application/javascript" defer></script>
 </head>
 <body>
+  <% var search = new URLSearchParams(here.slice(here.indexOf("?"))) %>
   <%- include("header", {title: "Calculator", choice: true}) %>
   <main>
     <canvas id="canvas"></canvas>
+    <div id="devMenu" <%- search.get("open") === "true" ? 'class="open"' : "" %> >
+      <div id="devMenuOpenClose">
+        <img src="/img/arrow.svg">
+      </div>
+      <div id="devMenuContent">
+        Show segments: <div id="showSegments" class="switch inline <%- search.get("showSegments") ? "on" : "" %>"></div><br>
+        Show points: <div id="showPoints" class="switch inline <%- search.get("showPoints") ? "on" : "" %>"></div><br>
+        Show box: <div id="showBox" class="switch inline <%- search.get("showBox") ? "on" : "" %>"></div><br>
+        
+        <input id="clear" value="clear" type="button">
+      </div>
+    </div>
   </main>
 </body>
 </html>
