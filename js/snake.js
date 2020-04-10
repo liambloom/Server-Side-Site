@@ -70,7 +70,6 @@ function startGame () {
 function frame () {
   const head = Int8Array.from(snake[snake.length - 1]);
   direction = nextDirection;
-  console.log(direction);
   switch (direction) {
     case directions.right:
       head[0]++;
@@ -119,7 +118,6 @@ function sizing () {
   );
 }
 function gameOver () {
-  console.log("game over");
   clearInterval(loopId);
   ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
   ctx.fillRect(0, 0, size, size);
