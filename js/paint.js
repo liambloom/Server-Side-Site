@@ -209,6 +209,8 @@ var init = () => {
     }
   };
   let line = (s, e) => {
+    // FIXME: This has a MAJOR error. The line is drawn to the canvas, but not to the memory array
+
     let start = {
       x: s.clientX - cp().left - scrollX,
       y: s.clientY - cp().top - scrollY
