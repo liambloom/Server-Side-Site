@@ -23,3 +23,5 @@ fonts/SIMPLIFICA.zip
 /.vscode
 countdownTimingSpec.txt
 *.scss
+/sql/ignore
+
